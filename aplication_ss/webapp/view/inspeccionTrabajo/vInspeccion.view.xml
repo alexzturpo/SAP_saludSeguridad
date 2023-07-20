@@ -1,0 +1,266 @@
+<mvc:View controllerName="appss.aplicationss.controller.vInspeccion" 
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:tab="sap.ui.table"
+    xmlns="sap.m">
+    <Page title="Editar Inspeccion" showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
+		<headerContent>
+			<Button icon="sap-icon://save" text="Guardar" type="Emphasized" />
+		</headerContent> 
+		<content>
+            <VBox class="sapUiSmallMargin">
+                <f:Form editable="true" >
+                    <!-- <f:toolbar>
+                        <Toolbar> 
+                            <ToolbarSpacer />
+                            <Button text="Guardar" icon="sap-icon://save" type="Emphasized" /> 
+                        </Toolbar>
+                    </f:toolbar> -->
+                    <f:layout>
+                        <f:ResponsiveGridLayout
+                            labelSpanXL="4"
+                            labelSpanL="3"
+                            labelSpanM="4"
+                            labelSpanS="12"
+                            adjustLabelSpan="false"
+                            emptySpanXL="0"
+                            emptySpanL="4"
+                            emptySpanM="0"
+                            emptySpanS="0"
+                            columnsXL="2"
+                            columnsL="1"
+                            columnsM="1"
+                            singleContainerFullSize="false" />
+                    </f:layout>
+                    <f:formContainers>
+                        <f:FormContainer> 
+                            <f:formElements>
+                                <f:FormElement label="Codigo de inspección">
+                                    <f:fields>
+                                        <Input value=""/>
+                                    </f:fields>
+                                </f:FormElement>
+                                <f:FormElement label="Gerencia">
+                                    <f:fields> 
+                                        <Select forceSelection="false" items="{ path: 'myParam>/dataGerencia'}"  wrapItemsText="true">
+                                            <core:Item key="{myParam>key}" text="{myParam>name}"  />
+                                        </Select>
+                                    </f:fields>
+                                </f:FormElement>
+                                <f:FormElement label="Área">
+                                    <f:fields>
+                                        <Input value="" /> 
+                                    </f:fields>
+                                </f:FormElement>
+                                <f:FormElement label="Departamento">
+                                    <f:fields>
+                                        <Input value="" /> 
+                                    </f:fields>
+                                </f:FormElement>
+                                <f:FormElement label="Fecha programada">
+                                    <f:fields>
+                                        <Input value="" /> 
+                                    </f:fields>
+                                </f:FormElement> 
+                                <f:FormElement label="Categoría">
+                                    <f:fields> 
+                                        <Select forceSelection="false" items="{ path: 'myParam>/dataCategoria'}" wrapItemsText="true" showSecondaryValues= "true"> 
+                                            <core:ListItem key="{myParam>key}" text="{myParam>name}" additionalText="{myParam>info}" />
+                                        </Select>
+                                    </f:fields>
+                                </f:FormElement> 
+                                <f:FormElement label="Tipo">
+                                    <f:fields>
+                                        <Select forceSelection="false" items="{ path: 'myParam>/dataTipo'}"  wrapItemsText="true" >
+                                            <core:Item key="{myParam>key}" text="{myParam>name}"  />
+                                        </Select>
+                                    </f:fields>
+                                </f:FormElement> 
+                            </f:formElements>
+                        </f:FormContainer> 
+                        <f:FormContainer title="Datos complementarios"> 
+                            <f:formElements>
+                                <f:FormElement label="Fecha real">
+                                    <f:fields>
+                                        <DatePicker valueFormat="yyyyMMdd" displayFormat="dd/MM/yyyy" placeholder="Ingresar fecha" required="true"/>  
+                                    </f:fields>
+                                </f:FormElement>
+                                <f:FormElement label="Hora real">
+                                    <f:fields> 
+                                        <TimePicker value="" change="handleChange" placeholder="Hora real" /> 
+                                    </f:fields>
+                                </f:FormElement>
+                                <f:FormElement label="Acto inseguro o subestandar">
+                                    <f:fields>
+                                        <Input value="" /> 
+                                    </f:fields>
+                                </f:FormElement>
+                                <f:FormElement label="Condición inseguro o subestandar">
+                                    <f:fields>
+                                        <Input value="" /> 
+                                    </f:fields>
+                                </f:FormElement>
+                                <f:FormElement label="Descripcion de hallazgo">
+                                    <f:fields> 
+                                        <TextArea change="handleChange" rows="4" /> 
+                                    </f:fields>
+                                </f:FormElement>  
+                                <f:FormElement label="Acciones tomadas">
+                                    <f:fields>
+                                        <Input value="" /> 
+                                    </f:fields>
+                                </f:FormElement>  
+                                <f:FormElement label="Recomendaciones">
+                                    <f:fields>
+                                        <Input value="" /> 
+                                    </f:fields>
+                                </f:FormElement>  
+                                <f:FormElement label="Ubicación">
+                                    <f:fields>
+                                        <Input value="" /> 
+                                    </f:fields>
+                                </f:FormElement>  
+                            </f:formElements>
+                        </f:FormContainer> 
+                    </f:formContainers>
+                </f:Form>
+            </VBox> 
+            
+            <tab:Table showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/dataTab' }" class="sapUiSmallMargin">
+                <tab:extension>
+					<OverflowToolbar>
+						<Title text="Datos del personal involucrado"/>
+						<!-- <ToolbarSpacer/>
+						<Button icon="sap-icon://decline" tooltip="clear selection" press="clearSelection"/> -->
+					</OverflowToolbar>
+				</tab:extension>
+                <tab:columns>
+                    <tab:Column autoResizable="true" width="auto">
+                        <Label textAlign="Center" wrapping ="true"  text="Apellidos y nombres" />
+                        <tab:template> <Input value="" />  </tab:template>
+                    </tab:Column>
+                    <tab:Column autoResizable="true" width="auto">
+                        <Label textAlign="Center" wrapping ="true"  text="DNI" />
+                        <tab:template> <Input value="" /> </tab:template>
+                    </tab:Column>
+                    <tab:Column autoResizable="true" width="auto">
+                        <Label textAlign="Center" wrapping ="true"  text="Contratista" />
+                        <tab:template> <Input value="" /> </tab:template>
+                    </tab:Column>
+                    <tab:Column autoResizable="true" width="auto">
+                        <Label textAlign="Center" wrapping ="true"  text="Puesto de trabajo" />
+                        <tab:template> <Input value="" /> </tab:template>
+                    </tab:Column>
+                </tab:columns>
+            </tab:Table>
+            <tab:Table showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/dataTab' }" class="sapUiSmallMargin">
+                <tab:extension>
+					<OverflowToolbar>
+						<Title text="Riesgos asociados"/>
+						<!-- <ToolbarSpacer/>
+						<Button icon="sap-icon://decline" tooltip="clear selection" press="clearSelection"/> -->
+					</OverflowToolbar>
+				</tab:extension>
+                <tab:columns>
+                    <tab:Column autoResizable="true" width="auto">
+                        <Label textAlign="Center" wrapping ="true"  text="Condición insegura" />
+                        <tab:template> <Input value="" />  </tab:template>
+                    </tab:Column>
+                    <tab:Column autoResizable="true" width="auto">
+                        <Label textAlign="Center" wrapping ="true"  text="Riesgo" />
+                        <tab:template> <Input value="" /> </tab:template>
+                    </tab:Column>
+                    <tab:Column autoResizable="true" width="auto">
+                        <Label textAlign="Center" wrapping ="true"  text="Consecuencia" />
+                        <tab:template> <Input value="" /> </tab:template>
+                    </tab:Column>
+                    <tab:Column autoResizable="true" width="auto">
+                        <Label textAlign="Center" wrapping ="true"  text="Nivel riesgo" />
+                        <tab:template> <Input value="" /> </tab:template>
+                    </tab:Column>
+                </tab:columns>
+            </tab:Table>
+             
+            <VBox class="sapUiSmallMargin">
+                <f:Form editable="true" > 
+                    <f:layout>
+                        <f:ResponsiveGridLayout
+                            labelSpanXL="4"
+                            labelSpanL="3"
+                            labelSpanM="4"
+                            labelSpanS="12"
+                            adjustLabelSpan="false"
+                            emptySpanXL="0"
+                            emptySpanL="4"
+                            emptySpanM="0"
+                            emptySpanS="0"
+                            columnsXL="2"
+                            columnsL="1"
+                            columnsM="1"
+                            singleContainerFullSize="false" />
+                    </f:layout>
+                    <f:formContainers> 
+                        <f:FormContainer> 
+                            <f:formElements> 
+                                <f:FormElement label="Descripción de las causas que originaron el incidente">
+                                    <f:fields>  <TextArea change="handleChange" rows="6" />  </f:fields>
+                                </f:FormElement>   
+                            </f:formElements>
+                        </f:FormContainer> 
+                    </f:formContainers>
+                </f:Form>
+            </VBox> 
+
+            <tab:Table showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/dataTab' }" class="sapUiSmallMargin">
+                <tab:extension>
+					<OverflowToolbar>
+						<Title text="Medidas correctivas"/> 
+					</OverflowToolbar>
+				</tab:extension>
+                <tab:columns>
+                    <tab:Column autoResizable="true" width="auto">
+                        <Label textAlign="Center" wrapping ="true"  text="Descripción de la medida correctiva" />
+                        <tab:template> <Input value="" />  </tab:template>
+                    </tab:Column>
+                    <tab:Column autoResizable="true" width="auto">
+                        <Label textAlign="Center" wrapping ="true"  text="Responsable" />
+                        <tab:template> <Input value="" /> </tab:template>
+                    </tab:Column>
+                    <tab:Column autoResizable="true" width="auto">
+                        <Label textAlign="Center" wrapping ="true"  text="Fecha de ejecución" />
+                        <tab:template> <DatePicker value="" valueFormat="dd-MM-yyyy"/>  </tab:template>
+                    </tab:Column>
+                    <tab:Column autoResizable="true" width="auto">
+                        <Label textAlign="Center" wrapping ="true"  text="Estado de acción correctiva" />
+                        <tab:template> <Input value="" /> </tab:template>
+                    </tab:Column>
+                </tab:columns>
+            </tab:Table>
+            <tab:Table showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/dataTab' }" class="sapUiSmallMargin">
+                <tab:extension>
+					<OverflowToolbar>
+						<Title text="Responsables del registro"/>
+						<!-- <ToolbarSpacer/>
+						<Button icon="sap-icon://decline" tooltip="clear selection" press="clearSelection"/> -->
+					</OverflowToolbar>
+				</tab:extension>
+                <tab:columns>
+                    <tab:Column autoResizable="true" width="auto">
+                        <Label textAlign="Center" wrapping ="true"  text="Nombre" />
+                        <tab:template> <Input value="" />  </tab:template>
+                    </tab:Column>
+                    <tab:Column autoResizable="true" width="auto">
+                        <Label textAlign="Center" wrapping ="true"  text="Cargo" />
+                        <tab:template> <Input value="" /> </tab:template>
+                    </tab:Column>
+                    <tab:Column autoResizable="true" width="auto">
+                        <Label textAlign="Center" wrapping ="true"  text="Fecha" />
+                        <tab:template> <DatePicker value="" valueFormat="dd-MM-yyyy"/>  </tab:template>
+                    </tab:Column> 
+                </tab:columns>
+            </tab:Table>
+
+		</content>
+	</Page>
+</mvc:View>

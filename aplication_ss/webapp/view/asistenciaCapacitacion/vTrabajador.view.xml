@@ -1,0 +1,157 @@
+<mvc:View controllerName="appss.aplicationss.controller.vTrabajador" 
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:tab="sap.ui.table"
+    xmlns="sap.m">
+    <Page title="Trabajador" showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
+		<headerContent>
+			<Button icon="sap-icon://save" text="Guardar" type="Emphasized" />
+		</headerContent> 
+		<content>  
+            <VBox class="sapUiSmallMargin">
+                <tab:Table  cellClick="onSelectTab" rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                    <tab:extension>
+                        <OverflowToolbar > <Title text="Inducciones"/>  </OverflowToolbar>
+                    </tab:extension>
+                    <tab:columns>
+                        <tab:Column  >
+                            <Label textAlign="Center" wrapping ="true"  text="Cod. inducción" />
+                            <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column >
+                            <Label textAlign="Center" wrapping ="true"  text="Titulo" />
+                            <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column>
+                            <Label textAlign="Center" wrapping ="true"  text="Descripción" />
+                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column >
+                            <Label textAlign="Center" wrapping ="true"  text="Nota" />
+                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column >
+                            <Label textAlign="Center" wrapping ="true"  text="Fecha" />
+                            <tab:template> <Text text="{myParam>campo}" wrapping="false" /> </tab:template>
+                        </tab:Column> 
+                        <tab:Column>
+                            <Label textAlign="Center" wrapping ="true"  text="Fecha de vencimiento" />
+                            <tab:template> <Text text="{myParam>tipocampo}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column >
+                            <Label textAlign="Center" wrapping ="true"  text="Anexo" />
+                            <tab:template> <Text  text="{myParam>quibre}" wrapping="false" /> </tab:template>
+                        </tab:Column>              
+                    </tab:columns>
+                </tab:Table> 
+
+                <tab:Table  cellClick="onSelectTab" rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                    <tab:extension>
+                        <OverflowToolbar > 
+                            <Title text="Registro médico"/> 
+                            <ToolbarSpacer />
+                            <Button text="Añadir" icon="sap-icon://add" type="Emphasized" press="addTrabajador" />  
+                            <Button text="Dar de baja" icon="sap-icon://pull-down" type="Emphasized" press="addTrabajador" /> 
+                        </OverflowToolbar>
+                    </tab:extension>
+                    <tab:columns>
+                        <tab:Column  >
+                            <Label textAlign="Center" wrapping ="true"  text="Fecha" />
+                            <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column >
+                            <Label textAlign="Center" wrapping ="true"  text="Observaciones" />
+                            <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column>
+                            <Label textAlign="Center" wrapping ="true"  text="Status" />
+                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column >
+                            <Label textAlign="Center" wrapping ="true"  text="Fecha de vencimiento" />
+                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                        </tab:Column>      
+                    </tab:columns>
+                </tab:Table> 
+
+                <tab:Table  cellClick="onSelectTab" rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                    <tab:extension>
+                        <OverflowToolbar > 
+                            <Title text="SSTR"/> 
+                            <ToolbarSpacer />
+                            <Button text="Añadir" icon="sap-icon://add" type="Emphasized" press="addTrabajador" />  
+                            <Button text="Dar de baja" icon="sap-icon://pull-down" type="Emphasized" press="addTrabajador" /> 
+                        </OverflowToolbar>
+                    </tab:extension>
+                    <tab:columns>
+                        <tab:Column  >
+                            <Label textAlign="Center" wrapping ="true"  text="Fecha" />
+                            <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column >
+                            <Label textAlign="Center" wrapping ="true"  text="Observaciones" />
+                            <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column>
+                            <Label textAlign="Center" wrapping ="true"  text="Status" />
+                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column >
+                            <Label textAlign="Center" wrapping ="true"  text="Fecha de vencimiento" />
+                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                        </tab:Column>      
+                    </tab:columns>
+                </tab:Table> 
+
+                <tab:Table  cellClick="onSelectTab" rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                    <tab:extension>
+                        <OverflowToolbar > <Title text="Documentación"/>  </OverflowToolbar>
+                    </tab:extension>
+                    <tab:columns>
+                        <tab:Column  >
+                            <Label textAlign="Center" wrapping ="true"  text="Nombre de documento" />
+                            <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column >
+                            <Label textAlign="Center" wrapping ="true"  text="¿Obligatorio?" />
+                            <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column>
+                            <Label textAlign="Center" wrapping ="true"  text="Formato" />
+                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column >
+                            <Label textAlign="Center" wrapping ="true"  text="Revisar" />
+                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                        </tab:Column>      
+                    </tab:columns>
+                </tab:Table> 
+
+                <tab:Table  cellClick="onSelectTab" rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                    <!-- <tab:extension>
+                        <OverflowToolbar > <Title text="Registro médico"/>  </OverflowToolbar>
+                    </tab:extension> -->
+                    <tab:columns>
+                        <tab:Column  >
+                            <Label textAlign="Center" wrapping ="true"  text="Nombre de documento" />
+                            <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column >
+                            <Label textAlign="Center" wrapping ="true"  text="Versión" />
+                            <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column>
+                            <Label textAlign="Center" wrapping ="true"  text="Status" />
+                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column >
+                            <Label textAlign="Center" wrapping ="true"  text="Observación" />
+                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                        </tab:Column>      
+                    </tab:columns>
+                </tab:Table> 
+            </VBox>
+		</content>
+	</Page>
+</mvc:View>

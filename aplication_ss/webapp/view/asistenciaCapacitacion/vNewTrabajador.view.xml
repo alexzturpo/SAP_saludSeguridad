@@ -1,0 +1,83 @@
+<mvc:View controllerName="appss.aplicationss.controller.vNewTrabajador" 
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:tab="sap.ui.table"
+    xmlns="sap.m">
+    <Page title="Nuevo trabajador" showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
+		<headerContent>
+			<Button icon="sap-icon://save" text="Guardar" type="Emphasized" />
+		</headerContent> 
+		<content> 
+            <VBox class="sapUiSmallMargin">
+
+                <f:Form editable="true">  
+                    <f:toolbar>
+                        <Toolbar> 
+                            <Title text="Filtro"/>
+                            <!-- <ToolbarSpacer /> -->
+                            <!-- <Button type="Emphasized" text="Buscar" press="onPress"/>  -->
+                        </Toolbar>
+                    </f:toolbar>
+                    <f:layout>
+                        <f:ResponsiveGridLayout
+                            labelSpanXL="4"
+                            labelSpanL="4"
+                            labelSpanM="4"
+                            labelSpanS="12"
+                            adjustLabelSpan="false"
+                            emptySpanXL="0"
+                            emptySpanL="0"
+                            emptySpanM="0"
+                            emptySpanS="0"
+                            columnsXL="3"
+                            columnsL="2"
+                            columnsM="2"
+                            singleContainerFullSize="false" />
+                    </f:layout>
+                    <f:formContainers>
+                        <f:FormContainer title="Datos del proveedor">
+                            <f:formElements>
+                                <f:FormElement label="Proveedor">
+                                    <f:fields> <Input value=""/> </f:fields>
+                                </f:FormElement> 
+                                <f:FormElement label="Nombre">
+                                    <f:fields> <Input value=""/> </f:fields>
+                                </f:FormElement> 
+                                <f:FormElement label="RUC">
+                                    <f:fields> <Input value=""/> </f:fields>
+                                </f:FormElement> 
+                            </f:formElements>
+                        </f:FormContainer>
+                        <f:FormContainer title="Empresa del grupo">
+                            <f:formElements>
+                                <f:FormElement label="Sociedad">
+                                    <f:fields> <Input value=""/> </f:fields>
+                                </f:FormElement> 
+                            </f:formElements>
+                        </f:FormContainer> 
+                        <f:FormContainer title="Datos del trabajador">
+                            <f:formElements>
+                                <f:FormElement label="Código del trabajador">
+                                    <f:fields> <Input value=""/> </f:fields>
+                                </f:FormElement> 
+                                <f:FormElement label="Apellidos">
+                                    <f:fields> <Input value=""/> </f:fields>
+                                </f:FormElement> 
+                                <f:FormElement label="Nombres">
+                                    <f:fields> <Input value=""/> </f:fields>
+                                </f:FormElement> 
+                                <f:FormElement label="Área">
+                                    <f:fields> <Input value=""/> </f:fields>
+                                </f:FormElement> 
+                                <f:FormElement label="Puesto de trabajo">
+                                    <f:fields> <Input value=""/> </f:fields>
+                                </f:FormElement> 
+                            </f:formElements>
+                        </f:FormContainer> 
+                    </f:formContainers>
+                </f:Form> 
+            </VBox>
+		</content>
+	</Page>
+</mvc:View>
