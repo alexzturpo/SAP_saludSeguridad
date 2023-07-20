@@ -1968,8 +1968,54 @@
                                     </tab:columns>
                                 </tab:Table>  
                             </IconTabFilter> 
-                            <IconTabFilter text="Reportes" >
-                                <Text text="Info content goes here ..." />
+                            <IconTabFilter text="Reporte" >
+                                <tab:Table rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                                    <tab:extension>
+                                        <OverflowToolbar >
+                                            <Title text="Asistentes"/>
+                                            <ToolbarSpacer />
+                                            <Button text="Descargar" icon="sap-icon://download" type="Emphasized" press="descarga" />   
+                                        </OverflowToolbar>
+                                    </tab:extension>
+                                    <tab:columns>
+                                        <tab:Column  >
+                                            <Label textAlign="Center" wrapping ="true"  text="Contratista" />
+                                            <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                        </tab:Column>
+                                        <tab:Column >
+                                            <Label textAlign="Center" wrapping ="true"  text="Sociedad" />
+                                            <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
+                                        </tab:Column>
+                                        <tab:Column>
+                                            <Label textAlign="Center" wrapping ="true"  text="Código de trabajador" />
+                                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                                        </tab:Column>
+                                        <tab:Column >
+                                            <Label textAlign="Center" wrapping ="true"  text="Apellidos" />
+                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                        </tab:Column>          
+                                        <tab:Column >
+                                            <Label textAlign="Center" wrapping ="true"  text="Nombres" />
+                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                        </tab:Column>          
+                                        <tab:Column >
+                                            <Label textAlign="Center" wrapping ="true"  text="Área" />
+                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                        </tab:Column>          
+                                        <tab:Column >
+                                            <Label textAlign="Center" wrapping ="true"  text="Puesto de trabajo" />
+                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                        </tab:Column>          
+                                        <tab:Column >
+                                            <Label textAlign="Center" wrapping ="true"  text="Nota" />
+                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                        </tab:Column>          
+                                        <tab:Column >
+                                            <Label textAlign="Center" wrapping ="true"  text="Anexo" />
+                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                        </tab:Column>          
+                                    </tab:columns>
+                                </tab:Table>  
                             </IconTabFilter> 
                         </items>
                     </IconTabBar>
