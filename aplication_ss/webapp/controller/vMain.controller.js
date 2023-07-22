@@ -24,5 +24,22 @@ sap.ui.define([
             onSelectTrabajador: function () {
                 this.getRouter().getTargets().display("vTrabajador");
             },
+            onSelectTbIncidente: function () {
+                this.getRouter().getTargets().display("vIncidente");
+            },
+            // GESTION DE INCIDENTES
+            newIncidente: function () {
+                let newIncidenteForm = {
+                    titulo: this.getView().byId("gi_new_titulo").getValue(),
+                    descrip: this.getView().byId("gi_new_descrip").getValue(),
+                    accionInmediata: this.getView().byId("gi_new_accionInmediata").getValue(),
+                    
+                    sociedad: this.getView().byId("gi_new_sociedad").getValue(),
+                    ubicacion: this.getView().byId("gi_new_ubicacion").getValue(),
+                    detalle: this.getView().byId("gi_new_detalle").getValue(),
+                } 
+                console.log("newIncidenteForm",newIncidenteForm)
+            },
+
         });
     });

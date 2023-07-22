@@ -99,6 +99,12 @@
             "pattern": "vTrabajador",
             "titleTarget": "vTrabajador",
             "target": "vTrabajador"
+        },
+        {
+            "name": "vIncidente",
+            "pattern": "vIncidente",
+            "titleTarget": "vIncidente",
+            "target": "vIncidente"
         }
       ],
       "targets": {
@@ -129,6 +135,13 @@
           "clearControlAggregation": false,
           "viewId": "vTrabajador",
           "viewName": "asistenciaCapacitacion/vTrabajador"
+        },
+        "vIncidente": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "vIncidente",
+          "viewName": "gestionIncidentes/vIncidente"
         }
       }
     },

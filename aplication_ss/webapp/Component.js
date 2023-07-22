@@ -51,6 +51,11 @@ sap.ui.define([
                         {"key":"1","name":"Condición"},
                         {"key":"2","name":"Acto"}
                     ],
+
+                    "dataTipo":[
+                        {"key":"1","name":"Condición"},
+                        {"key":"2","name":"Acto"}
+                    ],
                 };
                 var oModel = new sap.ui.model.json.JSONModel(oData);
                 this.setModel(oModel);

@@ -35,164 +35,270 @@
 
         <IconTabBar id="tabBarMaster" selectedKey="itab1" headerMode="Inline" expanded="{device>/isNoPhone}" >
             <items>
-                <IconTabFilter id="tabM1" text="Gestión de Incidentes" key="itab1" >
-                    
+                <IconTabFilter id="tabM1" text="Gestión de Incidentes" key="itab1" > 
                     <IconTabBar id="tabM1_subTab" selectedKey="itab1Id22" headerMode="Inline" expanded="{device>/isNoPhone}" >
                     <items>
                         <IconTabFilter icon="sap-icon://hint" text="Nuevo incidente"> 
-                        
-                            <f:Form id="form01" editable="true"  width="auto"> 
-                                <f:layout>
-                                    <f:ResponsiveGridLayout id="FormTab1IdaG"
-                                        labelSpanXL="4"
-                                        labelSpanL="4"
-                                        labelSpanM="12"
-                                        labelSpanS="12"
-                                        adjustLabelSpan="false"
-                                        emptySpanXL="0"
-                                        emptySpanL="0"
-                                        emptySpanM="0"
-                                        emptySpanS="0"
-                                        columnsXL="2"
-                                        columnsL="2"
-                                        columnsM="2"
-                                        singleContainerFullSize="false"  />
-                                </f:layout>
-                                <f:formContainers >
-                                    <f:FormContainer id="form01C1" title="Qué pasó y qué acciones inmediatas se han realizado?">
-                                        <f:formElements>
-                                            <f:FormElement id="lbl_form01C1_01" label="Titulo">
-                                                <f:fields>
-                                                    <Input id="txt_form01C1_01" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement>
-                                            <f:FormElement id="lbl_form01C1_02" label="Descripción del evento">
-                                                <f:fields> 
-                                                    <TextArea id="txt_form01C1_02" value="" height="5rem" width="100%"/>
-                                                </f:fields>
-                                            </f:FormElement>
-                                            <f:FormElement id="lbl_form01C1_03" label="Acciones inmediatas">
-                                                <f:fields> 
-                                                    <TextArea id="txt_form01C1_03" value="" height="5rem" width="100%"/>
-                                                </f:fields>
-                                            </f:FormElement>  
-                                        </f:formElements>
-                                    </f:FormContainer> 
-                                    <f:FormContainer id="form01C2" title="¿Donde ocurrió?" >
-                                        <f:formElements>
-                                            <f:FormElement id="lbl_form01C2_01" label="Sociedad" >
-                                                <f:fields>
-                                                    <ComboBox id="cmb_form01C2_01" class="sapUiSmallMarginBottom" enabled="true" selectedKey="1001">
-                                                        <core:Item key="1001" text="1001" />
-                                                    </ComboBox>    
-                                                
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_form01C2_02" label="Ubicación" >
-                                                <f:fields>
-                                                    <Input id="txt_form01C2_02" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement>
-                                            <f:FormElement id="lbl_form01C2_03" label="Detalle" >
-                                                <f:fields>
-                                                    <TextArea id="txt_form01C2_03" value="" height="5rem" width="100%"/> 
-                                                </f:fields>
-                                            </f:FormElement>
-                                        </f:formElements>
-                                    </f:FormContainer>
+                            <Panel width="auto" >
+                                <headerToolbar>
+                                    <OverflowToolbar>
+                                        <!-- <Title text="Header"/> -->
+                                        <ToolbarSpacer />
+                                        <Button text="Enviar" icon="sap-icon://paper-plane" type="Emphasized" press="newIncidente" />
+                                        <Button text="Cancelar" icon="sap-icon://delete" press="onEnviartab2" />  
+                                    </OverflowToolbar>
+                                </headerToolbar>
+                                <content>
+                                    <f:Form id="form01" editable="true"  width="auto"> 
+                                        <f:layout>
+                                            <f:ResponsiveGridLayout id="FormTab1IdaG"
+                                                labelSpanXL="4"
+                                                labelSpanL="4"
+                                                labelSpanM="12"
+                                                labelSpanS="12"
+                                                adjustLabelSpan="false"
+                                                emptySpanXL="0"
+                                                emptySpanL="0"
+                                                emptySpanM="0"
+                                                emptySpanS="0"
+                                                columnsXL="2"
+                                                columnsL="2"
+                                                columnsM="2"
+                                                singleContainerFullSize="false"  />
+                                        </f:layout>
+                                        <f:formContainers >
+                                            <f:FormContainer title="Qué pasó y qué acciones inmediatas se han realizado?">
+                                                <f:formElements>
+                                                    <f:FormElement label="Titulo">
+                                                        <f:fields>
+                                                            <Input id="gi_new_titulo" value="" /> 
+                                                        </f:fields>
+                                                    </f:FormElement>
+                                                    <f:FormElement label="Descripción del evento">
+                                                        <f:fields> 
+                                                            <TextArea id="gi_new_descrip" value="" height="5rem"/>
+                                                        </f:fields>
+                                                    </f:FormElement>
+                                                    <f:FormElement label="Acciones inmediatas">
+                                                        <f:fields> 
+                                                            <TextArea id="gi_new_accionInmediata" value="" height="5rem" enabled="false" />
+                                                        </f:fields>
+                                                    </f:FormElement>  
+                                                </f:formElements>
+                                            </f:FormContainer> 
+                                            <f:FormContainer title="¿Donde ocurrió?" >
+                                                <f:formElements>
+                                                    <f:FormElement label="Sociedad" >
+                                                        <f:fields>
+                                                            <ComboBox id="gi_new_sociedad" class="sapUiSmallMarginBottom" enabled="true" selectedKey="1000">
+                                                                <core:Item key="1000" text="1000" />
+                                                            </ComboBox>     
+                                                        </f:fields>
+                                                    </f:FormElement> 
+                                                    <f:FormElement label="Ubicación" >
+                                                        <f:fields>
+                                                            <Input id="gi_new_ubicacion" value="" /> 
+                                                        </f:fields>
+                                                    </f:FormElement>
+                                                    <f:FormElement label="Detalle" >
+                                                        <f:fields>
+                                                            <TextArea id="gi_new_detalle" value="" height="5rem"/> 
+                                                        </f:fields>
+                                                    </f:FormElement>
+                                                </f:formElements>
+                                            </f:FormContainer>
 
-                                    <f:FormContainer id="form01C3" title="¿Cuando ocurrió?" >
-                                        <f:formElements>
-                                            <f:FormElement id="lbl_form01C3_01" label="Fecha" >
-                                                <f:fields> 
-                                                        <DatePicker id="cmb_fecha_form01C3_01"  displayFormat="short" change="handleChange" value="01/10/2022" />   
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_form01C3_02" label="Hora" >
-                                                <f:fields>  
-                                                        <TimePicker id="cmb_fecha_form01C3_02" value="08:57" valueFormat="HH:mm" width="100%" 
-                                                        displayFormat="HH:mm" change="handleChange" maskMode="{= ${/maskMode/state} ? 'On' : 'Off'}"/>   
-                                                </f:fields>
-                                            </f:FormElement> 
-                                        </f:formElements>
-                                    </f:FormContainer> 
-                                </f:formContainers> 
-                            </f:Form>
+                                            <f:FormContainer id="form01C3" title="¿Cuando ocurrió?" >
+                                                <f:formElements>
+                                                    <f:FormElement id="lbl_form01C3_01" label="Fecha" >
+                                                        <f:fields> 
+                                                                <DatePicker id="cmb_fecha_form01C3_01"  displayFormat="short" change="handleChange" value="01/10/2022" />   
+                                                        </f:fields>
+                                                    </f:FormElement> 
+                                                    <f:FormElement id="lbl_form01C3_02" label="Hora" >
+                                                        <f:fields>  
+                                                                <TimePicker id="cmb_fecha_form01C3_02" value="08:57" valueFormat="HH:mm" width="100%" 
+                                                                displayFormat="HH:mm" change="handleChange" maskMode="{= ${/maskMode/state} ? 'On' : 'Off'}"/>   
+                                                        </f:fields>
+                                                    </f:FormElement> 
+                                                </f:formElements>
+                                            </f:FormContainer> 
+                                        </f:formContainers> 
+                                    </f:Form>
+                                    
+                                    <f:Form id="form02" editable="true"  width="auto" class="sapUiMediumMarginTop sapUiSmallMarginBottom"> 
+                                        <!-- <f:toolbar>
+                                            <Toolbar>
+                                                <Title text="¿Quíen fue afectado?" class="sapUiMediumMarginTop sapUiSmallMarginBottom" />
+                                                <ToolbarSpacer />
+                                                <Button text="Yo" press="onEnviartab2" />
+                                                <Button text="Seleccionar persona"  press="onEnviartab2" />
+                                                <Button text="Indicar manualmente"  press="onEnviartab2" />
+                                                <Button text="Limpiar" icon="sap-icon://delete" press="onEnviartab2"  />
+                                                <Button text="Buscar" type="Emphasized" icon="sap-icon://delete" press="onEnviartab2"/>
+                                            </Toolbar>
+                                        </f:toolbar> -->
+                                        <f:layout>
+                                            <f:ResponsiveGridLayout
+                                                labelSpanXL="4"
+                                                labelSpanL="4"
+                                                labelSpanM="12"
+                                                labelSpanS="12"
+                                                adjustLabelSpan="false"
+                                                emptySpanXL="0"
+                                                emptySpanL="0"
+                                                emptySpanM="0"
+                                                emptySpanS="0"
+                                                columnsXL="2"
+                                                columnsL="2"
+                                                columnsM="2"
+                                                singleContainerFullSize="false" />
+                                        </f:layout>
+                                        <f:formContainers >
+                                            <f:FormContainer >
+                                                <f:toolbar>
+                                                    <Toolbar>
+                                                        <Title text="¿Quíen fue afectado?"/>
+                                                        <ToolbarSpacer />
+                                                        <Button text="Buscar" icon="sap-icon://employee-lookup" press="onEnviartab2"/>
+                                                    </Toolbar>
+                                                </f:toolbar>
+                                                <f:formElements>
+                                                    <f:FormElement id="lbl_form02C1_01" label="Código de empleado:">
+                                                        <f:fields>
+                                                            <Input id="txt_form02C1_01" value="" /> 
+                                                        </f:fields>
+                                                    </f:FormElement>
+                                                    <f:FormElement id="lbl_form02C1_02" label="Nombres">
+                                                        <f:fields> 
+                                                            <Input id="txt_form02C1_02" value=""/>
+                                                        </f:fields>
+                                                    </f:FormElement>
+                                                    <f:FormElement id="lbl_form02C1_03" label="Apellidos">
+                                                        <f:fields> 
+                                                            <Input id="txt_form02C1_03" value=""/>
+                                                        </f:fields>
+                                                    </f:FormElement>  
+                                                    <f:FormElement id="lbl_form02C1_04" label="DNI">
+                                                        <f:fields> 
+                                                            <Input id="txt_form02C1_04" value=""/>
+                                                        </f:fields>
+                                                    </f:FormElement>  
+                                                    <f:FormElement id="lbl_form02C1_05" label="Área de trabajo">
+                                                        <f:fields> 
+                                                            <Input id="txt_form02C1_05" value=""/>
+                                                        </f:fields>
+                                                    </f:FormElement>  
+                                                </f:formElements>
+                                            </f:FormContainer>  
 
-                            <Title id="title01" text="¿Quíen fue afectado?" class="sapUiMediumMarginTop sapUiSmallMarginBottom" wrapping="true" />
-                            <HBox id="ToolbarIdT001" class="sapUiMediumMarginBottom sapUiResponsivePadding" width="100%" backgroundDesign="Solid"> 
-                                <Button id="btn_ToolbarIdTh002" text="Yo" press="onEnviartab2" />
-                                <Button id="btn_ToolbarIdTh003" text="Seleccionar persona"  press="onEnviartab2" />
-                                <Button id="btn_ToolbarIdTh004" text="Indicar manualmente"  press="onEnviartab2" />
-                                <Button id="btn_ToolbarIdTh005" text="Limpiar" icon="sap-icon://delete" press="onEnviartab2"  />
-                            </HBox>
-
-                            <f:Form id="form02" editable="true"  width="auto">
-                                
-                                <f:layout>
-                                    <f:ResponsiveGridLayout id="FormTab1IdbG"
-                                        labelSpanXL="4"
-                                        labelSpanL="3"
-                                        labelSpanM="4"
-                                        labelSpanS="12"
-                                        adjustLabelSpan="false"
-                                        emptySpanXL="0"
-                                        emptySpanL="4"
-                                        emptySpanM="0"
-                                        emptySpanS="0"
-                                        columnsXL="2"
-                                        columnsL="1"
-                                        columnsM="1"
-                                        singleContainerFullSize="false"  />
-                                </f:layout>
-                                <f:formContainers >
-                                    <f:FormContainer id="form02C1" >
-                                        <f:formElements>
-                                            <f:FormElement id="lbl_form02C1_01" label="Nombre">
-                                                <f:fields>
-                                                    <Input id="txt_form02C1_01" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement>
-                                            <f:FormElement id="lbl_form02C1_02" label="Organización">
-                                                <f:fields> 
-                                                    <Input id="txt_form02C1_02" value=""/>
-                                                </f:fields>
-                                            </f:FormElement>
-                                            <f:FormElement id="lbl_form02C1_03" label="Dirección">
-                                                <f:fields> 
-                                                    <Input id="txt_form02C1_03" value=""/>
-                                                </f:fields>
-                                            </f:FormElement>  
-                                            <f:FormElement id="lbl_form02C1_04" label="Correo">
-                                                <f:fields> 
-                                                    <Input id="txt_form02C1_04" value=""/>
-                                                </f:fields>
-                                            </f:FormElement>  
-                                            <f:FormElement id="lbl_form02C1_05" label="Detalle">
-                                                <f:fields> 
-                                                    <Input id="txt_form02C1_05" value=""/>
-                                                </f:fields>
-                                            </f:FormElement>  
-                                        </f:formElements>
-                                    </f:FormContainer>  
-                                </f:formContainers> 
-                            </f:Form>
-
-                            <Title id="title02" text="¿Quién advirtiío el incidente?" class="sapUiMediumMarginTop sapUiSmallMarginBottom" wrapping="true" />
-                            <HBox id="ToolbarIdT" class="sapUiMediumMarginBottom sapUiResponsivePadding" width="100%" backgroundDesign="Solid"> 
-                                <Button id="btn_ToolbarIdTh02" text="Yo" press="onEnviartab2" />
-                                <Button id="btn_ToolbarIdTh03" text="Seleccionar persona"  press="onEnviartab2" />
-                                <Button id="btn_ToolbarIdTh04" text="Indicar manualmente"  press="onEnviartab2" />
-                                <Button id="btn_ToolbarIdTh05" text="Limpiar" icon="sap-icon://delete" press="onEnviartab2"  />
-                            </HBox>
- 
-                            <Panel id="panel_tabM1_subTab1">
-                                <Button id="btn_enviar" text="Enviar" icon="sap-icon://paper-plane" press="onEnviartab2" />
-                                <Button id="btn_cancelar" text="Cancelar" icon="sap-icon://delete" press="onEnviartab2" />
+                                            <f:FormContainer>
+                                                <f:toolbar>
+                                                    <Toolbar>
+                                                        <Title text="¿Quién advirtiío el incidente?"/>
+                                                        <ToolbarSpacer />
+                                                        <Button text="Buscar" icon="sap-icon://employee-lookup" press="onEnviartab2"/>
+                                                    </Toolbar>
+                                                </f:toolbar>
+                                                <f:formElements>
+                                                    <f:FormElement label="Código de empleado:">
+                                                        <f:fields>
+                                                            <Input value="" /> 
+                                                        </f:fields>
+                                                    </f:FormElement>
+                                                    <f:FormElement label="Nombres">
+                                                        <f:fields> 
+                                                            <Input value=""/>
+                                                        </f:fields>
+                                                    </f:FormElement>
+                                                    <f:FormElement label="Apellidos">
+                                                        <f:fields> 
+                                                            <Input value=""/>
+                                                        </f:fields>
+                                                    </f:FormElement>  
+                                                    <f:FormElement label="DNI">
+                                                        <f:fields> 
+                                                            <Input value=""/>
+                                                        </f:fields>
+                                                    </f:FormElement>  
+                                                    <f:FormElement label="Área de trabajo">
+                                                        <f:fields> 
+                                                            <Input value=""/>
+                                                        </f:fields>
+                                                    </f:FormElement>  
+                                                    <f:FormElement label="Detalle">
+                                                        <f:fields> 
+                                                            <Input value=""/>
+                                                        </f:fields>
+                                                    </f:FormElement>  
+                                                </f:formElements>
+                                            </f:FormContainer>  
+                                        </f:formContainers> 
+                                    </f:Form>   
+                                </content> 
                             </Panel>
                         </IconTabFilter>
 
                         <IconTabFilter icon="sap-icon://course-book" text="Ver incidentes"> 
+                            <VBox class="sapUiSmallMargin">
+                                <fb:FilterBar reset="onReset" search="presBuscarPSemanal" showRestoreButton="true">
+                                    <fb:filterGroupItems>  
+                                        <fb:FilterGroupItem groupName="G1" name="A1" groupTitle="Group1"  label="N° Incidente" visibleInFilterBar="true" >
+                                            <fb:control>
+                                                <Input value="" editable="false"/>
+                                            </fb:control>
+                                        </fb:FilterGroupItem> 
+                                        <fb:FilterGroupItem groupName="G1" name="A2" groupTitle="Group1"  label="Código afectado" visibleInFilterBar="true">
+                                            <fb:control>
+                                                <Input value="" editable="false"/>
+                                            </fb:control>
+                                        </fb:FilterGroupItem> 
+                                        <fb:FilterGroupItem groupName="G1" name="A3" groupTitle="Group1"  label="Fecha de incidente" visibleInFilterBar="true" >
+                                            <fb:control>
+                                                <Input value="" editable="false"/>
+                                            </fb:control>
+                                        </fb:FilterGroupItem> 
+                                        <fb:FilterGroupItem groupName="G1" name="A4" groupTitle="Group1"  label="Status" visibleInFilterBar="true" >
+                                            <fb:control>
+                                                <Input value="" editable="false"/>
+                                            </fb:control>
+                                        </fb:FilterGroupItem>
+                                    </fb:filterGroupItems>   
+                                </fb:FilterBar> 
+
+                                <tab:Table  cellClick="onSelectTbIncidente" rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="8" ariaLabelledBy="title">
+                                    <!-- <tab:extension>
+                                        <OverflowToolbar style="Clear">
+                                            <Title id="title" text="Detalle de los Movimientos"/>
+                                            <SearchField width="40%" class="sapUiSmallMargin" /> 
+                                            <Button icon="sap-icon://save" text="Grabar programacion"  tooltip="Grabar programacion" press="presAgregar"/> 
+                                            <Button icon="sap-icon://appointment" text="Crear Prog. Semanal"  tooltip="Crear Prog. Semanal" press="presProgSemanal"/> 
+                                        </OverflowToolbar>
+                                    </tab:extension> -->
+                                    <tab:columns>
+                                        <tab:Column >
+                                            <Label textAlign="Center" wrapping ="true"  text="N° Inspección" />
+                                            <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                        </tab:Column>
+                                        <tab:Column>
+                                            <Label textAlign="Center" wrapping ="true"  text="Titulo" />
+                                            <tab:template> <Text text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
+                                        </tab:Column>
+                                        <tab:Column>
+                                            <Label textAlign="Center" wrapping ="true"  text="Fecha de incidente" />
+                                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                                        </tab:Column>
+                                        <tab:Column>
+                                            <Label textAlign="Center" wrapping ="true"  text="Afectado" />
+                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                        </tab:Column>
+                                        <tab:Column>
+                                            <Label textAlign="Center" wrapping ="true"  text="Status" />
+                                            <tab:template> <Text text="{myParam>quibre}" wrapping="false" /> </tab:template>
+                                        </tab:Column>              
+                                    </tab:columns>
+                                </tab:Table> 
+                            </VBox>
                         </IconTabFilter>
 
                         <IconTabFilter icon="sap-icon://course-program" text="Acciones correctivas"> 
@@ -385,10 +491,7 @@
                         </IconTabFilter>
                         
                       </items>
-                    </IconTabBar>    
-
-
-                    
+                    </IconTabBar>     
                 </IconTabFilter>
                 <IconTabFilter id="tabM3" text="Registro de Accidentes de Trabajo" key="itab3" >
                     <items>
@@ -1495,6 +1598,314 @@
                         </IconTabFilter>
 
                         <IconTabFilter icon="sap-icon://course-book" text="Reporte de inspecciones"> 
+                            <items>
+                                <IconTabFilter icon="sap-icon://course-book" text="Reporte de inspección"> 
+                                    <tab:Table rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                                        <tab:extension>
+                                            <OverflowToolbar >
+                                                <!-- <Title text="Asistentes"/> -->
+                                                <ToolbarSpacer />
+                                                <Button text="Descargar" icon="sap-icon://download" type="Emphasized" press="descarga" />   
+                                            </OverflowToolbar>
+                                        </tab:extension>
+                                        <tab:columns>
+                                            <tab:Column  >
+                                                <Label textAlign="Center" wrapping ="true"  text="Cod. Inspección" />
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="Área" />
+                                                <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
+                                            </tab:Column>
+                                            <tab:Column>
+                                                <Label textAlign="Center" wrapping ="true"  text="Departamento" />
+                                                <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                                            </tab:Column>
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="Jefatura a cargo" />
+                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            </tab:Column>          
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="Observación" />
+                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            </tab:Column>          
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="Fecha reporte" />
+                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            </tab:Column>          
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="Mes" />
+                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            </tab:Column>          
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="Año" />
+                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            </tab:Column>          
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="Tipo" />
+                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            </tab:Column>          
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="Categoria" />
+                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            </tab:Column>          
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="Recomendación" />
+                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            </tab:Column>          
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="Días sin atención" />
+                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            </tab:Column>          
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="Estado" />
+                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            </tab:Column>          
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="Fecha liberación" />
+                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            </tab:Column>          
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="MesLib" />
+                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            </tab:Column>          
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="AñoLib" />
+                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            </tab:Column>          
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="Origen" />
+                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            </tab:Column>          
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="Registrado por" />
+                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            </tab:Column>          
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="Fecha registro" />
+                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            </tab:Column>          
+                                        </tab:columns>
+                                    </tab:Table>  
+                                </IconTabFilter>
+                                <IconTabFilter icon="sap-icon://course-book" text="Reporte ICR"> 
+                                    <tab:Table rows="{  path: 'myParam>/dataTab' }" selectionMode="None"  visibleRowCount="5" ariaLabelledBy="title">
+                                        <tab:extension>
+                                            <OverflowToolbar >
+                                                <!-- <Title text="Asistentes"/> -->
+                                                <ToolbarSpacer />
+                                                <Button text="Descargar" icon="sap-icon://download" type="Emphasized" press="descarga" />   
+                                            </OverflowToolbar>
+                                        </tab:extension>
+                                        <tab:columns>
+                                            <tab:Column>
+                                                <!-- <tab:multiLabels > 
+                                                    <Label text="" textAlign="Center" wrapping ="true"  /> 
+                                                    <Label text="" textAlign="Center" wrapping ="true"  />  -->
+                                                    <Label text="Gerencia" textAlign="Center" wrapping ="true"  /> 
+                                                <!-- </tab:multiLabels> -->
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>           
+                                            <tab:Column headerSpan="23,3" hAlign="Center" >
+                                                <tab:multiLabels>
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="Condiciones reportadas meses anteriores" textAlign="Center" wrapping ="true"  /> 
+                                                    <Label text="A" textAlign="Center" wrapping ="true"  /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>     
+                                            <tab:Column hAlign="Center" >
+                                                <tab:multiLabels>
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="Condiciones reportadas meses anteriores" textAlign="Center" />
+                                                    <Label text="B" textAlign="Center" wrapping ="true"  /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>     
+                                            <tab:Column hAlign="Center" >
+                                                <tab:multiLabels>
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="Condiciones reportadas meses anteriores" textAlign="Center" />
+                                                    <Label text="C" textAlign="Center" wrapping ="true"  /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>     
+
+                                            <tab:Column headerSpan="23,3" hAlign="Center">
+                                                <tab:multiLabels >
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="Condiciones corregidas meses anteriores" textAlign="Center" wrapping ="true" /> 
+                                                    <Label text="A" textAlign="Center" wrapping ="true"  /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>           
+                                            <tab:Column hAlign="Center">
+                                                <tab:multiLabels >
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="Condiciones corregidas meses anteriores" textAlign="Center" wrapping ="true" /> 
+                                                    <Label text="B" textAlign="Center" wrapping ="true"  /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>   
+                                            <tab:Column hAlign="Center">
+                                                <tab:multiLabels >
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="Condiciones corregidas meses anteriores" textAlign="Center" wrapping ="true" /> 
+                                                    <Label text="C" textAlign="Center" wrapping ="true"  /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>   
+
+                                            <tab:Column headerSpan="23,3" hAlign="Center" >
+                                                <tab:multiLabels >
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="Condiciones reportadas en el mes" textAlign="Center" wrapping ="true" /> 
+                                                    <Label text="A" textAlign="Center" wrapping ="true"  /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>           
+                                            <tab:Column hAlign="Center" >
+                                                <tab:multiLabels >
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="Condiciones reportadas en el mes" textAlign="Center" wrapping ="true" /> 
+                                                    <Label text="B" textAlign="Center" wrapping ="true"  /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>    
+                                            <tab:Column hAlign="Center" >
+                                                <tab:multiLabels >
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="Condiciones reportadas en el mes" textAlign="Center" wrapping ="true" /> 
+                                                    <Label text="C" textAlign="Center" wrapping ="true"  /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>    
+
+                                            <tab:Column headerSpan="23,6,2" hAlign="Center" >
+                                                <tab:multiLabels >
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="Condiciones corregidas en el mes" textAlign="Center" wrapping ="true" /> 
+                                                    <Label text="A" textAlign="Center" wrapping ="true"  /> 
+                                                    <Label text="Mes" textAlign="Center" wrapping ="true"  /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>   
+                                            <tab:Column hAlign="Center" >
+                                                <tab:multiLabels >
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="Condiciones corregidas en el mes" textAlign="Center" wrapping ="true" /> 
+                                                    <Label text="A" textAlign="Center" wrapping ="true"  /> 
+                                                    <Label text="Meses anteriores" textAlign="Center" wrapping ="true"  /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>   
+
+                                            <tab:Column headerSpan="23,6,2" hAlign="Center" >
+                                                <tab:multiLabels >
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="Condiciones corregidas en el mes" textAlign="Center" wrapping ="true" /> 
+                                                    <Label text="B" textAlign="Center" wrapping ="true"  /> 
+                                                    <Label text="Mes" textAlign="Center" wrapping ="true"  /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>   
+                                            <tab:Column hAlign="Center" >
+                                                <tab:multiLabels >
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="Condiciones corregidas en el mes" textAlign="Center" wrapping ="true" /> 
+                                                    <Label text="B" textAlign="Center" wrapping ="true"  /> 
+                                                    <Label text="Meses anteriores" textAlign="Center" wrapping ="true"  /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>   
+                                            <tab:Column headerSpan="23,6,2" hAlign="Center" >
+                                                <tab:multiLabels >
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="Condiciones corregidas en el mes" textAlign="Center" wrapping ="true" /> 
+                                                    <Label text="C" textAlign="Center" wrapping ="true"  /> 
+                                                    <Label text="Mes" textAlign="Center" wrapping ="true"  /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>   
+                                            <tab:Column hAlign="Center" >
+                                                <tab:multiLabels >
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="Condiciones corregidas en el mes" textAlign="Center" wrapping ="true" /> 
+                                                    <Label text="C" textAlign="Center" wrapping ="true"  /> 
+                                                    <Label text="Meses anteriores" textAlign="Center" wrapping ="true"  /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>   
+
+                                            <tab:Column headerSpan="23,4" hAlign="Center" >
+                                                <tab:multiLabels >
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="% ICR Mes" textAlign="Center" wrapping ="true" /> 
+                                                    <Label text="A" textAlign="Center" wrapping ="true" /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>           
+                                            <tab:Column hAlign="Center" >
+                                                <tab:multiLabels >
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="% ICR Mes" textAlign="Center" wrapping ="true" /> 
+                                                    <Label text="B" textAlign="Center" wrapping ="true" /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>      
+                                            <tab:Column hAlign="Center" >
+                                                <tab:multiLabels >
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="% ICR Mes" textAlign="Center" wrapping ="true" /> 
+                                                    <Label text="C" textAlign="Center" wrapping ="true" /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>      
+                                            <tab:Column hAlign="Center" >
+                                                <tab:multiLabels >
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="% ICR Mes" textAlign="Center" wrapping ="true" /> 
+                                                    <Label text="Total" textAlign="Center" wrapping ="true" /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>      
+
+                                            <tab:Column headerSpan="23,4" hAlign="Center" >
+                                                <tab:multiLabels >
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="% ICR Acumulado" textAlign="Center" wrapping ="true" /> 
+                                                    <Label text="A" textAlign="Center" wrapping ="true" /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>           
+                                            <tab:Column hAlign="Center" >
+                                                <tab:multiLabels >
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="% ICR Acumulado" textAlign="Center" wrapping ="true" /> 
+                                                    <Label text="B" textAlign="Center" wrapping ="true" /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>           
+                                            <tab:Column hAlign="Center" >
+                                                <tab:multiLabels >
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="% ICR Acumulado" textAlign="Center" wrapping ="true" /> 
+                                                    <Label text="C" textAlign="Center" wrapping ="true" /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>           
+                                            <tab:Column hAlign="Center" >
+                                                <tab:multiLabels >
+                                                    <Label text="Mes" textAlign="Center" />
+                                                    <Label text="% ICR Acumulado" textAlign="Center" wrapping ="true" /> 
+                                                    <Label text="Total" textAlign="Center" wrapping ="true" /> 
+                                                </tab:multiLabels>
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>           
+                                        </tab:columns>
+                                    </tab:Table>  
+                                </IconTabFilter>
+                            </items>
                         </IconTabFilter>
                     </items>
                     </IconTabBar>    
@@ -1504,7 +1915,6 @@
                         <items>
                             <IconTabFilter text="Gestión de contratista" >
                                 <VBox class="sapUiSmallMargin">
-
                                     <f:Form editable="true">  
                                         <f:toolbar>
                                             <Toolbar> 
@@ -1552,48 +1962,47 @@
                                             </f:FormContainer>  
                                         </f:formContainers>
                                     </f:Form> 
-
-                                <tab:Table  cellClick="onSelectTrabajador" rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
-                                    <tab:extension>
-                                        <OverflowToolbar >
-                                            <Title text="Personal"/>
-                                            <ToolbarSpacer />
-                                            <Button text="Añadir" icon="sap-icon://add" type="Emphasized" press="addTrabajador" />  
-                                            <Button text="Dar de baja" icon="sap-icon://pull-down" type="Emphasized" press="addTrabajador" />  
-                                        </OverflowToolbar>
-                                    </tab:extension>
-                                    <tab:columns>
-                                        <tab:Column  >
-                                            <Label textAlign="Center" wrapping ="true"  text="Cod. trabajador" />
-                                            <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
-                                        </tab:Column>
-                                        <tab:Column >
-                                            <Label textAlign="Center" wrapping ="true"  text="Apellidos" />
-                                            <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
-                                        </tab:Column>
-                                        <tab:Column>
-                                            <Label textAlign="Center" wrapping ="true"  text="Nombres" />
-                                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
-                                        </tab:Column>
-                                        <tab:Column >
-                                            <Label textAlign="Center" wrapping ="true"  text="Área" />
-                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
-                                        </tab:Column>
-                                        <tab:Column >
-                                            <Label textAlign="Center" wrapping ="true"  text="Puesto de trabajo" />
-                                            <tab:template> <Text text="{myParam>campo}" wrapping="false" /> </tab:template>
-                                        </tab:Column> 
-                                        <tab:Column>
-                                            <Label textAlign="Center" wrapping ="true"  text="DNI" />
-                                            <tab:template> <Text text="{myParam>tipocampo}" wrapping="false" /> </tab:template>
-                                        </tab:Column>
-                                        <tab:Column >
-                                            <Label textAlign="Center" wrapping ="true"  text="Activo" />
-                                            <tab:template> <Text  text="{myParam>quibre}" wrapping="false" /> </tab:template>
-                                        </tab:Column>              
-                                    </tab:columns>
-                                </tab:Table>  
-                            </VBox>
+                                    <tab:Table  cellClick="onSelectTrabajador" rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                                        <tab:extension>
+                                            <OverflowToolbar >
+                                                <Title text="Personal"/>
+                                                <ToolbarSpacer />
+                                                <Button text="Añadir" icon="sap-icon://add" type="Emphasized" press="addTrabajador" />  
+                                                <Button text="Dar de baja" icon="sap-icon://pull-down" type="Emphasized" press="addTrabajador" />  
+                                            </OverflowToolbar>
+                                        </tab:extension>
+                                        <tab:columns>
+                                            <tab:Column  >
+                                                <Label textAlign="Center" wrapping ="true"  text="Cod. trabajador" />
+                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            </tab:Column>
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="Apellidos" />
+                                                <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
+                                            </tab:Column>
+                                            <tab:Column>
+                                                <Label textAlign="Center" wrapping ="true"  text="Nombres" />
+                                                <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                                            </tab:Column>
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="Área" />
+                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            </tab:Column>
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="Puesto de trabajo" />
+                                                <tab:template> <Text text="{myParam>campo}" wrapping="false" /> </tab:template>
+                                            </tab:Column> 
+                                            <tab:Column>
+                                                <Label textAlign="Center" wrapping ="true"  text="DNI" />
+                                                <tab:template> <Text text="{myParam>tipocampo}" wrapping="false" /> </tab:template>
+                                            </tab:Column>
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="Activo" />
+                                                <tab:template> <Text  text="{myParam>quibre}" wrapping="false" /> </tab:template>
+                                            </tab:Column>              
+                                        </tab:columns>
+                                    </tab:Table>  
+                                </VBox>
                             </IconTabFilter> 
                             <IconTabFilter text="Registro de inducciones" >
                                 <Panel expandable="true" expanded="true" visible="true" headerText="Añadir inducción" width="auto" class="sapUiResponsiveMargin">
@@ -1969,49 +2378,73 @@
                                 </tab:Table>  
                             </IconTabFilter> 
                             <IconTabFilter text="Reporte" >
-                                <tab:Table rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
-                                    <tab:extension>
-                                        <OverflowToolbar >
-                                            <Title text="Asistentes"/>
+                                <tab:Table rows="{  path: 'myParam>/dataTab' }" selectionMode="None"  visibleRowCount="5" ariaLabelledBy="title">
+                                    <tab:extension >
+                                        <OverflowToolbar  >
+                                            <!-- <Title text="Asistentes"/> -->
                                             <ToolbarSpacer />
                                             <Button text="Descargar" icon="sap-icon://download" type="Emphasized" press="descarga" />   
                                         </OverflowToolbar>
                                     </tab:extension>
                                     <tab:columns>
                                         <tab:Column  >
-                                            <Label textAlign="Center" wrapping ="true"  text="Contratista" />
+                                            <Label textAlign="Center" wrapping ="true"  text="Empresa" />
                                             <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column >
-                                            <Label textAlign="Center" wrapping ="true"  text="Sociedad" />
+                                            <Label textAlign="Center" wrapping ="true"  text="Apellidos" />
                                             <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column>
-                                            <Label textAlign="Center" wrapping ="true"  text="Código de trabajador" />
+                                            <Label textAlign="Center" wrapping ="true"  text="Nombres" />
                                             <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column >
-                                            <Label textAlign="Center" wrapping ="true"  text="Apellidos" />
+                                            <Label textAlign="Center" wrapping ="true"  text="DNI" />
                                             <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
-                                            <Label textAlign="Center" wrapping ="true"  text="Nombres" />
+                                            <Label textAlign="Center" wrapping ="true"  text="Nota de evaluación" />
                                             <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
-                                            <Label textAlign="Center" wrapping ="true"  text="Área" />
+                                            <Label textAlign="Center" wrapping ="true"  text="Fecha de inducción general" />
                                             <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
-                                            <Label textAlign="Center" wrapping ="true"  text="Puesto de trabajo" />
+                                            <Label textAlign="Center" wrapping ="true"  text="Fecha vencimiento indución general" />
                                             <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
-                                            <Label textAlign="Center" wrapping ="true"  text="Nota" />
+                                            <Label textAlign="Center" wrapping ="true"  text="Fecha indución especifica" />
                                             <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
-                                            <Label textAlign="Center" wrapping ="true"  text="Anexo" />
+                                            <Label textAlign="Center" wrapping ="true"  text="Fecha vencimiento indución especifica" />
+                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                        </tab:Column>          
+                                        <tab:Column >
+                                            <Label textAlign="Center" wrapping ="true"  text="Examen médico" />
+                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                        </tab:Column>          
+                                        <tab:Column >
+                                            <Label textAlign="Center" wrapping ="true"  text="Aptitud" />
+                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                        </tab:Column>          
+                                        <tab:Column >
+                                            <Label textAlign="Center" wrapping ="true"  text="Vigencia de examen médico ocupacional" />
+                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                        </tab:Column>          
+                                        <tab:Column >
+                                            <Label textAlign="Center" wrapping ="true"  text="Requiere evaluación médica" />
+                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                        </tab:Column>          
+                                        <tab:Column >
+                                            <Label textAlign="Center" wrapping ="true"  text="SCTR" />
+                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                        </tab:Column>          
+                                        <tab:Column >
+                                            <Label textAlign="Center" wrapping ="true"  text="Fecha de vencimiento del SCTR" />
                                             <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                     </tab:columns>
@@ -2021,7 +2454,122 @@
                     </IconTabBar>
                 </IconTabFilter>
                 <IconTabFilter text="Gestión de EEPs" key="itab5Id">
-                    <Text text="Info content goes here ..." />
+                    <IconTabBar headerMode="Inline"  expanded="{device>/isNoPhone}">
+                        <items>
+                            <IconTabFilter text="Requerimientos EPPs" >
+                                <Panel expandable="true" expanded="true" visible="true" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
+                                    <headerToolbar>
+                                        <OverflowToolbar style="Clear">
+                                            <Title text="Nuevo requerimiento EPP" />
+                                            <ToolbarSpacer />
+                                            <Button icon="sap-icon://save" text="Guardar" type="Emphasized" /> 
+                                        </OverflowToolbar>
+                                    </headerToolbar>
+                                    <content>
+                                        <f:Form editable="true"> 
+                                            <f:layout>
+                                                <f:ResponsiveGridLayout
+                                                    labelSpanXL="4"
+                                                    labelSpanL="3"
+                                                    labelSpanM="4"
+                                                    labelSpanS="12"
+                                                    adjustLabelSpan="false"
+                                                    emptySpanXL="0"
+                                                    emptySpanL="4"
+                                                    emptySpanM="0"
+                                                    emptySpanS="0"
+                                                    columnsXL="2"
+                                                    columnsL="1"
+                                                    columnsM="1"
+                                                    singleContainerFullSize="false" />
+                                            </f:layout>
+                                            <f:formContainers>
+                                                <f:FormContainer > 
+                                                    <f:formElements>
+                                                        <f:FormElement label="Contratista">
+                                                            <f:fields> <Input value=""/> </f:fields>
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Sociedad">
+                                                            <f:fields> <Input value=""/> </f:fields>
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Código de trabajador">
+                                                            <f:fields> <Input value=""/> </f:fields>
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Apellidos">
+                                                            <f:fields> <Input value=""/> </f:fields>
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Nombres">
+                                                            <f:fields> <Input value=""/> </f:fields>
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Área">
+                                                            <f:fields> <Input value=""/> </f:fields>
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Puesto de trabajo">
+                                                            <f:fields> <Input value=""/> </f:fields>
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Nota">
+                                                            <f:fields> <Input value=""/> </f:fields>
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Anexo">
+                                                            <f:fields> <Input value=""/> </f:fields>
+                                                        </f:FormElement> 
+                                                    </f:formElements>
+                                                </f:FormContainer> 
+                                            </f:formContainers>
+                                        </f:Form> 
+                                    </content>
+                                </Panel>
+                                <tab:Table rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                                    <tab:extension>
+                                        <OverflowToolbar >
+                                            <!-- <Title text="Asistentes"/> -->
+                                            <ToolbarSpacer />
+                                            <Button text="Nuevo" icon="sap-icon://add-document" type="Emphasized" press="addInduccion" />  
+                                            <Button text="Visualizar" icon="sap-icon://detail-view" press="deleteInduccion" />  
+                                            <Button text="Entrega" icon="sap-icon://paper-plane" press="deleteInduccion" />  
+                                            <Button text="Devolución" icon="sap-icon://synchronize" press="deleteInduccion" />  
+                                            <Button text="Liberar" icon="sap-icon://outbox" press="deleteInduccion" />  
+                                            <Button text="Eliminar" icon="sap-icon://delete" press="deleteInduccion" />  
+                                        </OverflowToolbar>
+                                    </tab:extension>
+                                    <tab:columns>
+                                        <tab:Column  >
+                                            <Label textAlign="Center" wrapping ="true"  text="N° requerimiento" />
+                                            <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                        </tab:Column>
+                                        <tab:Column >
+                                            <Label textAlign="Center" wrapping ="true"  text="Trabajador" />
+                                            <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
+                                        </tab:Column>
+                                        <tab:Column>
+                                            <Label textAlign="Center" wrapping ="true"  text="DNI" />
+                                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                                        </tab:Column>
+                                        <tab:Column >
+                                            <Label textAlign="Center" wrapping ="true"  text="Cargo" />
+                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                        </tab:Column>          
+                                        <tab:Column >
+                                            <Label textAlign="Center" wrapping ="true"  text="Área de trabajo" />
+                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                        </tab:Column>          
+                                        <tab:Column >
+                                            <Label textAlign="Center" wrapping ="true"  text="Fecha de requerimiento" />
+                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                        </tab:Column>          
+                                        <tab:Column >
+                                            <Label textAlign="Center" wrapping ="true"  text="Status" />
+                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                        </tab:Column>      
+                                    </tab:columns>
+                                </tab:Table> 
+                            </IconTabFilter> 
+                            <IconTabFilter text="Reportes de requerimientos EPPs" >
+                            </IconTabFilter> 
+                            <IconTabFilter text="Kárdex de materiales EPPs" >
+                            </IconTabFilter> 
+                        </items>
+                    </IconTabBar>
                 </IconTabFilter>
             </items>
         </IconTabBar>

@@ -1,0 +1,342 @@
+<mvc:View controllerName="appss.aplicationss.controller.vIncidente" 
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:tab="sap.ui.table"
+    xmlns:u="sap.ui.unified"
+    xmlns="sap.m">
+    <Page title="Incidente 0001" showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
+		<headerContent>
+			<Button text="Guardar" icon="sap-icon://paper-plane" type="Emphasized" press="onEnviartab2" />
+            <Button text="Enviar notificación" icon="sap-icon://notification-2" press="onEnviartab2" /> 
+            <Button text="Cancelar" icon="sap-icon://delete" press="onEnviartab2" /> 
+		</headerContent> 
+        <content>
+            <f:Form id="form01" editable="true"  width="auto"> 
+                <f:layout>
+                    <f:ResponsiveGridLayout id="FormTab1IdaG"
+                        labelSpanXL="4"
+                        labelSpanL="4"
+                        labelSpanM="12"
+                        labelSpanS="12"
+                        adjustLabelSpan="false"
+                        emptySpanXL="0"
+                        emptySpanL="0"
+                        emptySpanM="0"
+                        emptySpanS="0"
+                        columnsXL="2"
+                        columnsL="2"
+                        columnsM="2"
+                        singleContainerFullSize="false"  />
+                </f:layout>
+                <f:formContainers >
+                    <f:FormContainer id="form01C1" title="Qué pasó y qué acciones inmediatas se han realizado?">
+                        <f:formElements>
+                            <f:FormElement id="lbl_form01C1_01" label="Titulo">
+                                <f:fields>
+                                    <Input id="txt_form01C1_01" value="" enabled="false"/> 
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement id="lbl_form01C1_02" label="Descripción del evento">
+                                <f:fields> 
+                                    <TextArea id="txt_form01C1_02" value="" height="5rem" width="100%"/>
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement id="lbl_form01C1_03" label="Acciones inmediatas">
+                                <f:fields> 
+                                    <TextArea id="txt_form01C1_03" value="" height="5rem" width="100%"/>
+                                </f:fields>
+                            </f:FormElement>  
+                        </f:formElements>
+                    </f:FormContainer> 
+                    <f:FormContainer id="form01C2" title="¿Donde ocurrió?" >
+                        <f:formElements>
+                            <f:FormElement id="lbl_form01C2_01" label="Sociedad" >
+                                <f:fields>
+                                    <ComboBox id="cmb_form01C2_01" class="sapUiSmallMarginBottom" enabled="true" selectedKey="1001">
+                                        <core:Item key="1001" text="1001" />
+                                    </ComboBox>    
+                                
+                                </f:fields>
+                            </f:FormElement> 
+                            <f:FormElement id="lbl_form01C2_02" label="Ubicación" >
+                                <f:fields>
+                                    <Input id="txt_form01C2_02" value="" /> 
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement id="lbl_form01C2_03" label="Detalle" >
+                                <f:fields>
+                                    <TextArea id="txt_form01C2_03" value="" height="5rem" width="100%"/> 
+                                </f:fields>
+                            </f:FormElement>
+                        </f:formElements>
+                    </f:FormContainer>
+                    <f:FormContainer >
+                        <f:formElements>
+                            <f:FormElement label="Investigación preliminar del accidente" >
+                                <f:fields>
+                                    <TextArea  value="" height="5rem" width="100%"/>  
+                                </f:fields>
+                            </f:FormElement> 
+                        </f:formElements>
+                    </f:FormContainer>
+
+                    <f:FormContainer id="form01C3" title="¿Cuando ocurrió?" >
+                        <f:formElements>
+                            <f:FormElement id="lbl_form01C3_01" label="Fecha" >
+                                <f:fields> 
+                                        <DatePicker id="cmb_fecha_form01C3_01"  displayFormat="short" change="handleChange" value="01/10/2022" />   
+                                </f:fields>
+                            </f:FormElement> 
+                            <f:FormElement id="lbl_form01C3_02" label="Hora" >
+                                <f:fields>  
+                                        <TimePicker id="cmb_fecha_form01C3_02" value="08:57" valueFormat="HH:mm" width="100%" 
+                                        displayFormat="HH:mm" change="handleChange" maskMode="{= ${/maskMode/state} ? 'On' : 'Off'}"/>   
+                                </f:fields>
+                            </f:FormElement> 
+                        </f:formElements>
+                    </f:FormContainer> 
+                </f:formContainers> 
+            </f:Form>
+            
+            <f:Form id="form02" editable="true"  width="auto" class="sapUiMediumMarginTop sapUiSmallMarginBottom"> 
+                <!-- <f:toolbar>
+                    <Toolbar>
+                        <Title text="¿Quíen fue afectado?" class="sapUiMediumMarginTop sapUiSmallMarginBottom" />
+                        <ToolbarSpacer />
+                        <Button text="Yo" press="onEnviartab2" />
+                        <Button text="Seleccionar persona"  press="onEnviartab2" />
+                        <Button text="Indicar manualmente"  press="onEnviartab2" />
+                        <Button text="Limpiar" icon="sap-icon://delete" press="onEnviartab2"  />
+                        <Button text="Buscar" type="Emphasized" icon="sap-icon://delete" press="onEnviartab2"/>
+                    </Toolbar>
+                </f:toolbar> -->
+                <f:layout>
+                    <f:ResponsiveGridLayout
+                        labelSpanXL="4"
+                        labelSpanL="4"
+                        labelSpanM="12"
+                        labelSpanS="12"
+                        adjustLabelSpan="false"
+                        emptySpanXL="0"
+                        emptySpanL="0"
+                        emptySpanM="0"
+                        emptySpanS="0"
+                        columnsXL="2"
+                        columnsL="2"
+                        columnsM="2"
+                        singleContainerFullSize="false" />
+                </f:layout>
+                <f:formContainers >
+                    <f:FormContainer >
+                        <f:toolbar>
+                            <Toolbar>
+                                <Title text="¿Quíen fue afectado?"/>
+                                <ToolbarSpacer />
+                                <Button text="Buscar" icon="sap-icon://employee-lookup" press="onEnviartab2"/>
+                            </Toolbar>
+                        </f:toolbar>
+                        <f:formElements>
+                            <f:FormElement id="lbl_form02C1_01" label="Código de empleado:">
+                                <f:fields>
+                                    <Input id="txt_form02C1_01" value="" /> 
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement id="lbl_form02C1_02" label="Nombres">
+                                <f:fields> 
+                                    <Input id="txt_form02C1_02" value=""/>
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement id="lbl_form02C1_03" label="Apellidos">
+                                <f:fields> 
+                                    <Input id="txt_form02C1_03" value=""/>
+                                </f:fields>
+                            </f:FormElement>  
+                            <f:FormElement id="lbl_form02C1_04" label="DNI">
+                                <f:fields> 
+                                    <Input id="txt_form02C1_04" value=""/>
+                                </f:fields>
+                            </f:FormElement>  
+                            <f:FormElement id="lbl_form02C1_05" label="Área de trabajo">
+                                <f:fields> 
+                                    <Input id="txt_form02C1_05" value=""/>
+                                </f:fields>
+                            </f:FormElement>  
+                        </f:formElements>
+                    </f:FormContainer>  
+
+                    <f:FormContainer>
+                        <f:toolbar>
+                            <Toolbar>
+                                <Title text="¿Quién advirtiío el incidente?"/>
+                                <ToolbarSpacer />
+                                <Button text="Buscar" icon="sap-icon://employee-lookup" press="onEnviartab2"/>
+                            </Toolbar>
+                        </f:toolbar>
+                        <f:formElements>
+                            <f:FormElement label="Código de empleado:">
+                                <f:fields>
+                                    <Input value="" /> 
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="Nombres">
+                                <f:fields> 
+                                    <Input value=""/>
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="Apellidos">
+                                <f:fields> 
+                                    <Input value=""/>
+                                </f:fields>
+                            </f:FormElement>  
+                            <f:FormElement label="DNI">
+                                <f:fields> 
+                                    <Input value=""/>
+                                </f:fields>
+                            </f:FormElement>  
+                            <f:FormElement label="Área de trabajo">
+                                <f:fields> 
+                                    <Input value=""/>
+                                </f:fields>
+                            </f:FormElement>  
+                            <f:FormElement label="Detalle">
+                                <f:fields> 
+                                    <Input value=""/>
+                                </f:fields>
+                            </f:FormElement>  
+                        </f:formElements>
+                    </f:FormContainer>  
+                </f:formContainers> 
+            </f:Form>  
+
+            <!-- Documentos  -->
+            <Panel expandable="true" expanded="true" visible="true" headerText="Añadir Documentación" width="auto" class="sapUiResponsiveMargin">
+                <headerToolbar>
+                    <OverflowToolbar style="Clear">
+                        <Title text="Añadir Documentación" />
+                        <ToolbarSpacer />
+                        <Button icon="sap-icon://save" text="Guardar" type="Emphasized" /> 
+                    </OverflowToolbar>
+                </headerToolbar>
+                <content>
+                    <f:Form editable="true"> 
+                        <f:layout>
+                            <f:ResponsiveGridLayout
+                                labelSpanXL="4"
+                                labelSpanL="3"
+                                labelSpanM="4"
+                                labelSpanS="12"
+                                adjustLabelSpan="false"
+                                emptySpanXL="0"
+                                emptySpanL="4"
+                                emptySpanM="0"
+                                emptySpanS="0"
+                                columnsXL="2"
+                                columnsL="1"
+                                columnsM="1"
+                                singleContainerFullSize="false" />
+                        </f:layout>
+                        <f:formContainers>
+                            <f:FormContainer > 
+                                <f:formElements>
+                                    <f:FormElement label="Nombre del documento">
+                                        <f:fields> <Input value=""/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Fecha ">
+                                        <f:fields> <DatePicker placeholder="Fecha" valueFormat="yyyyMMdd" displayFormat="dd/MM/yyyy"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Documento">
+                                        <f:fields> <Input value=""/> </f:fields>
+                                    </f:FormElement>  
+                                </f:formElements>
+                            </f:FormContainer> 
+                        </f:formContainers>
+                    </f:Form> 
+                </content>
+            </Panel>
+            <tab:Table rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                <tab:extension>
+                    <OverflowToolbar >
+                        <Title text="Documentos"/>
+                        <ToolbarSpacer />
+                        <Button text="Añadir" icon="sap-icon://add" type="Emphasized" press="addInduccion" />  
+                        <Button text="Eliminar" icon="sap-icon://delete" press="deleteInduccion" />  
+                    </OverflowToolbar>
+                </tab:extension>
+                <tab:columns>
+                    <tab:Column  >
+                        <Label textAlign="Center" wrapping ="true"  text="Nombre del documento" />
+                        <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                    </tab:Column>
+                    <tab:Column >
+                        <Label textAlign="Center" wrapping ="true"  text="Fecha" />
+                        <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
+                    </tab:Column>
+                    <tab:Column>
+                        <Label textAlign="Center" wrapping ="true"  text="Documento" />
+                        <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                    </tab:Column>     
+                </tab:columns>
+            </tab:Table>   
+
+            <!-- Anexos de Investigación de accidente -->
+            <f:Form editable="true"  width="auto" class="sapUiMediumMarginTop sapUiSmallMarginBottom"> 
+                <f:toolbar>
+                    <Toolbar>
+                        <Title text="Anexos de investigación de accidente" class="sapUiMediumMarginTop sapUiSmallMarginBottom" />
+                        <!-- <ToolbarSpacer /> 
+                        <Button text="Guardar" type="Emphasized" icon="sap-icon://save" press="onEnviartab2"/> -->
+                    </Toolbar>
+                </f:toolbar>
+                <f:layout>
+                    <f:ResponsiveGridLayout
+                        labelSpanXL="4"
+                        labelSpanL="4"
+                        labelSpanM="12"
+                        labelSpanS="12"
+                        adjustLabelSpan="false"
+                        emptySpanXL="0"
+                        emptySpanL="0"
+                        emptySpanM="0"
+                        emptySpanS="0"
+                        columnsXL="2"
+                        columnsL="2"
+                        columnsM="2"
+                        singleContainerFullSize="false" />
+                </f:layout>
+                <f:formContainers >
+                    <f:FormContainer > 
+                        <f:formElements>
+                            <f:FormElement label="Investigación de accidentes">
+                                <f:fields>
+                                    <u:FileUploader name="myFileUpload" uploadUrl="upload/" tooltip="Subir archivo" uploadComplete="handleUploadComplete"/>
+                                    <Button text="Subir" type="Emphasized" icon="sap-icon://upload" press="onEnviartab2" width="6rem"/> 
+                                </f:fields>
+                            </f:FormElement>  
+                            <f:FormElement label="Subido">
+                                <f:fields>
+                                    <Link text="doc01.pdf" press="handleLinkPress" /> 
+                                </f:fields>
+                            </f:FormElement>  
+                        </f:formElements>
+                    </f:FormContainer>  
+                    <f:FormContainer > 
+                        <f:formElements> 
+                            <f:FormElement label="Informe de investigación">
+                                <f:fields>
+                                    <u:FileUploader name="myFileUpload" uploadUrl="upload/" tooltip="Subir archivo" uploadComplete="handleUploadComplete"/>
+                                    <Button text="Subir" type="Emphasized" icon="sap-icon://upload" press="onEnviartab2" width="6rem"/> 
+                                </f:fields>
+                            </f:FormElement> 
+                            <f:FormElement label="Subido">
+                                <f:fields>
+                                    <Link text="doc02.pdf" press="handleLinkPress" /> 
+                                </f:fields>
+                            </f:FormElement>  
+                        </f:formElements>
+                    </f:FormContainer>  
+                </f:formContainers> 
+            </f:Form>  
+        </content> 
+    </Page>
+</mvc:View>
