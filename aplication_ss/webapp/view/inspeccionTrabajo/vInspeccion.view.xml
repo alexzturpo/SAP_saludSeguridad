@@ -6,11 +6,11 @@
     xmlns="sap.m">
     <Page title="Editar Inspeccion" showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
 		<headerContent>
-			<Button icon="sap-icon://save" text="Guardar" type="Emphasized" />
+			<Button icon="sap-icon://save" text="Guardar" press="updateInspeccion" type="Emphasized" />
 		</headerContent> 
 		<content>
             <VBox class="sapUiSmallMargin">
-                <f:Form editable="true" >
+                <f:Form editable="true" binding="{path : 'myParam>/tempInspecciones'}" >
                     <!-- <f:toolbar>
                         <Toolbar> 
                             <ToolbarSpacer />
@@ -38,41 +38,41 @@
                             <f:formElements>
                                 <f:FormElement label="Codigo de inspección">
                                     <f:fields>
-                                        <Input value=""/>
+                                        <Input id="gInsp_codInsp" value="{myParam>codInsp}"/>
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Gerencia">
                                     <f:fields> 
-                                        <Select forceSelection="false" items="{ path: 'myParam>/dataGerencia'}"  wrapItemsText="true">
+                                        <Select selectedKey="{myParam>gerencia}" forceSelection="false" items="{ path: 'myParam>/dataGerencia'}" id="gInsp_gerencia" wrapItemsText="true">
                                             <core:Item key="{myParam>key}" text="{myParam>name}"  />
                                         </Select>
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Área">
                                     <f:fields>
-                                        <Input value="" /> 
+                                        <Input value="{myParam>area}" id="gInsp_area"/> 
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Departamento">
                                     <f:fields>
-                                        <Input value="" /> 
+                                        <Input value="{myParam>departamento}" id="gInsp_departamento"/> 
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Fecha programada">
                                     <f:fields>
-                                        <Input value="" /> 
+                                        <Input value="{myParam>fechaP}" id="gInsp_programada" /> 
                                     </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="Categoría">
                                     <f:fields> 
-                                        <Select forceSelection="false" items="{ path: 'myParam>/dataCategoria'}" wrapItemsText="true" showSecondaryValues= "true"> 
+                                        <Select forceSelection="false" items="{ path: 'myParam>/dataCategoria'}" id="gInsp_categoria" wrapItemsText="true" showSecondaryValues= "true"> 
                                             <core:ListItem key="{myParam>key}" text="{myParam>name}" additionalText="{myParam>info}" />
                                         </Select>
                                     </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="Tipo">
                                     <f:fields>
-                                        <Select forceSelection="false" items="{ path: 'myParam>/dataTipo'}"  wrapItemsText="true" >
+                                        <Select forceSelection="false" items="{ path: 'myParam>/dataTipo'}" id="gInsp_tipo" wrapItemsText="true" >
                                             <core:Item key="{myParam>key}" text="{myParam>name}"  />
                                         </Select>
                                     </f:fields>
@@ -83,42 +83,42 @@
                             <f:formElements>
                                 <f:FormElement label="Fecha real">
                                     <f:fields>
-                                        <DatePicker valueFormat="yyyyMMdd" displayFormat="dd/MM/yyyy" placeholder="Ingresar fecha" required="true"/>  
+                                        <DatePicker value="{myParam>fechaReal}" id="gInsp_fechaReal" valueFormat="yyyyMMdd" displayFormat="dd/MM/yyyy" placeholder="Ingresar fecha"/>  
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Hora real">
                                     <f:fields> 
-                                        <TimePicker value="" change="handleChange" placeholder="Hora real" /> 
+                                        <TimePicker value="{myParam>horaReal}" id="gInsp_horaReal" change="handleChange" placeholder="Hora real" /> 
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Acto inseguro o subestandar">
                                     <f:fields>
-                                        <Input value="" /> 
+                                        <Input value="{myParam>actoI}" id="gInsp_actoI" /> 
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Condición inseguro o subestandar">
                                     <f:fields>
-                                        <Input value="" /> 
+                                        <Input value="{myParam>condicionI}" id="gInsp_condicionI" /> 
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Descripcion de hallazgo">
                                     <f:fields> 
-                                        <TextArea change="handleChange" rows="4" /> 
+                                        <TextArea value="{myParam>descHallazgo}" id="gInsp_descHallazgo" change="handleChange" rows="4" /> 
                                     </f:fields>
                                 </f:FormElement>  
                                 <f:FormElement label="Acciones tomadas">
                                     <f:fields>
-                                        <Input value="" /> 
+                                        <Input value="{myParam>accTomada}" id="gInsp_accTomada" /> 
                                     </f:fields>
                                 </f:FormElement>  
                                 <f:FormElement label="Recomendaciones">
                                     <f:fields>
-                                        <Input value="" /> 
+                                        <Input value="{myParam>recomendacion}" id="gInsp_recomendacion" /> 
                                     </f:fields>
                                 </f:FormElement>  
                                 <f:FormElement label="Ubicación">
                                     <f:fields>
-                                        <Input value="" /> 
+                                        <Input value="{myParam>ubicacion}" id="gInsp_ubicacion" /> 
                                     </f:fields>
                                 </f:FormElement>  
                             </f:formElements>
@@ -126,40 +126,137 @@
                     </f:formContainers>
                 </f:Form>
             </VBox> 
-            
-            <tab:Table showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/dataTab' }" class="sapUiSmallMargin">
+
+            <Panel id="panelPerInvolucrado" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
+                <headerToolbar>
+                    <OverflowToolbar style="Clear">
+                        <Title text="Nuevo personal involucrado" />
+                        <ToolbarSpacer />
+                        <Button icon="sap-icon://save" press="savePerInvolucrado" text="Guardar" type="Emphasized" /> 
+                        <Button icon="sap-icon://decline" press="cancelPerInvolucrado" text="Cancelar" type="Emphasized" /> 
+                    </OverflowToolbar>
+                </headerToolbar>
+                <content>
+                    <f:Form editable="true"> 
+                        <f:layout>
+                            <f:ResponsiveGridLayout
+                                labelSpanXL="4"
+                                labelSpanL="3"
+                                labelSpanM="4"
+                                labelSpanS="12"
+                                adjustLabelSpan="false"
+                                emptySpanXL="0"
+                                emptySpanL="4"
+                                emptySpanM="0"
+                                emptySpanS="0"
+                                columnsXL="2"
+                                columnsL="1"
+                                columnsM="1"
+                                singleContainerFullSize="false" />
+                        </f:layout>
+                        <f:formContainers>
+                            <f:FormContainer > 
+                                <f:formElements>
+                                    <f:FormElement label="Apellidos y nombres">
+                                        <f:fields> <Input value="" id="perInv_fullName"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="DNI">
+                                        <f:fields> <Input value="" id="perInv_dni"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Contratista">
+                                        <f:fields> <Input value="" id="perInv_contratista"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Puesto de trabajo">
+                                        <f:fields> <Input value="" id="perInv_puestoTrb"/> </f:fields>
+                                    </f:FormElement>  
+                                </f:formElements>
+                            </f:FormContainer> 
+                        </f:formContainers>
+                    </f:Form> 
+                </content>
+            </Panel>
+            <tab:Table showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/tabPerInvolucrados' }" class="sapUiSmallMargin">
                 <tab:extension>
 					<OverflowToolbar>
 						<Title text="Datos del personal involucrado"/>
-						<!-- <ToolbarSpacer/>
-						<Button icon="sap-icon://decline" tooltip="clear selection" press="clearSelection"/> -->
+						<ToolbarSpacer/>
+						<Button icon="sap-icon://add-employee" text="Agregar" press="addPerInvolucrado"/>
 					</OverflowToolbar>
 				</tab:extension>
                 <tab:columns>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Apellidos y nombres" />
-                        <tab:template> <Input value="" />  </tab:template>
+                        <tab:template> <Input value="{myParam>fullName}" />  </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="DNI" />
-                        <tab:template> <Input value="" /> </tab:template>
+                        <tab:template> <Input value="{myParam>dni}" /> </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Contratista" />
-                        <tab:template> <Input value="" /> </tab:template>
+                        <tab:template> <Input value="{myParam>contratista}" /> </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Puesto de trabajo" />
-                        <tab:template> <Input value="" /> </tab:template>
+                        <tab:template> <Input value="{myParam>puestoTrb}" /> </tab:template>
                     </tab:Column>
                 </tab:columns>
             </tab:Table>
+
+            <Panel id="panelRiAsociados" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
+                <headerToolbar>
+                    <OverflowToolbar style="Clear">
+                        <Title text="Nuevo riesgo asociado" />
+                        <ToolbarSpacer />
+                        <Button icon="sap-icon://save" press="saveRiAsociados" text="Guardar" type="Emphasized" /> 
+                        <Button icon="sap-icon://decline" press="cancelRiAsociados" text="Cancelar" type="Emphasized" /> 
+                    </OverflowToolbar>
+                </headerToolbar>
+                <content>
+                    <f:Form editable="true"> 
+                        <f:layout>
+                            <f:ResponsiveGridLayout
+                                labelSpanXL="4"
+                                labelSpanL="3"
+                                labelSpanM="4"
+                                labelSpanS="12"
+                                adjustLabelSpan="false"
+                                emptySpanXL="0"
+                                emptySpanL="4"
+                                emptySpanM="0"
+                                emptySpanS="0"
+                                columnsXL="2"
+                                columnsL="1"
+                                columnsM="1"
+                                singleContainerFullSize="false" />
+                        </f:layout>
+                        <f:formContainers>
+                            <f:FormContainer > 
+                                <f:formElements>
+                                    <f:FormElement label="Apellidos y nombres">
+                                        <f:fields> <Input value="" id="riAsoc_fullName"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="DNI">
+                                        <f:fields> <Input value="" id="riAsoc_dni"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Contratista">
+                                        <f:fields> <Input value="" id="riAsoc_contratista"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Puesto de trabajo">
+                                        <f:fields> <Input value="" id="riAsoc_puestoTrb"/> </f:fields>
+                                    </f:FormElement>  
+                                </f:formElements>
+                            </f:FormContainer> 
+                        </f:formContainers>
+                    </f:Form> 
+                </content>
+            </Panel>
             <tab:Table showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/dataTab' }" class="sapUiSmallMargin">
                 <tab:extension>
 					<OverflowToolbar>
 						<Title text="Riesgos asociados"/>
-						<!-- <ToolbarSpacer/>
-						<Button icon="sap-icon://decline" tooltip="clear selection" press="clearSelection"/> -->
+						<ToolbarSpacer/>
+                        <Button icon="sap-icon://add-employee" text="Agregar" press="addRiAsociados"/>
 					</OverflowToolbar>
 				</tab:extension>
                 <tab:columns>

@@ -6,7 +6,7 @@
     xmlns="sap.m">
     <Page title="Nuevo trabajador" showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
 		<headerContent>
-			<Button icon="sap-icon://save" text="Guardar" type="Emphasized" />
+			<Button icon="sap-icon://save" text="Guardar" press="idguardarnewtrabAC" type="Emphasized" />
 		</headerContent> 
 		<content> 
             <VBox class="sapUiSmallMargin">
@@ -59,19 +59,22 @@
                         <f:FormContainer title="Datos del trabajador">
                             <f:formElements>
                                 <f:FormElement label="Código del trabajador">
-                                    <f:fields> <Input value=""/> </f:fields>
+                                    <f:fields> <Input id="idcodigoAC" value=""/> </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="Apellidos">
-                                    <f:fields> <Input value=""/> </f:fields>
+                                    <f:fields> <Input id="idapellidoAC" value=""/> </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="Nombres">
-                                    <f:fields> <Input value=""/> </f:fields>
+                                    <f:fields> <Input id="idnombreAC" value=""/> </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="Área">
-                                    <f:fields> <Input value=""/> </f:fields>
+                                    <f:fields> <Input id="idAreaAC" value=""/> </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="Puesto de trabajo">
-                                    <f:fields> <Input value=""/> </f:fields>
+                                    <f:fields> <Input id="idPuestoAC" value=""/> </f:fields>
+                                </f:FormElement> 
+                                <f:FormElement label="DNI">
+                                    <f:fields> <Input id="iddniAC" value=""/> </f:fields>
                                 </f:FormElement> 
                             </f:formElements>
                         </f:FormContainer> 

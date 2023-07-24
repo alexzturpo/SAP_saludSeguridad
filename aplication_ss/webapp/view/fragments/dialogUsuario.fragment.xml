@@ -1,0 +1,75 @@
+<core:FragmentDefinition
+xmlns="sap.m"
+xmlns:core="sap.ui.core"
+xmlns:mvc="sap.ui.core.mvc"   
+xmlns:l="sap.ui.layout"
+xmlns:f="sap.ui.layout.form"
+xmlns:tab="sap.ui.table"  
+>
+<Dialog
+   id="dUsuarioID" contentWidth="40rem"   binding="{path : '/datosTableUserEdit/0'}"
+   title="Designar Responsable" draggable="true" showHeader="false">
+<VBox id="dUsuario001" class="sapUiSmallMargin">
+    <f:Form id="formUsuario01" 
+                editable="true">
+    <f:title>
+    <core:Title id="dUsuario001T" text="Registrar calificación" />
+    </f:title>
+    <f:layout>
+    <f:ResponsiveGridLayout id="dUsuario002" 
+                        labelSpanXL="3"
+                        labelSpanL="3"
+                        labelSpanM="3"
+                        labelSpanS="12"
+                        adjustLabelSpan="false"
+                        emptySpanXL="4"
+                        emptySpanL="4"
+                        emptySpanM="4"
+                        emptySpanS="0"
+                        columnsXL="1"
+                        columnsL="1"
+                        columnsM="1"
+                        singleContainerFullSize="false" />
+    </f:layout>
+    <f:formContainers >
+        <f:FormContainer id="dUsuario003" >
+         <f:formElements>
+            <f:FormElement label="Contratista">
+                <f:fields> <Input value="{keycontract}" editable="false" /> </f:fields>
+            </f:FormElement> 
+            <f:FormElement label="Sociedad">
+                <f:fields> <Input value="{sociedad}" editable="false"/> </f:fields>
+            </f:FormElement> 
+            <f:FormElement label="Código de trabajador">
+                <f:fields> <Input value="{key}" editable="false"/> </f:fields>
+            </f:FormElement> 
+            <f:FormElement label="Apellidos">
+                <f:fields> <Input value="{apellido}" editable="false"/> </f:fields>
+            </f:FormElement> 
+            <f:FormElement label="Nombres">
+                <f:fields> <Input value="{name}" editable="false"/> </f:fields>
+            </f:FormElement> 
+            <f:FormElement label="Área">
+                <f:fields> <Input value="{area}" editable="false"/> </f:fields>
+            </f:FormElement> 
+            <f:FormElement label="Puesto de trabajo">
+                <f:fields> <Input value="{puesto}" editable="false"/> </f:fields>
+            </f:FormElement> 
+            <f:FormElement label="Nota">
+                <f:fields> <Input value="{nota}" /> </f:fields>
+            </f:FormElement> 
+            <f:FormElement label="Anexo">
+                <f:fields> <Input value="{anexo}"/> </f:fields>
+            </f:FormElement> 
+        </f:formElements>
+        </f:FormContainer>
+    </f:formContainers>
+    </f:Form>
+</VBox>
+<OverflowToolbar id="d2Footer">
+    <ToolbarSpacer id="Aidespacio"/>
+    <Button id="d2btn1" type="Accept" text="Aceptar" press="onDuserAgregarCalifAceptar"/> 
+    <Button id="d2Close" type="Reject" text="Cerrar" press="onDuserAgregarCalifCancelar"/> 
+</OverflowToolbar>
+</Dialog>
+</core:FragmentDefinition>
