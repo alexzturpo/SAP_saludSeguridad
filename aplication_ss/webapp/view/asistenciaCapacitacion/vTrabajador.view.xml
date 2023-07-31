@@ -46,7 +46,7 @@
                     </tab:columns>
                 </tab:Table> 
 
-                <tab:Table  cellClick="onSelectTab" rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                <tab:Table  cellClick="onSelectTab" rows="{  path: 'myParam>/dataContratistaMedicas' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
                     <tab:extension>
                         <OverflowToolbar > 
                             <Title text="Registro médico"/> 
@@ -58,27 +58,27 @@
                     <tab:columns>
                         <tab:Column  >
                             <Label textAlign="Center" wrapping ="true"  text="Fecha" />
-                            <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text text="{myParam>fecha}" wrapping="false" /> </tab:template>
                         </tab:Column>
                         <tab:Column >
                             <Label textAlign="Center" wrapping ="true"  text="Observaciones" />
-                            <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text  text="{myParam>observaciones}" wrapping="false" /> </tab:template>
                         </tab:Column>
                         <tab:Column>
                             <Label textAlign="Center" wrapping ="true"  text="Status" />
-                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text text="{myParam>status}" wrapping="false" /> </tab:template>
                         </tab:Column>
                         <tab:Column >
                             <Label textAlign="Center" wrapping ="true"  text="Fecha de vencimiento" />
-                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text text="{myParam>fechaVENC}" wrapping="false" /> </tab:template>
                         </tab:Column>      
                     </tab:columns>
                 </tab:Table> 
 
-                <tab:Table  cellClick="onSelectTab" rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                <tab:Table  cellClick="onSelectTab" rows="{  path: 'myParam>/dataContratistaSCTR' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
                     <tab:extension>
                         <OverflowToolbar > 
-                            <Title text="SSTR"/> 
+                            <Title text="SCTR"/> 
                             <ToolbarSpacer />
                             <Button text="Añadir" icon="sap-icon://add" type="Emphasized" press="addTrabajador" />  
                             <Button text="Dar de baja" icon="sap-icon://pull-down" type="Emphasized" press="addTrabajador" /> 
@@ -87,19 +87,19 @@
                     <tab:columns>
                         <tab:Column  >
                             <Label textAlign="Center" wrapping ="true"  text="Fecha" />
-                            <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text text="{myParam>fecha}" wrapping="false" /> </tab:template>
                         </tab:Column>
                         <tab:Column >
                             <Label textAlign="Center" wrapping ="true"  text="Observaciones" />
-                            <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text  text="{myParam>observaciones}" wrapping="false" /> </tab:template>
                         </tab:Column>
                         <tab:Column>
                             <Label textAlign="Center" wrapping ="true"  text="Status" />
-                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text text="{myParam>status}" wrapping="false" /> </tab:template>
                         </tab:Column>
                         <tab:Column >
                             <Label textAlign="Center" wrapping ="true"  text="Fecha de vencimiento" />
-                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text text="{myParam>fechaVENC}" wrapping="false" /> </tab:template>
                         </tab:Column>      
                     </tab:columns>
                 </tab:Table> 

@@ -3,7 +3,7 @@
 	"name": "approuter",
 	"description": "Node.js based application router service for html5-apps",
 	"engines": {
-		"node": "^14.21.2"
+		"node": "^16.19.1"
 	},
 	"dependencies": {
 		"@sap/approuter": "10.5.1"

@@ -37,21 +37,287 @@
             <items>
                 <IconTabFilter id="tabM1" text="Gestión de Incidentes" key="itab1" > 
                     <IconTabBar id="tabM1_subTab" selectedKey="itab1Id22" headerMode="Inline" expanded="{device>/isNoPhone}" >
-                    <items>
-                        <IconTabFilter icon="sap-icon://hint" text="Nuevo incidente"> 
-                            <Panel width="auto" >
-                                <headerToolbar>
-                                    <OverflowToolbar>
-                                        <!-- <Title text="Header"/> -->
-                                        <ToolbarSpacer />
-                                        <Button text="Enviar" icon="sap-icon://paper-plane" type="Emphasized" press="newIncidente" />
-                                        <Button text="Cancelar" icon="sap-icon://delete" press="onEnviartab2" />  
-                                    </OverflowToolbar>
-                                </headerToolbar>
-                                <content>
-                                    <f:Form id="form01" editable="true"  width="auto"> 
+                        <items>
+                            <IconTabFilter icon="sap-icon://hint" text="Nuevo incidente"> 
+                                <Panel width="auto" >
+                                    <headerToolbar>
+                                        <OverflowToolbar>
+                                            <!-- <Title text="Header"/> -->
+                                            <ToolbarSpacer />
+                                            <Button text="Enviar" icon="sap-icon://paper-plane" type="Emphasized" press="newIncidente" />
+                                            <Button text="Cancelar" icon="sap-icon://delete" press="onEnviartab2" />  
+                                        </OverflowToolbar>
+                                    </headerToolbar>
+                                    <content>
+                                        <f:Form id="form01" editable="true"  width="auto"> 
+                                            <f:layout>
+                                                <f:ResponsiveGridLayout id="FormTab1IdaG"
+                                                    labelSpanXL="4"
+                                                    labelSpanL="4"
+                                                    labelSpanM="12"
+                                                    labelSpanS="12"
+                                                    adjustLabelSpan="false"
+                                                    emptySpanXL="0"
+                                                    emptySpanL="0"
+                                                    emptySpanM="0"
+                                                    emptySpanS="0"
+                                                    columnsXL="2"
+                                                    columnsL="2"
+                                                    columnsM="2"
+                                                    singleContainerFullSize="false"  />
+                                            </f:layout>
+                                            <f:formContainers >
+                                                <f:FormContainer title="Qué pasó y qué acciones inmediatas se han realizado?">
+                                                    <f:formElements>
+                                                        <f:FormElement label="Titulo">
+                                                            <f:fields>
+                                                                <Input id="gi_new_titulo" value="" /> 
+                                                            </f:fields>
+                                                        </f:FormElement>
+                                                        <f:FormElement label="Descripción del evento">
+                                                            <f:fields> 
+                                                                <TextArea id="gi_new_descrip" value="" height="5rem"/>
+                                                            </f:fields>
+                                                        </f:FormElement>
+                                                        <f:FormElement label="Acciones inmediatas">
+                                                            <f:fields> 
+                                                                <TextArea id="gi_new_accionInmediata" value="" height="5rem" enabled="false" />
+                                                            </f:fields>
+                                                        </f:FormElement>  
+                                                    </f:formElements>
+                                                </f:FormContainer> 
+                                                <f:FormContainer title="¿Donde ocurrió?" >
+                                                    <f:formElements>
+                                                        <f:FormElement label="Sociedad" >
+                                                            <f:fields>
+                                                                <ComboBox id="gi_new_sociedad" class="sapUiSmallMarginBottom" enabled="true" selectedKey="1000">
+                                                                    <core:Item key="1000" text="1000" />
+                                                                </ComboBox>     
+                                                            </f:fields>
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Ubicación" >
+                                                            <f:fields>
+                                                                <Input id="gi_new_ubicacion" value="" /> 
+                                                            </f:fields>
+                                                        </f:FormElement>
+                                                        <f:FormElement label="Detalle" >
+                                                            <f:fields>
+                                                                <TextArea id="gi_new_detalle" value="" height="5rem"/> 
+                                                            </f:fields>
+                                                        </f:FormElement>
+                                                    </f:formElements>
+                                                </f:FormContainer>
+
+                                                <f:FormContainer title="¿Cuando ocurrió?" >
+                                                    <f:formElements>
+                                                        <f:FormElement label="Fecha" >
+                                                            <f:fields> 
+                                                                    <DatePicker id="gi_new_fecha"  displayFormat="short" change="handleChange" value="01/10/2022" />   
+                                                            </f:fields>
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Hora" >
+                                                            <f:fields>  
+                                                                    <TimePicker id="gi_new_hora" value="08:57" valueFormat="HH:mm" width="100%" 
+                                                                    displayFormat="HH:mm" change="handleChange" maskMode="{= ${/maskMode/state} ? 'On' : 'Off'}"/>   
+                                                            </f:fields>
+                                                        </f:FormElement> 
+                                                    </f:formElements>
+                                                </f:FormContainer> 
+                                            </f:formContainers> 
+                                        </f:Form>
+                                        
+                                        <f:Form id="form02" editable="true"  width="auto" class="sapUiMediumMarginTop sapUiSmallMarginBottom"> 
+                                            <!-- <f:toolbar>
+                                                <Toolbar>
+                                                    <Title text="¿Quíen fue afectado?" class="sapUiMediumMarginTop sapUiSmallMarginBottom" />
+                                                    <ToolbarSpacer />
+                                                    <Button text="Yo" press="onEnviartab2" />
+                                                    <Button text="Seleccionar persona"  press="onEnviartab2" />
+                                                    <Button text="Indicar manualmente"  press="onEnviartab2" />
+                                                    <Button text="Limpiar" icon="sap-icon://delete" press="onEnviartab2"  />
+                                                    <Button text="Buscar" type="Emphasized" icon="sap-icon://delete" press="onEnviartab2"/>
+                                                </Toolbar>
+                                            </f:toolbar> -->
+                                            <f:layout>
+                                                <f:ResponsiveGridLayout
+                                                    labelSpanXL="4"
+                                                    labelSpanL="4"
+                                                    labelSpanM="12"
+                                                    labelSpanS="12"
+                                                    adjustLabelSpan="false"
+                                                    emptySpanXL="0"
+                                                    emptySpanL="0"
+                                                    emptySpanM="0"
+                                                    emptySpanS="0"
+                                                    columnsXL="2"
+                                                    columnsL="2"
+                                                    columnsM="2"
+                                                    singleContainerFullSize="false" />
+                                            </f:layout>
+                                            <f:formContainers >
+                                                <f:FormContainer >
+                                                    <f:toolbar>
+                                                        <Toolbar>
+                                                            <Title text="¿Quíen fue afectado?"/>
+                                                            <ToolbarSpacer />
+                                                            <Button text="Buscar" icon="sap-icon://employee-lookup" press="onEnviartab2"/>
+                                                        </Toolbar>
+                                                    </f:toolbar>
+                                                    <f:formElements>
+                                                        <f:FormElement label="Código de empleado:">
+                                                            <f:fields>
+                                                                <Input id="gi_new_codEmp" value="" /> 
+                                                            </f:fields>
+                                                        </f:FormElement>
+                                                        <f:FormElement label="Nombres">
+                                                            <f:fields> 
+                                                                <Input id="gi_new_nombreEmp" value=""/>
+                                                            </f:fields>
+                                                        </f:FormElement>
+                                                        <f:FormElement label="Apellidos">
+                                                            <f:fields> 
+                                                                <Input id="gi_new_apellidoEmp" value=""/>
+                                                            </f:fields>
+                                                        </f:FormElement>  
+                                                        <f:FormElement label="DNI">
+                                                            <f:fields> 
+                                                                <Input id="gi_new_dniEmp" value=""/>
+                                                            </f:fields>
+                                                        </f:FormElement>  
+                                                        <f:FormElement label="Área de trabajo">
+                                                            <f:fields> 
+                                                                <Input id="gi_new_areaTrabajoEmp" value=""/>
+                                                            </f:fields>
+                                                        </f:FormElement>  
+                                                    </f:formElements>
+                                                </f:FormContainer>  
+
+                                                <f:FormContainer>
+                                                    <f:toolbar>
+                                                        <Toolbar>
+                                                            <Title text="¿Quién advirtío el incidente?"/>
+                                                            <ToolbarSpacer />
+                                                            <Button text="Buscar" icon="sap-icon://employee-lookup" press="onEnviartab2"/>
+                                                        </Toolbar>
+                                                    </f:toolbar>
+                                                    <f:formElements>
+                                                        <f:FormElement label="Código de empleado:">
+                                                            <f:fields>
+                                                                <Input value="" id="gi_new_codEmpTest"/> 
+                                                            </f:fields>
+                                                        </f:FormElement>
+                                                        <f:FormElement label="Nombres">
+                                                            <f:fields> 
+                                                                <Input value="" id="gi_new_nombreEmpTest"/>
+                                                            </f:fields>
+                                                        </f:FormElement>
+                                                        <f:FormElement label="Apellidos">
+                                                            <f:fields> 
+                                                                <Input value="" id="gi_new_apellidoEmpTest"/>
+                                                            </f:fields>
+                                                        </f:FormElement>  
+                                                        <f:FormElement label="DNI">
+                                                            <f:fields> 
+                                                                <Input value="" id="gi_new_dniEmpTest" />
+                                                            </f:fields>
+                                                        </f:FormElement>  
+                                                        <f:FormElement label="Área de trabajo">
+                                                            <f:fields> 
+                                                                <Input value="" id="gi_new_areaTrabajoEmpTest"/>
+                                                            </f:fields>
+                                                        </f:FormElement>  
+                                                        <f:FormElement label="Detalle">
+                                                            <f:fields> 
+                                                                <Input value="" id="gi_new_detalleEmpTest"/>
+                                                            </f:fields>
+                                                        </f:FormElement>  
+                                                    </f:formElements>
+                                                </f:FormContainer>  
+                                            </f:formContainers> 
+                                        </f:Form>   
+                                    </content> 
+                                </Panel>
+                            </IconTabFilter>
+
+                            <IconTabFilter icon="sap-icon://course-book" text="Ver incidentes"> 
+                                <VBox class="sapUiSmallMargin">
+                                    <fb:FilterBar reset="onReset" search="buscarIncidentes" showRestoreButton="true">
+                                        <fb:filterGroupItems>  
+                                            <fb:FilterGroupItem groupName="G1" name="A1" groupTitle="Group1"  label="N° Incidente" visibleInFilterBar="true" >
+                                                <fb:control>
+                                                    <Input value="" id="bNIncidente" />
+                                                </fb:control>
+                                            </fb:FilterGroupItem> 
+                                            <fb:FilterGroupItem groupName="G1" name="A2" groupTitle="Group1"  label="Código afectado" visibleInFilterBar="true">
+                                                <fb:control>
+                                                    <Input value="" id="bCodAfectado" />
+                                                </fb:control>
+                                            </fb:FilterGroupItem> 
+                                            <fb:FilterGroupItem groupName="G1" name="A3" groupTitle="Group1"  label="Fecha de incidente" visibleInFilterBar="true" >
+                                                <fb:control>
+                                                    <DatePicker id="bFechaInc"  value=""  displayFormat="dd/MM/yyyy" placeholder="Ingresar fecha" />  
+                                                    <!-- <Input value="" id="bFechaInc"/> -->
+                                                </fb:control>
+                                            </fb:FilterGroupItem> 
+                                            <fb:FilterGroupItem groupName="G1" name="A4" groupTitle="Group1"  label="Status" visibleInFilterBar="true" >
+                                                <fb:control>
+                                                    <Input value="" id="bStatus"/>
+                                                </fb:control>
+                                            </fb:FilterGroupItem>
+                                        </fb:filterGroupItems>   
+                                    </fb:FilterBar> 
+
+                                    <tab:Table id="tbIncidentes" cellClick="onSelectTbIncidente" rows="{  path: 'myParam>/listIncidente' }" selectionMode="Single"  visibleRowCount="8" ariaLabelledBy="title">
+                                        <!-- <tab:extension>
+                                            <OverflowToolbar style="Clear">
+                                                <Title id="title" text="Detalle de los Movimientos"/>
+                                                <SearchField width="40%" class="sapUiSmallMargin" /> 
+                                                <Button icon="sap-icon://save" text="Grabar programacion"  tooltip="Grabar programacion" press="presAgregar"/> 
+                                                <Button icon="sap-icon://appointment" text="Crear Prog. Semanal"  tooltip="Crear Prog. Semanal" press="presProgSemanal"/> 
+                                            </OverflowToolbar>
+                                        </tab:extension> -->
+                                        <tab:columns>
+                                            <tab:Column >
+                                                <Label textAlign="Center" wrapping ="true"  text="N° Inspección" />
+                                                <tab:template> <Text text="{myParam>numIns}" wrapping="false" /> </tab:template>
+                                            </tab:Column>
+                                            <tab:Column>
+                                                <Label textAlign="Center" wrapping ="true"  text="Titulo" />
+                                                <tab:template> <Text text="{myParam>titulo}" wrapping="false" /> </tab:template>
+                                            </tab:Column>
+                                            <tab:Column>
+                                                <Label textAlign="Center" wrapping ="true"  text="Fecha de incidente" />
+                                                <tab:template> <Text text="{myParam>fecha}" wrapping="false" /> </tab:template>
+                                            </tab:Column>
+                                            <tab:Column>
+                                                <Label textAlign="Center" wrapping ="true"  text="Afectado" />
+                                                <tab:template> <Text text="{myParam>afectado/codEmpleado}" wrapping="false" /> </tab:template>
+                                            </tab:Column>
+                                            <tab:Column>
+                                                <Label textAlign="Center" wrapping ="true"  text="Status" />
+                                                <tab:template> <Text text="{myParam>status}" wrapping="false" /> </tab:template>
+                                            </tab:Column>              
+                                        </tab:columns>
+                                    </tab:Table> 
+                                </VBox>
+                            </IconTabFilter>
+
+                            <!-- <IconTabFilter icon="sap-icon://course-program" text="Acciones correctivas"> 
+                            </IconTabFilter> -->
+
+                            <IconTabFilter icon="sap-icon://attachment" text="Informes"> 
+                                <Panel width="auto" >
+                                    <headerToolbar>
+                                        <OverflowToolbar>
+                                            <!-- <Title text="Header"/> -->
+                                            <ToolbarSpacer />
+                                            <Button text="Enviar" icon="sap-icon://paper-plane" type="Emphasized" press="newIncidente" />
+                                            <Button text="Cancelar" icon="sap-icon://delete" press="onEnviartab2" />  
+                                        </OverflowToolbar>
+                                    </headerToolbar>
+                                    <f:Form title="Acciones a ser tomadas" editable="true"  width="auto"> 
                                         <f:layout>
-                                            <f:ResponsiveGridLayout id="FormTab1IdaG"
+                                            <f:ResponsiveGridLayout 
                                                 labelSpanXL="4"
                                                 labelSpanL="4"
                                                 labelSpanM="12"
@@ -67,248 +333,205 @@
                                                 singleContainerFullSize="false"  />
                                         </f:layout>
                                         <f:formContainers >
-                                            <f:FormContainer title="Qué pasó y qué acciones inmediatas se han realizado?">
+                                            <f:FormContainer title="Inmediatas"> 
                                                 <f:formElements>
-                                                    <f:FormElement label="Titulo">
+                                                    <f:FormElement label="Actos subestándares o inseguros">
                                                         <f:fields>
-                                                            <Input id="gi_new_titulo" value="" /> 
+                                                            <Input id="info_titulo" value="" /> 
                                                         </f:fields>
                                                     </f:FormElement>
-                                                    <f:FormElement label="Descripción del evento">
+                                                    <f:FormElement label="Condiciones subestándares o inseguras">
                                                         <f:fields> 
-                                                            <TextArea id="gi_new_descrip" value="" height="5rem"/>
+                                                            <TextArea id="info_descrip" value="" height="5rem"/>
                                                         </f:fields>
-                                                    </f:FormElement>
-                                                    <f:FormElement label="Acciones inmediatas">
-                                                        <f:fields> 
-                                                            <TextArea id="gi_new_accionInmediata" value="" height="5rem" enabled="false" />
-                                                        </f:fields>
-                                                    </f:FormElement>  
+                                                    </f:FormElement> 
                                                 </f:formElements>
                                             </f:FormContainer> 
-                                            <f:FormContainer title="¿Donde ocurrió?" >
+                                            <f:FormContainer title="Básicas" >
                                                 <f:formElements>
-                                                    <f:FormElement label="Sociedad" >
+                                                    <f:FormElement label="Factores personales" >
                                                         <f:fields>
-                                                            <ComboBox id="gi_new_sociedad" class="sapUiSmallMarginBottom" enabled="true" selectedKey="1000">
-                                                                <core:Item key="1000" text="1000" />
-                                                            </ComboBox>     
+                                                            <Input id="info_facPers" value="" />   
                                                         </f:fields>
                                                     </f:FormElement> 
-                                                    <f:FormElement label="Ubicación" >
+                                                    <f:FormElement label="Factores de trabajo" >
                                                         <f:fields>
-                                                            <Input id="gi_new_ubicacion" value="" /> 
+                                                            <Input id="info_ubicacion" value="" /> 
                                                         </f:fields>
                                                     </f:FormElement>
-                                                    <f:FormElement label="Detalle" >
+                                                    <!-- <f:FormElement label="Detalle" >
                                                         <f:fields>
-                                                            <TextArea id="gi_new_detalle" value="" height="5rem"/> 
+                                                            <TextArea id="info_detalle" value="" height="5rem"/> 
                                                         </f:fields>
-                                                    </f:FormElement>
+                                                    </f:FormElement> -->
                                                 </f:formElements>
-                                            </f:FormContainer>
-
-                                            <f:FormContainer title="¿Cuando ocurrió?" >
+                                            </f:FormContainer> 
+                                            <f:FormContainer title="Acciones a ser tomadas" >
                                                 <f:formElements>
-                                                    <f:FormElement label="Fecha" >
-                                                        <f:fields> 
-                                                                <DatePicker id="gi_new_fecha"  displayFormat="short" change="handleChange" value="01/10/2022" />   
+                                                    <f:FormElement label="Lecciones aprendidas" >
+                                                        <f:fields>
+                                                            <Input id="info_facPers2" value="" />   
                                                         </f:fields>
                                                     </f:FormElement> 
-                                                    <f:FormElement label="Hora" >
-                                                        <f:fields>  
-                                                                <TimePicker id="gi_new_hora" value="08:57" valueFormat="HH:mm" width="100%" 
-                                                                displayFormat="HH:mm" change="handleChange" maskMode="{= ${/maskMode/state} ? 'On' : 'Off'}"/>   
-                                                        </f:fields>
+                                                </f:formElements>
+                                            </f:FormContainer> 
+                                            <f:FormContainer title="Investigado por" >
+                                                <f:formElements>
+                                                    <f:FormElement label="Nombre" >
+                                                        <f:fields> <Input id="info_facP1" value="" />  </f:fields>
+                                                    </f:FormElement> 
+                                                    <f:FormElement label="Cargo" >
+                                                        <f:fields> <Input id="info_facP2" value="" />  </f:fields>
+                                                    </f:FormElement> 
+                                                    <f:FormElement label="Firma" >
+                                                        <f:fields> <Input id="info_facP3" value="" />  </f:fields>
                                                     </f:FormElement> 
                                                 </f:formElements>
                                             </f:FormContainer> 
                                         </f:formContainers> 
                                     </f:Form>
-                                    
-                                    <f:Form id="form02" editable="true"  width="auto" class="sapUiMediumMarginTop sapUiSmallMarginBottom"> 
-                                        <!-- <f:toolbar>
-                                            <Toolbar>
-                                                <Title text="¿Quíen fue afectado?" class="sapUiMediumMarginTop sapUiSmallMarginBottom" />
+
+                                    <Panel id="panelInfoCorrectivo" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
+                                        <headerToolbar>
+                                            <OverflowToolbar style="Clear">
+                                                <Title text="Registrar acción correctiva" />
                                                 <ToolbarSpacer />
-                                                <Button text="Yo" press="onEnviartab2" />
-                                                <Button text="Seleccionar persona"  press="onEnviartab2" />
-                                                <Button text="Indicar manualmente"  press="onEnviartab2" />
-                                                <Button text="Limpiar" icon="sap-icon://delete" press="onEnviartab2"  />
-                                                <Button text="Buscar" type="Emphasized" icon="sap-icon://delete" press="onEnviartab2"/>
-                                            </Toolbar>
-                                        </f:toolbar> -->
-                                        <f:layout>
-                                            <f:ResponsiveGridLayout
-                                                labelSpanXL="4"
-                                                labelSpanL="4"
-                                                labelSpanM="12"
-                                                labelSpanS="12"
-                                                adjustLabelSpan="false"
-                                                emptySpanXL="0"
-                                                emptySpanL="0"
-                                                emptySpanM="0"
-                                                emptySpanS="0"
-                                                columnsXL="2"
-                                                columnsL="2"
-                                                columnsM="2"
-                                                singleContainerFullSize="false" />
-                                        </f:layout>
-                                        <f:formContainers >
-                                            <f:FormContainer >
-                                                <f:toolbar>
-                                                    <Toolbar>
-                                                        <Title text="¿Quíen fue afectado?"/>
-                                                        <ToolbarSpacer />
-                                                        <Button text="Buscar" icon="sap-icon://employee-lookup" press="onEnviartab2"/>
-                                                    </Toolbar>
-                                                </f:toolbar>
-                                                <f:formElements>
-                                                    <f:FormElement label="Código de empleado:">
-                                                        <f:fields>
-                                                            <Input id="gi_new_codEmp" value="" /> 
-                                                        </f:fields>
-                                                    </f:FormElement>
-                                                    <f:FormElement label="Nombres">
-                                                        <f:fields> 
-                                                            <Input id="gi_new_nombreEmp" value=""/>
-                                                        </f:fields>
-                                                    </f:FormElement>
-                                                    <f:FormElement label="Apellidos">
-                                                        <f:fields> 
-                                                            <Input id="gi_new_apellidoEmp" value=""/>
-                                                        </f:fields>
-                                                    </f:FormElement>  
-                                                    <f:FormElement label="DNI">
-                                                        <f:fields> 
-                                                            <Input id="gi_new_dniEmp" value=""/>
-                                                        </f:fields>
-                                                    </f:FormElement>  
-                                                    <f:FormElement label="Área de trabajo">
-                                                        <f:fields> 
-                                                            <Input id="gi_new_areaTrabajoEmp" value=""/>
-                                                        </f:fields>
-                                                    </f:FormElement>  
-                                                </f:formElements>
-                                            </f:FormContainer>  
+                                                <Button icon="sap-icon://save" press="saveInfoCorrectivo" text="Guardar" type="Emphasized" /> 
+                                                <Button icon="sap-icon://decline" press="cancelInfoCorrectivo" text="Cancelar" type="Emphasized" /> 
+                                            </OverflowToolbar>
+                                        </headerToolbar>
+                                        <content>
+                                            <f:Form editable="true"> 
+                                                <f:layout>
+                                                    <f:ResponsiveGridLayout
+                                                        labelSpanXL="4"
+                                                        labelSpanL="3"
+                                                        labelSpanM="4"
+                                                        labelSpanS="12"
+                                                        adjustLabelSpan="false"
+                                                        emptySpanXL="0"
+                                                        emptySpanL="4"
+                                                        emptySpanM="0"
+                                                        emptySpanS="0"
+                                                        columnsXL="2"
+                                                        columnsL="1"
+                                                        columnsM="1"
+                                                        singleContainerFullSize="false" />
+                                                </f:layout>
+                                                <f:formContainers>
+                                                    <f:FormContainer > 
+                                                        <f:formElements>
+                                                            <f:FormElement label="Descripción">
+                                                                <f:fields> <Input value="" id="infoCorrec_desc"/> </f:fields>
+                                                            </f:FormElement> 
+                                                            <f:FormElement label="Responsable">
+                                                                <f:fields> <Input value="" id="infoCorrec_responsable"/> </f:fields>
+                                                            </f:FormElement> 
+                                                            <f:FormElement label="Fecha">
+                                                                <f:fields> <DatePicker id="infoCorrec_fecha" value=""  displayFormat="dd/MM/yyyy"/> </f:fields>
+                                                            </f:FormElement> 
+                                                        </f:formElements>
+                                                    </f:FormContainer> 
+                                                </f:formContainers>
+                                            </f:Form> 
+                                        </content>
+                                    </Panel>
+                                    <tab:Table showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/tabResponsables' }" class="sapUiSmallMargin">
+                                        <tab:extension>
+                                            <OverflowToolbar>
+                                                <Title text="Correctivo"/>
+                                                <ToolbarSpacer/>
+                                                <Button icon="sap-icon://add-employee" text="Agregar" press="addResponsables"/>
+                                            </OverflowToolbar>
+                                        </tab:extension>
+                                        <tab:columns>
+                                            <tab:Column autoResizable="true" width="auto">
+                                                <Label textAlign="Center" wrapping ="true"  text="Descripción" />
+                                                <tab:template> <Text text="{myParam>desc}" />  </tab:template>
+                                            </tab:Column>
+                                            <tab:Column autoResizable="true" width="auto">
+                                                <Label textAlign="Center" wrapping ="true"  text="Responsable" />
+                                                <tab:template> <Text text="{myParam>responsable}" /> </tab:template>
+                                            </tab:Column>
+                                            <tab:Column autoResizable="true" width="auto">
+                                                <Label textAlign="Center" wrapping ="true"  text="Fecha" />
+                                                <tab:template> <Text text="{myParam>fecha}" />  </tab:template>
+                                            </tab:Column> 
+                                        </tab:columns>
+                                    </tab:Table>
 
-                                            <f:FormContainer>
-                                                <f:toolbar>
-                                                    <Toolbar>
-                                                        <Title text="¿Quién advirtío el incidente?"/>
-                                                        <ToolbarSpacer />
-                                                        <Button text="Buscar" icon="sap-icon://employee-lookup" press="onEnviartab2"/>
-                                                    </Toolbar>
-                                                </f:toolbar>
-                                                <f:formElements>
-                                                    <f:FormElement label="Código de empleado:">
-                                                        <f:fields>
-                                                            <Input value="" id="gi_new_codEmpTest"/> 
-                                                        </f:fields>
-                                                    </f:FormElement>
-                                                    <f:FormElement label="Nombres">
-                                                        <f:fields> 
-                                                            <Input value="" id="gi_new_nombreEmpTest"/>
-                                                        </f:fields>
-                                                    </f:FormElement>
-                                                    <f:FormElement label="Apellidos">
-                                                        <f:fields> 
-                                                            <Input value="" id="gi_new_apellidoEmpTest"/>
-                                                        </f:fields>
-                                                    </f:FormElement>  
-                                                    <f:FormElement label="DNI">
-                                                        <f:fields> 
-                                                            <Input value="" id="gi_new_dniEmpTest" />
-                                                        </f:fields>
-                                                    </f:FormElement>  
-                                                    <f:FormElement label="Área de trabajo">
-                                                        <f:fields> 
-                                                            <Input value="" id="gi_new_areaTrabajoEmpTest"/>
-                                                        </f:fields>
-                                                    </f:FormElement>  
-                                                    <f:FormElement label="Detalle">
-                                                        <f:fields> 
-                                                            <Input value="" id="gi_new_detalleEmpTest"/>
-                                                        </f:fields>
-                                                    </f:FormElement>  
-                                                </f:formElements>
-                                            </f:FormContainer>  
-                                        </f:formContainers> 
-                                    </f:Form>   
-                                </content> 
-                            </Panel>
-                        </IconTabFilter>
-
-                        <IconTabFilter icon="sap-icon://course-book" text="Ver incidentes"> 
-                            <VBox class="sapUiSmallMargin">
-                                <fb:FilterBar reset="onReset" search="buscarIncidentes" showRestoreButton="true">
-                                    <fb:filterGroupItems>  
-                                        <fb:FilterGroupItem groupName="G1" name="A1" groupTitle="Group1"  label="N° Incidente" visibleInFilterBar="true" >
-                                            <fb:control>
-                                                <Input value="" id="bNIncidente" />
-                                            </fb:control>
-                                        </fb:FilterGroupItem> 
-                                        <fb:FilterGroupItem groupName="G1" name="A2" groupTitle="Group1"  label="Código afectado" visibleInFilterBar="true">
-                                            <fb:control>
-                                                <Input value="" id="bCodAfectado" />
-                                            </fb:control>
-                                        </fb:FilterGroupItem> 
-                                        <fb:FilterGroupItem groupName="G1" name="A3" groupTitle="Group1"  label="Fecha de incidente" visibleInFilterBar="true" >
-                                            <fb:control>
-                                                <DatePicker id="bFechaInc"  value=""  displayFormat="dd/MM/yyyy" placeholder="Ingresar fecha" />  
-                                                <!-- <Input value="" id="bFechaInc"/> -->
-                                            </fb:control>
-                                        </fb:FilterGroupItem> 
-                                        <fb:FilterGroupItem groupName="G1" name="A4" groupTitle="Group1"  label="Status" visibleInFilterBar="true" >
-                                            <fb:control>
-                                                <Input value="" id="bStatus"/>
-                                            </fb:control>
-                                        </fb:FilterGroupItem>
-                                    </fb:filterGroupItems>   
-                                </fb:FilterBar> 
-
-                                <tab:Table id="tbIncidentes" cellClick="onSelectTbIncidente" rows="{  path: 'myParam>/listIncidente' }" selectionMode="Single"  visibleRowCount="8" ariaLabelledBy="title">
-                                    <!-- <tab:extension>
-                                        <OverflowToolbar style="Clear">
-                                            <Title id="title" text="Detalle de los Movimientos"/>
-                                            <SearchField width="40%" class="sapUiSmallMargin" /> 
-                                            <Button icon="sap-icon://save" text="Grabar programacion"  tooltip="Grabar programacion" press="presAgregar"/> 
-                                            <Button icon="sap-icon://appointment" text="Crear Prog. Semanal"  tooltip="Crear Prog. Semanal" press="presProgSemanal"/> 
-                                        </OverflowToolbar>
-                                    </tab:extension> -->
-                                    <tab:columns>
-                                        <tab:Column >
-                                            <Label textAlign="Center" wrapping ="true"  text="N° Inspección" />
-                                            <tab:template> <Text text="{myParam>numIns}" wrapping="false" /> </tab:template>
-                                        </tab:Column>
-                                        <tab:Column>
-                                            <Label textAlign="Center" wrapping ="true"  text="Titulo" />
-                                            <tab:template> <Text text="{myParam>titulo}" wrapping="false" /> </tab:template>
-                                        </tab:Column>
-                                        <tab:Column>
-                                            <Label textAlign="Center" wrapping ="true"  text="Fecha de incidente" />
-                                            <tab:template> <Text text="{myParam>fecha}" wrapping="false" /> </tab:template>
-                                        </tab:Column>
-                                        <tab:Column>
-                                            <Label textAlign="Center" wrapping ="true"  text="Afectado" />
-                                            <tab:template> <Text text="{myParam>afectado/codEmpleado}" wrapping="false" /> </tab:template>
-                                        </tab:Column>
-                                        <tab:Column>
-                                            <Label textAlign="Center" wrapping ="true"  text="Status" />
-                                            <tab:template> <Text text="{myParam>status}" wrapping="false" /> </tab:template>
-                                        </tab:Column>              
-                                    </tab:columns>
-                                </tab:Table> 
-                            </VBox>
-                        </IconTabFilter>
-
-                        <IconTabFilter icon="sap-icon://course-program" text="Acciones correctivas"> 
-                        </IconTabFilter>
-
-                        <IconTabFilter icon="sap-icon://attachment" text="Informes"> 
-                        </IconTabFilter>
-                        
-                      </items>
+                                    <Panel id="panelInfoPreventivo" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
+                                        <headerToolbar>
+                                            <OverflowToolbar style="Clear">
+                                                <Title text="Registrar acción preventiva" />
+                                                <ToolbarSpacer />
+                                                <Button icon="sap-icon://save" press="saveInfoPreventivo" text="Guardar" type="Emphasized" /> 
+                                                <Button icon="sap-icon://decline" press="cancelInfoPreventivo" text="Cancelar" type="Emphasized" /> 
+                                            </OverflowToolbar>
+                                        </headerToolbar>
+                                        <content>
+                                            <f:Form editable="true"> 
+                                                <f:layout>
+                                                    <f:ResponsiveGridLayout
+                                                        labelSpanXL="4"
+                                                        labelSpanL="3"
+                                                        labelSpanM="4"
+                                                        labelSpanS="12"
+                                                        adjustLabelSpan="false"
+                                                        emptySpanXL="0"
+                                                        emptySpanL="4"
+                                                        emptySpanM="0"
+                                                        emptySpanS="0"
+                                                        columnsXL="2"
+                                                        columnsL="1"
+                                                        columnsM="1"
+                                                        singleContainerFullSize="false" />
+                                                </f:layout>
+                                                <f:formContainers>
+                                                    <f:FormContainer > 
+                                                        <f:formElements>
+                                                            <f:FormElement label="Descripción">
+                                                                <f:fields> <Input value="" id="infoPrev_desc"/> </f:fields>
+                                                            </f:FormElement> 
+                                                            <f:FormElement label="Responsable">
+                                                                <f:fields> <Input value="" id="infoPrev_responsable"/> </f:fields>
+                                                            </f:FormElement> 
+                                                            <f:FormElement label="Fecha">
+                                                                <f:fields> <DatePicker id="infoPrev_fecha" value=""  displayFormat="dd/MM/yyyy"/> </f:fields>
+                                                            </f:FormElement> 
+                                                        </f:formElements>
+                                                    </f:FormContainer> 
+                                                </f:formContainers>
+                                            </f:Form> 
+                                        </content>
+                                    </Panel>
+                                    <tab:Table showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/tabResponsables' }" class="sapUiSmallMargin">
+                                        <tab:extension>
+                                            <OverflowToolbar>
+                                                <Title text="Preventivo"/>
+                                                <ToolbarSpacer/>
+                                                <Button icon="sap-icon://add-employee" text="Agregar" press="addResponsables"/>
+                                            </OverflowToolbar>
+                                        </tab:extension>
+                                        <tab:columns>
+                                            <tab:Column autoResizable="true" width="auto">
+                                                <Label textAlign="Center" wrapping ="true"  text="Descripción" />
+                                                <tab:template> <Text text="{myParam>desc}" />  </tab:template>
+                                            </tab:Column>
+                                            <tab:Column autoResizable="true" width="auto">
+                                                <Label textAlign="Center" wrapping ="true"  text="Responsable" />
+                                                <tab:template> <Text text="{myParam>responsable}" /> </tab:template>
+                                            </tab:Column>
+                                            <tab:Column autoResizable="true" width="auto">
+                                                <Label textAlign="Center" wrapping ="true"  text="Fecha" />
+                                                <tab:template> <Text text="{myParam>fecha}" />  </tab:template>
+                                            </tab:Column> 
+                                        </tab:columns>
+                                    </tab:Table>
+                                </Panel>
+                            </IconTabFilter>
+                            
+                        </items>
                     </IconTabBar>    
                 </IconTabFilter>
                 <IconTabFilter id="tabM2" text="Gestión de Salud Ocupacional" key="itab2" >
@@ -1596,101 +1819,101 @@
                         <IconTabFilter icon="sap-icon://course-book" text="Reporte de inspecciones"> 
                             <items>
                                 <IconTabFilter icon="sap-icon://course-book" text="Reporte de inspección"> 
-                                    <tab:Table rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                                    <tab:Table rows="{  path: 'myParam>/excelTabInsp' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
                                         <tab:extension>
                                             <OverflowToolbar >
                                                 <!-- <Title text="Asistentes"/> -->
                                                 <ToolbarSpacer />
-                                                <Button text="Descargar" icon="sap-icon://download" type="Emphasized" press="descarga" />   
+                                                <Button text="Descargar" icon="sap-icon://download" type="Emphasized" press="excelDownload('excelTabInsp')" />     
                                             </OverflowToolbar>
                                         </tab:extension>
                                         <tab:columns>
                                             <tab:Column  >
                                                 <Label textAlign="Center" wrapping ="true"  text="Cod. Inspección" />
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>codInsp}" wrapping="false" /> </tab:template>
                                             </tab:Column>
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="Área" />
-                                                <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text  text="{myParam>area}" wrapping="false" /> </tab:template>
                                             </tab:Column>
                                             <tab:Column>
                                                 <Label textAlign="Center" wrapping ="true"  text="Departamento" />
-                                                <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>departamento}" wrapping="false" /> </tab:template>
                                             </tab:Column>
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="Jefatura a cargo" />
-                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>jefaturaCargo}" wrapping="false" /> </tab:template>
                                             </tab:Column>          
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="Observación" />
-                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>objs}" wrapping="false" /> </tab:template>
                                             </tab:Column>          
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="Fecha reporte" />
-                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>freporte}" wrapping="false" /> </tab:template>
                                             </tab:Column>          
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="Mes" />
-                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>mes}" wrapping="false" /> </tab:template>
                                             </tab:Column>          
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="Año" />
-                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>anio}" wrapping="false" /> </tab:template>
                                             </tab:Column>          
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="Tipo" />
-                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>tipo}" wrapping="false" /> </tab:template>
                                             </tab:Column>          
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="Categoria" />
-                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>categoria}" wrapping="false" /> </tab:template>
                                             </tab:Column>          
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="Recomendación" />
-                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>recomendacion}" wrapping="false" /> </tab:template>
                                             </tab:Column>          
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="Días sin atención" />
-                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>daySinAten}" wrapping="false" /> </tab:template>
                                             </tab:Column>          
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="Estado" />
-                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>estado}" wrapping="false" /> </tab:template>
                                             </tab:Column>          
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="Fecha liberación" />
-                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>fLiberacion}" wrapping="false" /> </tab:template>
                                             </tab:Column>          
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="MesLib" />
-                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>mesLib}" wrapping="false" /> </tab:template>
                                             </tab:Column>          
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="AñoLib" />
-                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>anioLib}" wrapping="false" /> </tab:template>
                                             </tab:Column>          
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="Origen" />
-                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>origen}" wrapping="false" /> </tab:template>
                                             </tab:Column>          
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="Registrado por" />
-                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>resgistradoPor}" wrapping="false" /> </tab:template>
                                             </tab:Column>          
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="Fecha registro" />
-                                                <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>fRegistroDesv}" wrapping="false" /> </tab:template>
                                             </tab:Column>          
                                         </tab:columns>
                                     </tab:Table>  
                                 </IconTabFilter>
                                 <IconTabFilter icon="sap-icon://course-book" text="Reporte ICR"> 
-                                    <tab:Table rows="{  path: 'myParam>/dataTab' }" selectionMode="None"  visibleRowCount="5" ariaLabelledBy="title">
+                                    <tab:Table rows="{  path: 'myParam>/reporteICR' }" selectionMode="None"  visibleRowCount="5" ariaLabelledBy="title">
                                         <tab:extension>
                                             <OverflowToolbar >
                                                 <!-- <Title text="Asistentes"/> -->
                                                 <ToolbarSpacer />
-                                                <Button text="Descargar" icon="sap-icon://download" type="Emphasized" press="descarga" />   
+                                                <Button text="Descargar" icon="sap-icon://download" type="Emphasized" press="excelDownloadICR('reporteICR')" />   
                                             </OverflowToolbar>
                                         </tab:extension>
                                         <tab:columns>
@@ -1700,7 +1923,7 @@
                                                     <Label text="" textAlign="Center" wrapping ="true"  />  -->
                                                     <Label text="Gerencia" textAlign="Center" wrapping ="true"  /> 
                                                 <!-- </tab:multiLabels> -->
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>gerencia}" wrapping="false" /> </tab:template>
                                             </tab:Column>           
                                             <tab:Column headerSpan="23,3" hAlign="Center" >
                                                 <tab:multiLabels>
@@ -1708,7 +1931,7 @@
                                                     <Label text="Condiciones reportadas meses anteriores" textAlign="Center" wrapping ="true"  /> 
                                                     <Label text="A" textAlign="Center" wrapping ="true"  /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>conRepMesAnt_A}" wrapping="false" /> </tab:template>
                                             </tab:Column>     
                                             <tab:Column hAlign="Center" >
                                                 <tab:multiLabels>
@@ -1716,7 +1939,7 @@
                                                     <Label text="Condiciones reportadas meses anteriores" textAlign="Center" />
                                                     <Label text="B" textAlign="Center" wrapping ="true"  /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>conRepMesAnt_B}" wrapping="false" /> </tab:template>
                                             </tab:Column>     
                                             <tab:Column hAlign="Center" >
                                                 <tab:multiLabels>
@@ -1724,7 +1947,7 @@
                                                     <Label text="Condiciones reportadas meses anteriores" textAlign="Center" />
                                                     <Label text="C" textAlign="Center" wrapping ="true"  /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>conRepMesAnt_C}" wrapping="false" /> </tab:template>
                                             </tab:Column>     
 
                                             <tab:Column headerSpan="23,3" hAlign="Center">
@@ -1733,7 +1956,7 @@
                                                     <Label text="Condiciones corregidas meses anteriores" textAlign="Center" wrapping ="true" /> 
                                                     <Label text="A" textAlign="Center" wrapping ="true"  /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>conCorMesAnt_A}" wrapping="false" /> </tab:template>
                                             </tab:Column>           
                                             <tab:Column hAlign="Center">
                                                 <tab:multiLabels >
@@ -1741,7 +1964,7 @@
                                                     <Label text="Condiciones corregidas meses anteriores" textAlign="Center" wrapping ="true" /> 
                                                     <Label text="B" textAlign="Center" wrapping ="true"  /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>conCorMesAnt_B}" wrapping="false" /> </tab:template>
                                             </tab:Column>   
                                             <tab:Column hAlign="Center">
                                                 <tab:multiLabels >
@@ -1749,7 +1972,7 @@
                                                     <Label text="Condiciones corregidas meses anteriores" textAlign="Center" wrapping ="true" /> 
                                                     <Label text="C" textAlign="Center" wrapping ="true"  /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>conCorMesAnt_C}" wrapping="false" /> </tab:template>
                                             </tab:Column>   
 
                                             <tab:Column headerSpan="23,3" hAlign="Center" >
@@ -1758,7 +1981,7 @@
                                                     <Label text="Condiciones reportadas en el mes" textAlign="Center" wrapping ="true" /> 
                                                     <Label text="A" textAlign="Center" wrapping ="true"  /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>conRepMes_A}" wrapping="false" /> </tab:template>
                                             </tab:Column>           
                                             <tab:Column hAlign="Center" >
                                                 <tab:multiLabels >
@@ -1766,7 +1989,7 @@
                                                     <Label text="Condiciones reportadas en el mes" textAlign="Center" wrapping ="true" /> 
                                                     <Label text="B" textAlign="Center" wrapping ="true"  /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>conRepMes_B}" wrapping="false" /> </tab:template>
                                             </tab:Column>    
                                             <tab:Column hAlign="Center" >
                                                 <tab:multiLabels >
@@ -1774,7 +1997,7 @@
                                                     <Label text="Condiciones reportadas en el mes" textAlign="Center" wrapping ="true" /> 
                                                     <Label text="C" textAlign="Center" wrapping ="true"  /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>conRepMes_C}" wrapping="false" /> </tab:template>
                                             </tab:Column>    
 
                                             <tab:Column headerSpan="23,6,2" hAlign="Center" >
@@ -1784,7 +2007,7 @@
                                                     <Label text="A" textAlign="Center" wrapping ="true"  /> 
                                                     <Label text="Mes" textAlign="Center" wrapping ="true"  /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>conCor_mes_A}" wrapping="false" /> </tab:template>
                                             </tab:Column>   
                                             <tab:Column hAlign="Center" >
                                                 <tab:multiLabels >
@@ -1793,7 +2016,7 @@
                                                     <Label text="A" textAlign="Center" wrapping ="true"  /> 
                                                     <Label text="Meses anteriores" textAlign="Center" wrapping ="true"  /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>conCor_mesAnt_A}" wrapping="false" /> </tab:template>
                                             </tab:Column>   
 
                                             <tab:Column headerSpan="23,6,2" hAlign="Center" >
@@ -1803,7 +2026,7 @@
                                                     <Label text="B" textAlign="Center" wrapping ="true"  /> 
                                                     <Label text="Mes" textAlign="Center" wrapping ="true"  /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>conCor_mes_B}" wrapping="false" /> </tab:template>
                                             </tab:Column>   
                                             <tab:Column hAlign="Center" >
                                                 <tab:multiLabels >
@@ -1812,7 +2035,7 @@
                                                     <Label text="B" textAlign="Center" wrapping ="true"  /> 
                                                     <Label text="Meses anteriores" textAlign="Center" wrapping ="true"  /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>conCor_mesAnt_B}" wrapping="false" /> </tab:template>
                                             </tab:Column>   
                                             <tab:Column headerSpan="23,6,2" hAlign="Center" >
                                                 <tab:multiLabels >
@@ -1821,7 +2044,7 @@
                                                     <Label text="C" textAlign="Center" wrapping ="true"  /> 
                                                     <Label text="Mes" textAlign="Center" wrapping ="true"  /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>conCor_mes_C}" wrapping="false" /> </tab:template>
                                             </tab:Column>   
                                             <tab:Column hAlign="Center" >
                                                 <tab:multiLabels >
@@ -1830,7 +2053,7 @@
                                                     <Label text="C" textAlign="Center" wrapping ="true"  /> 
                                                     <Label text="Meses anteriores" textAlign="Center" wrapping ="true"  /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>conCor_mesAnt_C}" wrapping="false" /> </tab:template>
                                             </tab:Column>   
 
                                             <tab:Column headerSpan="23,4" hAlign="Center" >
@@ -1839,7 +2062,7 @@
                                                     <Label text="% ICR Mes" textAlign="Center" wrapping ="true" /> 
                                                     <Label text="A" textAlign="Center" wrapping ="true" /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>porICRmes_A}" wrapping="false" /> </tab:template>
                                             </tab:Column>           
                                             <tab:Column hAlign="Center" >
                                                 <tab:multiLabels >
@@ -1847,7 +2070,7 @@
                                                     <Label text="% ICR Mes" textAlign="Center" wrapping ="true" /> 
                                                     <Label text="B" textAlign="Center" wrapping ="true" /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>porICRmes_B}" wrapping="false" /> </tab:template>
                                             </tab:Column>      
                                             <tab:Column hAlign="Center" >
                                                 <tab:multiLabels >
@@ -1855,7 +2078,7 @@
                                                     <Label text="% ICR Mes" textAlign="Center" wrapping ="true" /> 
                                                     <Label text="C" textAlign="Center" wrapping ="true" /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>porICRmes_C}" wrapping="false" /> </tab:template>
                                             </tab:Column>      
                                             <tab:Column hAlign="Center" >
                                                 <tab:multiLabels >
@@ -1863,7 +2086,7 @@
                                                     <Label text="% ICR Mes" textAlign="Center" wrapping ="true" /> 
                                                     <Label text="Total" textAlign="Center" wrapping ="true" /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>porICRmes_Total}" wrapping="false" /> </tab:template>
                                             </tab:Column>      
 
                                             <tab:Column headerSpan="23,4" hAlign="Center" >
@@ -1872,7 +2095,7 @@
                                                     <Label text="% ICR Acumulado" textAlign="Center" wrapping ="true" /> 
                                                     <Label text="A" textAlign="Center" wrapping ="true" /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>porICRacum_A}" wrapping="false" /> </tab:template>
                                             </tab:Column>           
                                             <tab:Column hAlign="Center" >
                                                 <tab:multiLabels >
@@ -1880,7 +2103,7 @@
                                                     <Label text="% ICR Acumulado" textAlign="Center" wrapping ="true" /> 
                                                     <Label text="B" textAlign="Center" wrapping ="true" /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>porICRacum_B}" wrapping="false" /> </tab:template>
                                             </tab:Column>           
                                             <tab:Column hAlign="Center" >
                                                 <tab:multiLabels >
@@ -1888,7 +2111,7 @@
                                                     <Label text="% ICR Acumulado" textAlign="Center" wrapping ="true" /> 
                                                     <Label text="C" textAlign="Center" wrapping ="true" /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>porICRacum_C}" wrapping="false" /> </tab:template>
                                             </tab:Column>           
                                             <tab:Column hAlign="Center" >
                                                 <tab:multiLabels >
@@ -1896,7 +2119,7 @@
                                                     <Label text="% ICR Acumulado" textAlign="Center" wrapping ="true" /> 
                                                     <Label text="Total" textAlign="Center" wrapping ="true" /> 
                                                 </tab:multiLabels>
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>porICRacum_Total}" wrapping="false" /> </tab:template>
                                             </tab:Column>           
                                         </tab:columns>
                                     </tab:Table>  
@@ -2267,74 +2490,74 @@
                                 </tab:Table>  
                             </IconTabFilter> 
                             <IconTabFilter text="Reporte" >
-                                <tab:Table rows="{  path: 'myParam>/dataTab' }" selectionMode="None"  visibleRowCount="5" ariaLabelledBy="title">
+                                <tab:Table rows="{  path: 'myParam>/dataContratistadetalle' }" selectionMode="None"  visibleRowCount="5" ariaLabelledBy="title">
                                     <tab:extension >
                                         <OverflowToolbar  >
                                             <!-- <Title text="Asistentes"/> -->
                                             <ToolbarSpacer />
-                                            <Button text="Descargar" icon="sap-icon://download" type="Emphasized" press="descarga" />   
+                                            <Button text="Descargar" icon="sap-icon://download" type="Emphasized" press="excelDownloadREPASIS('dataContratistadetalle')" />   
                                         </OverflowToolbar>
                                     </tab:extension>
                                     <tab:columns>
                                         <tab:Column  >
                                             <Label textAlign="Center" wrapping ="true"  text="Empresa" />
-                                            <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>KEY}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Apellidos" />
-                                            <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text  text="{myParam>APELLIDO}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column>
                                             <Label textAlign="Center" wrapping ="true"  text="Nombres" />
-                                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>NAME}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="DNI" />
-                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>DNI}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Nota de evaluación" />
-                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>NOTA}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Fecha de inducción general" />
-                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>FECHAINDG}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Fecha vencimiento indución general" />
-                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>FECHAVENCINDGRAL}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Fecha indución especifica" />
-                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>FECHAINDESP}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Fecha vencimiento indución especifica" />
-                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>FECHAVENCINDESP}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Examen médico" />
-                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>EXAMEN}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Aptitud" />
-                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>APTITUD}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Vigencia de examen médico ocupacional" />
-                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>VIG}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Requiere evaluación médica" />
-                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>REQEVAL}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="SCTR" />
-                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>SCTR}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Fecha de vencimiento del SCTR" />
-                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>SCTRFV}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                     </tab:columns>
                                 </tab:Table>  

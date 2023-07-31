@@ -4,6 +4,13 @@
   "authenticationMethod": "route",
   "routes": [
     {
+      "source": "^/index.html$",
+      "target": "/appssaplicationss/index.html",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa",
+      "cacheControl": "no-cache, no-store, must-revalidate"
+  } ,
+    {
       "source": "^/resources/(.*)$",
       "target": "/appssaplicationss/resources/$1",
       "authenticationType": "none",

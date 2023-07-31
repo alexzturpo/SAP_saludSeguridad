@@ -43,7 +43,7 @@
                                 </f:FormElement>
                                 <f:FormElement label="Gerencia">
                                     <f:fields> 
-                                        <Select selectedKey="{myParam>gerencia}" forceSelection="false" items="{ path: 'myParam>/dataGerencia'}" id="gInsp_gerencia" wrapItemsText="true">
+                                        <Select selectedKey="{myParam>gerencia}" forceSelection="false" items="{ path: 'myParam>/dataGerencia'}" id="gInsp_gerencia" >
                                             <core:Item key="{myParam>key}" text="{myParam>name}"  />
                                         </Select>
                                     </f:fields>
@@ -65,14 +65,14 @@
                                 </f:FormElement> 
                                 <f:FormElement label="Categoría">
                                     <f:fields> 
-                                        <Select forceSelection="false" items="{ path: 'myParam>/dataCategoria'}" id="gInsp_categoria" wrapItemsText="true" showSecondaryValues= "true"> 
+                                        <Select forceSelection="false" items="{ path: 'myParam>/dataCategoria'}" id="gInsp_categoria"> 
                                             <core:ListItem key="{myParam>key}" text="{myParam>name}" additionalText="{myParam>info}" />
                                         </Select>
                                     </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="Tipo">
                                     <f:fields>
-                                        <Select forceSelection="false" items="{ path: 'myParam>/dataTipo'}" id="gInsp_tipo" wrapItemsText="true" >
+                                        <Select forceSelection="false" items="{ path: 'myParam>/dataTipo'}" id="gInsp_tipo" >
                                             <core:Item key="{myParam>key}" text="{myParam>name}"  />
                                         </Select>
                                     </f:fields>
@@ -83,7 +83,7 @@
                             <f:formElements>
                                 <f:FormElement label="Fecha real">
                                     <f:fields>
-                                        <DatePicker value="{myParam>fechaReal}" id="gInsp_fechaReal" valueFormat="yyyyMMdd" displayFormat="dd/MM/yyyy" placeholder="Ingresar fecha"/>  
+                                        <DatePicker value="{myParam>fechaReal}" id="gInsp_fechaReal" displayFormat="dd/MM/yyyy" placeholder="Ingresar fecha"/>  
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Hora real">
@@ -123,6 +123,14 @@
                                 </f:FormElement>  
                             </f:formElements>
                         </f:FormContainer> 
+
+                        <f:FormContainer> 
+                            <f:formElements> 
+                                <f:FormElement label="Descripción de las causas que originaron el incidente">
+                                    <f:fields>  <TextArea value="{myParam>desCausaOrigen}" id="gInsp_desCausaOrigen" rows="6" />  </f:fields>
+                                </f:FormElement>   
+                            </f:formElements>
+                        </f:FormContainer> 
                     </f:formContainers>
                 </f:Form>
             </VBox> 
@@ -157,6 +165,9 @@
                         <f:formContainers>
                             <f:FormContainer > 
                                 <f:formElements>
+                                    <f:FormElement label="Codigo de trabajador">
+                                        <f:fields> <Input value="" id="perInv_codTrab"/> </f:fields>
+                                    </f:FormElement> 
                                     <f:FormElement label="Apellidos y nombres">
                                         <f:fields> <Input value="" id="perInv_fullName"/> </f:fields>
                                     </f:FormElement> 
@@ -185,20 +196,24 @@
 				</tab:extension>
                 <tab:columns>
                     <tab:Column autoResizable="true" width="auto">
-                        <Label textAlign="Center" wrapping ="true"  text="Apellidos y nombres" />
-                        <tab:template> <Input value="{myParam>fullName}" />  </tab:template>
+                        <Label textAlign="Center" wrapping ="true" text="Apellidos y nombres" />
+                        <tab:template> <Text text="{myParam>fullName}" />  </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
-                        <Label textAlign="Center" wrapping ="true"  text="DNI" />
-                        <tab:template> <Input value="{myParam>dni}" /> </tab:template>
+                        <Label textAlign="Center" wrapping ="true" text="DNI" />
+                        <tab:template> <Text text="{myParam>dni}" /> </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
-                        <Label textAlign="Center" wrapping ="true"  text="Contratista" />
-                        <tab:template> <Input value="{myParam>contratista}" /> </tab:template>
+                        <Label textAlign="Center" wrapping ="true" text="Contratista" />
+                        <tab:template> <Text text="{myParam>contratista}" /> </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
-                        <Label textAlign="Center" wrapping ="true"  text="Puesto de trabajo" />
-                        <tab:template> <Input value="{myParam>puestoTrb}" /> </tab:template>
+                        <Label textAlign="Center" wrapping ="true" text="Puesto de trabajo" />
+                        <tab:template> <Text text="{myParam>puestoTrb}" /> </tab:template>
+                    </tab:Column>
+                    <tab:Column autoResizable="true" width="auto">
+                        <Label textAlign="Center" wrapping ="true" text="Codigo de trabajador" />
+                        <tab:template> <Text text="{myParam>codTrab}" /> </tab:template>
                     </tab:Column>
                 </tab:columns>
             </tab:Table>
@@ -233,17 +248,20 @@
                         <f:formContainers>
                             <f:FormContainer > 
                                 <f:formElements>
-                                    <f:FormElement label="Apellidos y nombres">
-                                        <f:fields> <Input value="" id="riAsoc_fullName"/> </f:fields>
+                                    <f:FormElement label="Condición insegura">
+                                        <f:fields> <Input value="" id="riAsoc_conInsegura"/> </f:fields>
                                     </f:FormElement> 
-                                    <f:FormElement label="DNI">
-                                        <f:fields> <Input value="" id="riAsoc_dni"/> </f:fields>
+                                    <f:FormElement label="Riesgo">
+                                        <f:fields> <Input value="" id="riAsoc_riesgo"/> </f:fields>
                                     </f:FormElement> 
-                                    <f:FormElement label="Contratista">
-                                        <f:fields> <Input value="" id="riAsoc_contratista"/> </f:fields>
+                                    <f:FormElement label="Consecuencias">
+                                        <f:fields> <Input value="" id="riAsoc_consecuencia"/> </f:fields>
                                     </f:FormElement> 
-                                    <f:FormElement label="Puesto de trabajo">
-                                        <f:fields> <Input value="" id="riAsoc_puestoTrb"/> </f:fields>
+                                    <f:FormElement label="Nivel riesgo">
+                                        <f:fields> <Input value="" id="riAsoc_nivelRiesgo"/> </f:fields>
+                                    </f:FormElement>  
+                                    <f:FormElement label="Anexo">
+                                        <f:fields> <Input value="" id="riAsoc_file"/> </f:fields>
                                     </f:FormElement>  
                                 </f:formElements>
                             </f:FormContainer> 
@@ -251,7 +269,7 @@
                     </f:Form> 
                 </content>
             </Panel>
-            <tab:Table showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/dataTab' }" class="sapUiSmallMargin">
+            <tab:Table showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/tabRiAsociados' }" class="sapUiSmallMargin">
                 <tab:extension>
 					<OverflowToolbar>
 						<Title text="Riesgos asociados"/>
@@ -262,98 +280,179 @@
                 <tab:columns>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Condición insegura" />
-                        <tab:template> <Input value="" />  </tab:template>
+                        <tab:template> <Text text="{myParam>conInsegura}" />  </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Riesgo" />
-                        <tab:template> <Input value="" /> </tab:template>
+                        <tab:template> <Text text="{myParam>riesgo}" /> </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Consecuencia" />
-                        <tab:template> <Input value="" /> </tab:template>
+                        <tab:template> <Text text="{myParam>consecuencia}" /> </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Nivel riesgo" />
-                        <tab:template> <Input value="" /> </tab:template>
+                        <tab:template> <Text text="{myParam>nivelRiesgo}" /> </tab:template>
+                    </tab:Column>
+                    <tab:Column autoResizable="true" width="auto">
+                        <Label textAlign="Center" wrapping ="true"  text="Anexo" />
+                        <tab:template> <Text text="{myParam>file}" /> </tab:template>
                     </tab:Column>
                 </tab:columns>
-            </tab:Table>
-             
-            <VBox class="sapUiSmallMargin">
-                <f:Form editable="true" > 
-                    <f:layout>
-                        <f:ResponsiveGridLayout
-                            labelSpanXL="4"
-                            labelSpanL="3"
-                            labelSpanM="4"
-                            labelSpanS="12"
-                            adjustLabelSpan="false"
-                            emptySpanXL="0"
-                            emptySpanL="4"
-                            emptySpanM="0"
-                            emptySpanS="0"
-                            columnsXL="2"
-                            columnsL="1"
-                            columnsM="1"
-                            singleContainerFullSize="false" />
-                    </f:layout>
-                    <f:formContainers> 
-                        <f:FormContainer> 
-                            <f:formElements> 
-                                <f:FormElement label="Descripción de las causas que originaron el incidente">
-                                    <f:fields>  <TextArea change="handleChange" rows="6" />  </f:fields>
-                                </f:FormElement>   
-                            </f:formElements>
-                        </f:FormContainer> 
-                    </f:formContainers>
-                </f:Form>
-            </VBox> 
+            </tab:Table> 
 
-            <tab:Table showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/dataTab' }" class="sapUiSmallMargin">
+            <Panel id="panelMedCorrectiva" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
+                <headerToolbar>
+                    <OverflowToolbar style="Clear">
+                        <Title text="Nuevo medida correctiva" />
+                        <ToolbarSpacer />
+                        <Button icon="sap-icon://save" press="saveMedCorrectiva" text="Guardar" type="Emphasized" /> 
+                        <Button icon="sap-icon://decline" press="cancelMedCorrectiva" text="Cancelar" type="Emphasized" /> 
+                    </OverflowToolbar>
+                </headerToolbar>
+                <content>
+                    <f:Form editable="true"> 
+                        <f:layout>
+                            <f:ResponsiveGridLayout
+                                labelSpanXL="4"
+                                labelSpanL="3"
+                                labelSpanM="4"
+                                labelSpanS="12"
+                                adjustLabelSpan="false"
+                                emptySpanXL="0"
+                                emptySpanL="4"
+                                emptySpanM="0"
+                                emptySpanS="0"
+                                columnsXL="2"
+                                columnsL="1"
+                                columnsM="1"
+                                singleContainerFullSize="false" />
+                        </f:layout>
+                        <f:formContainers>
+                            <f:FormContainer > 
+                                <f:formElements>
+                                    <f:FormElement label="Descripción de la medida correctiva">
+                                        <f:fields> <Input value="" id="medCor_descrip"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Responsable">
+                                        <f:fields> <Input value="" id="medCor_responsable"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Fecha de ejecución">
+                                        <f:fields> <Input value="" id="medCor_fechaEjc"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Estado de acción correctiva">
+                                        <f:fields> 
+                                        <Select id="medCor_estadoAccCor" items="{ path: 'myParam>/estadoAccionCorrectiva' }" width="100%">
+                                            <core:ListItem key="{myParam>key}" text="{myParam>state}"/>
+                                        </Select> 
+                                        </f:fields>
+                                    </f:FormElement>  
+                                </f:formElements>
+                            </f:FormContainer> 
+                        </f:formContainers>
+                    </f:Form> 
+                </content>
+            </Panel>
+            <tab:Table showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/tabMedCorrectiva' }" class="sapUiSmallMargin">
                 <tab:extension>
 					<OverflowToolbar>
 						<Title text="Medidas correctivas"/> 
+                        <ToolbarSpacer/>
+						<Button icon="sap-icon://add-employee" text="Agregar" press="addMedCorrectiva"/>
 					</OverflowToolbar>
 				</tab:extension>
                 <tab:columns>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Descripción de la medida correctiva" />
-                        <tab:template> <Input value="" />  </tab:template>
+                        <tab:template> <Text text="{myParam>descrip}"/>  </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Responsable" />
-                        <tab:template> <Input value="" /> </tab:template>
+                        <tab:template> <Text text="{myParam>responsable}" /> </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Fecha de ejecución" />
-                        <tab:template> <DatePicker value="" valueFormat="dd-MM-yyyy"/>  </tab:template>
+                        <tab:template> <Text text="{myParam>fechaEjc}"/>  </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Estado de acción correctiva" />
-                        <tab:template> <Input value="" /> </tab:template>
+                        <tab:template>
+                            <!-- <Text text="{ path: 'myParam>ANLN1', formatter: '.formatNumerico', parameters: {param1: 'Valor1', param2: 'Valor2'} }" wrapping="false" /> -->
+
+                            <Text text="{ parts: [{path: 'myParam>estadoAccCor'},{ path: 'myParam>/estadoAccionCorrectiva' }], formatter: '.keyValorEstadoAccionCorrectiva'}"/>  
+                            <!-- <Select items="{ path: 'myParam>/estadoAccionCorrectiva' }" selectedKey="{myParam>estadoAccCor}" enabled="false" width="100%">
+                                <core:ListItem key="{myParam>key}" text="{myParam>state}"/>
+                            </Select>  -->
+                         </tab:template>
                     </tab:Column>
                 </tab:columns>
             </tab:Table>
-            <tab:Table showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/dataTab' }" class="sapUiSmallMargin">
+            
+            <Panel id="panelResponsables" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
+                <headerToolbar>
+                    <OverflowToolbar style="Clear">
+                        <Title text="Nuevo medida correctiva" />
+                        <ToolbarSpacer />
+                        <Button icon="sap-icon://save" press="saveResponsables" text="Guardar" type="Emphasized" /> 
+                        <Button icon="sap-icon://decline" press="cancelResponsables" text="Cancelar" type="Emphasized" /> 
+                    </OverflowToolbar>
+                </headerToolbar>
+                <content>
+                    <f:Form editable="true"> 
+                        <f:layout>
+                            <f:ResponsiveGridLayout
+                                labelSpanXL="4"
+                                labelSpanL="3"
+                                labelSpanM="4"
+                                labelSpanS="12"
+                                adjustLabelSpan="false"
+                                emptySpanXL="0"
+                                emptySpanL="4"
+                                emptySpanM="0"
+                                emptySpanS="0"
+                                columnsXL="2"
+                                columnsL="1"
+                                columnsM="1"
+                                singleContainerFullSize="false" />
+                        </f:layout>
+                        <f:formContainers>
+                            <f:FormContainer > 
+                                <f:formElements>
+                                    <f:FormElement label="Nombre">
+                                        <f:fields> <Input value="" id="responsable_nombre"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Cargo">
+                                        <f:fields> <Input value="" id="responsable_cargo"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Fecha">
+                                        <f:fields> <DatePicker id="responsable_fecha" value=""  displayFormat="dd/MM/yyyy"/> </f:fields>
+                                    </f:FormElement> 
+                                </f:formElements>
+                            </f:FormContainer> 
+                        </f:formContainers>
+                    </f:Form> 
+                </content>
+            </Panel>
+            <tab:Table showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/tabResponsables' }" class="sapUiSmallMargin">
                 <tab:extension>
 					<OverflowToolbar>
 						<Title text="Responsables del registro"/>
-						<!-- <ToolbarSpacer/>
-						<Button icon="sap-icon://decline" tooltip="clear selection" press="clearSelection"/> -->
+                        <ToolbarSpacer/>
+						<Button icon="sap-icon://add-employee" text="Agregar" press="addResponsables"/>
 					</OverflowToolbar>
 				</tab:extension>
                 <tab:columns>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Nombre" />
-                        <tab:template> <Input value="" />  </tab:template>
+                        <tab:template> <Text text="{myParam>nombre}" />  </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Cargo" />
-                        <tab:template> <Input value="" /> </tab:template>
+                        <tab:template> <Text text="{myParam>cargo}" /> </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Fecha" />
-                        <tab:template> <DatePicker value="" valueFormat="dd-MM-yyyy"/>  </tab:template>
+                        <tab:template> <Text text="{myParam>fecha}" />  </tab:template>
                     </tab:Column> 
                 </tab:columns>
             </tab:Table>

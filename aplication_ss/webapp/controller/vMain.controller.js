@@ -6,11 +6,13 @@
     "sap/ui/model/FilterType",
     "sap/ui/core/Fragment", 
     "sap/m/MessageToast",
+    "sap/ui/export/Spreadsheet",
+
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller,MessageBox,MessageToast,Fragment,Filter,FilterOperator,FilterType) {
+    function (Controller,MessageBox,Spreadsheet,MessageToast,Fragment,Filter,FilterOperator,FilterType) {
         "use strict";
 
         return Controller.extend("appss.aplicationss.controller.vMain", {
@@ -207,6 +209,45 @@
             onDuserAgregarCalifCancelar: function () {
                 this._getDialogUsuario().close()
             },
+            //REPORTE
+            excelDownloadREPASIS: function (ele) { 
+                console.log("excelDownload",ele);            
+                let objEstruc = [
+                    {label:"Empresa",property:"KEY",type:"string"},
+                    {label:"Apellidos",property:"APELLIDO",type:"string"},
+                    {label:"Nombres",property:"NAME",type:"string"},
+                    {label:"DNI",property:"DNI",type:"string"},
+                    {label:"Nota de evaluación",property:"NOTA",type:"string"},
+                    {label:"Fecha de inducción general",property:"FECHAINDG",type:"string"},
+                    {label:"Fecha vencimiento indución general",property:"FECHAVENCINDGRAL",type:"string"},
+                    {label:"Fecha indución especifica",property:"FECHAINDESP",type:"string"},
+                    {label:"Fecha vencimiento indución especifica",property:"FECHAVENCINDESP",type:"string"},
+                    {label:"Examen médico",property:"EXAMEN",type:"string"},
+                    {label:"Aptitud",property:"APTITUD",type:"string"},
+                    {label:"Vigencia de examen médico ocupacional",property:"VIG",type:"string"},
+                    {label:"Requiere evaluación médica",property:"REQEVAL",type:"string"},
+                    {label:"SCTR",property:"SCTR",type:"string"},
+                    {label:"Fecha de vencimiento del SCTR",property:"SCTRFV",type:"string"},                
+                ]
+                console.log("objEstruc",objEstruc); 
+                // var oModel = this.getView().getModel("myParam");  
+                // let listInspeccion = oModel.getProperty("/listInspeccion"); 
+                let list = this.getView().getModel("myParam").getProperty("/" + ele);
+                let oSettings = {
+                    workbook: {
+                        columns: objEstruc
+                    },
+                    dataSource: list,
+                    fileName: "Reporte.xlsx"
+                };
+                let oSheet = new sap.ui.export.Spreadsheet(oSettings);           
+                console.log("oSheet",oSheet);            
+                oSheet.build().then(function () {
+                    sap.m.MessageToast.show("Se realizó la exportación con éxito.")
+                }.bind(this)).finally(function () {
+                    oSheet.destroy()
+                }.bind(this)) 
+            }, 
             //GENERAR CODIGO 4 DIGITOS
             getCod: function () {
                 var min = 1000; // Mínimo valor de 4 dígitos (1000)
@@ -373,6 +414,16 @@
                 // console.log("objInspeccion",objInspeccion) 
                 listInspeccion.push(objInspeccion)
                 oModel.setProperty("/listInspeccion",listInspeccion); 
+
+                let objInspeccionClean = { 
+                    codInsp: "gInsp_codInsp",
+                    gerencia: "gInsp_gerencia",
+                    area: "gInsp_area",
+                    departamento: "gInsp_departamento",
+                    fechaP: "gInsp_programada",
+                    status: "pendiente",
+                }
+                this.limpiarObjeto(objInspeccionClean)
             },
             buscarInspecciones: function () { 
                 console.log("buscarInspecciones") 
@@ -434,10 +485,102 @@
                 }
                 // oModel.setProperty("/selectIncidente",objeto);
             },
-            // onSelectTab: function () {
-            //     console.log("CLIC EN CELDA")
-            //     this.getRouter().getTargets().display("vInspeccion");
-            // },
+            excelDownload: function (ele) { 
+                console.log("excelDownload",ele);            
+                let objEstruc = [
+                    {label:"Cod. Inspección",property:"codInsp",type:"string"},
+                    {label:"Área",property:"area",type:"string"},
+                    {label:"Departamento",property:"departamento",type:"string"},
+                    {label:"Jefatura a cargo",property:"jefaturaCargo",type:"string"},
+                    {label:"Observación",property:"objs",type:"string"},
+                    {label:"Fecha reporte",property:"freporte",type:"string"},
+                    {label:"Mes",property:"mes",type:"string"},
+                    {label:"Año",property:"anio",type:"string"},
+                    {label:"Tipo",property:"tipo",type:"string"},
+                    {label:"Categoria",property:"categoria",type:"string"},
+                    {label:"Recomendación",property:"recomendacion",type:"string"},
+                    {label:"Días sin atención",property:"daySinAten",type:"string"},
+                    {label:"Estado",property:"estado",type:"string"},
+                    {label:"Fecha liberación",property:"fLiberacion",type:"string"},
+                    {label:"MesLib",property:"mesLib",type:"string"},
+                    {label:"AñoLib",property:"anioLib",type:"string"},
+                    {label:"Origen",property:"origen",type:"string"},
+                    {label:"Registrado por",property:"resgistradoPor",type:"string"},
+                    {label:"Fecha registro",property:"fRegistroDesv",type:"string"}
+                ]
+                console.log("objEstruc",objEstruc); 
+                // var oModel = this.getView().getModel("myParam");  
+                // let listInspeccion = oModel.getProperty("/listInspeccion"); 
+                let list = this.getView().getModel("myParam").getProperty("/" + ele);
+                let oSettings = {
+                    workbook: {
+                        columns: objEstruc
+                    },
+                    dataSource: list,
+                    fileName: "Reporte.xlsx"
+                };
+                let oSheet = new sap.ui.export.Spreadsheet(oSettings);           
+                console.log("oSheet",oSheet);            
+                oSheet.build().then(function () {
+                    sap.m.MessageToast.show("Se realizó la exportación con éxito.")
+                }.bind(this)).finally(function () {
+                    oSheet.destroy()
+                }.bind(this)) 
+            }, 
+            excelDownloadICR: function (ele) { 
+                console.log("excelDownload",ele);            
+                let objEstruc = [
+                    {label:"Gerencia",property:"gerencia"},
+                    {label:"Condiciones reportadas mese anteriores A",property:"conRepMesAnt_A"},
+                    {label:"Condiciones reportadas mese anteriores B",property:"conRepMesAnt_B"},
+                    {label:"Condiciones reportadas mese anteriores C",property:"conRepMesAnt_C"},
+                    {label:"Condiciones corregidas mese anteriores A",property:"conCorMesAnt_A"},
+                    {label:"Condiciones corregidas mese anteriores B",property:"conCorMesAnt_B"},
+                    {label:"Condiciones corregidas mese anteriores C",property:"conCorMesAnt_C"},
+                    {label:"Condiciones reportadas en el mes A",property:"conRepMes_A"},
+                    {label:"Condiciones reportadas en el mes B",property:"conRepMes_B"},
+                    {label:"Condiciones reportadas en el mes C",property:"conRepMes_C"},
+                    {label:"Condiciones corregidas en el mes A",property:"conCor_mes_A"},
+                    {label:"Condiciones corregidas meses anteriores A",property:"conCor_mesAnt_A"},
+                    {label:"Condiciones corregidas en el mes B",property:"conCor_mes_B"},
+                    {label:"Condiciones corregidas meses anteriores B",property:"conCor_mesAnt_B"},
+                    {label:"Condiciones corregidas en el mes C",property:"conCor_mes_C"},
+                    {label:"Condiciones corregidas meses anteriores C",property:"conCor_mesAnt_C"},
+                    {label:"% ICR mes A",property:"porICRmes_A"},
+                    {label:"% ICR mes B",property:"porICRmes_B"},
+                    {label:"% ICR mes C",property:"porICRmes_C"},
+                    {label:"% ICR mes Total",property:"porICRmes_Total"},
+                    {label:"% ICR acumulado A",property:"porICRacum_A"},
+                    {label:"% ICR acumulado B",property:"porICRacum_B"},
+                    {label:"% ICR acumulado C",property:"porICRacum_C"},
+                    {label:"% ICR acumulado Total",property:"porICRacum_Total"},
+                ]
+                console.log("objEstruc",objEstruc); 
+                // var oModel = this.getView().getModel("myParam");  
+                // let listInspeccion = oModel.getProperty("/listInspeccion"); 
+                let list = this.getView().getModel("myParam").getProperty("/" + ele);
+                let oSettings = {
+                    workbook: {
+                        columns: objEstruc
+                    },
+                    dataSource: list,
+                    fileName: "ReporteICR.xlsx"
+                };
+                let oSheet = new sap.ui.export.Spreadsheet(oSettings);           
+                console.log("oSheet",oSheet);            
+                oSheet.build().then(function () {
+                    sap.m.MessageToast.show("Se realizó la exportación con éxito.")
+                }.bind(this)).finally(function () {
+                    oSheet.destroy()
+                }.bind(this)) 
+            }, 
+            limpiarObjeto: function (objeto) {  
+                for (var propiedad in objeto) {
+                    if (objeto.hasOwnProperty(propiedad)) {
+                        this.getView().byId(objeto[propiedad]).setValue("") 
+                    }
+                  }
+            },
 
         });
     });
