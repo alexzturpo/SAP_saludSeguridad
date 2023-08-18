@@ -1,0 +1,14 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" >
+	<SelectDialog title="Departamento"
+		items="{ path: 'myParam>/ZSYSO_DPTO'}"
+		search="dgSearchDtpo"
+		confirm="dgGetCloseDtpo"
+		cancel="dgGetCloseDtpo">
+		<StandardListItem
+			icon="sap-icon://building"
+			iconDensityAware="false"
+			iconInset="false"
+			title="{myParam>ZDESCRIPCION}"
+			description="{myParam>ZDPTO}" />
+	</SelectDialog>
+</core:FragmentDefinition> 

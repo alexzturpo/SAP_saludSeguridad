@@ -1,0 +1,178 @@
+<mvc:View controllerName="appss.aplicationss.controller.vDevolucionEpp" 
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:tab="sap.ui.table"
+    xmlns:u="sap.ui.unified"
+    xmlns="sap.m">
+    <Page title="Devolución Epp"  showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
+		<headerContent>
+			<!-- <Button text="Guarda devolución" icon="sap-icon://paper-plane" type="Emphasized" press="updateIncidente" /> -->
+			<Button text="Ejecutar devolución" icon="sap-icon://paper-plane" type="Emphasized" press="updateIncidente" />
+            
+            <Button text="Cancelar" icon="sap-icon://delete" press="onPageBack" /> 
+		</headerContent> 
+        <content >
+            <!-- <Panel width="auto" >
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title text="Datos conplementario"/>
+                        <ToolbarSpacer />
+                        <Button text="Guardar" icon="sap-icon://save" type="Emphasized" press="newIncidente" /> 
+                    </OverflowToolbar>
+                </headerToolbar> -->
+                <f:Form id="form01" editable="true"  width="auto" > 
+                    <f:layout>
+                        <f:ResponsiveGridLayout id="FormTab1IdaG"
+                            labelSpanXL="4"
+                            labelSpanL="4"
+                            labelSpanM="12"
+                            labelSpanS="12"
+                            adjustLabelSpan="false"
+                            emptySpanXL="0"
+                            emptySpanL="0"
+                            emptySpanM="0"
+                            emptySpanS="0"
+                            columnsXL="2"
+                            columnsL="2"
+                            columnsM="2"
+                            singleContainerFullSize="false"  />
+                    </f:layout>
+                    <f:formContainers >
+                        <f:FormContainer>
+                            <f:formElements>
+                                <f:FormElement label="N° reserva">
+                                    <f:fields>
+                                        <Input id="dvEpp_nroReq" value="" /> 
+                                    </f:fields>
+                                </f:FormElement>
+                                <f:FormElement label="Fecha reserva">
+                                    <f:fields> 
+                                        <DatePicker id="dvEpp_fechaReq" value="" displayFormat="short"/>
+                                    </f:fields>
+                                </f:FormElement>
+                                <f:FormElement label="Centro">
+                                    <f:fields> 
+                                        <Input id="dvEpp_centro" value="" /> 
+                                    </f:fields>
+                                </f:FormElement>  
+                                <f:FormElement label="Almacén">
+                                    <f:fields> 
+                                        <Input id="dvEpp_almacen" value="" /> 
+                                    </f:fields>
+                                </f:FormElement>  
+                            </f:formElements>
+                        </f:FormContainer> 
+                        <f:FormContainer>
+                            <f:toolbar>
+                                <Toolbar>
+                                    <Title text="Datos del trabajador"/>
+                                    <ToolbarSpacer />
+                                    <!-- <Button text="Buscar" icon="sap-icon://employee-lookup" type="Emphasized" press="buscarTrb" /> -->
+                                </Toolbar>
+                            </f:toolbar>
+                            <f:formElements>
+                                <f:FormElement label="Codigo de trabajador" >
+                                    <f:fields>
+                                        <Input id="dvEpp_codTrab" value="" /> 
+                                    </f:fields>
+                                </f:FormElement> 
+                                <f:FormElement label="Nombres" >
+                                    <f:fields>
+                                        <Input id="dvEpp_nombres" value="" /> 
+                                    </f:fields>
+                                </f:FormElement>
+                                <f:FormElement label="Apellidos" >
+                                    <f:fields>
+                                        <Input id="dvEpp_apellido" value="" />  
+                                    </f:fields>
+                                </f:FormElement>
+                                <f:FormElement label="DNI" >
+                                    <f:fields>
+                                        <Input id="dvEpp_dni" value="" />  
+                                    </f:fields>
+                                </f:FormElement>
+                                <f:FormElement label="Cargo" >
+                                    <f:fields>
+                                        <Input id="dvEpp_cargo" value="" />  
+                                    </f:fields>
+                                </f:FormElement>
+                                <f:FormElement label="Area de Trabajo" >
+                                    <f:fields>
+                                        <Input id="dvEpp_areaTrb" value="" />  
+                                    </f:fields>
+                                </f:FormElement>
+                            </f:formElements>
+                        </f:FormContainer> 
+                        <f:FormContainer>
+                            <f:formElements>
+                                <f:FormElement label="Fecha de cese">
+                                    <f:fields>
+                                        <Input id="dvEpp_fechaCese" value="" /> 
+                                    </f:fields>
+                                </f:FormElement>
+                                <f:FormElement label="Fecha de transferencia">
+                                    <f:fields> 
+                                        <DatePicker id="dvEpp_fechaTrans" value="" displayFormat="short"/>
+                                    </f:fields>
+                                </f:FormElement>
+                                <f:FormElement label="Fecha de devolución">
+                                    <f:fields> 
+                                        <Input id="dvEpp_devolucion" value="" /> 
+                                    </f:fields>
+                                </f:FormElement>
+                            </f:formElements>
+                        </f:FormContainer> 
+                    </f:formContainers> 
+                </f:Form> 
+                <!-- tabla  -->
+                <tab:Table rows="{  path: 'myParam>/dataTab' }" selectionMode="MultiToggle"  visibleRowCount="5" ariaLabelledBy="title">
+                    <tab:extension>
+                        <OverflowToolbar >
+                            <Title text="Lista de materiales"/>
+                            <ToolbarSpacer />  
+                            <!-- <Button text="Adicionar" type="Emphasized" icon="sap-icon://add" press="onEnviartab2" />  -->
+                            <!-- <Button text="Eliminar" icon="sap-icon://delete" press="deleteInduccion" />   -->
+                            <!-- <Button text="Devoulción total " icon="sap-icon://outbox" press="deleteInduccion" />   -->
+                        </OverflowToolbar>
+                    </tab:extension>
+                    <tab:columns>
+                        <tab:Column  >
+                            <Label textAlign="Center" wrapping ="true"  text="Codigo de Material" />
+                            <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column >
+                            <Label textAlign="Center" wrapping ="true"  text="Descripción" />
+                            <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column>
+                            <Label textAlign="Center" wrapping ="true"  text="Cantidad" />
+                            <tab:template> <Text text="5" wrapping="false" /> </tab:template>
+                        </tab:Column>     
+                        <tab:Column>
+                            <Label textAlign="Center" wrapping ="true"  text="Estado EPP" />
+                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                        </tab:Column>     
+                        <tab:Column>
+                            <Label textAlign="Center" wrapping ="true"  text="¿Pérdida?" />
+                            <tab:template> <CheckBox selected="true" /> </tab:template>
+                        </tab:Column>     
+                        <tab:Column>
+                            <Label textAlign="Center" wrapping ="true"  text="Observaciones" />
+                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                        </tab:Column>     
+                        <tab:Column>
+                            <Label textAlign="Center" wrapping ="true"  text="Estado de EPPs" />
+                            <tab:template> 
+                                <ComboBox id="" class="sapUiSmallMarginBottom" enabled="true" selectedKey="1000">
+                                    <core:Item key="B" text="Bueno" />
+                                    <core:Item key="R" text="Regular" />
+                                    <core:Item key="M" text="Malo" />
+                                </ComboBox>   
+                            </tab:template>
+                        </tab:Column>  
+                    </tab:columns>
+                </tab:Table>   
+        </content> 
+    </Page>
+</mvc:View>

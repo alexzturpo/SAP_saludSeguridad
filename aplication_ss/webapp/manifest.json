@@ -33,7 +33,7 @@
     }
   },
   "sap.ui5": {
-    "flexEnabled": true,
+    "flexEnabled": false,
     "dependencies": {
       "minUI5Version": "1.116.0",
       "libs": {
@@ -105,6 +105,30 @@
             "pattern": "vIncidente",
             "titleTarget": "vIncidente",
             "target": "vIncidente"
+        },
+        {
+            "name": "vNewRequerimientoEpp",
+            "pattern": "vNewRequerimientoEpp",
+            "titleTarget": "vNewRequerimientoEpp",
+            "target": "vNewRequerimientoEpp"
+        },
+        {
+            "name": "vDevolucionEpp",
+            "pattern": "vDevolucionEpp",
+            "titleTarget": "vDevolucionEpp",
+            "target": "vDevolucionEpp"
+        },
+        {
+          "name": "vVisualizarEpp",
+          "pattern": "vVisualizarEpp",
+          "titleTarget": "vVisualizarEpp",
+          "target": "vVisualizarEpp"
+        },
+        {
+          "name": "vEntregarEpp",
+          "pattern": "vEntregarEpp",
+          "titleTarget": "vEntregarEpp",
+          "target": "vEntregarEpp"
         }
       ],
       "targets": {
@@ -142,6 +166,34 @@
           "clearControlAggregation": false,
           "viewId": "vIncidente",
           "viewName": "gestionIncidentes/vIncidente"
+        },
+        "vNewRequerimientoEpp": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "vNewRequerimientoEpp",
+          "viewName": "epps/vNewRequerimientoEpp"
+        },
+        "vDevolucionEpp": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "vDevolucionEpp",
+          "viewName": "epps/vDevolucionEpp"
+        },
+        "vVisualizarEpp": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "vVisualizarEpp",
+          "viewName": "epps/vVisualizarEpp"
+        },
+        "vEntregarEpp": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "vEntregarEpp",
+          "viewName": "epps/vEntregarEpp"
         }
       }
     },

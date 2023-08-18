@@ -1,0 +1,14 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" >
+	<SelectDialog title="Gerencias"
+		items="{ path: 'myParam>/ZSYSO_GERENCIASet'}"
+		search="dgSearchListEempleado"
+		confirm=".dgGetCloseListEempleado"
+		cancel=".dgGetCloseListEempleado">
+		<StandardListItem
+			icon="sap-icon://building"
+			iconDensityAware="false"
+			iconInset="false"
+			title="{myParam>ZDESCRIPCION}"
+			description="{myParam>ZGERENCIA}" />
+	</SelectDialog>
+</core:FragmentDefinition> 

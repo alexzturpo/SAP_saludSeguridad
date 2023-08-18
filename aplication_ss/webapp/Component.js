@@ -30,6 +30,14 @@ sap.ui.define([
                 // set the device model
                 this.setModel(models.createDeviceModel(), "device");
                 var oData = {
+                    
+                    "listurlBD": {
+                        "bdClientes2": "cpbl/browse/",
+                        "bdClientes": "cpdb/mydb/",
+                    },
+                    "listTablasOData": {
+                        "clistTablasODataURL": "/odataent/odata2.svc/mydb",
+                    },
                     "datanewtrabajador":{
                         "idcodigoAC":"",
                         "idapellidoAC":"",
@@ -37,7 +45,9 @@ sap.ui.define([
                         "idAreaAC":"",
                         "idPuestoAC":"",
                     },  
-                    
+                    "ZSYSO_CONTRATISTA":{
+                        "ZID_PERSONA":""
+                    },
                     "dataContratistafilter":[],
                     "dataContratistadetalle":[
                         {"SCTRFV":"30/08/2024","SCTR":"SCTR","REQEVAL":"NO","VIG":"21/08/2024","APTITUD":"bueno","EXAMEN":"Sicosomatico","FECHAVENCINDESP":"21/08/2023","FECHAINDESP":"21/08/2023","FECHAVENCINDGRAL":"24/08/2023","FECHAINDG":"24/07/2023","NOTA":"10","KEY":"1","NAME":"Juan","APELLIDO":"Ugarte","DNI":"75612345"},
@@ -85,30 +95,74 @@ sap.ui.define([
                         {"key":"3","name":"Instalaciones y equipo"},
                         {"key":"4","name":"Rutinarias, No Rutinarias y administrativas"}
                     ],
+                    // tablas de SYSO
+                    "docTableIncidente":[],
+                    "tableAccionesInformeIncidente":[],
+                    "selectIncidenteInforme":[{
+                            ZACTOS_SUBESTAND: "",
+                            ZCOND_SUBESTAND: "",
+                            ZFACT_PERSONALES: "", 
+                            ZFACT_TRABAJO: "",
+                            ZLECCIONES: "",
+                            ZINVEST_POR: "", 
+                            ZCARGO: "",
+                            ZHORA: "", 
+                            ZFIRMA: ""
+                        }],
+                    "dataEpps":[
+                        {"id": 1,"nombre": "Casco de Seguridad","stock": 100},
+                        {"id": 2,"nombre": "Gafas de Seguridad","stock": 150},
+                        {"id": 3,"nombre": "Mascarilla N95","stock": 500},
+                        {"id": 4,"nombre": "Guantes de Trabajo", "stock": 300},
+                        {"id": 5,"nombre": "Protectores Auditivos","stock": 200}
+                    ]
+                    ,
+                    "ZSYSO_GERENCIASet":[],
+                    "ZSYSO_AREASet":[],
+                    "ZSYSO_GERENCIA":[
+                        {"ZGERENCIA":"001","ZDESCRIPCION":"Descrip 001","ZESTADO":"Activo"},
+                        {"ZGERENCIA":"002","ZDESCRIPCION":"geren 002","ZESTADO":"Inactivo"},
+                    ],
+                    "ZSYSO_AREA":[
+                        {"ZAREA":"001","ZGERENCIA":"001","ZDESCRIPCION":"Descrip area 001","ZESTADO":"Activo"},
+                        {"ZAREA":"002","ZGERENCIA":"001","ZDESCRIPCION":"fa area 002","ZESTADO":"Activo"},
+                    ],
+                    "ZSYSO_DPTO":[
+                        {"ZDPTO":"001","ZAREA":"001","ZGERENCIA":"001","ZDESCRIPCION":"Descrip DPTO 001","ZESTADO":"Activo"}, 
+                        {"ZDPTO":"002","ZAREA":"002","ZGERENCIA":"001","ZDESCRIPCION":"Descrip DPTO 002","ZESTADO":"Activo"}, 
+                        {"ZDPTO":"003","ZAREA":"002","ZGERENCIA":"001","ZDESCRIPCION":"Descrip DPTO 003","ZESTADO":"Inactivo"}, 
+                    ],
+                    "ZSYSO_CATEGORIA":[
+                        {"ZCATEGORIA":"A","ZDESCRIPCION":"Condición o práctica con potencial de causar incapacidad permanente, fatalidad y/o ocasionar perdida mayor y/o demoras en atención a levantamiento."}, 
+                        {"ZCATEGORIA":"B","ZDESCRIPCION":"Condición o práctica con potencial de causar lesiones, enfermedad seria, ocasionando incapacidad temporal o daño a la propiedad"},
+                        {"ZCATEGORIA":"C","ZDESCRIPCION":"Condición o práctica con potencial de causar lesión o enfermedad menor y/o daño a la propiedad no considerable"}
+                    ],
+                    "ZSYSO_INSPECCION":[
+                        {"ZINSPECCION":"0001","ZDPTO":"0003","ZFEC_PROGRAM":"01/08/2023","ZESTADO":"N","ZFEC_CONCLUIDA":"02/08/2023","ZCATEGORIA":"A","ZTIPO":"1","ZFEC_REAL":"01/08/2023","ZHOR_REAL":"16:00","ZACTO":"vActo","ZCONDICION":"vCondicion","ZHALLAZGO":"ZHALLAZGO","ZACCIONES":"ZACCIONES","ZRECOMENDACION":"ZRECOMENDACION","ZUBICACION":"ZUBICACION","ZCAUSAS":"ZCAUSAS","ZREGISTRADO_POR":"user1","ZAFECTADO":"ZAFECTADO"},
+                        {"ZINSPECCION":"0002","ZDPTO":"0002","ZFEC_PROGRAM":"01/08/2023","ZESTADO":"F","ZFEC_CONCLUIDA":"02/08/2023","ZCATEGORIA":"C","ZTIPO":"2","ZFEC_REAL":"01/08/2023","ZHOR_REAL":"16:00","ZACTO":"vActo","ZCONDICION":"vCondicion","ZHALLAZGO":"ZHALLAZGO","ZACCIONES":"ZACCIONES","ZRECOMENDACION":"ZRECOMENDACION","ZUBICACION":"ZUBICACION","ZCAUSAS":"ZCAUSAS","ZREGISTRADO_POR":"user1","ZAFECTADO":"ZAFECTADO"}
+                    ],
+
+                    
                     "dataTab":[
                         {"key":"1","name":"Fábrica"},
                         {"key":"2","name":"Administración"},
                         {"key":"3","name":"Instalaciones y equipo"},
                         {"key":"4","name":"Rutinarias, No Rutinarias y administrativas"}
                     ],
+                    
                     "dataCategoria":[
                         {"key":"A","name":"A","info":"Condición o práctica con potencial de causar incapacidad permanente, fatalidad y/o ocasionar perdida mayor y/o demoras en atención a levantamiento."},
                         {"key":"B","name":"B","info":"Condición o práctica con potencial de causar lesiones, enfermedad seria, ocasionando incapacidad temporal o daño a la propiedad"},
                         {"key":"C","name":"C","info":"Condición o práctica con potencial de causar lesión o enfermedad menor y/o daño a la propiedad no considerable"}
                     ],
                     "dataTipo":[
-                        {"key":"1","name":"Condición"},
-                        {"key":"2","name":"Acto"}
-                    ],
-
-                    "dataTipo":[
-                        {"key":"1","name":"Condición"},
-                        {"key":"2","name":"Acto"}
-                    ],
-                    "listIncidente":[
-                        {"numIns":"0001","titulo":"holaMundo","afectado":{"codEmpleado":"01"},"testigo":{"codEmpleado":""},"fecha":"01/10/2022","status":"pendiente"},
-                        {"numIns":"0002","titulo":"holaMundoFin","fecha":"03/03/2023","status":"completo","afectado":{"codEmpleado":"02"}},
-                    ],
+                        {"ZTIPO":"1","name":"Condición"},
+                        {"ZTIPO":"2","name":"Acto"}
+                    ], 
+                    // "listIncidente":[
+                    //     {"numIns":"0001","titulo":"holaMundo","afectado":{"codEmpleado":"01"},"testigo":{"codEmpleado":""},"fecha":"01/10/2022","status":"pendiente"},
+                    //     {"numIns":"0002","titulo":"holaMundoFin","fecha":"03/03/2023","status":"completo","afectado":{"codEmpleado":"02"}},
+                    // ],
                     "listInspeccion":[
                         {"codInsp":"888","gerencia":"1","area":"area1","departamento":"depa1","fechaP":"01/10/2023","afectado":"","status":"pendiente","categoria":"","tipo":"","desCausaOrigen":"ggg"},
                         {"codInsp":"777","gerencia":"2","area":"area2","departamento":"depa2","fechaP":"01/09/2023","afectado":"","status":"completo","categoria":"","tipo":"","desCausaOrigen":""},

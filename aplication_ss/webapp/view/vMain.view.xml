@@ -45,7 +45,7 @@
                                             <!-- <Title text="Header"/> -->
                                             <ToolbarSpacer />
                                             <Button text="Enviar" icon="sap-icon://paper-plane" type="Emphasized" press="newIncidente" />
-                                            <Button text="Cancelar" icon="sap-icon://delete" press="onEnviartab2" />  
+                                            <Button text="Cancelar post" icon="sap-icon://delete" press="postTest" />  
                                         </OverflowToolbar>
                                     </headerToolbar>
                                     <content>
@@ -112,7 +112,7 @@
                                                     <f:formElements>
                                                         <f:FormElement label="Fecha" >
                                                             <f:fields> 
-                                                                    <DatePicker id="gi_new_fecha"  displayFormat="short" change="handleChange" value="01/10/2022" />   
+                                                                    <DatePicker id="gi_new_fecha" value="" displayFormat="dd/MM/yyyy" />   
                                                             </f:fields>
                                                         </f:FormElement> 
                                                         <f:FormElement label="Hora" >
@@ -166,27 +166,27 @@
                                                     <f:formElements>
                                                         <f:FormElement label="Código de empleado:">
                                                             <f:fields>
-                                                                <Input id="gi_new_codEmp" value="" /> 
+                                                                <Input id="gi_codEmp_afectado" value="" /> 
                                                             </f:fields>
                                                         </f:FormElement>
                                                         <f:FormElement label="Nombres">
                                                             <f:fields> 
-                                                                <Input id="gi_new_nombreEmp" value=""/>
+                                                                <Input id="gi_codEmp_nombreAfec" value=""/>
                                                             </f:fields>
                                                         </f:FormElement>
                                                         <f:FormElement label="Apellidos">
                                                             <f:fields> 
-                                                                <Input id="gi_new_apellidoEmp" value=""/>
+                                                                <Input id="gi_codEmp_apellidoAfec" value=""/>
                                                             </f:fields>
                                                         </f:FormElement>  
                                                         <f:FormElement label="DNI">
                                                             <f:fields> 
-                                                                <Input id="gi_new_dniEmp" value=""/>
+                                                                <Input id="gi_codEmp_dniAfec" value=""/>
                                                             </f:fields>
                                                         </f:FormElement>  
                                                         <f:FormElement label="Área de trabajo">
                                                             <f:fields> 
-                                                                <Input id="gi_new_areaTrabajoEmp" value=""/>
+                                                                <Input id="gi_codEmp_areaTrabajoAfec" value=""/>
                                                             </f:fields>
                                                         </f:FormElement>  
                                                     </f:formElements>
@@ -203,32 +203,32 @@
                                                     <f:formElements>
                                                         <f:FormElement label="Código de empleado:">
                                                             <f:fields>
-                                                                <Input value="" id="gi_new_codEmpTest"/> 
+                                                                <Input value="" id="gi_codEmp_informante"/> 
                                                             </f:fields>
                                                         </f:FormElement>
                                                         <f:FormElement label="Nombres">
                                                             <f:fields> 
-                                                                <Input value="" id="gi_new_nombreEmpTest"/>
+                                                                <Input value="" id="gi_codEmp_nombreInf"/>
                                                             </f:fields>
                                                         </f:FormElement>
                                                         <f:FormElement label="Apellidos">
                                                             <f:fields> 
-                                                                <Input value="" id="gi_new_apellidoEmpTest"/>
+                                                                <Input value="" id="gi_codEmp_apellidoInf"/>
                                                             </f:fields>
                                                         </f:FormElement>  
                                                         <f:FormElement label="DNI">
                                                             <f:fields> 
-                                                                <Input value="" id="gi_new_dniEmpTest" />
+                                                                <Input value="" id="gi_codEmp_dniInf" />
                                                             </f:fields>
                                                         </f:FormElement>  
                                                         <f:FormElement label="Área de trabajo">
                                                             <f:fields> 
-                                                                <Input value="" id="gi_new_areaTrabajoEmpTest"/>
+                                                                <Input value="" id="gi_codEmp_areaTrabajoInf"/>
                                                             </f:fields>
                                                         </f:FormElement>  
                                                         <f:FormElement label="Detalle">
                                                             <f:fields> 
-                                                                <Input value="" id="gi_new_detalleEmpTest"/>
+                                                                <Input value="" id="gi_codEmp_detalleInf"/>
                                                             </f:fields>
                                                         </f:FormElement>  
                                                     </f:formElements>
@@ -255,13 +255,16 @@
                                             </fb:FilterGroupItem> 
                                             <fb:FilterGroupItem groupName="G1" name="A3" groupTitle="Group1"  label="Fecha de incidente" visibleInFilterBar="true" >
                                                 <fb:control>
-                                                    <DatePicker id="bFechaInc"  value=""  displayFormat="dd/MM/yyyy" placeholder="Ingresar fecha" />  
-                                                    <!-- <Input value="" id="bFechaInc"/> -->
+                                                    <DatePicker id="bFechaInc"  value=""  displayFormat="dd/MM/yyyy" placeholder="Ingresar fecha" />   
                                                 </fb:control>
                                             </fb:FilterGroupItem> 
                                             <fb:FilterGroupItem groupName="G1" name="A4" groupTitle="Group1"  label="Status" visibleInFilterBar="true" >
                                                 <fb:control>
-                                                    <Input value="" id="bStatus"/>
+                                                    <Select forceSelection="false" id="bStatus" showSecondaryValues= "true" > 
+                                                        <core:Item key="N" text="Nuevo" />
+                                                        <core:Item key="C" text="Notificado" /> 
+                                                        <core:Item key="T" text="Terminado" /> 
+                                                    </Select> 
                                                 </fb:control>
                                             </fb:FilterGroupItem>
                                         </fb:filterGroupItems>   
@@ -279,23 +282,23 @@
                                         <tab:columns>
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="N° Inspección" />
-                                                <tab:template> <Text text="{myParam>numIns}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>ZINCIDENTE}" wrapping="false" /> </tab:template> 
                                             </tab:Column>
                                             <tab:Column>
                                                 <Label textAlign="Center" wrapping ="true"  text="Titulo" />
-                                                <tab:template> <Text text="{myParam>titulo}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>ZTITULO}" wrapping="false" /> </tab:template>
                                             </tab:Column>
                                             <tab:Column>
                                                 <Label textAlign="Center" wrapping ="true"  text="Fecha de incidente" />
-                                                <tab:template> <Text text="{myParam>fecha}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>ZFECHA}" wrapping="false" /> </tab:template>
                                             </tab:Column>
                                             <tab:Column>
                                                 <Label textAlign="Center" wrapping ="true"  text="Afectado" />
-                                                <tab:template> <Text text="{myParam>afectado/codEmpleado}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>ZID_COD_TRABAJADOR}" wrapping="false" /> </tab:template>
                                             </tab:Column>
                                             <tab:Column>
                                                 <Label textAlign="Center" wrapping ="true"  text="Status" />
-                                                <tab:template> <Text text="{myParam>status}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>ZESTADO}" wrapping="false" /> </tab:template>
                                             </tab:Column>              
                                         </tab:columns>
                                     </tab:Table> 
@@ -306,1375 +309,11 @@
                             </IconTabFilter> -->
 
                             <IconTabFilter icon="sap-icon://attachment" text="Informes"> 
-                                <Panel width="auto" >
-                                    <headerToolbar>
-                                        <OverflowToolbar>
-                                            <!-- <Title text="Header"/> -->
-                                            <ToolbarSpacer />
-                                            <Button text="Enviar" icon="sap-icon://paper-plane" type="Emphasized" press="newIncidente" />
-                                            <Button text="Cancelar" icon="sap-icon://delete" press="onEnviartab2" />  
-                                        </OverflowToolbar>
-                                    </headerToolbar>
-                                    <f:Form title="Acciones a ser tomadas" editable="true"  width="auto"> 
-                                        <f:layout>
-                                            <f:ResponsiveGridLayout 
-                                                labelSpanXL="4"
-                                                labelSpanL="4"
-                                                labelSpanM="12"
-                                                labelSpanS="12"
-                                                adjustLabelSpan="false"
-                                                emptySpanXL="0"
-                                                emptySpanL="0"
-                                                emptySpanM="0"
-                                                emptySpanS="0"
-                                                columnsXL="2"
-                                                columnsL="2"
-                                                columnsM="2"
-                                                singleContainerFullSize="false"  />
-                                        </f:layout>
-                                        <f:formContainers >
-                                            <f:FormContainer title="Inmediatas"> 
-                                                <f:formElements>
-                                                    <f:FormElement label="Actos subestándares o inseguros">
-                                                        <f:fields>
-                                                            <Input id="info_titulo" value="" /> 
-                                                        </f:fields>
-                                                    </f:FormElement>
-                                                    <f:FormElement label="Condiciones subestándares o inseguras">
-                                                        <f:fields> 
-                                                            <TextArea id="info_descrip" value="" height="5rem"/>
-                                                        </f:fields>
-                                                    </f:FormElement> 
-                                                </f:formElements>
-                                            </f:FormContainer> 
-                                            <f:FormContainer title="Básicas" >
-                                                <f:formElements>
-                                                    <f:FormElement label="Factores personales" >
-                                                        <f:fields>
-                                                            <Input id="info_facPers" value="" />   
-                                                        </f:fields>
-                                                    </f:FormElement> 
-                                                    <f:FormElement label="Factores de trabajo" >
-                                                        <f:fields>
-                                                            <Input id="info_ubicacion" value="" /> 
-                                                        </f:fields>
-                                                    </f:FormElement>
-                                                    <!-- <f:FormElement label="Detalle" >
-                                                        <f:fields>
-                                                            <TextArea id="info_detalle" value="" height="5rem"/> 
-                                                        </f:fields>
-                                                    </f:FormElement> -->
-                                                </f:formElements>
-                                            </f:FormContainer> 
-                                            <f:FormContainer title="Acciones a ser tomadas" >
-                                                <f:formElements>
-                                                    <f:FormElement label="Lecciones aprendidas" >
-                                                        <f:fields>
-                                                            <Input id="info_facPers2" value="" />   
-                                                        </f:fields>
-                                                    </f:FormElement> 
-                                                </f:formElements>
-                                            </f:FormContainer> 
-                                            <f:FormContainer title="Investigado por" >
-                                                <f:formElements>
-                                                    <f:FormElement label="Nombre" >
-                                                        <f:fields> <Input id="info_facP1" value="" />  </f:fields>
-                                                    </f:FormElement> 
-                                                    <f:FormElement label="Cargo" >
-                                                        <f:fields> <Input id="info_facP2" value="" />  </f:fields>
-                                                    </f:FormElement> 
-                                                    <f:FormElement label="Firma" >
-                                                        <f:fields> <Input id="info_facP3" value="" />  </f:fields>
-                                                    </f:FormElement> 
-                                                </f:formElements>
-                                            </f:FormContainer> 
-                                        </f:formContainers> 
-                                    </f:Form>
-
-                                    <Panel id="panelInfoCorrectivo" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
-                                        <headerToolbar>
-                                            <OverflowToolbar style="Clear">
-                                                <Title text="Registrar acción correctiva" />
-                                                <ToolbarSpacer />
-                                                <Button icon="sap-icon://save" press="saveInfoCorrectivo" text="Guardar" type="Emphasized" /> 
-                                                <Button icon="sap-icon://decline" press="cancelInfoCorrectivo" text="Cancelar" type="Emphasized" /> 
-                                            </OverflowToolbar>
-                                        </headerToolbar>
-                                        <content>
-                                            <f:Form editable="true"> 
-                                                <f:layout>
-                                                    <f:ResponsiveGridLayout
-                                                        labelSpanXL="4"
-                                                        labelSpanL="3"
-                                                        labelSpanM="4"
-                                                        labelSpanS="12"
-                                                        adjustLabelSpan="false"
-                                                        emptySpanXL="0"
-                                                        emptySpanL="4"
-                                                        emptySpanM="0"
-                                                        emptySpanS="0"
-                                                        columnsXL="2"
-                                                        columnsL="1"
-                                                        columnsM="1"
-                                                        singleContainerFullSize="false" />
-                                                </f:layout>
-                                                <f:formContainers>
-                                                    <f:FormContainer > 
-                                                        <f:formElements>
-                                                            <f:FormElement label="Descripción">
-                                                                <f:fields> <Input value="" id="infoCorrec_desc"/> </f:fields>
-                                                            </f:FormElement> 
-                                                            <f:FormElement label="Responsable">
-                                                                <f:fields> <Input value="" id="infoCorrec_responsable"/> </f:fields>
-                                                            </f:FormElement> 
-                                                            <f:FormElement label="Fecha">
-                                                                <f:fields> <DatePicker id="infoCorrec_fecha" value=""  displayFormat="dd/MM/yyyy"/> </f:fields>
-                                                            </f:FormElement> 
-                                                        </f:formElements>
-                                                    </f:FormContainer> 
-                                                </f:formContainers>
-                                            </f:Form> 
-                                        </content>
-                                    </Panel>
-                                    <tab:Table showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/tabResponsables' }" class="sapUiSmallMargin">
-                                        <tab:extension>
-                                            <OverflowToolbar>
-                                                <Title text="Correctivo"/>
-                                                <ToolbarSpacer/>
-                                                <Button icon="sap-icon://add-employee" text="Agregar" press="addResponsables"/>
-                                            </OverflowToolbar>
-                                        </tab:extension>
-                                        <tab:columns>
-                                            <tab:Column autoResizable="true" width="auto">
-                                                <Label textAlign="Center" wrapping ="true"  text="Descripción" />
-                                                <tab:template> <Text text="{myParam>desc}" />  </tab:template>
-                                            </tab:Column>
-                                            <tab:Column autoResizable="true" width="auto">
-                                                <Label textAlign="Center" wrapping ="true"  text="Responsable" />
-                                                <tab:template> <Text text="{myParam>responsable}" /> </tab:template>
-                                            </tab:Column>
-                                            <tab:Column autoResizable="true" width="auto">
-                                                <Label textAlign="Center" wrapping ="true"  text="Fecha" />
-                                                <tab:template> <Text text="{myParam>fecha}" />  </tab:template>
-                                            </tab:Column> 
-                                        </tab:columns>
-                                    </tab:Table>
-
-                                    <Panel id="panelInfoPreventivo" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
-                                        <headerToolbar>
-                                            <OverflowToolbar style="Clear">
-                                                <Title text="Registrar acción preventiva" />
-                                                <ToolbarSpacer />
-                                                <Button icon="sap-icon://save" press="saveInfoPreventivo" text="Guardar" type="Emphasized" /> 
-                                                <Button icon="sap-icon://decline" press="cancelInfoPreventivo" text="Cancelar" type="Emphasized" /> 
-                                            </OverflowToolbar>
-                                        </headerToolbar>
-                                        <content>
-                                            <f:Form editable="true"> 
-                                                <f:layout>
-                                                    <f:ResponsiveGridLayout
-                                                        labelSpanXL="4"
-                                                        labelSpanL="3"
-                                                        labelSpanM="4"
-                                                        labelSpanS="12"
-                                                        adjustLabelSpan="false"
-                                                        emptySpanXL="0"
-                                                        emptySpanL="4"
-                                                        emptySpanM="0"
-                                                        emptySpanS="0"
-                                                        columnsXL="2"
-                                                        columnsL="1"
-                                                        columnsM="1"
-                                                        singleContainerFullSize="false" />
-                                                </f:layout>
-                                                <f:formContainers>
-                                                    <f:FormContainer > 
-                                                        <f:formElements>
-                                                            <f:FormElement label="Descripción">
-                                                                <f:fields> <Input value="" id="infoPrev_desc"/> </f:fields>
-                                                            </f:FormElement> 
-                                                            <f:FormElement label="Responsable">
-                                                                <f:fields> <Input value="" id="infoPrev_responsable"/> </f:fields>
-                                                            </f:FormElement> 
-                                                            <f:FormElement label="Fecha">
-                                                                <f:fields> <DatePicker id="infoPrev_fecha" value=""  displayFormat="dd/MM/yyyy"/> </f:fields>
-                                                            </f:FormElement> 
-                                                        </f:formElements>
-                                                    </f:FormContainer> 
-                                                </f:formContainers>
-                                            </f:Form> 
-                                        </content>
-                                    </Panel>
-                                    <tab:Table showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/tabResponsables' }" class="sapUiSmallMargin">
-                                        <tab:extension>
-                                            <OverflowToolbar>
-                                                <Title text="Preventivo"/>
-                                                <ToolbarSpacer/>
-                                                <Button icon="sap-icon://add-employee" text="Agregar" press="addResponsables"/>
-                                            </OverflowToolbar>
-                                        </tab:extension>
-                                        <tab:columns>
-                                            <tab:Column autoResizable="true" width="auto">
-                                                <Label textAlign="Center" wrapping ="true"  text="Descripción" />
-                                                <tab:template> <Text text="{myParam>desc}" />  </tab:template>
-                                            </tab:Column>
-                                            <tab:Column autoResizable="true" width="auto">
-                                                <Label textAlign="Center" wrapping ="true"  text="Responsable" />
-                                                <tab:template> <Text text="{myParam>responsable}" /> </tab:template>
-                                            </tab:Column>
-                                            <tab:Column autoResizable="true" width="auto">
-                                                <Label textAlign="Center" wrapping ="true"  text="Fecha" />
-                                                <tab:template> <Text text="{myParam>fecha}" />  </tab:template>
-                                            </tab:Column> 
-                                        </tab:columns>
-                                    </tab:Table>
-                                </Panel>
+                                
                             </IconTabFilter>
                             
                         </items>
                     </IconTabBar>    
-                </IconTabFilter>
-                <IconTabFilter id="tabM2" text="Gestión de Salud Ocupacional" key="itab2" >
-                    
-                    <IconTabBar id="tabM2_subTab" selectedKey="ver_historial" headerMode="Inline" expanded="{device>/isNoPhone}" >
-                    <items>
-                        <IconTabFilter icon="sap-icon://hint" text="Nuevo servicio médico/diagnóstico"> 
-                        </IconTabFilter>
-
-                        <IconTabFilter icon="sap-icon://course-book" text="Ver servicio médico/diagnóstico"> 
-                        </IconTabFilter>
-                        
-                        <IconTabFilter key="ver_historial" icon="sap-icon://course-program" text="Ver historial"> 
-                        
-                            <f:Form id="tabM2_subTab3_form1" editable="true"  width="auto"> 
-                                <f:layout>
-                                    <f:ResponsiveGridLayout id="FormTab2IdaG"
-                                        labelSpanXL="4"
-                                        labelSpanL="4"
-                                        labelSpanM="12"
-                                        labelSpanS="12"
-                                        adjustLabelSpan="false"
-                                        emptySpanXL="0"
-                                        emptySpanL="0"
-                                        emptySpanM="0"
-                                        emptySpanS="0"
-                                        columnsXL="2"
-                                        columnsL="2"
-                                        columnsM="2"
-                                        singleContainerFullSize="false"  />
-                                </f:layout>
-                                <f:formContainers >
-                                    <f:FormContainer id="tabM2_subTab3_form1C1" title="DATOS PERSONALES">
-                                        <f:formElements>
-                                            <f:FormElement id="lbl_tabM2_subTab3_form1C1_01" label="ID de personal">
-                                                <f:fields>
-                                                    <Select id="slect_tabM2_subTab3_form1C1_01" showSecondaryValues= "true" items="{ path: '/user' }" width="100%">
-                                                        <core:ListItem text="{name}" additionalText="{cargo}"/>
-                                                    </Select>
-                                                    <Button id="btn_tabM2_subTab3_form1C1_01" type="Emphasized" icon="sap-icon://search" press="onPress" width="3rem"/>
-                                                </f:fields>
-                                            </f:FormElement>
-                                            <f:FormElement id="lbl_tabM2_subTab3_form1C1_02" label="Nombre">
-                                                <f:fields> 
-                                                    <Input id="txt_tabM2_subTab3_form1C1_02" value="" />  
-                                                </f:fields>
-                                            </f:FormElement>
-                                            <f:FormElement id="lbl_tabM2_subTab3_form1C1_03" label="Fecha de nacimiento">
-                                                <f:fields> 
-                                                    <DatePicker id="cmb_fecha_tabM2_subTab3_form1C1_03" displayFormat="short" change="handleChange" />
-                                                    <Input id="txt_tabM2_subTab3_form1C1_03" value="" />  
-                                                </f:fields>
-                                            </f:FormElement>  
-                                            <f:FormElement id="lbl_tabM2_subTab3_form1C1_04" label="Posición">
-                                                <f:fields> 
-                                                    <Input id="txt_tabM2_subTab3_form1C1_04" value="" />  
-                                                </f:fields>
-                                            </f:FormElement>  
-                                        </f:formElements>
-                                    </f:FormContainer> 
-                                    <f:FormContainer id="tabM2_subTab3_form1C2" title="Diagnósticos críticos" >
-                                        <f:formElements>
-                                            <f:FormElement id="lbl_tabM2_subTab3_form1C2_01" >
-                                                <f:fields> 
-                                                <tab:Table id="table_tabM2_subTab3_form1C2_01" showNoData="true"
-                                                    selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" 
-                                                    rows="{  path: '/tab3table01' }" cellClick="rowSelectionChangeMovimiento">
-                                                    
-                                                    <tab:columns>
-                                                        <tab:Column id="itab2ImputId013c" sortProperty="planAccion" filterProperty="planAccion" autoResizable="true" width="auto">
-                                                            <Label id="itab2ImputId013" textAlign="Center" wrapping ="true"  text="Fecha de examen" />
-                                                            <tab:template> <DatePicker id="cmb_fecha_tabM2_subTab3_form1C2_01" value="01/10/2022 " displayFormat="short" change="handleChange" /> </tab:template>
-                                                        </tab:Column>
-                                                        <tab:Column id="itab2ImputId014c" sortProperty="rInversion" filterProperty="rInversion" autoResizable="true" width="auto">
-                                                            <Label id="lbl_fecha_tabM2_subTab3_form1C2_01" textAlign="Center" wrapping ="true"  text="Diagnóstico" />
-                                                            <tab:template> <Select id="slect_fecha_tabM2_subTab3_form1C2_01" selectedKey="default" width="100%">
-                                                                    <items>
-                                                                        <core:Item id="itab2ImputId014is1" text="" key="default"/>
-                                                                        <core:Item id="itab2ImputId014is2" text="opcion 2" key="op2"/>
-                                                                        <core:Item id="itab2ImputId014is3" text="opcion 3" key="op3"/>
-                                                                    </items>
-                                                                </Select> </tab:template>
-                                                        </tab:Column>
-                                                        <tab:Column id="itab2ImputId015c" sortProperty="montoTotal" filterProperty="montoTotal" autoResizable="true" width="auto">
-                                                            <Label id="lbl_fecha_tabM2_subTab3_form1C2_01a" textAlign="Center" wrapping ="true"  text="Categoría" />
-                                                            <tab:template>  <Input id="txt_fecha_tabM2_subTab3_form1C2_01" value="Detalle Diagnístico"   /> </tab:template>
-                                                        </tab:Column>
-                                                    </tab:columns>
-                                                </tab:Table>
-                                                </f:fields>
-                                            </f:FormElement> 
-                                        </f:formElements>
-                                    </f:FormContainer>
-
-                                    <f:FormContainer id="tabM2_subTab3_form1C3" title="Información de servicios médicos" >
-                                        <f:formElements>
-                                            <f:FormElement id="lbl_tabM2_subTab3_form1C3_01" label="Número de servicio" >
-                                                <f:fields> 
-                                                    <ComboBox id="cmb_tabM2_subTab3_form1C3_01" selectedKey="key1">
-                                                        <core:Item key="key1" text="00000153" />
-                                                    </ComboBox> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM2_subTab3_form1C3_02" label="Aperturado en" >
-                                                <f:fields> 
-                                                    <DatePicker id="cmb_fecha_tabM2_subTab3_form1C3_02" value="01/09/2022" displayFormat="short" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM2_subTab3_form1C3_03" label="Numéro de diagnósticos críticos" >
-                                                <f:fields> 
-                                                        <Input id="txt_tabM2_subTab3_form1C3_03" value="1" />   
-                                                </f:fields>
-                                            </f:FormElement> 
-                                        </f:formElements>
-                                    </f:FormContainer> 
-                                </f:formContainers> 
-                            </f:Form>
-
-                            <IconTabBar id="tabM2_subTab3_tab" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding">
-                                <items>
-                                    <IconTabFilter id="tabM2_subTab3_tab1" text="Servicios" key="subTb1">
-                                        <tab:Table id="table1_tabM2_subTab3_tab1" showNoData="true"
-                                            selectionMode="Single"
-                                            selectionBehavior="RowOnly" 
-                                            visibleRowCount="5"
-                                            visibleRowCountMode ="Fixed" 
-                                            rows="{  path: '/tab3table01Data' }"  
-                                            cellClick="rowSelectionChangeMovimiento"> 
-                                            <tab:columns>
-                                                <tab:Column id="table1_tabM2_subTab3_tab1_c1" sortProperty="planAccion" filterProperty="planAccion" autoResizable="true" width="auto">
-                                                    <Label id="lbl_tabM2_subTab3_tab1_01" textAlign="Center" wrapping ="true"  text="Estado " />
-                                                    <tab:template> 
-                                                        <CheckBox id="chk_tabM2_subTab3_tab1_01" text="{estado}" valueState="Warning" /> 
-                                                    </tab:template>
-                                                </tab:Column>
-                                                <tab:Column id="table1_tabM2_subTab3_tab1_c2" sortProperty="rInversion" filterProperty="rInversion" autoResizable="true" width="auto">
-                                                    <Label id="lbl_tabM2_subTab3_tab1_02" textAlign="Center" wrapping ="true"  text="Fecha de creación" />
-                                                    <tab:template> <DatePicker id="cmb_fecha_tabM2_subTab3_tab1_01" value="{fecha}" displayFormat="short" />  </tab:template>
-                                                </tab:Column>
-                                                <tab:Column id="table1_tabM2_subTab3_tab1_c3" sortProperty="montoTotal" filterProperty="montoTotal" autoResizable="true" width="auto">
-                                                    <Label id="lbl_tabM2_subTab3_tab1_03" textAlign="Center" wrapping ="true"  text="Protocolo " />
-                                                    <tab:template>  <Input id="txt_tabM2_subTab3_tab1_01" value="{protocolo}"   /> </tab:template>
-                                                </tab:Column>
-                                                <tab:Column id="table1_tabM2_subTab3_tab1_c4" sortProperty="montoTotal" filterProperty="montoTotal" autoResizable="true" width="auto">
-                                                    <Label id="lbl_tabM2_subTab3_tab1_04" textAlign="Center" wrapping ="true"  text="Diagnóstico " />
-                                                    <tab:template>  
-                                                        <Label id="lbl_tabM2_subTab3_tab1_04a" text="{protocolo}"   /> 
-                                                    </tab:template>
-                                                </tab:Column>
-                                                <tab:Column id="table1_tabM2_subTab3_tab1_c5" sortProperty="cump" filterProperty="cump" autoResizable="true" width="auto">
-                                                    <Label id="lbl_tabM2_subTab3_tab1_05" textAlign="Center" wrapping ="true"  text="Detalle" />
-                                                    <tab:template>  <Button id="btn_tabM2_subTab3_tab1_05" icon="sap-icon://hint" press="onPress" /> </tab:template>
-                                                </tab:Column> 
-                                            </tab:columns>
-                                        </tab:Table>
-                                    </IconTabFilter>
-                                    <IconTabFilter id="itab2IdSubTabBar2" text="Historial clínico" key="attachments">
-                                        <Text text="Attachments go here ..." />
-                                    </IconTabFilter>
-                                    <IconTabFilter id="itab2IdSubTabBar3" text="Examen general" key="subTb2">
-                                        <Text text="Notes go here ..." />
-                                    </IconTabFilter>
-                                    <IconTabFilter id="itab2IdSubTabBar4" text="Vacunación " key="subTb3">
-                                        <Text text="People content goes here ..." />
-                                    </IconTabFilter>
-                                    <IconTabFilter id="itab2IdSubTabBar5" text="Examinación " key="subTb3">
-                                        <Text text="People content goes here ..." />
-                                    </IconTabFilter>
-                                    <IconTabFilter id="itab2IdSubTabBar6" text="Diagnóstico " key="subTb3">
-                                        <Text text="People content goes here ..." />
-                                    </IconTabFilter>
-                                    <IconTabFilter id="itab2IdSubTabBar7" text="Consultas" key="subTb3">
-                                        <Text text="People content goes here ..." />
-                                    </IconTabFilter> 
-                                </items>
-                            </IconTabBar>
-
-                        </IconTabFilter>
-                        
-                        <IconTabFilter icon="sap-icon://attachment" text="Informes"> 
-                        </IconTabFilter>
-                        
-                      </items>
-                    </IconTabBar>     
-                </IconTabFilter>
-                <IconTabFilter id="tabM3" text="Registro de Accidentes de Trabajo" key="itab3" >
-                    <items>
-                        <IconTabFilter id="tabM3_subTab1" text="Notificación accidentes de trabajo mortales e indidentes peligrosos">
-                            <MessageStrip showIcon="true" showCloseButton="false"
-                                text="NOTIFICACIÓN DE LOS ACCIDENTES DE TRABAJO MORTALES E INCIDENTES PELIGROSOS (Artículos 112, 113 y 114 del Reglamento de la Ley Nº 29783, Ley de Seguridad y Salud en el Trabajo)"
-                                class="sapUiMediumMarginBottom">
-                            </MessageStrip>
-                            <f:Form id="tabM3_subTab1_form1" editable="true"  width="auto" class="sapUiMediumMarginBottom"> 
-                                 <f:toolbar>
-                                    <Toolbar id="Formtab3Idatool01"> 
-                                        <Title id="title_tabM3_subTab1_form1" text="NOTIFICACIÓN DE LOS ACCIDENTES DE TRABAJO MORTALES E INCIDENTES PELIGROSOS" level="H3"/>
-                                        <ToolbarSpacer id="Formtab3Idaspc01"/>
-                                    </Toolbar>
-                                </f:toolbar>
-                                <f:layout>
-                                    <f:ResponsiveGridLayout id="Formtab3IdaGl01"
-                                        labelSpanXL="3"
-                                        labelSpanL="3"
-                                        labelSpanM="3"
-                                        labelSpanS="12"
-                                        adjustLabelSpan="false"
-                                        emptySpanXL="4"
-                                        emptySpanL="4"
-                                        emptySpanM="4"
-                                        emptySpanS="0"
-                                        columnsXL="1"
-                                        columnsL="1"
-                                        columnsM="1"
-                                        singleContainerFullSize="false"   />
-                                </f:layout>
-                                <f:formContainers >
-                                    <f:FormContainer id="tabM3_subTab1_form1_c1">
-                                        <f:formElements>
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c1_01" label="MES - AÑO">
-                                                <f:fields>
-                                                    <DatePicker id="cmb_fecha_tabM3_subTab1_form1_c1_01" displayFormat="MM-y" change="handleChange"/> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c1_02" label="SELECCIONE (Para ser llenado llenado por el Empleador)">
-                                                <f:fields>
-                                                    <VBox id="FormTab3IdaF1vh" >
-                                                        <CheckBox text="AVISO DE ACCIDENTE MORTAL (Art. 112°)" />
-                                                        <CheckBox text="AVISO DE INCIDENTE PELIGROSO (Art. 112°)" /> 
-                                                    </VBox>
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c1_03" label="FECHA DE PRESENTACIÓN">
-                                                <f:fields>
-                                                    <DatePicker id="cmb_fecha_tabM3_subTab1_form1_c1_03" displayFormat="short" change="handleChange"/> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                        </f:formElements>
-                                    </f:FormContainer> 
-
-                                    <f:FormContainer id="tabM3_subTab1_form1_c2" expandable="true" title="I. DATOS DE LA EMPRESA USUARIA (DONDE SE EJECUTA LAS LABORES)">
-                                        <f:formElements>
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c2_01" label="RUC">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c2_01" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c2_02" label="DENOMINACIÓN SOCIAL">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c2_02" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c2_03" label="NOMBRE DE LA CONCESIÓN MINERA Y/O UEA ">
-                                                <f:fields>
-                                                    <VBox id="vb_tabM3_subTab1_form1_c2_03" >
-                                                        <Input id="txt_tabM3_subTab1_form1_c2_03" value="" /> 
-                                                        <ObjectStatus id="obj_tabM3_subTab1_form1_c2_03" text="LLENAR EN CASO DE MINERÍA" icon="sap-icon://information" state="Information" class="sapUiMediumMarginBegin sapUiSmallMarginBottom sapUiSmallMarginBottom" />
-                                                    </VBox>
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c2_04" label="CÓDIGO CONCESIÓN MINERA">
-                                                <f:fields>
-                                                    <VBox id="vb_tabM3_subTab1_form1_c2_04" >
-                                                        <Input id="txt_tabM3_subTab1_form1_c2_04" value="" /> 
-                                                        <ObjectStatus id="obj_tabM3_subTab1_form1_c2_04" text="LLENAR EN CASO DE MINERÍA" icon="sap-icon://information" state="Information" class="sapUiMediumMarginBegin sapUiSmallMarginBottom sapUiSmallMarginBottom" />
-                                                    </VBox>
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c2_05" label="CÓDIGO OSINERGMIN">
-                                                <f:fields>
-                                                    <VBox id="vh_tabM3_subTab1_form1_c2_05" >
-                                                        <Input id="txt_tabM3_subTab1_form1_c2_05" value="" /> 
-                                                        <ObjectStatus id="obj_tabM3_subTab1_form1_c2_05" text="LLENAR EN CASO DE HIDROCARBUROS LÍQUIDOS Y GAS NATURAL" icon="sap-icon://information" state="Information" class="sapUiMediumMarginBegin sapUiSmallMarginBottom" />
-                                                    </VBox> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c2_06" label="REGISTRO DGH">
-                                                <f:fields>
-                                                    <VBox id="vh_tabM3_subTab1_form1_c2_06" >
-                                                        <Input id="txt_tabM3_subTab1_form1_c2_06" value="" /> 
-                                                        <ObjectStatus id="obj_tabM3_subTab1_form1_c2_06" text="LLENAR EN CASO DE HIDROCARBUROS LÍQUIDOS Y GAS NATURAL" icon="sap-icon://information" state="Information" class="sapUiMediumMarginBegin sapUiSmallMarginBottom" />
-                                                    </VBox> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c2_07" label="TAMAÑO DE EMPRESA (TABLA N°1)">
-                                                <f:fields>
-                                                    <ComboBox id="cmb_tabM3_subTab1_form1_c2_07" items="{ path: '/table01'}" selectedKey="key0">
-                                                        <core:Item key="{key}" text="{desc}" />
-                                                    </ComboBox> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c2_08" label="DOMICILIO PRINCIPAL">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c2_08" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c2_09" label="DEPARTAMENTO">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c2_09" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c2_010" label="PROVINCIA">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c2_010" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c2_011" label="DISTRITO">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c2_011" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c2_012" label="UBIGEO (no llenar)">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c2_012" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c2_013" label="ACTIVIDAD ECONÓMICA PRINCIPAL (DETALLAR)">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c2_013" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c2_015" label="CIIU (TABLA N°2)">
-                                                <f:fields>
-                                                    <ComboBox id="cmb_tabM3_subTab1_form1_c2_015" items="{ path: '/table02'}" selectedKey="key0">
-                                                        <core:Item key="{key}" text="{desc}" />
-                                                    </ComboBox> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c2_016" label="ER (no llenar)">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c2_016" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c2_017" label="N° DE TRABAJADORES">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c2_017" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c2_018" label="CÓD. PROV. Y N° TELÉFONO">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c2_018" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                        </f:formElements>
-                                    </f:FormContainer>
-
-                                    <f:FormContainer id="tabM3_subTab1_form1_c3" expandable="true" title="II. DATOS DEL EMPLEADOR (AL QUE PERTENECE EL TRABAJADOR)">
-                                        <f:formElements>
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c3_01" label="RUC">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c3_01" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c3_02" label="DENOMINACIÓN SOCIAL">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c3_02" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c3_03" label="NOMBRE DE LA CONCESIÓN MINERA Y/O UEA ">
-                                                <f:fields>
-                                                    <VBox id="vh_tabM3_subTab1_form1_c3_03" >
-                                                        <Input id="txt_tabM3_subTab1_form1_c3_03" value="" /> 
-                                                        <ObjectStatus id="obj_tabM3_subTab1_form1_c3_03" text="LLENAR EN CASO DE MINERÍA" icon="sap-icon://information" state="Information" class="sapUiMediumMarginBegin sapUiSmallMarginBottom" />
-                                                    </VBox>
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c3_04" label="CÓDIGO CONCESIÓN MINERA">
-                                                <f:fields>
-                                                    <VBox id="vh_tabM3_subTab1_form1_c3_04" >
-                                                        <Input id="txt_tabM3_subTab1_form1_c3_04" value="" /> 
-                                                        <ObjectStatus id="obj_tabM3_subTab1_form1_c3_04" text="LLENAR EN CASO DE MINERÍA" icon="sap-icon://information" state="Information" class="sapUiMediumMarginBegin sapUiSmallMarginBottom" />
-                                                    </VBox>
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c3_05" label="CÓDIGO OSINERGMIN">
-                                                <f:fields>
-                                                    <VBox id="vh_tabM3_subTab1_form1_c3_05" >
-                                                        <Input id="txt_tabM3_subTab1_form1_c3_05" value="" /> 
-                                                        <ObjectStatus id="obj_tabM3_subTab1_form1_c3_05" text="LLENAR EN CASO DE HIDROCARBUROS LÍQUIDOS Y GAS NATURAL" icon="sap-icon://information" state="Information" class="sapUiMediumMarginBegin sapUiSmallMarginBottom" />
-                                                    </VBox> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c3_06" label="REGISTRO DGH">
-                                                <f:fields>
-                                                    <VBox id="vh_tabM3_subTab1_form1_c3_06" >
-                                                        <Input id="txt_tabM3_subTab1_form1_c3_06" value="" /> 
-                                                        <ObjectStatus id="obj_tabM3_subTab1_form1_c3_06" text="LLENAR EN CASO DE HIDROCARBUROS LÍQUIDOS Y GAS NATURAL" icon="sap-icon://information" state="Information" class="sapUiMediumMarginBegin sapUiSmallMarginBottom" />
-                                                    </VBox>  
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c3_07" label="TAMAÑO DE EMPRESA (TABLA N°1)">
-                                                <f:fields>
-                                                    <ComboBox id="cmb_tabM3_subTab1_form1_c3_07" items="{ path: '/table01'}" selectedKey="2">
-                                                        <core:Item key="{key}" text="{desc}" />
-                                                    </ComboBox> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c3_08" label="DOMICILIO PRINCIPAL">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c3_08" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c3_09" label="DEPARTAMENTO">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c3_09" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c3_010" label="PROVINCIA">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c3_010" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c3_011" label="DISTRITO">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c3_011" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c3_012" label="UBIGEO (no llenar)">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c3_012" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c3_013" label="ACTIVIDAD ECONÓMICA PRINCIPAL (DETALLAR)">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c3_013" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c3_015" label="CIIU (TABLA N°2)">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c3_015" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c3_016" label="ER (no llenar)">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c3_016" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c3_017" label="N° DE TRABAJADORES">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c3_017" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c3_018" label="CÓD. PROV. Y N° TELÉFONO">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c3_018" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                        </f:formElements>
-                                    </f:FormContainer>
-
-                                    <f:FormContainer id="tabM3_subTab1_form1_c4" expandable="true" title="III. DATOS DEL TRABAJADOR ACCIDENTADO (SOLO PARA EL CASO DE ACCIDENTE MORTAL)">
-                                        <f:formElements>
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_01" label="DNI / CE">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c4_01" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_02" label="A APELLIDOS">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c4_02" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_05" label="B NOMBRES">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c4_05" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_06" label="DOMICILIO">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c4_06" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_07" label="DEPARTAMENTO">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c4_07" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_08" label="PROVINCIA">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c4_08" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_09" label="DISTRITO">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c4_09" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_010" label="UBIGEO (no llenar)">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c4_010" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_011" label="CÓD. PROV. Y N° TELÉFONO">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c4_011" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_012" label="CATEGORÍA OCUPACIONAL (TABLA N° 3)">
-                                                <f:fields>
-                                                    <ComboBox id="cmb_tabM3_subTab1_form1_c4_012" items="{ path: '/table03'}" selectedKey="2">
-                                                        <core:Item key="{key}" text="{desc}" />
-                                                    </ComboBox>
-                                                    <Input id="txt_tabM3_subTab1_form1_c4_012" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_013" label="ASEGURADO">
-                                                <f:fields>
-                                                    <CheckBox text="SI" />
-                                                    <CheckBox text="NO" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_014" label="ESSALUD">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c4_014" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_015" label="EPS">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c4_015" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_016" label="EDAD">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c4_016" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_017" label="SCTR">
-                                                <f:fields>
-                                                    <CheckBox text="SI" />
-                                                    <CheckBox text="NO" />  
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_018" label="FECHA DEL ACCIDENTE">
-                                                <f:fields>
-                                                    <DatePicker id="txt_tabM3_subTab1_form1_c4_018" displayFormat="short" change="handleChange"/> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_019" label="HORA DEL ACCIDENTE">
-                                                <f:fields>
-                                                    <TimePicker id="cmb_fecha_tabM3_subTab1_form1_c4_019" value="" valueFormat="HH:mm"
-                                                        displayFormat="HH:mm" change="handleChange" maskMode="{= ${/maskMode/state} ? 'On' : 'Off'}"/> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_020" label="LUGAR DEL ACCIDENTE">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab1_form1_c4_020" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_021" label="GÉNERO">
-                                                <f:fields>
-                                                    <CheckBox text="M" />
-                                                    <CheckBox text="F" />   
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_022" label="TIPO DEL ACCIDENTE (TABLA N°4)">
-                                                <f:fields>
-                                                    <ComboBox id="cmb_tabM3_subTab1_form1_c4_022" items="{ path: '/table04'}" selectedKey="21">
-                                                        <core:Item key="{key}" text="{desc}" />
-                                                    </ComboBox> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_023" label="AGENTE CAUSANTE (TABLA N°5)">
-                                                <f:fields>
-                                                    <ComboBox id="cmb_tabM3_subTab1_form1_c4_023" items="{ path: '/table05'}" selectedKey="111">
-                                                        <core:Item key="{key}" text="{desc}" />
-                                                    </ComboBox> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c4_024" label=" DESCRIPCIÓN DEL ACCIDENTE MORTAL">
-                                                <f:fields>
-                                                    <TextArea id="txt_tabM3_subTab1_form1_c4_024" value="" width="100%" height="10rem"/> 
-                                                </f:fields>
-                                            </f:FormElement>  
-                                        </f:formElements>
-                                    </f:FormContainer>
-
-                                    <f:FormContainer id="tabM3_subTab1_form1_c5" expandable="true" title="IV. DATOS DEL INCIDENTE PELIGROSO">
-                                        <f:formElements>
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c5_01" label="FECHA">
-                                                <f:fields>
-                                                    <DatePicker id="cmb_fecha_tabM3_subTab1_form1_c5_01" displayFormat="short" change="handleChange"/> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c5_02" label="HORA DEL ACCIDENTE">
-                                                <f:fields>
-                                                    <TimePicker id="cmb_fecha_tabM3_subTab1_form1_c5_02" value="" valueFormat="HH:mm"
-                                                        displayFormat="HH:mm" change="handleChange" maskMode="{= ${/maskMode/state} ? 'On' : 'Off'}"/> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c5_03" label="TIPO DE INCIDENTE PELIGROSO (TABLA N° 9)">
-                                                <f:fields>
-                                                    <ComboBox id="cmb_tabM3_subTab1_form1_c5_03" items="{ path: '/table09'}" selectedKey="2">
-                                                        <core:Item key="{key}" text="{desc}" />
-                                                    </ComboBox> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c5_04" label="DESCRIPCIÓN DEL INCIDENTE PELIGROSO :">
-                                                <f:fields>
-                                                    <TextArea id="txt_tabM3_subTab1_form1_c5_04" value="" width="100%" height="10rem"/> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c5_05" label="DAÑOS MATERIALES:">
-                                                <f:fields>
-                                                    <VBox id="vh_tabM3_subTab1_form1_c5_05" >
-                                                        <Input id="txt_tabM3_subTab1_form1_c5_05" value="" /> 
-                                                        <ObjectStatus id="obj_tabM3_subTab1_form1_c5_05" text="SOLO PARA EL CASO DE EMPRESAS SUPERVISADAS POR OSINERGMIN" icon="sap-icon://information" state="Information" class="sapUiMediumMarginBegin sapUiSmallMarginBottom" />
-                                                    </VBox>
-                                                </f:fields>
-                                            </f:FormElement>  
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c5_06" label="CUANTIFICACIÓN PRELIMINAR DAÑOS (U.S.$):">
-                                                <f:fields>
-                                                    <VBox id="vh_tabM3_subTab1_form1_c5_06" >
-                                                        <Input id="txt_tabM3_subTab1_form1_c5_06" value="" /> 
-                                                        <ObjectStatus id="obj_tabM3_subTab1_form1_c5_06" text="SOLO PARA EL CASO DE EMPRESAS SUPERVISADAS POR OSINERGMIN" icon="sap-icon://information" state="Information" class="sapUiMediumMarginBegin sapUiSmallMarginBottom" />
-                                                    </VBox>
-                                                </f:fields>
-                                            </f:FormElement>   
-                                        </f:formElements>
-                                    </f:FormContainer>
-
-                                    <f:FormContainer id="tabM3_subTab1_form1_c6" >
-                                        <f:formElements>
-                                            <f:FormElement id="lbl_tabM3_subTab1_form1_c6_01">
-                                                <f:fields>
-                                                    <Button id="btn_tabM3_subTab1_form1_c6_01" text="Enviar" icon="sap-icon://paper-plane" press="onEnviartab2" type="Emphasized" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                        </f:formElements>
-                                    </f:FormContainer>
-
-
-                                </f:formContainers> 
-                            </f:Form>
-                        </IconTabFilter> 
-
-                        <IconTabFilter id="tabM3_subTab2" text="Notificación accidentes de trabajo no mortales y enfermedades ocupacionales">
-                            <MessageStrip showIcon="true" showCloseButton="false"
-                                text="NOTIFICACIÓN DE LOS ACCIDENTES DE TRABAJO MORTALES E INCIDENTES PELIGROSOS (Artículos 112, 113 y 114 del Reglamento de la Ley Nº 29783, Ley de Seguridad y Salud en el Trabajo)"
-                                class="sapUiMediumMarginBottom">
-                            </MessageStrip>
-                            <f:Form id="tabM3_subTab2_form1" editable="true"  width="auto" class="sapUiMediumMarginBottom"> 
-                                 <f:toolbar>
-                                    <Toolbar id="FormTab3Idbtool01"> 
-                                        <Title id="FormTab3IdbTitle01" text="NOTIFICACIÓN DE LOS ACCIDENTES DE TRABAJO NO MORTALES Y ENFERMEDADES OCUPACIONALES" level="H3"/>
-                                        <ToolbarSpacer id="FormTab3Idbspc01"/>
-                                    </Toolbar>
-                                </f:toolbar>
-                                <f:layout>
-                                    <f:ResponsiveGridLayout id="FormTab3IdbGl01"
-                                        labelSpanXL="4"
-                                        labelSpanL="3"
-                                        labelSpanM="4"
-                                        labelSpanS="12"
-                                        adjustLabelSpan="false"
-                                        emptySpanXL="0"
-                                        emptySpanL="4"
-                                        emptySpanM="0"
-                                        emptySpanS="0"
-                                        columnsXL="2"
-                                        columnsL="1"
-                                        columnsM="1"
-                                        singleContainerFullSize="false"  />
-                                </f:layout>
-                                <f:formContainers >
-                                    <f:FormContainer id="tabM3_subTab2_form1_c1">
-                                        <f:formElements>
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c1_01" label="MES - AÑO">
-                                                <f:fields>
-                                                    <DatePicker id="cmb_fecha_tabM3_subTab2_form1_c1_01" displayFormat="MM-y" change="handleChange"/> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c1_02" label="SELECCIONE (Para ser llenado llenado por el Empleador)">
-                                                <f:fields>
-                                                    <VBox id="vh_tabM3_subTab2_form1_c1_02" >
-                                                        <CheckBox text="AVISO DE ACCIDENTE NO MORTAL (Art. 112°)" />
-                                                        <CheckBox text="AVISO DE ENFERMEDADES OCUPACIONALES (Art. 112°)" /> 
-                                                    </VBox>
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c1_03" label="FECHA DE PRESENTACIÓN">
-                                                <f:fields>
-                                                    <DatePicker id="cmb_fecha_tabM3_subTab2_form1_c1_03" displayFormat="short" change="handleChange"/> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                        </f:formElements>
-                                    </f:FormContainer> 
-
-                                    <f:FormContainer id="tabM3_subTab2_form1_c2" expandable="true" title="I. DATOS DE LA EMPRESA USUARIA (DONDE SE EJECUTA LAS LABORES)">
-                                        <f:formElements>
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c2_01" label="RUC">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c2_01" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c2_02" label="DENOMINACIÓN SOCIAL">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c2_02" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c2_03" label="NOMBRE DE LA CONCESIÓN MINERA Y/O UEA ">
-                                                <f:fields>
-                                                    <VBox id="vh_tabM3_subTab2_form1_c2_03" >
-                                                        <Input id="txt_tabM3_subTab2_form1_c2_03" value="" /> 
-                                                        <ObjectStatus id="obj_tabM3_subTab2_form1_c2_03" text="LLENAR EN CASO DE MINERÍA" icon="sap-icon://information" state="Information" class="sapUiMediumMarginBegin sapUiSmallMarginBottom" />
-                                                    </VBox>
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c2_04" label="CÓDIGO CONCESIÓN MINERA">
-                                                <f:fields>
-                                                    <VBox id="vh_tabM3_subTab2_form1_c2_04" >
-                                                        <Input id="txt_tabM3_subTab2_form1_c2_04" value="" /> 
-                                                        <ObjectStatus id="obj_tabM3_subTab2_form1_c2_04" text="LLENAR EN CASO DE MINERÍA" icon="sap-icon://information" state="Information" class="sapUiMediumMarginBegin sapUiSmallMarginBottom" />
-                                                    </VBox>
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c2_05" label="CÓDIGO OSINERGMIN">
-                                                <f:fields>
-                                                    <VBox id="vh_tabM3_subTab2_form1_c2_05" >
-                                                        <Input id="txt_tabM3_subTab2_form1_c2_05" value="" /> 
-                                                        <ObjectStatus id="obj_tabM3_subTab2_form1_c2_05" text="LLENAR EN CASO DE HIDROCARBUROS LÍQUIDOS Y GAS NATURAL" icon="sap-icon://information" state="Information" class="sapUiMediumMarginBegin sapUiSmallMarginBottom" />
-                                                    </VBox> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c2_06" label="REGISTRO DGH">
-                                                <f:fields>
-                                                    <VBox id="vh_tabM3_subTab2_form1_c2_06" >
-                                                        <Input id="txt_tabM3_subTab2_form1_c2_06" value="" /> 
-                                                        <ObjectStatus id="obj_tabM3_subTab2_form1_c2_06" text="LLENAR EN CASO DE HIDROCARBUROS LÍQUIDOS Y GAS NATURAL" icon="sap-icon://information" state="Information" class="sapUiMediumMarginBegin sapUiSmallMarginBottom" />
-                                                    </VBox> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c2_07" label="TAMAÑO DE EMPRESA (TABLA N°1)">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c2_07" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c2_08" label="DOMICILIO PRINCIPAL">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c2_08" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c2_09" label="DEPARTAMENTO">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c2_09" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c2_010" label="PROVINCIA">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c2_010" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c2_011" label="DISTRITO">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c2_011" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c2_012" label="UBIGEO (no llenar)">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c2_012" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c2_013" label="ACTIVIDAD ECONÓMICA PRINCIPAL (DETALLAR)">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c2_013" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c2_015" label="CIIU (TABLA N°2)">
-                                                <f:fields>
-                                                    <ComboBox id="cmb_tabM3_subTab2_form1_c2_015" items="{ path: '/table02'}" selectedKey="B">
-                                                        <core:Item key="{key}" text="{desc}" />
-                                                    </ComboBox> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c2_016" label="ER (no llenar)">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c2_016" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c2_017" label="N° DE TRABAJADORES">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c2_017" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c2_018" label="CÓD. PROV. Y N° TELÉFONO">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c2_018" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                        </f:formElements>
-                                    </f:FormContainer>
-
-                                    <f:FormContainer id="tabM3_subTab2_form1_c3" expandable="true" title="II. DATOS DEL EMPLEADOR (AL QUE PERTENECE EL TRABAJADOR)">
-                                        <f:formElements>
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c3_01" label="RUC">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c3_01" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c3_02" label="DENOMINACIÓN SOCIAL">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c3_02" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c3_03" label="NOMBRE DE LA CONCESIÓN MINERA Y/O UEA ">
-                                                <f:fields>
-                                                    <VBox id="vh_tabM3_subTab2_form1_c3_03" >
-                                                        <Input id="txt_tabM3_subTab2_form1_c3_03" value="" /> 
-                                                        <ObjectStatus id="obj_tabM3_subTab2_form1_c3_03" text="LLENAR EN CASO DE MINERÍA" icon="sap-icon://information" state="Information" class="sapUiMediumMarginBegin sapUiSmallMarginBottom" />
-                                                    </VBox>
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c3_04" label="CÓDIGO CONCESIÓN MINERA">
-                                                <f:fields>
-                                                    <VBox id="vh_tabM3_subTab2_form1_c3_04" >
-                                                        <Input id="txt_tabM3_subTab2_form1_c3_04" value="" /> 
-                                                        <ObjectStatus id="obj_tabM3_subTab2_form1_c3_04" text="LLENAR EN CASO DE MINERÍA" icon="sap-icon://information" state="Information" class="sapUiMediumMarginBegin sapUiSmallMarginBottom" />
-                                                    </VBox>
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c3_05" label="CÓDIGO OSINERGMIN">
-                                                <f:fields>
-                                                    <VBox id="vh_tabM3_subTab2_form1_c3_05" >
-                                                        <Input id="txt_tabM3_subTab2_form1_c3_05" value="" /> 
-                                                        <ObjectStatus id="obj_tabM3_subTab2_form1_c3_05" text="LLENAR EN CASO DE HIDROCARBUROS LÍQUIDOS Y GAS NATURAL" icon="sap-icon://information" state="Information" class="sapUiMediumMarginBegin sapUiSmallMarginBottom" />
-                                                    </VBox> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c3_06" label="REGISTRO DGH">
-                                                <f:fields>
-                                                    <VBox id="vh_tabM3_subTab2_form1_c3_06" >
-                                                        <Input id="txt_tabM3_subTab2_form1_c3_06" value="" /> 
-                                                        <ObjectStatus id="obj_tabM3_subTab2_form1_c3_06" text="LLENAR EN CASO DE HIDROCARBUROS LÍQUIDOS Y GAS NATURAL" icon="sap-icon://information" state="Information" class="sapUiMediumMarginBegin sapUiSmallMarginBottom" />
-                                                    </VBox> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c3_07" label="TAMAÑO DE EMPRESA (TABLA N°1)">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c3_07" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c3_08" label="DOMICILIO PRINCIPAL">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c3_08" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c3_09" label="DEPARTAMENTO">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c3_09" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c3_010" label="PROVINCIA">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c3_010" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c3_011" label="DISTRITO">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c3_011" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c3_012" label="UBIGEO (no llenar)">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c3_012" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c3_013" label="ACTIVIDAD ECONÓMICA PRINCIPAL (DETALLAR)">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c3_013" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c3_015" label="CIIU (TABLA N°2)">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c3_015" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c3_016" label="ER (no llenar)">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c3_016" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c3_017" label="N° DE TRABAJADORES">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c3_017" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c3_018" label="CÓD. PROV. Y N° TELÉFONO">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c3_018" value="" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                        </f:formElements>
-                                    </f:FormContainer>
-
-                                    <f:FormContainer id="tabM3_subTab2_form1_c4" expandable="true" title="III. DATOS DEL TRABAJADOR">
-                                        <f:formElements>
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c4_01" label="DNI / CE">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c4_01" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c4_02" label="A APELLIDOS">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c4_02" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c4_05" label="B NOMBRES">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c4_05" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c4_06" label="DOMICILIO">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c4_06" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c4_07" label="DEPARTAMENTO">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c4_07" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c4_08" label="PROVINCIA">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c4_08" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c4_09" label="DISTRITO">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c4_09" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c4_010" label="UBIGEO (no llenar)">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c4_010" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c4_011" label="CATEGORÍA OCUPACIONAL (TABLA N° 3)">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c4_011" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement>  
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c4_013" label="ASEGURADO">
-                                                <f:fields>
-                                                    <CheckBox text="SI" />
-                                                    <CheckBox text="NO" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c4_014" label="ESSALUD">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c4_014" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c4_015" label="EPS">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c4_015" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c4_016" label="EDAD">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c4_016" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c4_017" label="SCTR">
-                                                <f:fields>
-                                                    <CheckBox text="SI" />
-                                                    <CheckBox text="NO" />  
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c4_018" label="GÉNERO">
-                                                <f:fields>  
-                                                    <CheckBox text="M" />
-                                                    <CheckBox text="F" />   
-                                                </f:fields>
-                                            </f:FormElement>   
-                                        </f:formElements>
-                                    </f:FormContainer>
-
-                                    <f:FormContainer id="tabM3_subTab2_form1_c5" expandable="true" title="IV. DATOS DEL ACCIDENTE DE TRABAJO ( NO MORTAL)">
-                                        <f:formElements>
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c5_01" label="FECHA DEL ACCIDENTE">
-                                                <f:fields>
-                                                    <DatePicker id="cmb_fecha_tabM3_subTab2_form1_c5_01" displayFormat="short" change="handleChange"/> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c5_02" label="HORA DEL ACCIDENTE">
-                                                <f:fields>
-                                                    <TimePicker id="cmb_fecha_tabM3_subTab2_form1_c5_02" value="" valueFormat="HH:mm"
-                                                        displayFormat="HH:mm" change="handleChange" maskMode="{= ${/maskMode/state} ? 'On' : 'Off'}"/> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c5_019" label="TIPO DEL ACCIDENTE (TABLA N°4)">
-                                                <f:fields> 
-                                                    <Input id="txt_tabM3_subTab2_form1_c5_019" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement>
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c5_020" label="AGENTE CAUSANTE (TABLA N°5)">
-                                                <f:fields> 
-                                                    <Input id="txt_tabM3_subTab2_form1_c5_020" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement>
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c5_03" >
-                                                <f:fields>
-                                                    <Title id="txt_tabM3_subTab2_form1_c5_03" text="CERTIFICACIÓN MÉDICA" class="sapUiSmallMarginBegin" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c5_04" label="RUC">
-                                                <f:fields> 
-                                                    <Input id="txt_tabM3_subTab2_form1_c5_04" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c5_05" label="FECHA DE INGRESO">
-                                                <f:fields>
-                                                    <DatePicker id="cmb_fecha_tabM3_subTab2_form1_c5_05" displayFormat="short" change="handleChange"/>  
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c5_06" label="CENTRO MÉDICO ASISTENCIAL">
-                                                <f:fields> 
-                                                    <Input id="txt_tabM3_subTab2_form1_c5_06" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement>    
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c5_07" label="TIPO DE CENTRO MÉDICO ASISTENCIAL">
-                                                <f:fields> 
-                                                    <VBox id="vb_tabM3_subTab2_form1_c5_07" >
-                                                        <CheckBox text="PÚBLICO" />
-                                                        <CheckBox text="PRIVADO" />  
-                                                        <CheckBox text="MILITAR" />  
-                                                        <CheckBox text="POLICIAL" />  
-                                                        <CheckBox text="SEGURIDAD SOCIAL" />  
-                                                    </VBox> 
-                                                </f:fields>
-                                            </f:FormElement>
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c5_013" label="PARTE DEL CUERPO AFECTADO (TABLA N°6)">
-                                                <f:fields> 
-                                                    <Input id="txt_tabM3_subTab2_form1_c5_013" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement>
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c5_014" label="NATURALEZA DE LA LESIÓN (TABLA N° 7)">
-                                                <f:fields> 
-                                                    <Input id="txt_tabM3_subTab2_form1_c5_014" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement>
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c5_015" >
-                                                <f:fields>
-                                                    <Title id="txt_tabM3_subTab2_form1_c5_015" text="CONSECUENCIAS DEL ACCIDENTE" class="sapUiSmallMarginBegin" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c5_016" label="ACCIDENTE LEVE">
-                                                <f:fields> 
-                                                    <Input id="txt_tabM3_subTab2_form1_c5_016" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement>
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c5_017" label="ACCIDENTE INCAPACITANTE:">
-                                                <f:fields> 
-                                                    <VBox id="vb_tabM3_subTab2_form1_c5_017" >
-                                                        <CheckBox text="TOTAL TEMPORAL" />
-                                                        <CheckBox text="PARCIAL TEMPORAL" />  
-                                                        <CheckBox text="PARCIAL PERMANENTE" />  
-                                                        <CheckBox text="TOTAL PERMANENTE" />  
-                                                        <CheckBox text="ACCIDENTE MORTAL" />  
-                                                    </VBox>
-                                                </f:fields>
-                                            </f:FormElement>   
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c5_018" label="FECHA DE FALLECIMIENTO">
-                                                <f:fields> 
-                                                    <DatePicker id="cmb_fecha_tabM3_subTab2_form1_c5_018" displayFormat="short" change="handleChange"/> 
-                                                </f:fields>
-                                            </f:FormElement>
-                                        </f:formElements>
-                                    </f:FormContainer>
-
-                                    <f:FormContainer id="tabM3_subTab2_form1_c6" expandable="true" title="V. DATOS DE LA ENFERMEDAD PROFESIONAL U OCUPACIONAL">
-                                        <f:formElements>
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c6_01" label="ACCIDENTE INCAPACITANTE:">
-                                                <f:fields> 
-                                                    <VBox id="vb_tabM3_subTab2_form1_c6_01" >
-                                                        <CheckBox text="FÍSICOS" />
-                                                        <CheckBox text="QUÍMICOS" />  
-                                                        <CheckBox text="BIOLÓGICOS" />  
-                                                        <CheckBox text="DISERGONÓMICOS" />  
-                                                        <CheckBox text="PSICO-SOCIALES" />  
-                                                    </VBox>
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c6_02" label="NOMBRE Y NATURALEZA DE LA ENFERMEDAD PROFESIONAL U OCUPACIONAL">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c6_02" value="" />  
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c6_09" label="CIE10">
-                                                <f:fields>
-                                                    <Input id="txt_tabM3_subTab2_form1_c6_09" value="" />  
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c6_03" >
-                                                <f:fields>
-                                                    <Title id="txt_tabM3_subTab2_form1_c6_03" text="CERTIFICACIÓN MÉDICA" class="sapUiSmallMarginBegin" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c6_04" label="RUC">
-                                                <f:fields> 
-                                                    <Input id="txt_tabM3_subTab2_form1_c6_04" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c6_05" label="FECHA DE INGRESO">
-                                                <f:fields>
-                                                    <DatePicker id="cmb_fecha_tabM3_subTab2_form1_c6_05" displayFormat="short" change="handleChange"/>  
-                                                </f:fields>
-                                            </f:FormElement> 
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c6_06" label="CENTRO MÉDICO ASISTENCIAL">
-                                                <f:fields> 
-                                                    <Input id="txt_tabM3_subTab2_form1_c6_06" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement>     
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c6_07" label="TIPO DE CENTRO MÉDICO ASISTENCIAL">
-                                                <f:fields> 
-                                                    <VBox id="vb_tabM3_subTab2_form1_c6_07" >
-                                                        <CheckBox text="PÚBLICO" />
-                                                        <CheckBox text="PRIVADO" />  
-                                                        <CheckBox text="MILITAR" />  
-                                                        <CheckBox text="POLICIAL" />  
-                                                        <CheckBox text="SEGURIDAD SOCIAL" />  
-                                                    </VBox>
-                                                </f:fields>
-                                            </f:FormElement>
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c6_08" label="ENFERMEDAD PROFESIONAL U OCUPACIONAL (TABLA N°8)">
-                                                <f:fields> 
-                                                    <Input id="txt_tabM3_subTab2_form1_c6_08" value="" /> 
-                                                </f:fields>
-                                            </f:FormElement> 
-                                        </f:formElements>
-                                    </f:FormContainer>
-
-                                    <f:FormContainer id="tabM3_subTab2_form1_c7" >
-                                        <f:formElements>
-                                            <f:FormElement id="lbl_tabM3_subTab2_form1_c7_01">
-                                                <f:fields>
-                                                    <Button id="btn_tabM3_subTab2_form1_c7_01" text="Enviar" icon="sap-icon://paper-plane" press="onEnviartab2" type="Emphasized" />
-                                                </f:fields>
-                                            </f:FormElement> 
-                                        </f:formElements>
-                                    </f:FormContainer> 
-                                </f:formContainers> 
-                            </f:Form>
-                        </IconTabFilter> 
-                    </items>
                 </IconTabFilter> 
                 <IconTabFilter text="Gestión de inspecciones de trabajo" key="itab4Id">
                     <IconTabBar headerMode="Inline" expanded="{device>/isNoPhone}" >
@@ -1685,7 +324,7 @@
                                     <f:toolbar>
                                         <Toolbar> 
                                             <ToolbarSpacer />
-                                            <Button text="Guardar" icon="sap-icon://save" press="seveNewInspeccion" type="Emphasized" /> 
+                                            <Button text="Guardar" icon="sap-icon://save" press="seveNewInspeccion" type="Emphasized" />  
                                         </Toolbar>
                                     </f:toolbar>
                                     <f:layout>
@@ -1707,24 +346,24 @@
                                     <f:formContainers>
                                         <f:FormContainer> 
                                             <f:formElements>
-                                                <f:FormElement label="Codigo de inspección">
+                                                <!-- <f:FormElement label="Codigo de inspección">
                                                     <f:fields>
                                                         <Input id="gInsp_codInsp" value=""/>
                                                         <Button text="Generar" icon="sap-icon://generate-shortcut" press="setCod" type="Emphasized" /> 
                                                     </f:fields>
-                                                </f:FormElement>
-                                                <f:FormElement label="Gerencia">
+                                                </f:FormElement> -->
+                                                <f:FormElement label="Gerencia"> 
                                                     <f:fields> 
-                                                        <Select forceSelection="false" items="{ path: 'myParam>/dataGerencia'}" id="gInsp_gerencia" wrapItemsText="true">
-                                                            <core:Item key="{myParam>key}" text="{myParam>name}"  />
-                                                        </Select>
+                                                        <Input id="gInsp_gerencia" type="Text" value="" placeholder="Seleccione.." valueHelpRequest="changeZSYSO_GERENCIA" showSuggestion="true" showValueHelp="true"/>
                                                     </f:fields>
                                                 </f:FormElement>
-                                                <f:FormElement label="Área">
-                                                    <f:fields> <Input id="gInsp_area" value=""/> </f:fields>
+                                                <f:FormElement label="Área"> 
+                                                    <f:fields> 
+                                                        <Input id="gInsp_area" type="Text" value="" placeholder="Seleccione.." valueHelpRequest="changeZSYSO_AREA" showSuggestion="true" showValueHelp="true"/>
+                                                    </f:fields>
                                                 </f:FormElement>
                                                 <f:FormElement label="Departamento">
-                                                    <f:fields> <Input id="gInsp_departamento" value=""/> </f:fields>
+                                                    <f:fields> <Input id="gInsp_departamento" type="Text" value="" placeholder="Seleccione.." valueHelpRequest="changeZSYSO_DPTO" showSuggestion="true" showValueHelp="true"/></f:fields>
                                                 </f:FormElement>
                                                 <f:FormElement label="Fecha programada">
                                                     <f:fields> <DatePicker id="gInsp_programada" value="" displayFormat="dd/MM/yyyy" placeholder="Ingresar fecha"/> </f:fields>
@@ -1773,7 +412,7 @@
                                     </fb:filterGroupItems>   
                                 </fb:FilterBar> 
 
-                                <tab:Table id="tbInspecciones" cellClick="selectTabInspecciones" rows="{  path: 'myParam>/listInspeccion' }" selectionMode="Single"  visibleRowCount="8" ariaLabelledBy="title">
+                                <tab:Table id="tbInspecciones" cellClick="selectTabInspecciones" rows="{  path: 'myParam>/ZSYSO_INSPECCION' }" selectionMode="Single"  visibleRowCount="8" ariaLabelledBy="title">
                                     <!-- <tab:extension>
                                         <OverflowToolbar style="Clear">
                                             <Title id="title" text="Detalle de los Movimientos"/>
@@ -1785,31 +424,31 @@
                                     <tab:columns>
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="N° Inspección" />
-                                            <tab:template> <Text id="tex1" text="{myParam>codInsp}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text id="tex1" text="{myParam>ZINSPECCION}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Fecha Programada" />
-                                            <tab:template> <Text id="tex2" text="{myParam>fechaP}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text id="tex2" text="{myParam>ZFEC_PROGRAM}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Gerencia" />
-                                            <tab:template> <Text id="tex3" text="{myParam>gerencia}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text id="tex3" text="{myParam>ZGERENCIA}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Área" />
-                                            <tab:template> <Text id="tex4" text="{myParam>area}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text id="tex4" text="{myParam>ZAREA}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column >
                                             <Label id="flabel5" textAlign="Center" wrapping ="true"  text="Departamento" />
-                                            <tab:template> <Text id="tex5" text="{myParam>departamento}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text id="tex5" text="{myParam>ZDPTO}" wrapping="false" /> </tab:template>
                                         </tab:Column> 
                                         <tab:Column>
                                             <Label textAlign="Center" wrapping ="true"  text="Afectado" />
                                             <tab:template> <Text id="tex6" text="{myParam>afectado}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column >
-                                            <Label textAlign="Center" wrapping ="true"  text="Status" />
-                                            <tab:template> <Text id="tex6a" text="{myParam>status}" wrapping="false" /> </tab:template>
+                                            <Label textAlign="Center" wrapping ="true"  text="Estado" />
+                                            <tab:template> <Text id="tex6a" text="{myParam>ZESTADO}" wrapping="false" /> </tab:template>
                                         </tab:Column>              
                                     </tab:columns>
                                 </tab:Table> 
@@ -2568,11 +1207,11 @@
                 <IconTabFilter text="Gestión de EEPs" key="itab5Id">
                     <IconTabBar headerMode="Inline"  expanded="{device>/isNoPhone}">
                         <items>
-                            <IconTabFilter text="Requerimientos EPPs" >
-                                <Panel expandable="true" expanded="true" visible="true" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
+                            <IconTabFilter text="Reservas EPPs" >
+                                <!-- <Panel expandable="true" expanded="true" visible="true" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
                                     <headerToolbar>
                                         <OverflowToolbar style="Clear">
-                                            <Title text="Nuevo requerimiento EPP" />
+                                            <Title text="Nuevo reserva EPP" />
                                             <ToolbarSpacer />
                                             <Button icon="sap-icon://save" text="Guardar" type="Emphasized" /> 
                                         </OverflowToolbar>
@@ -2630,23 +1269,62 @@
                                             </f:formContainers>
                                         </f:Form> 
                                     </content>
-                                </Panel>
+                                </Panel> -->
+                                <fb:FilterBar reset="onReset" search="buscarIncidentes" showRestoreButton="true">
+                                    <fb:filterGroupItems>  
+                                        <fb:FilterGroupItem groupName="G1" name="A1" groupTitle="Group1"  label="N° Reserva" visibleInFilterBar="true" >
+                                            <fb:control>
+                                                <Input value="" id="idReserva" />
+                                            </fb:control>
+                                        </fb:FilterGroupItem> 
+                                        <fb:FilterGroupItem groupName="G1" name="A2" groupTitle="Group1"  label="Trabajador" visibleInFilterBar="true">
+                                            <fb:control>
+                                                <Input value="" id="idTrabajador" />
+                                            </fb:control>
+                                        </fb:FilterGroupItem> 
+                                        <fb:FilterGroupItem groupName="G1" name="A3" groupTitle="Group1"  label="DNI" visibleInFilterBar="true">
+                                            <fb:control>
+                                                <Input value="" id="idDNI" />
+                                            </fb:control>
+                                        </fb:FilterGroupItem> 
+                                        <fb:FilterGroupItem groupName="G1" name="A4" groupTitle="Group1"  label="Cargo" visibleInFilterBar="true">
+                                            <fb:control>
+                                                <Input value="" id="idCargo" />
+                                            </fb:control>
+                                        </fb:FilterGroupItem> 
+                                        <fb:FilterGroupItem groupName="G1" name="A5" groupTitle="Group1"  label="Area de trabajo" visibleInFilterBar="true">
+                                            <fb:control>
+                                                <Input value="" id="idCargoTrab" />
+                                            </fb:control>
+                                        </fb:FilterGroupItem> 
+                                        <fb:FilterGroupItem groupName="G1" name="A6" groupTitle="Group1"  label="Fecha de reserva" visibleInFilterBar="true" >
+                                            <fb:control>
+                                                <DatePicker id="idFechaReserva"  value=""  displayFormat="dd/MM/yyyy" placeholder="Ingresar fecha" />   
+                                            </fb:control>
+                                        </fb:FilterGroupItem> 
+                                        <fb:FilterGroupItem groupName="G1" name="A7" groupTitle="Group1"  label="Status" visibleInFilterBar="true" >
+                                            <fb:control>
+                                                <Input value="" id="idStatus"/>
+                                            </fb:control>
+                                        </fb:FilterGroupItem>
+                                    </fb:filterGroupItems>   
+                                </fb:FilterBar> 
                                 <tab:Table rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
                                     <tab:extension>
                                         <OverflowToolbar >
                                             <!-- <Title text="Asistentes"/> -->
                                             <ToolbarSpacer />
-                                            <Button text="Nuevo" icon="sap-icon://add-document" type="Emphasized" press="addInduccion" />  
-                                            <Button text="Visualizar" icon="sap-icon://detail-view" press="deleteInduccion" />  
-                                            <Button text="Entrega" icon="sap-icon://paper-plane" press="deleteInduccion" />  
-                                            <Button text="Devolución" icon="sap-icon://synchronize" press="deleteInduccion" />  
+                                            <Button text="Nuevo" icon="sap-icon://add-document" type="Emphasized" press="addRequerientoEpp" />  
+                                            <Button text="Visualizar" icon="sap-icon://detail-view" press="visualizarEpp" />  
+                                            <Button text="Entrega" icon="sap-icon://paper-plane" press="entregaEpp" />  
+                                            <Button text="Devolución" icon="sap-icon://synchronize" press="vDevolucionEpp" />  
                                             <Button text="Liberar" icon="sap-icon://outbox" press="deleteInduccion" />  
                                             <Button text="Eliminar" icon="sap-icon://delete" press="deleteInduccion" />  
                                         </OverflowToolbar>
                                     </tab:extension>
                                     <tab:columns>
                                         <tab:Column  >
-                                            <Label textAlign="Center" wrapping ="true"  text="N° requerimiento" />
+                                            <Label textAlign="Center" wrapping ="true"  text="N° reserva" />
                                             <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column >
@@ -2666,7 +1344,7 @@
                                             <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
-                                            <Label textAlign="Center" wrapping ="true"  text="Fecha de requerimiento" />
+                                            <Label textAlign="Center" wrapping ="true"  text="Fecha de reserva" />
                                             <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
@@ -2676,7 +1354,58 @@
                                     </tab:columns>
                                 </tab:Table> 
                             </IconTabFilter> 
-                            <IconTabFilter text="Reportes de requerimientos EPPs" >
+                            <IconTabFilter text="Reportes de reservas EPPs" >
+                                <tab:Table rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                                    <tab:extension>
+                                        <OverflowToolbar >
+                                            <!-- <Title text="Documentos"/> -->
+                                            <ToolbarSpacer />  
+                                            <Button text="Descargar Excel" type="Emphasized" icon="sap-icon://download" press="onEnviartab2" />  
+                                        </OverflowToolbar>
+                                    </tab:extension>
+                                    <tab:columns>
+                                        <tab:Column  >
+                                            <Label textAlign="Center" wrapping ="true"  text="N° reserva" />
+                                            <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                        </tab:Column>
+                                        <tab:Column >
+                                            <Label textAlign="Center" wrapping ="true"  text="Fecha reserva" />
+                                            <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
+                                        </tab:Column>
+                                        <tab:Column>
+                                            <Label textAlign="Center" wrapping ="true"  text="Código material" />
+                                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                                        </tab:Column>     
+                                        <tab:Column>
+                                            <Label textAlign="Center" wrapping ="true"  text="Descripción material" />
+                                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                                        </tab:Column>     
+                                        <tab:Column>
+                                            <Label textAlign="Center" wrapping ="true"  text="Fecha entrega" />
+                                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                                        </tab:Column>     
+                                        <tab:Column>
+                                            <Label textAlign="Center" wrapping ="true"  text="Vida útil EPP" />
+                                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                                        </tab:Column>     
+                                        <tab:Column>
+                                            <Label textAlign="Center" wrapping ="true"  text="Fecha sugerida de cambio" />
+                                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                                        </tab:Column>  
+                                        <tab:Column>
+                                            <Label textAlign="Center" wrapping ="true"  text="Cantidad" />
+                                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                                        </tab:Column>  
+                                        <tab:Column>
+                                            <Label textAlign="Center" wrapping ="true"  text="Trabajo" />
+                                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                                        </tab:Column>  
+                                        <tab:Column>
+                                            <Label textAlign="Center" wrapping ="true"  text="Status" />
+                                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                                        </tab:Column>  
+                                    </tab:columns>
+                                </tab:Table>  
                             </IconTabFilter> 
                             <IconTabFilter text="Kárdex de materiales EPPs" >
                             </IconTabFilter> 

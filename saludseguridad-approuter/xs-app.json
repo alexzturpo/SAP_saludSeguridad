@@ -4,12 +4,27 @@
   "authenticationMethod": "route",
   "routes": [
     {
+      "source": "^/cpdb/(.*)$",
+      "target": "/$1",
+      "destination": "Capdbsrvldpp_qas_salud"
+  },  
+    {
+      "source": "^/odataent/odata2.svc/(.*)$",
+      "target": "/$1",
+      "destination": "Capdbsrvldpp_qas_salud"
+    },
+    {
+      "source": "^/odataent2/odata2.svc/(.*)$",
+      "target": "/$1",
+      "destination": "Capdbsrvldpp_qas"
+    },
+    {
       "source": "^/index.html$",
       "target": "/appssaplicationss/index.html",
       "service": "html5-apps-repo-rt",
       "authenticationType": "xsuaa",
       "cacheControl": "no-cache, no-store, must-revalidate"
-  } ,
+    } ,
     {
       "source": "^/resources/(.*)$",
       "target": "/appssaplicationss/resources/$1",

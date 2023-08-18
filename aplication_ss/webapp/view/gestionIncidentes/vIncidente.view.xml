@@ -5,340 +5,520 @@
     xmlns:tab="sap.ui.table"
     xmlns:u="sap.ui.unified"
     xmlns="sap.m">
-    <Page title="Incidente {myParam>numIns}" binding="{path : 'myParam>/selectIncidente'}" showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
+    <Page title="Incidente {myParam>/selectIncidente/ZINCIDENTE}" showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
 		<headerContent>
-			<Button text="Guardar" icon="sap-icon://paper-plane" type="Emphasized" press="updateIncidente" />
-            <Button text="Enviar notificación" icon="sap-icon://notification-2" press="onEnviartab2" /> 
+			<Button text="Culminar atensión" icon="sap-icon://paper-plane" type="Emphasized" press="IncTerminar" />
+            <Button text="Enviar notificación" icon="sap-icon://notification-2" press="IncNotificacion" /> 
             <Button text="Cancelar" icon="sap-icon://delete" press="onEnviartab2" /> 
 		</headerContent> 
         <content >
-            <f:Form id="form01" editable="true"  width="auto" > 
-                <f:layout>
-                    <f:ResponsiveGridLayout id="FormTab1IdaG"
-                        labelSpanXL="4"
-                        labelSpanL="4"
-                        labelSpanM="12"
-                        labelSpanS="12"
-                        adjustLabelSpan="false"
-                        emptySpanXL="0"
-                        emptySpanL="0"
-                        emptySpanM="0"
-                        emptySpanS="0"
-                        columnsXL="2"
-                        columnsL="2"
-                        columnsM="2"
-                        singleContainerFullSize="false"  />
-                </f:layout>
-                <f:formContainers >
-                    <f:FormContainer title="Qué pasó y qué acciones inmediatas se han realizado?">
-                        <f:formElements>
-                            <f:FormElement label="Titulo">
-                                <f:fields>
-                                    <Input id="gi_new_titulo" value="{myParam>titulo}" /> 
-                                </f:fields>
-                            </f:FormElement>
-                            <f:FormElement label="Descripción del evento">
-                                <f:fields> 
-                                    <TextArea id="gi_new_descrip" value="{myParam>descrip}" height="5rem" width="100%"/>
-                                </f:fields>
-                            </f:FormElement>
-                            <f:FormElement label="Acciones inmediatas">
-                                <f:fields> 
-                                    <TextArea id="gi_new_accionInmediata" value="{myParam>accionInmediata}" height="5rem" width="100%"/>
-                                </f:fields>
-                            </f:FormElement>  
-                        </f:formElements>
-                    </f:FormContainer> 
-                    <f:FormContainer title="¿Donde ocurrió?" >
-                        <f:formElements>
-                            <f:FormElement label="Sociedad" >
-                                <f:fields>
-                                    <ComboBox id="gi_new_sociedad" class="sapUiSmallMarginBottom" enabled="true" selectedKey="{myParam>sociedad}">
-                                        <core:Item key="1000" text="1000" />
-                                    </ComboBox>    
-                                
-                                </f:fields>
-                            </f:FormElement> 
-                            <f:FormElement label="Ubicación" >
-                                <f:fields>
-                                    <Input id="gi_new_ubicacion" value="{myParam>ubicacion}" /> 
-                                </f:fields>
-                            </f:FormElement>
-                            <f:FormElement label="Detalle" >
-                                <f:fields>
-                                    <TextArea id="gi_new_detalle" value="{myParam>detalle}" height="5rem" width="100%"/> 
-                                </f:fields>
-                            </f:FormElement>
-                        </f:formElements>
-                    </f:FormContainer>
-                    <f:FormContainer >
-                        <f:formElements>
-                            <f:FormElement label="Investigación preliminar del accidente" >
-                                <f:fields>
-                                    <TextArea  value="{myParam>invPreliminar}" id="gi_new_invPreliminar" height="5rem" width="100%"/>  
-                                </f:fields>
-                            </f:FormElement> 
-                        </f:formElements>
-                    </f:FormContainer>
+            <IconTabBar expanded="{device>/isNoPhone}" >
+                <items>
+                    <IconTabFilter text="Detalle" binding="{path : 'myParam>/selectIncidente'}" > 
+                        <Panel width="auto" >
+                            <headerToolbar>
+                                <OverflowToolbar>
+                                    <Title text="Datos conplementario"/>
+                                    <ToolbarSpacer />
+                                    <Button text="Guardar" icon="sap-icon://save" type="Emphasized" press="saveIncidente" /> 
+                                </OverflowToolbar>
+                            </headerToolbar>
+                            <f:Form id="form01" editable="true"  width="auto" > 
+                                <f:layout>
+                                    <f:ResponsiveGridLayout id="FormTab1IdaG"
+                                        labelSpanXL="4"
+                                        labelSpanL="4"
+                                        labelSpanM="12"
+                                        labelSpanS="12"
+                                        adjustLabelSpan="false"
+                                        emptySpanXL="0"
+                                        emptySpanL="0"
+                                        emptySpanM="0"
+                                        emptySpanS="0"
+                                        columnsXL="2"
+                                        columnsL="2"
+                                        columnsM="2"
+                                        singleContainerFullSize="false"  />
+                                </f:layout>
+                                <f:formContainers >
+                                    <f:FormContainer title="Qué pasó y qué acciones inmediatas se han realizado?">
+                                        <f:formElements>
+                                            <f:FormElement label="Titulo">
+                                                <f:fields>
+                                                    <Input id="gi_new_titulo" value="{myParam>ZTITULO}"/> 
+                                                </f:fields>
+                                            </f:FormElement>
+                                            <f:FormElement label="Descripción del evento">
+                                                <f:fields> 
+                                                    <TextArea id="gi_new_descrip" value="{myParam>ZDESCRIPCION}" height="5rem" width="100%"/>
+                                                </f:fields>
+                                            </f:FormElement>
+                                            <f:FormElement label="Acciones inmediatas">
+                                                <f:fields> 
+                                                    <TextArea id="gi_new_accionInmediata" value="{myParam>ZACCIONES}" height="5rem" width="100%"/>
+                                                </f:fields>
+                                            </f:FormElement>  
+                                        </f:formElements>
+                                    </f:FormContainer> 
+                                    <f:FormContainer title="¿Donde ocurrió?" >
+                                        <f:formElements>
+                                            <f:FormElement label="Sociedad" >
+                                                <f:fields>
+                                                    <ComboBox id="gi_new_sociedad" class="sapUiSmallMarginBottom" enabled="true" selectedKey="{myParam>ZSOCIEDAD}">
+                                                        <core:Item key="1000" text="1000" />
+                                                    </ComboBox>    
+                                                
+                                                </f:fields>
+                                            </f:FormElement> 
+                                            <f:FormElement label="Ubicación" >
+                                                <f:fields>
+                                                    <Input id="gi_new_ubicacion" value="{myParam>ZUBICACION}" /> 
+                                                </f:fields>
+                                            </f:FormElement>
+                                            <f:FormElement label="Detalle" >
+                                                <f:fields>
+                                                    <TextArea id="gi_new_detalle" value="{myParam>ZDETALLE}" height="5rem" width="100%"/> 
+                                                </f:fields>
+                                            </f:FormElement>
+                                        </f:formElements>
+                                    </f:FormContainer>
+                                    <f:FormContainer >
+                                        <f:formElements>
+                                            <f:FormElement label="Investigación preliminar del accidente" >
+                                                <f:fields>
+                                                    <TextArea  value="{myParam>ZINVEST_PRELIM}" id="gi_new_invPreliminar" height="5rem" width="100%"/>  
+                                                </f:fields>
+                                            </f:FormElement> 
+                                        </f:formElements>
+                                    </f:FormContainer>
 
-                    <f:FormContainer title="¿Cuando ocurrió?" >
-                        <f:formElements>
-                            <f:FormElement label="Fecha" >
-                                <f:fields> 
-                                        <DatePicker id="gi_new_fecha" value="{myParam>fecha}" displayFormat="short" change="handleChange"/>   
-                                </f:fields>
-                            </f:FormElement> 
-                            <f:FormElement label="Hora" >
-                                <f:fields>  
-                                        <TimePicker id="gi_new_hora" value="myParam>hora" valueFormat="HH:mm" width="100%" 
-                                        displayFormat="HH:mm" change="handleChange" maskMode="{= ${/maskMode/state} ? 'On' : 'Off'}"/>   
-                                </f:fields>
-                            </f:FormElement> 
-                        </f:formElements>
-                    </f:FormContainer> 
-                </f:formContainers> 
-            </f:Form>
-            
-            <f:Form id="form02" editable="true"  width="auto" class="sapUiMediumMarginTop sapUiSmallMarginBottom"> 
-                <!-- <f:toolbar>
-                    <Toolbar>
-                        <Title text="¿Quíen fue afectado?" class="sapUiMediumMarginTop sapUiSmallMarginBottom" />
-                        <ToolbarSpacer />
-                        <Button text="Yo" press="onEnviartab2" />
-                        <Button text="Seleccionar persona"  press="onEnviartab2" />
-                        <Button text="Indicar manualmente"  press="onEnviartab2" />
-                        <Button text="Limpiar" icon="sap-icon://delete" press="onEnviartab2"  />
-                        <Button text="Buscar" type="Emphasized" icon="sap-icon://delete" press="onEnviartab2"/>
-                    </Toolbar>
-                </f:toolbar> -->
-                <f:layout>
-                    <f:ResponsiveGridLayout
-                        labelSpanXL="4"
-                        labelSpanL="4"
-                        labelSpanM="12"
-                        labelSpanS="12"
-                        adjustLabelSpan="false"
-                        emptySpanXL="0"
-                        emptySpanL="0"
-                        emptySpanM="0"
-                        emptySpanS="0"
-                        columnsXL="2"
-                        columnsL="2"
-                        columnsM="2"
-                        singleContainerFullSize="false" />
-                </f:layout>
-                <f:formContainers >
-                    <f:FormContainer >
-                        <f:toolbar>
-                            <Toolbar>
-                                <Title text="¿Quíen fue afectado?"/>
-                                <ToolbarSpacer />
-                                <Button text="Buscar" icon="sap-icon://employee-lookup" press="onEnviartab2"/>
-                            </Toolbar>
-                        </f:toolbar>
-                        <f:formElements>
-                            <f:FormElement label="Código de empleado:">
-                                <f:fields>
-                                    <Input id="gi_new_codEmp" value="{myParam>afectado/codEmpleado}" /> 
-                                </f:fields>
-                            </f:FormElement>
-                            <f:FormElement label="Nombres">
-                                <f:fields> 
-                                    <Input id="gi_new_nombreEmp" value="{myParam>afectado/nombreEmp}"/>
-                                </f:fields>
-                            </f:FormElement>
-                            <f:FormElement label="Apellidos">
-                                <f:fields> 
-                                    <Input id="gi_new_apellidoEmp" value="{myParam>afectado/apellidoEmp}"/>
-                                </f:fields>
-                            </f:FormElement>  
-                            <f:FormElement label="DNI">
-                                <f:fields> 
-                                    <Input id="gi_new_dniEmp" value="{myParam>afectado/dniEmp}"/>
-                                </f:fields>
-                            </f:FormElement>  
-                            <f:FormElement label="Área de trabajo">
-                                <f:fields> 
-                                    <Input id="gi_new_areaTrabajoEmp" value="{myParam>afectado/areaTrabajoEmp}"/>
-                                </f:fields>
-                            </f:FormElement>  
-                        </f:formElements>
-                    </f:FormContainer>  
+                                    <f:FormContainer title="¿Cuando ocurrió?" >
+                                        <f:formElements>
+                                            <f:FormElement label="Fecha" >
+                                                <f:fields> 
+                                                        <DatePicker id="gi_new_fecha" value="{myParam>ZFECHA}" displayFormat="short" change="handleChange"/>   
+                                                </f:fields>
+                                            </f:FormElement> 
+                                            <f:FormElement label="Hora" >
+                                                <f:fields>  
+                                                        <TimePicker id="gi_new_hora" value="{myParam>ZHORA}" valueFormat="HH:mm" width="100%" 
+                                                        displayFormat="HH:mm" change="handleChange" maskMode="{= ${/maskMode/state} ? 'On' : 'Off'}"/>   
+                                                </f:fields>
+                                            </f:FormElement> 
+                                        </f:formElements>
+                                    </f:FormContainer> 
+                                </f:formContainers> 
+                            </f:Form>
+                            
+                            <f:Form id="form02" editable="true"  width="auto" class="sapUiMediumMarginTop sapUiSmallMarginBottom"> 
+                                <!-- <f:toolbar>
+                                    <Toolbar>
+                                        <Title text="¿Quíen fue afectado?" class="sapUiMediumMarginTop sapUiSmallMarginBottom" />
+                                        <ToolbarSpacer />
+                                        <Button text="Yo" press="onEnviartab2" />
+                                        <Button text="Seleccionar persona"  press="onEnviartab2" />
+                                        <Button text="Indicar manualmente"  press="onEnviartab2" />
+                                        <Button text="Limpiar" icon="sap-icon://delete" press="onEnviartab2"  />
+                                        <Button text="Buscar" type="Emphasized" icon="sap-icon://delete" press="onEnviartab2"/>
+                                    </Toolbar>
+                                </f:toolbar> -->
+                                <f:layout>
+                                    <f:ResponsiveGridLayout
+                                        labelSpanXL="4"
+                                        labelSpanL="4"
+                                        labelSpanM="12"
+                                        labelSpanS="12"
+                                        adjustLabelSpan="false"
+                                        emptySpanXL="0"
+                                        emptySpanL="0"
+                                        emptySpanM="0"
+                                        emptySpanS="0"
+                                        columnsXL="2"
+                                        columnsL="2"
+                                        columnsM="2"
+                                        singleContainerFullSize="false" />
+                                </f:layout>
+                                <f:formContainers >
+                                    <f:FormContainer >
+                                        <f:toolbar>
+                                            <Toolbar>
+                                                <Title text="¿Quíen fue afectado?"/>
+                                                <ToolbarSpacer />
+                                                <Button text="Buscar" icon="sap-icon://employee-lookup" press="onEnviartab2"/>
+                                            </Toolbar>
+                                        </f:toolbar>
+                                        <f:formElements>
+                                            <f:FormElement label="Código de empleado:">
+                                                <f:fields>
+                                                    <Input id="gi_codEmp_afectado" value="{myParam>ZID_COD_TRABAJADOR}" /> 
+                                                </f:fields>
+                                            </f:FormElement>
+                                            <f:FormElement label="Nombres">
+                                                <f:fields> 
+                                                    <Input id="gi_new_nombreEmp" value="{myParam>afectado/nombreEmp}"/>
+                                                </f:fields>
+                                            </f:FormElement>
+                                            <f:FormElement label="Apellidos">
+                                                <f:fields> 
+                                                    <Input id="gi_new_apellidoEmp" value="{myParam>afectado/apellidoEmp}"/>
+                                                </f:fields>
+                                            </f:FormElement>  
+                                            <f:FormElement label="DNI">
+                                                <f:fields> 
+                                                    <Input id="gi_new_dniEmp" value="{myParam>afectado/dniEmp}"/>
+                                                </f:fields>
+                                            </f:FormElement>  
+                                            <f:FormElement label="Área de trabajo">
+                                                <f:fields> 
+                                                    <Input id="gi_new_areaTrabajoEmp" value="{myParam>afectado/areaTrabajoEmp}"/>
+                                                </f:fields>
+                                            </f:FormElement>  
+                                        </f:formElements>
+                                    </f:FormContainer>  
 
-                    <f:FormContainer>
-                        <f:toolbar>
-                            <Toolbar>
-                                <Title text="¿Quién advirtío el incidente?"/>
-                                <ToolbarSpacer />
-                                <Button text="Buscar" icon="sap-icon://employee-lookup" press="onEnviartab2"/>
-                            </Toolbar>
-                        </f:toolbar>
-                        <f:formElements>
-                            <f:FormElement label="Código de empleado">
-                                <f:fields>
-                                    <Input id="gi_new_codEmpTest" value="{myParam>testigo/codEmpleado}" /> 
-                                </f:fields>
-                            </f:FormElement>
-                            <f:FormElement label="Nombres">
-                                <f:fields> 
-                                    <Input id="gi_new_nombreEmpTest" value="{myParam>testigo/nombreEmp}"/>
-                                </f:fields>
-                            </f:FormElement>
-                            <f:FormElement label="Apellidos">
-                                <f:fields> 
-                                    <Input id="gi_new_apellidoEmpTest" value="{myParam>testigo/apellidoEmp}"/>
-                                </f:fields>
-                            </f:FormElement>  
-                            <f:FormElement label="DNI">
-                                <f:fields> 
-                                    <Input id="gi_new_dniEmpTest" value="{myParam>testigo/dniEmp}"/>
-                                </f:fields>
-                            </f:FormElement>  
-                            <f:FormElement label="Área de trabajo">
-                                <f:fields> 
-                                    <Input id="gi_new_areaTrabajoEmpTest" value="{myParam>testigo/areaTrabajoEmp}"/>
-                                </f:fields>
-                            </f:FormElement>  
-                            <f:FormElement label="Detalle">
-                                <f:fields> 
-                                    <Input id="gi_new_detalleEmpTest" value="{myParam>testigo/detalleEmp}"/>
-                                </f:fields>
-                            </f:FormElement>  
-                        </f:formElements>
-                    </f:FormContainer>  
-                </f:formContainers> 
-            </f:Form>  
+                                    <f:FormContainer>
+                                        <f:toolbar>
+                                            <Toolbar>
+                                                <Title text="¿Quién advirtío el incidente?"/>
+                                                <ToolbarSpacer />
+                                                <Button text="Buscar" icon="sap-icon://employee-lookup" press="onEnviartab2"/>
+                                            </Toolbar>
+                                        </f:toolbar>
+                                        <f:formElements>
+                                            <f:FormElement label="Código de empleado">
+                                                <f:fields>
+                                                    <Input id="gi_codEmp_informante" value="{myParam>ZID_COD_INFORMANTE}" /> 
+                                                </f:fields>
+                                            </f:FormElement>
+                                            <f:FormElement label="Nombres">
+                                                <f:fields> 
+                                                    <Input id="gi_new_nombreEmpTest" value="{myParam>testigo/nombreEmp}"/>
+                                                </f:fields>
+                                            </f:FormElement>
+                                            <f:FormElement label="Apellidos">
+                                                <f:fields> 
+                                                    <Input id="gi_new_apellidoEmpTest" value="{myParam>testigo/apellidoEmp}"/>
+                                                </f:fields>
+                                            </f:FormElement>  
+                                            <f:FormElement label="DNI">
+                                                <f:fields> 
+                                                    <Input id="gi_new_dniEmpTest" value="{myParam>testigo/dniEmp}"/>
+                                                </f:fields>
+                                            </f:FormElement>  
+                                            <f:FormElement label="Área de trabajo">
+                                                <f:fields> 
+                                                    <Input id="gi_new_areaTrabajoEmpTest" value="{myParam>testigo/areaTrabajoEmp}"/>
+                                                </f:fields>
+                                            </f:FormElement>  
+                                            <f:FormElement label="Detalle">
+                                                <f:fields> 
+                                                    <Input id="gi_codEmp_detalleInf" value="{myParam>testigo/detalleEmp}"/>
+                                                </f:fields>
+                                            </f:FormElement>  
+                                        </f:formElements>
+                                    </f:FormContainer>  
+                                </f:formContainers> 
+                            </f:Form>  
 
-            <!-- Documentos  -->
-            <!-- <Panel expandable="true" expanded="true" visible="true" headerText="Añadir Documentación" width="auto" class="sapUiResponsiveMargin">
-                <headerToolbar>
-                    <OverflowToolbar style="Clear">
-                        <Title text="Añadir Documentación" />
-                        <ToolbarSpacer />
-                        <Button icon="sap-icon://save" text="Guardar" type="Emphasized" /> 
-                    </OverflowToolbar>
-                </headerToolbar>
-                <content>
-                    <f:Form editable="true"> 
-                        <f:layout>
-                            <f:ResponsiveGridLayout
-                                labelSpanXL="4"
-                                labelSpanL="3"
-                                labelSpanM="4"
-                                labelSpanS="12"
-                                adjustLabelSpan="false"
-                                emptySpanXL="0"
-                                emptySpanL="4"
-                                emptySpanM="0"
-                                emptySpanS="0"
-                                columnsXL="2"
-                                columnsL="1"
-                                columnsM="1"
-                                singleContainerFullSize="false" />
-                        </f:layout>
-                        <f:formContainers>
-                            <f:FormContainer > 
-                                <f:formElements>
-                                    <f:FormElement label="Nombre del documento">
-                                        <f:fields> <Input value=""/> </f:fields>
-                                    </f:FormElement> 
-                                    <f:FormElement label="Fecha ">
-                                        <f:fields> <DatePicker placeholder="Fecha" valueFormat="yyyyMMdd" displayFormat="dd/MM/yyyy"/> </f:fields>
-                                    </f:FormElement> 
-                                    <f:FormElement label="Documento">
-                                        <f:fields> <Input value=""/> </f:fields>
-                                    </f:FormElement>  
-                                </f:formElements>
-                            </f:FormContainer> 
-                        </f:formContainers>
-                    </f:Form> 
-                </content>
-            </Panel> -->
-            <tab:Table rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
-                <tab:extension>
-                    <OverflowToolbar >
-                        <Title text="Documentos"/>
-                        <ToolbarSpacer />
-                        <!-- <Button text="Añadir" icon="sap-icon://add" type="Emphasized" press="addInduccion" />   -->
-                        <u:FileUploader name="myFileUpload" uploadUrl="upload/" tooltip="Subir archivo" change="onFileSelected"/>
-                        <Button text="Subir" type="Emphasized" icon="sap-icon://upload" press="onEnviartab2" width="6rem"/> 
-                        <Button text="Eliminar" icon="sap-icon://delete" press="deleteInduccion" />  
-                    </OverflowToolbar>
-                </tab:extension>
-                <tab:columns>
-                    <tab:Column  >
-                        <Label textAlign="Center" wrapping ="true"  text="Nombre del documento" />
-                        <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
-                    </tab:Column>
-                    <tab:Column >
-                        <Label textAlign="Center" wrapping ="true"  text="Fecha" />
-                        <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
-                    </tab:Column>
-                    <tab:Column>
-                        <Label textAlign="Center" wrapping ="true"  text="Documento" />
-                        <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
-                    </tab:Column>     
-                </tab:columns>
-            </tab:Table>   
+                            <!-- Documentos  -->
+                            <tab:Table id="tableDocIncidente" rows="{  path: 'myParam>/docTableIncidente' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                                <tab:extension>
+                                    <OverflowToolbar >
+                                        <Title text="Documentos"/>
+                                        <ToolbarSpacer />
+                                        <!-- <Button text="Añadir" icon="sap-icon://add" type="Emphasized" press="addInduccion" />   -->
+                                        <u:FileUploader id="fileDocIncidente" name="myFileUpload" uploadUrl="upload/" tooltip="Subir archivo" change="onFileSelected"/>
+                                        <Button text="Subir" type="Emphasized" icon="sap-icon://upload" press="saveDocIncidente" width="6rem"/> 
+                                        <Button text="Eliminar" icon="sap-icon://delete" press="deleteDocIncidente" />  
+                                    </OverflowToolbar>
+                                </tab:extension>
+                                <tab:columns>
+                                    <tab:Column  >
+                                        <Label textAlign="Center" wrapping ="true"  text="Nombre del documento" />
+                                        <tab:template> <Text text="{myParam>ZNOM_DOC}" wrapping="false" /> </tab:template>
+                                    </tab:Column>
+                                    <tab:Column >
+                                        <Label textAlign="Center" wrapping ="true"  text="Fecha" />
+                                        <tab:template> <Text  text="{myParam>ZFECHA_UPLOAD}" wrapping="false" /> </tab:template>
+                                    </tab:Column>
+                                    <tab:Column>
+                                        <Label textAlign="Center" wrapping ="true"  text="Documento" />
+                                        <tab:template> <Text text="{myParam>ZNOM_DOC}" wrapping="false" /> </tab:template>
+                                    </tab:Column>     
+                                </tab:columns>
+                            </tab:Table>   
 
-            <!-- Anexos de Investigación de accidente -->
-            <f:Form editable="true"  width="auto" class="sapUiMediumMarginTop sapUiSmallMarginBottom"> 
-                <f:toolbar>
-                    <Toolbar>
-                        <Title text="Anexos de investigación de accidente" class="sapUiMediumMarginTop sapUiSmallMarginBottom" />
-                        <!-- <ToolbarSpacer /> 
-                        <Button text="Guardar" type="Emphasized" icon="sap-icon://save" press="onEnviartab2"/> -->
-                    </Toolbar>
-                </f:toolbar>
-                <f:layout>
-                    <f:ResponsiveGridLayout
-                        labelSpanXL="4"
-                        labelSpanL="4"
-                        labelSpanM="12"
-                        labelSpanS="12"
-                        adjustLabelSpan="false"
-                        emptySpanXL="0"
-                        emptySpanL="0"
-                        emptySpanM="0"
-                        emptySpanS="0"
-                        columnsXL="2"
-                        columnsL="2"
-                        columnsM="2"
-                        singleContainerFullSize="false" />
-                </f:layout>
-                <f:formContainers >
-                    <f:FormContainer > 
-                        <f:formElements>
-                            <f:FormElement label="Investigación de accidentes">
-                                <f:fields>
-                                    <u:FileUploader name="myFileUpload" uploadUrl="upload/" tooltip="Subir archivo" uploadComplete="handleUploadComplete"/>
-                                    <Button text="Subir" type="Emphasized" icon="sap-icon://upload" press="onEnviartab2" width="6rem"/> 
-                                </f:fields>
-                            </f:FormElement>  
-                            <f:FormElement label="Subido">
-                                <f:fields>
-                                    <Link text="doc01.pdf" press="handleLinkPress" /> 
-                                </f:fields>
-                            </f:FormElement>  
-                        </f:formElements>
-                    </f:FormContainer>  
-                    <f:FormContainer > 
-                        <f:formElements> 
-                            <f:FormElement label="Informe de investigación">
-                                <f:fields>
-                                    <u:FileUploader name="myFileUpload" uploadUrl="upload/" tooltip="Subir archivo" uploadComplete="handleUploadComplete"/>
-                                    <Button text="Subir" type="Emphasized" icon="sap-icon://upload" press="onEnviartab2" width="6rem"/> 
-                                </f:fields>
-                            </f:FormElement> 
-                            <f:FormElement label="Subido">
-                                <f:fields>
-                                    <Link text="doc02.pdf" press="handleLinkPress" /> 
-                                </f:fields>
-                            </f:FormElement>  
-                        </f:formElements>
-                    </f:FormContainer>  
-                </f:formContainers> 
-            </f:Form>  
+                            <!-- Anexos de Investigación de accidente -->
+                            <f:Form editable="true"  width="auto" class="sapUiMediumMarginTop sapUiSmallMarginBottom"> 
+                                <f:toolbar>
+                                    <Toolbar>
+                                        <Title text="Anexos de investigación de accidente" class="sapUiMediumMarginTop sapUiSmallMarginBottom" />
+                                        <!-- <ToolbarSpacer /> 
+                                        <Button text="Guardar" type="Emphasized" icon="sap-icon://save" press="onEnviartab2"/> -->
+                                    </Toolbar>
+                                </f:toolbar>
+                                <f:layout>
+                                    <f:ResponsiveGridLayout
+                                        labelSpanXL="4"
+                                        labelSpanL="4"
+                                        labelSpanM="12"
+                                        labelSpanS="12"
+                                        adjustLabelSpan="false"
+                                        emptySpanXL="0"
+                                        emptySpanL="0"
+                                        emptySpanM="0"
+                                        emptySpanS="0"
+                                        columnsXL="2"
+                                        columnsL="2"
+                                        columnsM="2"
+                                        singleContainerFullSize="false" />
+                                </f:layout>
+                                <f:formContainers >
+                                    <f:FormContainer > 
+                                        <f:formElements>
+                                            <f:FormElement label="Investigación de accidentes">
+                                                <f:fields>
+                                                    <u:FileUploader id="fileDocIncidenteAnexoInves" value="{myParam>ZINVEST_ACCIDENTES}" name="myFileUpload" uploadUrl="upload/" tooltip="Subir archivo" uploadComplete="handleUploadComplete"/>
+                                                    <!-- <Button text="Subir" type="Emphasized" icon="sap-icon://upload" press="onEnviartab2" width="6rem"/>  -->
+                                                </f:fields>
+                                            </f:FormElement>  
+                                            <f:FormElement label="Subido">
+                                                <f:fields>
+                                                    <Link text="{myParam>ZINVEST_ACCIDENTES}" press="handleLinkPress" /> 
+                                                </f:fields>
+                                            </f:FormElement>  
+                                        </f:formElements>
+                                    </f:FormContainer>  
+                                    <f:FormContainer > 
+                                        <f:formElements> 
+                                            <f:FormElement label="Informe de investigación">
+                                                <f:fields>
+                                                    <u:FileUploader id="fileDocIncidenteAnexoInfor" value="{myParam>ZINF_INVESTIGAC}" name="myFileUpload" uploadUrl="upload/" tooltip="Subir archivo" uploadComplete="handleUploadComplete"/>
+                                                    <!-- <Button text="Subir" type="Emphasized" icon="sap-icon://upload" press="onEnviartab2" width="6rem"/>  -->
+                                                </f:fields>
+                                            </f:FormElement> 
+                                            <f:FormElement label="Subido">
+                                                <f:fields>
+                                                    <Link text="{myParam>ZINF_INVESTIGAC}" press="handleLinkPress" /> 
+                                                </f:fields>
+                                            </f:FormElement>  
+                                        </f:formElements>
+                                    </f:FormContainer>  
+                                </f:formContainers> 
+                            </f:Form>  
+                        </Panel>
+                    </IconTabFilter>
+                    <IconTabFilter text="Informe" binding="{path : 'myParam>/selectIncidenteInforme'}">
+                        <Panel width="auto" >
+                            <headerToolbar>
+                                <OverflowToolbar>
+                                    <Title text="Informe de incidente"/>
+                                    <ToolbarSpacer />
+                                    <Button text="Guardar" icon="sap-icon://save" type="Emphasized" press="saveInforme" /> 
+                                </OverflowToolbar>
+                            </headerToolbar>
+                            <f:Form editable="true"  width="auto"> 
+                                <f:toolbar>
+                                    <Toolbar>
+                                        <Title text="Analisis de causas" titleStyle="H5" /> 
+                                    </Toolbar>
+                                </f:toolbar>
+                                <f:layout>
+                                    <f:ResponsiveGridLayout 
+                                        labelSpanXL="4"
+                                        labelSpanL="4"
+                                        labelSpanM="12"
+                                        labelSpanS="12"
+                                        adjustLabelSpan="false"
+                                        emptySpanXL="0"
+                                        emptySpanL="0"
+                                        emptySpanM="0"
+                                        emptySpanS="0"
+                                        columnsXL="2"
+                                        columnsL="2"
+                                        columnsM="2"
+                                        singleContainerFullSize="false"  />
+                                </f:layout>
+                                <f:formContainers >
+                                    <f:FormContainer title="Inmediatas"> 
+                                        <f:formElements>
+                                            <f:FormElement label="Actos subestándares o inseguros">
+                                                <f:fields>
+                                                    <Input id="info_acto" value="{myParam>ZACTOS_SUBESTAND}" /> 
+                                                </f:fields>
+                                            </f:FormElement>
+                                            <f:FormElement label="Condiciones subestándares o inseguras">
+                                                <f:fields> 
+                                                    <TextArea id="info_descrip" value="{myParam>ZCOND_SUBESTAND}" height="5rem"/>
+                                                </f:fields>
+                                            </f:FormElement> 
+                                        </f:formElements>
+                                    </f:FormContainer> 
+                                    <f:FormContainer title="Básicas" >
+                                        <f:formElements>
+                                            <f:FormElement label="Factores personales" >
+                                                <f:fields>
+                                                    <Input id="info_facPers" value="{myParam>ZFACT_PERSONALES}" />   
+                                                </f:fields>
+                                            </f:FormElement> 
+                                            <f:FormElement label="Factores de trabajo" >
+                                                <f:fields>
+                                                    <Input id="info_facTrab" value="{myParam>ZFACT_TRABAJO}" /> 
+                                                </f:fields>
+                                            </f:FormElement>
+                                            <!-- <f:FormElement label="Detalle" >
+                                                <f:fields>
+                                                    <TextArea id="info_detalle" value="" height="5rem"/> 
+                                                </f:fields>
+                                            </f:FormElement> -->
+                                        </f:formElements>
+                                    </f:FormContainer> 
+                                    <f:FormContainer title="Lecciones aprendidas" >
+                                        <f:formElements>
+                                            <f:FormElement label="Leccion aprendida" >
+                                                <f:fields>
+                                                    <Input id="info_lecion" value="{myParam>ZLECCIONES}" />   
+                                                </f:fields>
+                                            </f:FormElement> 
+                                        </f:formElements>
+                                    </f:FormContainer> 
+                                    <f:FormContainer title="Investigado por" >
+                                        <f:formElements>
+                                            <f:FormElement label="Nombre" >
+                                                <f:fields> <Input id="info_invesNombre" value="{myParam>ZINVEST_POR}" />  </f:fields>
+                                            </f:FormElement> 
+                                            <f:FormElement label="Cargo" >
+                                                <f:fields> <Input id="info_invesCargo" value="{myParam>ZCARGO}" />  </f:fields>
+                                            </f:FormElement> 
+                                            <f:FormElement label="Firma" >
+                                                <f:fields> <Input id="info_invesFirma" value="{myParam>ZFIRMA}" />  </f:fields>
+                                            </f:FormElement> 
+                                        </f:formElements>
+                                    </f:FormContainer> 
+                                </f:formContainers> 
+                            </f:Form>
+
+                            <Panel expandable="false" expanded="false" visible="true" headerText="Añadir" width="auto" >
+                                <headerToolbar>
+                                    <OverflowToolbar style="Clear">
+                                        <Title text="Acciones a ser tomadas" />
+                                        <!-- <ToolbarSpacer />
+                                        <Button icon="sap-icon://save" press="saveInfoCorrectivo" text="Guardar" type="Emphasized" /> 
+                                        <Button icon="sap-icon://decline" press="cancelInfoCorrectivo" text="Cancelar" type="Emphasized" />  -->
+                                    </OverflowToolbar>
+                                </headerToolbar>
+                                <content> 
+                                    <Panel id="panelAcciones" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
+                                        <headerToolbar>
+                                            <OverflowToolbar style="Clear">
+                                                <Title text="Registrar acciónes correctivas | preventivas" />
+                                                <ToolbarSpacer />
+                                                <Button icon="sap-icon://save" press="saveAcciones" text="Guardar" type="Emphasized" /> 
+                                                <Button icon="sap-icon://decline" press="cancelAcciones" text="Cancelar" type="Emphasized" /> 
+                                            </OverflowToolbar>
+                                        </headerToolbar>
+                                        <content>
+                                            <f:Form editable="true"> 
+                                                <f:layout>
+                                                    <f:ResponsiveGridLayout
+                                                        labelSpanXL="4"
+                                                        labelSpanL="3"
+                                                        labelSpanM="4"
+                                                        labelSpanS="12"
+                                                        adjustLabelSpan="false"
+                                                        emptySpanXL="0"
+                                                        emptySpanL="4"
+                                                        emptySpanM="0"
+                                                        emptySpanS="0"
+                                                        columnsXL="2"
+                                                        columnsL="1"
+                                                        columnsM="1"
+                                                        singleContainerFullSize="false" />
+                                                </f:layout>
+                                                <f:formContainers>
+                                                    <f:FormContainer > 
+                                                        <f:formElements>
+                                                            <f:FormElement label="Titulo">
+                                                                <f:fields> <Input value="" id="info_titulo"/> </f:fields>
+                                                            </f:FormElement> 
+                                                            <f:FormElement label="Descripción">
+                                                                <f:fields> <Input value="" id="info_desc"/> </f:fields>
+                                                            </f:FormElement> 
+                                                            <f:FormElement label="Responsable">
+                                                                <f:fields> <Input value="" id="info_responsable"/> </f:fields>
+                                                            </f:FormElement> 
+                                                            <f:FormElement label="Fecha">
+                                                                <f:fields> <DatePicker id="info_fecha" value=""  displayFormat="dd/MM/yyyy"/> </f:fields>
+                                                            </f:FormElement> 
+                                                            <f:FormElement label="Tipo">
+                                                                <f:fields> 
+                                                                    <Select forceSelection="false" id="info_tipo" showSecondaryValues= "true" > 
+                                                                        <core:Item key="cor" text="Correctivo" />
+                                                                        <core:Item key="pre" text="Preventivo" />  
+                                                                    </Select> 
+                                                                </f:fields>
+                                                            </f:FormElement> 
+                                                            <f:FormElement label="Estado">
+                                                                <f:fields> 
+                                                                    <Select forceSelection="false" id="info_estado" showSecondaryValues= "true" > 
+                                                                        <core:Item key="P" text="Pendiente" />
+                                                                        <core:Item key="F" text="Completado" />  
+                                                                        <core:Item key="V" text="Vencido" />  
+                                                                        <core:Item key="X" text="Por Vencer" />  
+                                                                    </Select> 
+                                                                </f:fields>
+                                                            </f:FormElement> 
+                                                            
+                                                        </f:formElements>
+                                                    </f:FormContainer> 
+                                                </f:formContainers>
+                                            </f:Form> 
+                                        </content>
+                                    </Panel>
+                                    <tab:Table id="tableAccionesInforme" showNoData="true" selectionMode="Single"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/tableAccionesInformeIncidente' }" class="sapUiSmallMargin">
+                                        <tab:extension>
+                                            <OverflowToolbar>
+                                                <Title text="Tabla de acciónes correctivas | preventivas"/>
+                                                <ToolbarSpacer/>
+                                                <Button icon="sap-icon://add-employee" text="Agregar" press="addAcciones"/>
+                                                <Button icon="sap-icon://delete" text="Eliminar" press="deleteAcciones"/>
+                                            </OverflowToolbar>
+                                        </tab:extension>
+                                        <tab:columns>
+                                            <tab:Column autoResizable="true" width="auto">
+                                                <Label textAlign="Center" wrapping ="true"  text="Titulo" />
+                                                <tab:template> <Text text="{myParam>ZTITULO}" />  </tab:template>
+                                            </tab:Column>
+                                            <tab:Column autoResizable="true" width="auto">
+                                                <Label textAlign="Center" wrapping ="true"  text="Descripción" />
+                                                <tab:template> <Text text="{myParam>ZDESCRIPCION}" />  </tab:template>
+                                            </tab:Column>
+                                            <tab:Column autoResizable="true" width="auto">
+                                                <Label textAlign="Center" wrapping ="true"  text="Responsable" />
+                                                <tab:template> <Text text="{myParam>ZRESPONSABLE}" /> </tab:template>
+                                            </tab:Column>
+                                            <tab:Column autoResizable="true" width="auto">
+                                                <Label textAlign="Center" wrapping ="true"  text="Fecha" />
+                                                <tab:template> <Text text="{myParam>ZFECHA}" />  </tab:template>
+                                            </tab:Column> 
+                                            <tab:Column autoResizable="true" width="auto">
+                                                <Label textAlign="Center" wrapping ="true"  text="Tipo" />
+                                                <tab:template> <Text text="{myParam>ZTIPO}" />  </tab:template>
+                                            </tab:Column> 
+                                            <tab:Column autoResizable="true" width="auto">
+                                                <Label textAlign="Center" wrapping ="true"  text="Estado" />
+                                                <tab:template> <Text text="{myParam>ZESTATUS}" />  </tab:template>
+                                            </tab:Column> 
+                                        </tab:columns>
+                                    </tab:Table> 
+                                </content>
+                            </Panel>
+
+                        </Panel>
+                    </IconTabFilter> 
+                </items>
+            </IconTabBar>
+
         </content> 
     </Page>
 </mvc:View>
