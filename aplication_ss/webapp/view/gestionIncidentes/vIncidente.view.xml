@@ -7,6 +7,7 @@
     xmlns="sap.m">
     <Page title="Incidente {myParam>/selectIncidente/ZINCIDENTE}" showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
 		<headerContent>
+            <Button text="Guardar" icon="sap-icon://save" type="Emphasized" press="saveIncidente" /> 
 			<Button text="Culminar atensión" icon="sap-icon://paper-plane" type="Emphasized" press="IncTerminar" />
             <Button text="Enviar notificación" icon="sap-icon://notification-2" press="IncNotificacion" /> 
             <Button text="Cancelar" icon="sap-icon://delete" press="onEnviartab2" /> 
@@ -20,7 +21,7 @@
                                 <OverflowToolbar>
                                     <Title text="Datos conplementario"/>
                                     <ToolbarSpacer />
-                                    <Button text="Guardar" icon="sap-icon://save" type="Emphasized" press="saveIncidente" /> 
+                                    <!-- <Button text="Guardar" icon="sap-icon://save" type="Emphasized" press="saveIncidente" />  -->
                                 </OverflowToolbar>
                             </headerToolbar>
                             <f:Form id="form01" editable="true"  width="auto" > 
@@ -308,13 +309,13 @@
                             </f:Form>  
                         </Panel>
                     </IconTabFilter>
-                    <IconTabFilter text="Informe" binding="{path : 'myParam>/selectIncidenteInforme'}">
+                    <IconTabFilter text="Informe" binding="{path : 'myParam>/selectIncidente'}">
                         <Panel width="auto" >
                             <headerToolbar>
                                 <OverflowToolbar>
                                     <Title text="Informe de incidente"/>
                                     <ToolbarSpacer />
-                                    <Button text="Guardar" icon="sap-icon://save" type="Emphasized" press="saveInforme" /> 
+                                    <!-- <Button text="Guardar" icon="sap-icon://save" type="Emphasized" press="saveInforme" />  -->
                                 </OverflowToolbar>
                             </headerToolbar>
                             <f:Form editable="true"  width="auto"> 

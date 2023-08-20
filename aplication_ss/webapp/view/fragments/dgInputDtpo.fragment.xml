@@ -8,7 +8,7 @@
 			icon="sap-icon://building"
 			iconDensityAware="false"
 			iconInset="false"
-			title="{myParam>ZDESCRIPCION}"
-			description="{myParam>ZDPTO}" />
+			title="{myParam>DESCRIP}"
+			description="{myParam>DEPARTAM}" />
 	</SelectDialog>
 </core:FragmentDefinition> 

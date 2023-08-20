@@ -30,7 +30,7 @@ sap.ui.define([
                 // set the device model
                 this.setModel(models.createDeviceModel(), "device");
                 var oData = {
-                    
+                    "ListPersonal":{},
                     "listurlBD": {
                         "bdClientes2": "cpbl/browse/",
                         "bdClientes": "cpdb/mydb/",
@@ -44,10 +44,7 @@ sap.ui.define([
                         "idnombreAC":"",
                         "idAreaAC":"",
                         "idPuestoAC":"",
-                    },  
-                    "ZSYSO_CONTRATISTA":{
-                        "ZID_PERSONA":""
-                    },
+                    },             
                     "dataContratistafilter":[],
                     "dataContratistadetalle":[
                         {"SCTRFV":"30/08/2024","SCTR":"SCTR","REQEVAL":"NO","VIG":"21/08/2024","APTITUD":"bueno","EXAMEN":"Sicosomatico","FECHAVENCINDESP":"21/08/2023","FECHAINDESP":"21/08/2023","FECHAVENCINDGRAL":"24/08/2023","FECHAINDG":"24/07/2023","NOTA":"10","KEY":"1","NAME":"Juan","APELLIDO":"Ugarte","DNI":"75612345"},
@@ -137,10 +134,10 @@ sap.ui.define([
                         {"ZCATEGORIA":"B","ZDESCRIPCION":"Condición o práctica con potencial de causar lesiones, enfermedad seria, ocasionando incapacidad temporal o daño a la propiedad"},
                         {"ZCATEGORIA":"C","ZDESCRIPCION":"Condición o práctica con potencial de causar lesión o enfermedad menor y/o daño a la propiedad no considerable"}
                     ],
-                    "ZSYSO_INSPECCION":[
-                        {"ZINSPECCION":"0001","ZDPTO":"0003","ZFEC_PROGRAM":"01/08/2023","ZESTADO":"N","ZFEC_CONCLUIDA":"02/08/2023","ZCATEGORIA":"A","ZTIPO":"1","ZFEC_REAL":"01/08/2023","ZHOR_REAL":"16:00","ZACTO":"vActo","ZCONDICION":"vCondicion","ZHALLAZGO":"ZHALLAZGO","ZACCIONES":"ZACCIONES","ZRECOMENDACION":"ZRECOMENDACION","ZUBICACION":"ZUBICACION","ZCAUSAS":"ZCAUSAS","ZREGISTRADO_POR":"user1","ZAFECTADO":"ZAFECTADO"},
-                        {"ZINSPECCION":"0002","ZDPTO":"0002","ZFEC_PROGRAM":"01/08/2023","ZESTADO":"F","ZFEC_CONCLUIDA":"02/08/2023","ZCATEGORIA":"C","ZTIPO":"2","ZFEC_REAL":"01/08/2023","ZHOR_REAL":"16:00","ZACTO":"vActo","ZCONDICION":"vCondicion","ZHALLAZGO":"ZHALLAZGO","ZACCIONES":"ZACCIONES","ZRECOMENDACION":"ZRECOMENDACION","ZUBICACION":"ZUBICACION","ZCAUSAS":"ZCAUSAS","ZREGISTRADO_POR":"user1","ZAFECTADO":"ZAFECTADO"}
-                    ],
+                    // "ZSYSO_INSPECCION":[
+                    //     {"ZINSPECCION":"0001","ZDPTO":"0003","ZFEC_PROGRAM":"01/08/2023","ZESTADO":"N","ZFEC_CONCLUIDA":"02/08/2023","ZCATEGORIA":"A","ZTIPO":"1","ZFEC_REAL":"01/08/2023","ZHOR_REAL":"16:00","ZACTO":"vActo","ZCONDICION":"vCondicion","ZHALLAZGO":"ZHALLAZGO","ZACCIONES":"ZACCIONES","ZRECOMENDACION":"ZRECOMENDACION","ZUBICACION":"ZUBICACION","ZCAUSAS":"ZCAUSAS","ZREGISTRADO_POR":"user1","ZAFECTADO":"ZAFECTADO"},
+                    //     {"ZINSPECCION":"0002","ZDPTO":"0002","ZFEC_PROGRAM":"01/08/2023","ZESTADO":"F","ZFEC_CONCLUIDA":"02/08/2023","ZCATEGORIA":"C","ZTIPO":"2","ZFEC_REAL":"01/08/2023","ZHOR_REAL":"16:00","ZACTO":"vActo","ZCONDICION":"vCondicion","ZHALLAZGO":"ZHALLAZGO","ZACCIONES":"ZACCIONES","ZRECOMENDACION":"ZRECOMENDACION","ZUBICACION":"ZUBICACION","ZCAUSAS":"ZCAUSAS","ZREGISTRADO_POR":"user1","ZAFECTADO":"ZAFECTADO"}
+                    // ],
 
                     
                     "dataTab":[

@@ -161,7 +161,7 @@
                     </content>
                 </Panel>
                 <!-- tabla  -->
-                <tab:Table rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                <tab:Table rows="{  path: 'myParam>/dataTab_Visualizar' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
                     <tab:extension>
                         <OverflowToolbar >
                             <!-- <Title text="Documentos"/> -->

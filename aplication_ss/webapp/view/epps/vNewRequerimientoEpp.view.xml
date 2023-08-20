@@ -161,7 +161,7 @@
                     </content>
                 </Panel>
                 <!-- tabla  -->
-                <tab:Table rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                <tab:Table rows="{  path: 'myParam>/dataTab_Nuevo' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
                     <tab:extension>
                         <OverflowToolbar >
                             <!-- <Title text="Documentos"/> -->
@@ -174,23 +174,23 @@
                     <tab:columns>
                         <tab:Column  >
                             <Label textAlign="Center" wrapping ="true"  text="Fecha entrega" />
-                            <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text text="{myParam>ZFECHA}" wrapping="false" /> </tab:template>
                         </tab:Column>
                         <tab:Column >
                             <Label textAlign="Center" wrapping ="true"  text="Código de material" />
-                            <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text  text="{myParam>ZMATERIAL}" wrapping="false" /> </tab:template>
                         </tab:Column>
                         <tab:Column>
                             <Label textAlign="Center" wrapping ="true"  text="Descripción" />
-                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text text="{myParam>ZDESCRIPCION}" wrapping="false" /> </tab:template>
                         </tab:Column>     
                         <tab:Column>
                             <Label textAlign="Center" wrapping ="true"  text="Cantidad" />
-                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text text="{myParam>ZCANTIDAD}" wrapping="false" /> </tab:template>
                         </tab:Column>     
                         <tab:Column>
                             <Label textAlign="Center" wrapping ="true"  text="¿Cambio?" />
-                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text text="{myParam>ZIND_CAMBIO}" wrapping="false" /> </tab:template>
                         </tab:Column>     
                         <!-- <tab:Column>
                             <Label textAlign="Center" wrapping ="true"  text="Stock actual" />
@@ -198,7 +198,7 @@
                         </tab:Column>      -->
                         <tab:Column>
                             <Label textAlign="Center" wrapping ="true"  text="Status de liberación" />
-                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text text="{myParam>ZSTATUS}" wrapping="false" /> </tab:template>
                         </tab:Column>     
                         <tab:Column>
                             <Label textAlign="Center" wrapping ="true"  text="Liburación individual" />

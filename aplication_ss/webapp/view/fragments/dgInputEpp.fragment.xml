@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" >
-	<SelectDialog title="Gerencias"
-		items="{ path: 'myParam>/dataEpps'}"
+	<SelectDialog title="Material"
+		items="{ path: 'myParam>/dataTab_Material'}"
 		search="dgSearchEpp"
 		confirm=".dgGetCloseEpp"
 		cancel=".dgGetCloseEpp">

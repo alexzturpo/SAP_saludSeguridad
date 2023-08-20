@@ -1,12 +1,16 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller"
+    "sap/ui/core/mvc/Controller",
+    "sap/m/MessageBox",
+    "sap/m/MessageToast",
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller) {
+    function (Controller,MessageBox,MessageToast) {
         "use strict";
-
+        var usuario = "CONSULT_PQ01";
+        var password = "Rcom2023..";
+        var url_ini = "";
         return Controller.extend("appss.aplicationss.controller.vInspeccion", {
             getRouter: function () {
                 return sap.ui.core.UIComponent.getRouterFor(this);
@@ -112,16 +116,26 @@ sap.ui.define([
             //actualizar el registro inspeccion seleccionado
             updateInspeccion: function () {
                 var oModel = this.getView().getModel("myParam");  
-                let tempInspeccion = oModel.getProperty("/tempInspecciones");
-                let listInspeccion = oModel.getProperty("/ZSYSO_INSPECCION");
-                let objInspeccion = { 
+                let selectInspeccion = oModel.getProperty("/tempInspecciones");
+                // let listInspeccion = oModel.getProperty("/ZSYSO_INSPECCION");
+                //obtener tablas para enviar la acctualizacion 
+                let  tabPerInvolucrados = oModel.getProperty("/tabPerInvolucrados");
+                console.log("tabPerInvolucrados",tabPerInvolucrados)
+                let  tabRiAsociados = oModel.getProperty("/tabRiAsociados");
+                console.log("tabRiAsociados",tabRiAsociados)
+                let  tabMedCorrectiva = oModel.getProperty("/tabMedCorrectiva");
+                console.log("tabMedCorrectiva",tabMedCorrectiva)
+                let  tabResponsables  = oModel.getProperty("/tabResponsables");
+                console.log("tabResponsables",tabResponsables)
+
+                let objInspeccion = {
+                "cabecera": { 
                     ZINSPECCION: this.getView().byId("gInsp_codInsp").getValue(),
                     ZGERENCIA: this.getView().byId("gInsp_gerencia").getValue(),
                     ZAREA: this.getView().byId("gInsp_area").getValue(),
                     ZDPTO: this.getView().byId("gInsp_departamento").getValue(),
                     ZFEC_PROGRAM: this.cambiarFormatoFecha(this.getView().byId("gInsp_programada").getValue()),
-                    // afectado: "",
-                    // ZESTADO: "pendiente",
+
                     ZCATEGORIA: this.getView().byId("gInsp_categoria").getSelectedKey(),
                     ZTIPO: this.getView().byId("gInsp_tipo").getSelectedKey(),
 
@@ -135,13 +149,24 @@ sap.ui.define([
                     ZUBICACION: this.getView().byId("gInsp_ubicacion").getValue(),
 
                     ZCAUSAS: this.getView().byId("gInsp_desCausaOrigen").getValue()
+                },
+                
+                "detalle": tabPerInvolucrados,
+                "detalle1": tabRiAsociados,
+                "detalle2": tabMedCorrectiva,
+                "detalle3": tabResponsables
                 }
+                console.log("objInspeccion",objInspeccion) 
                 
-                let newListInspeccion= this.updateKey(listInspeccion,objInspeccion,tempInspeccion.ZINSPECCION) // datos ficticion
-                // console.log("newListInspeccion",newListInspeccion) 
-                oModel.setProperty("/listInspeccion",newListInspeccion); 
-                // logica para actualizar la inspeccion 
-                
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UPD_INSP/1000/0/${selectInspeccion.ZINSPECCION}/0/0/0/0?sap-client=100`;
+                var dataRes = this.f_PostJsonData(url, objInspeccion) // actualizar inspeccion cabecera y tablas involucrados asociados correctiva responsable
+                console.log("dataRes",dataRes)
+                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                    MessageToast.show("Error (" + dataRes.descripcion + ")");
+                }else{
+                    MessageToast.show("Solicitud exitosa");  
+                } 
+                // oModel.setProperty("/listInspeccion",newListInspeccion);  
                 this.onPageBack()
             },
             updateKey: function (miArray,nuevoObjeto,codigoBuscado) {  
@@ -200,59 +225,23 @@ sap.ui.define([
                 console.log("Índice inválido, no se eliminó ningún registro.");
                 }
             },
-
-            limpiarObjeto: function (objeto) {  
-                for (var propiedad in objeto) {
-                    if (objeto.hasOwnProperty(propiedad)) {
-                        this.getView().byId(objeto[propiedad]).setValue("") 
-                    }
-                  }
-            },
-            //FUNCIONES DE RIESGOS ASOCIADOS INSPECCIONES 
-            addPerInvolucrado: function () {  
-                this.getView().byId("panelPerInvolucrado").setVisible(true)
-            },
-            cancelPerInvolucrado: function () {  
-                this.getView().byId("panelPerInvolucrado").setVisible(false)
-            },
-            savePerInvolucrado: function () {  
-                let oModel = this.getView().getModel("myParam"); 
-                let listPerInvolucrados = oModel.getProperty("/tabPerInvolucrados");
-                //guardar persona involucrada
-                let objPerInv = { 
-                    ZID_TRAB_LAREDO: this.getView().byId("perInv_codTrab").getValue(), 
-                    ZAPELLIDO_NOMBRE: this.getView().byId("perInv_fullName").getValue(), 
-                    ZDNI: this.getView().byId("perInv_dni").getValue(),
-                    ZPROVEEDOR: this.getView().byId("perInv_contratista").getValue(),
-                    ZPUESTO: this.getView().byId("perInv_puestoTrb").getValue()
-                }
-                listPerInvolucrados.push(objPerInv)
-                console.log("listPerInvolucrados",listPerInvolucrados)
-                oModel.setProperty("/tabPerInvolucrados",listPerInvolucrados); 
-
-                this.getView().byId("panelPerInvolucrado").setVisible(false) // ocultar panel
-                let objPerInvClean = {  //limpiar formulario
-                    codTrab: "perInv_codTrab",
-                    fullName: "perInv_fullName",
-                    dni: "perInv_dni",
-                    contratista: "perInv_contratista",
-                    puestoTrb: "perInv_puestoTrb"
-                }
-                this.limpiarObjeto(objPerInvClean)
-
-            },
-            deletePerInvolucrado : function () {  
-                let oModel = this.getView().getModel("myParam");  
-                let dataTable = oModel.getProperty("/tabPerInvolucrados");
-
-                var oTable = this.getView().byId("tablePersInvolucrado");
-                var indiceAEliminar = oTable.getSelectedIndices();
-                if (indiceAEliminar >= 0 && indiceAEliminar < dataTable.length) {
-                    dataTable.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
-                    oModel.setProperty("/tabPerInvolucrados",dataTable);
-                    console.log("Registro eliminado.");
-                }else {
-                console.log("Índice inválido, no se eliminó ningún registro.");
+            buscarTrabajador:  function () {  
+                console.log('getListEmpleado')
+                var iCodTrabajador = this.getView().byId("perInv_codTrab").getValue()
+                console.log("iCodTrabajador",iCodTrabajador)
+                var oModel = this.getView().getModel("myParam");  
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${iCodTrabajador}/0/0/0/0`;
+                var dataRes =  this.f_GetJson(url) 
+                console.log('getListEmpleado DATA ',dataRes)
+                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                    MessageToast.show("Error (" + dataRes.descripcion + ")");
+                }else{
+                    dataRes= dataRes[0]
+                    this.getView().byId("perInv_fullName").setValue(`${dataRes.NOMBRE} ${dataRes.APELLIDO}`) 
+                    this.getView().byId("perInv_dni").setValue(dataRes.DNI)
+                    this.getView().byId("perInv_contratista").setValue(dataRes.DNI)
+                    this.getView().byId("perInv_puestoTrb").setValue(dataRes.AREA)
+                    // oModel.setProperty('/listEmpleados',dataRes);  
                 }
             },
 
@@ -263,7 +252,17 @@ sap.ui.define([
                     }
                   }
             },
+            
 
+            limpiarObjeto: function (objeto) {  
+                for (var propiedad in objeto) {
+                    if (objeto.hasOwnProperty(propiedad)) {
+                        this.getView().byId(objeto[propiedad]).setValue("") 
+                    }
+                  }
+            },
+
+            //FUNCIONES DE RIESGOS ASOCIADOS INSPECCIONES
             addRiAsociados: function () {  
                 this.getView().byId("panelRiAsociados").setVisible(true)
             },
@@ -274,11 +273,11 @@ sap.ui.define([
                 let oModel = this.getView().getModel("myParam"); 
                 let listRiAsociados = oModel.getProperty("/tabRiAsociados");
                 let objRiAsoc = { 
-                    conInsegura: this.getView().byId("riAsoc_conInsegura").getValue(), 
-                    riesgo: this.getView().byId("riAsoc_riesgo").getValue(),
-                    consecuencia: this.getView().byId("riAsoc_consecuencia").getValue(),
-                    nivelRiesgo: this.getView().byId("riAsoc_nivelRiesgo").getValue(),
-                    file: this.getView().byId("riAsoc_file").getValue()
+                    ZCOND_INSEGURA: this.getView().byId("riAsoc_conInsegura").getValue(), 
+                    ZRIESGO: this.getView().byId("riAsoc_riesgo").getValue(),
+                    ZCONSECUENCIA: this.getView().byId("riAsoc_consecuencia").getValue(),
+                    ZNIVEL_RIESGO: this.getView().byId("riAsoc_nivelRiesgo").getValue(),
+                    ZANEXO: this.getView().byId("riAsoc_file").getValue()
                 }
                 console.log("objRiAsoc",objRiAsoc)
                 listRiAsociados.push(objRiAsoc)
@@ -294,7 +293,21 @@ sap.ui.define([
                 }
                 this.limpiarObjeto(objRiAsocClean)
             },
+            deleteRiAsociados : function () {  
+                let oModel = this.getView().getModel("myParam");  
+                let dataTable = oModel.getProperty("/tabRiAsociados");
 
+                var oTable = this.getView().byId("tableRiesgosAsociados");
+                var indiceAEliminar = oTable.getSelectedIndices();
+                if (indiceAEliminar >= 0 && indiceAEliminar < dataTable.length) {
+                    dataTable.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
+                    oModel.setProperty("/tabRiAsociados",dataTable);
+                    console.log("Registro eliminado.");
+                }else {
+                console.log("Índice inválido, no se eliminó ningún registro.");
+                }
+            },
+            //FUNCIONES DE MEDIDAS CORRECTIVAS
             addMedCorrectiva: function () {  
                 this.getView().byId("panelMedCorrectiva").setVisible(true)
             },
@@ -305,10 +318,10 @@ sap.ui.define([
                 let oModel = this.getView().getModel("myParam"); 
                 let listMedCorrectiva = oModel.getProperty("/tabMedCorrectiva");
                 let objMedCor= { 
-                    descrip: this.getView().byId("medCor_descrip").getValue(), 
-                    responsable: this.getView().byId("medCor_responsable").getValue(),
-                    fechaEjc: this.getView().byId("medCor_fechaEjc").getValue(),
-                    estadoAccCor: this.getView().byId("medCor_estadoAccCor").getSelectedKey()
+                    ZMEDIDA: this.getView().byId("medCor_descrip").getValue(), 
+                    ZRESPONSABLE: this.getView().byId("medCor_responsable").getValue(),
+                    ZFEC_EJECUCION: this.getView().byId("medCor_fechaEjc").getValue(),
+                    ZESTADO: this.getView().byId("medCor_estadoAccCor").getSelectedKey()
                 }
                 listMedCorrectiva.push(objMedCor)
                 oModel.setProperty("/tabMedCorrectiva",listMedCorrectiva); 
@@ -322,6 +335,21 @@ sap.ui.define([
                 }
                 this.limpiarObjeto(objRiAsocClean)
             },
+            deleteMedCorrectiva : function () {  
+                let oModel = this.getView().getModel("myParam");  
+                let dataTable = oModel.getProperty("/tabMedCorrectiva");
+
+                var oTable = this.getView().byId("tableMedidaCorrectiva");
+                var indiceAEliminar = oTable.getSelectedIndices();
+                if (indiceAEliminar >= 0 && indiceAEliminar < dataTable.length) {
+                    dataTable.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
+                    oModel.setProperty("/tabMedCorrectiva",dataTable);
+                    console.log("Registro eliminado.");
+                }else {
+                console.log("Índice inválido, no se eliminó ningún registro.");
+                }
+            },
+
             keyValorEstadoAccionCorrectiva: function (key,lista) { 
                 if(key){
                     // console.log("keyValor key",key) 
@@ -347,9 +375,9 @@ sap.ui.define([
                 let oModel = this.getView().getModel("myParam"); 
                 let listResp = oModel.getProperty("/tabResponsables");
                 let objResp= { 
-                    nombre: this.getView().byId("responsable_nombre").getValue(), 
-                    cargo: this.getView().byId("responsable_cargo").getValue(),
-                    fecha: this.cambiarFormatoFecha(this.getView().byId("responsable_fecha").getValue()), 
+                    ZAPELLIDO_NOMBRE: this.getView().byId("responsable_nombre").getValue(), 
+                    ZCARGO: this.getView().byId("responsable_cargo").getValue(),
+                    ZFECHA: this.cambiarFormatoFecha(this.getView().byId("responsable_fecha").getValue()), 
                 }
                 console.log("objResp",objResp)
                 listResp.push(objResp)
@@ -363,6 +391,21 @@ sap.ui.define([
                 }
                 this.limpiarObjeto(objRespClean)
             },
+            deleteResponsables : function () {  
+                let oModel = this.getView().getModel("myParam");  
+                let dataTable = oModel.getProperty("/tabResponsables");
+
+                var oTable = this.getView().byId("idTableResponsable");
+                var indiceAEliminar = oTable.getSelectedIndices();
+                if (indiceAEliminar >= 0 && indiceAEliminar < dataTable.length) {
+                    dataTable.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
+                    oModel.setProperty("/tabResponsables",dataTable);
+                    console.log("Registro eliminado.");
+                }else {
+                console.log("Índice inválido, no se eliminó ningún registro.");
+                }
+            },
+
             cambiarFormatoFecha: function (fecha) {  
                 var partesFecha = fecha.split('/');
                 var mes = partesFecha[0];
@@ -385,6 +428,116 @@ sap.ui.define([
               
                 return nuevaFecha; 
             },
-            
+            // funciones generales
+            f_GetJson: function (p_url_path) {
+                // return new Promise((resolve, reject) => {    
+                    var credentials = btoa(`${usuario}:${password}`);  
+                    var res = null;
+                    $.ajax({
+                        type: "GET",
+                        url: p_url_path ,
+                        async: false,
+                        headers: {
+                            "Authorization": `Basic ${credentials}`,
+                            "X-Requested-With": "XMLHttpRequest",
+                            "Content-Type": "application/json; charset=utf8",
+                            "Accept": "application/json"
+                            },
+                        success: function (result) {
+                            // console.log(`DATA ->`,result);
+                            // resolve(result.ITAB); 
+                            res = result.ITAB
+                        },
+                        error: function (error) { 
+                            // console.log('error',error); 
+                            var str_error = '';
+                            if(error.responseJSON != undefined && error.responseJSON.ITAB != undefined) {
+                            for(var i=0; i<error.responseJSON.ITAB.length; i++) {
+                                if(str_error == '') { str_error = error.responseJSON.ITAB[i].MESSAGE; }
+                                else { str_error = str_error + "; " + error.responseJSON.ITAB[i].MESSAGE; }
+                            }
+                            }
+                            else {
+                            str_error = "Ocurrió un error (" + error.responseText + ")";
+                            }
+                            // MessageToast.show("Error (" + str_error + ")");
+                            var errorObj = {
+                                cod : 'Error',
+                                descripcion :str_error
+                            }
+                            // resolve(errorObj);
+                            res=  errorObj
+                        }
+                    });
+                    // console.log(`RES ->`,res);
+                    return res
+                // }); 
+            },
+            f_PostJsonSinData:  function (url) { 
+                const credentials = btoa(`${usuario}:${password}`); 
+                var res = null
+                $.ajax(url, {
+					type: "POST",
+                    async: false,
+					headers: {
+                        "Authorization": `Basic ${credentials}`,
+						"X-Requested-With": "XMLHttpRequest",
+						"Content-Type": "application/json"
+					}, 
+					success: function (result) {
+                        res = result
+					},
+					error: function (error) { 
+                        // console.log('error',error); 
+                        var str_error = '';
+                        if(error.responseJSON != undefined && error.responseJSON.ITAB != undefined) {
+                            for(var i=0; i<error.responseJSON.ITAB.length; i++) {
+                                if(str_error == '') { str_error = error.responseJSON.ITAB[i].MESSAGE; }
+                                else { str_error = str_error + "; " + error.responseJSON.ITAB[i].MESSAGE; }
+                            }
+                        }
+                        else { str_error = "Ocurrió un error (" + error.responseText + ")"; } 
+                        var errorObj = { cod : 'Error',  descripcion :str_error }
+                        res= errorObj
+                    }
+				}); 
+                // console.log(`RES ->`,res);
+                return res
+            },
+            f_PostJsonData:  function (url, dataForm) { 
+                // console.log("INICIO f_PostJsonData")
+                const credentials = btoa(`${usuario}:${password}`); 
+                var res = null
+                // var oVector = [dataForm]
+                $.ajax(url, {
+					type: "POST",
+                    data: JSON.stringify(dataForm),
+                    async: false,
+					headers: {
+                        "Authorization": `Basic ${credentials}`,
+						"X-Requested-With": "XMLHttpRequest",
+						"Content-Type": "application/json"
+					}, 
+					success: function (result) {
+						// console.log('obtuvo consulta POST',result); 
+                        res = result
+					},
+					error: function (error) { 
+                        // console.log('error',error); 
+                        var str_error = '';
+                        if(error.responseJSON != undefined && error.responseJSON.ITAB != undefined) {
+                            for(var i=0; i<error.responseJSON.ITAB.length; i++) {
+                                if(str_error == '') { str_error = error.responseJSON.ITAB[i].MESSAGE; }
+                                else { str_error = str_error + "; " + error.responseJSON.ITAB[i].MESSAGE; }
+                            }
+                        }
+                        else { str_error = "Ocurrió un error (" + error.responseText + ")"; } 
+                        var errorObj = { cod : 'Error',  descripcion :str_error }
+                        res= errorObj
+                    }
+				}); 
+                // console.log(`RES ->`,res);
+                return res
+            },
         });
     });

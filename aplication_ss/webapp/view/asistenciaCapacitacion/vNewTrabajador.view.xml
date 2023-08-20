@@ -4,7 +4,7 @@
     xmlns:core="sap.ui.core"
     xmlns:tab="sap.ui.table"
     xmlns="sap.m">
-    <Page title="Nuevo trabajador" showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
+    <Page title="Nuevo Contratista" showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
 		<headerContent>
 			<Button icon="sap-icon://save" text="Guardar" press="idguardarnewtrabAC" type="Emphasized" />
 		</headerContent> 
@@ -12,13 +12,13 @@
             <VBox class="sapUiSmallMargin">
 
                 <f:Form editable="true">  
-                    <f:toolbar>
+                    <!-- <f:toolbar>
                         <Toolbar> 
                             <Title text="Filtro"/>
-                            <!-- <ToolbarSpacer /> -->
-                            <!-- <Button type="Emphasized" text="Buscar" press="onPress"/>  -->
+                            <ToolbarSpacer />
+                            <Button type="Emphasized" text="Buscar" press="onPress"/> 
                         </Toolbar>
-                    </f:toolbar>
+                    </f:toolbar> -->
                     <f:layout>
                         <f:ResponsiveGridLayout
                             labelSpanXL="4"

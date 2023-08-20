@@ -160,7 +160,7 @@
                                                         <Toolbar>
                                                             <Title text="¿Quíen fue afectado?"/>
                                                             <ToolbarSpacer />
-                                                            <Button text="Buscar" icon="sap-icon://employee-lookup" press="onEnviartab2"/>
+                                                            <Button text="Buscar" icon="sap-icon://employee-lookup" press="buscarTrabajadorAfectado"/>
                                                         </Toolbar>
                                                     </f:toolbar>
                                                     <f:formElements>
@@ -197,7 +197,7 @@
                                                         <Toolbar>
                                                             <Title text="¿Quién advirtío el incidente?"/>
                                                             <ToolbarSpacer />
-                                                            <Button text="Buscar" icon="sap-icon://employee-lookup" press="onEnviartab2"/>
+                                                            <Button text="Buscar" icon="sap-icon://employee-lookup" press="buscarTrabajadorTestigo"/>
                                                         </Toolbar>
                                                     </f:toolbar>
                                                     <f:formElements>
@@ -315,6 +315,7 @@
                         </items>
                     </IconTabBar>    
                 </IconTabFilter> 
+
                 <IconTabFilter text="Gestión de inspecciones de trabajo" key="itab4Id">
                     <IconTabBar headerMode="Inline" expanded="{device>/isNoPhone}" >
                     <items>
@@ -444,7 +445,7 @@
                                         </tab:Column> 
                                         <tab:Column>
                                             <Label textAlign="Center" wrapping ="true"  text="Afectado" />
-                                            <tab:template> <Text id="tex6" text="{myParam>afectado}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text id="tex6" text="{myParam>ZAFECTADO}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Estado" />
@@ -768,6 +769,7 @@
                     </items>
                     </IconTabBar>    
                 </IconTabFilter>
+
                 <IconTabFilter text="Asistencia a capacitación" key="itab5Id">
                     <IconTabBar headerMode="Inline"  expanded="{device>/isNoPhone}">
                         <items>
@@ -778,7 +780,7 @@
                                             <Toolbar> 
                                                 <Title text="Filtro"/>
                                                 <ToolbarSpacer />
-                                                <Button type="Emphasized" text="Buscar" press="onPressBuscaerGCASIS"/> 
+                                                <Button type="Emphasized" text="Buscar" press="onPressBuscaerGCASISV1"/> 
                                             </Toolbar>
                                         </f:toolbar>
                                         <f:layout>
@@ -801,13 +803,13 @@
                                             <f:FormContainer title="Datos del proveedor">
                                                 <f:formElements>
                                                     <f:FormElement label="Proveedor">
-                                                        <f:fields> <Input value=""/> </f:fields>
+                                                        <f:fields> <Input value="" id="dateProv"/> </f:fields>
                                                     </f:FormElement> 
                                                     <f:FormElement label="Nombre">
-                                                        <f:fields> <Input value=""/> </f:fields>
+                                                        <f:fields> <Input value="" id="dateNombreProv"/> </f:fields>
                                                     </f:FormElement> 
                                                     <f:FormElement label="RUC">
-                                                        <f:fields> <Input value=""/> </f:fields>
+                                                        <f:fields> <Input value="" id="dateRucProv"/> </f:fields>
                                                     </f:FormElement> 
                                                 </f:formElements>
                                             </f:FormContainer>
@@ -820,35 +822,39 @@
                                             </f:FormContainer>  
                                         </f:formContainers>
                                     </f:Form> 
-                                    <tab:Table  cellClick="onSelectTrabajador" rows="{  path: 'myParam>/dataContratistafilter' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                                    <tab:Table  cellClick="onSelectTrabajador" rows="{  path: 'myParam>/ListPersonal' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
                                         <tab:extension>
                                             <OverflowToolbar >
                                                 <Title text="Personal"/>
                                                 <ToolbarSpacer />
-                                                <Button text="Añadir" icon="sap-icon://add" type="Emphasized" press="addTrabajador" />  
+                                                <Button text="Añadir contratista" icon="sap-icon://add" type="Emphasized" press="addTrabajador" />  
                                                 <Button text="Dar de baja" icon="sap-icon://pull-down" type="Emphasized" press="addTrabajador" />  
                                             </OverflowToolbar>
                                         </tab:extension>
                                         <tab:columns>
                                             <tab:Column  >
-                                                <Label textAlign="Center" wrapping ="true"  text="Cod. trabajador" />
-                                                <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                                <Label textAlign="Center" wrapping ="true"  text="Cod. Trabajador" />
+                                                <tab:template> <Text text="{myParam>ZID_COD_TRABAJADOR}" wrapping="false" /> </tab:template>
+                                            </tab:Column>
+                                            <tab:Column  >
+                                                <Label textAlign="Center" wrapping ="true"  text="Cod. Personal" />
+                                                <tab:template> <Text text="{myParam>COD_PERSONAL}" wrapping="false" /> </tab:template>
                                             </tab:Column>
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="Apellidos" />
-                                                <tab:template> <Text  text="{myParam>apellido}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text  text="{myParam>APELLIDO}" wrapping="false" /> </tab:template>
                                             </tab:Column>
                                             <tab:Column>
                                                 <Label textAlign="Center" wrapping ="true"  text="Nombres" />
-                                                <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>NOMBRE}" wrapping="false" /> </tab:template>
                                             </tab:Column>
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="Área" />
-                                                <tab:template> <Text text="{myParam>area}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>AREA}" wrapping="false" /> </tab:template>
                                             </tab:Column>
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="Puesto de trabajo" />
-                                                <tab:template> <Text text="{myParam>puesto}" wrapping="false" /> </tab:template>
+                                                <tab:template> <Text text="{myParam>PUESTO}" wrapping="false" /> </tab:template>
                                             </tab:Column> 
                                             <tab:Column>
                                                 <Label textAlign="Center" wrapping ="true"  text="DNI" />
@@ -857,7 +863,7 @@
                                             <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="Activo" />
                                                 <tab:template> <Text  text="{myParam>ACTIVO}" wrapping="false" /> </tab:template>
-                                            </tab:Column>              
+                                            </tab:Column>             
                                         </tab:columns>
                                     </tab:Table>  
                                 </VBox>
@@ -1204,6 +1210,7 @@
                         </items>
                     </IconTabBar>
                 </IconTabFilter>
+
                 <IconTabFilter text="Gestión de EEPs" key="itab5Id">
                     <IconTabBar headerMode="Inline"  expanded="{device>/isNoPhone}">
                         <items>
@@ -1270,7 +1277,7 @@
                                         </f:Form> 
                                     </content>
                                 </Panel> -->
-                                <fb:FilterBar reset="onReset" search="buscarIncidentes" showRestoreButton="true">
+                                <fb:FilterBar reset="onReset" search="buscarEpps" showRestoreButton="true">
                                     <fb:filterGroupItems>  
                                         <fb:FilterGroupItem groupName="G1" name="A1" groupTitle="Group1"  label="N° Reserva" visibleInFilterBar="true" >
                                             <fb:control>
@@ -1325,31 +1332,31 @@
                                     <tab:columns>
                                         <tab:Column  >
                                             <Label textAlign="Center" wrapping ="true"  text="N° reserva" />
-                                            <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>ZID_RESERVA}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Trabajador" />
-                                            <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text  text="{myParam>ZID_COD_TRABAJADOR}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column>
                                             <Label textAlign="Center" wrapping ="true"  text="DNI" />
-                                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>ZDNI}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Cargo" />
-                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>ZCARGO}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Área de trabajo" />
-                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>ZAREA}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Fecha de reserva" />
-                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>ZFECHA}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Status" />
-                                            <tab:template> <Text text="{myParam>ffin}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>ZSTATUS}" wrapping="false" /> </tab:template>
                                         </tab:Column>      
                                     </tab:columns>
                                 </tab:Table> 

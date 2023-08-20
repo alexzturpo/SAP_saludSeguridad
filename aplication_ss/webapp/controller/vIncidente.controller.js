@@ -80,8 +80,11 @@ sap.ui.define([
             },
             saveInforme : function () {  
                 console.log("saveAcciones")
-                let oModel = this.getView().getModel("myParam");  
-                var informeCab = { 
+                let oModel = this.getView().getModel("myParam");   
+                let dataSelect = oModel.getProperty("/selectIncidente"); 
+                let tbAcciones = oModel.getProperty("/tableAccionesInformeIncidente");
+                var informeCab = {"cabecera": { 
+                    ZINCIDENTE : dataSelect.ZINCIDENTE,
                     ZACTOS_SUBESTAND : this.getView().byId("info_acto").getValue(),
                     ZCOND_SUBESTAND : this.getView().byId("info_descrip").getValue(),
                     ZFACT_PERSONALES : this.getView().byId("info_facPers").getValue(),
@@ -90,11 +93,13 @@ sap.ui.define([
                     ZINVEST_POR : this.getView().byId("info_invesNombre").getValue(),
                     ZCARGO : this.getView().byId("info_invesCargo").getValue(),
                     ZFIRMA : this.getView().byId("info_invesFirma").getValue(),
-                } 
-                console.log("accion",informeCab)
+                },
+                "detalle":tbAcciones
+                }
+                console.log("saveInforme DATA",informeCab)
 
-                var urlAjax = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UPD_INC/1000/0/${dataSelect.ZINCIDENTE}/0/0/0/0` 
-                var dataRes = this.f_PostJsonData(urlAjax, incidenteForm) // envia nuevo registro
+                var urlAjax = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INCACC/1000/0/${dataSelect.ZINCIDENTE}/0/0/0/0` 
+                var dataRes = this.f_PostJsonData(urlAjax, informeCab) // envia nuevo registro
 
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
                     MessageToast.show("Error (" + dataRes.descripcion + ")");
@@ -169,16 +174,25 @@ sap.ui.define([
                 //optener archivos Anexos 
                 let fileAnexoInves = this.byId("fileDocIncidenteAnexoInves").getValue();
                 let fileAnexoInfor = this.byId("fileDocIncidenteAnexoInfor").getValue();
-                console.log("ARCHIVO fileAnexoInves value", this.byId("fileDocIncidenteAnexoInves").getValue())
-                if(!fileAnexoInves){ fileAnexoInves = this.byId("fileDocIncidenteAnexoInves").oFileUpload.files[0].name; }
-                if(!fileAnexoInfor){ fileAnexofileAnexoInforInves = this.byId("fileDocIncidenteAnexoInfor").oFileUpload.files[0].name; }
+                console.log("fileAnexoInves ", fileAnexoInfor)
+                console.log("ARCHIVO fileAnexoInfor value", fileAnexoInfor)
+                if(!fileAnexoInves){ 
+                    // fileAnexoInves = this.byId("fileDocIncidenteAnexoInves").oFileUpload.files[0].name; 
+                    fileAnexoInves = ""; 
+                }
+                if(!fileAnexoInfor){
+                    //  fileAnexoInfor = this.byId("fileDocIncidenteAnexoInfor").oFileUpload.files[0].name;
+                     fileAnexoInfor = ""
+                }
                 // console.log("ARCHIVO fileDocIncidenteAnexoInves", this.byId("fileDocIncidenteAnexoInves").oFileUpload.files[0])
                 // fileAnexoInfor = this.byId("fileDocIncidenteAnexoInfor").oFileUpload.files[0];
 
                 //obtener array de documentos  
                 let docsIncidente = oModel.getProperty("/docTableIncidente")
+                let tbAcciones = oModel.getProperty("/tableAccionesInformeIncidente");
 
                 let incidenteForm = {"cabecera" : {
+                    //DETALLE
                     ZINCIDENTE: dataSelect.ZINCIDENTE,
                     ZTITULO: this.getView().byId("gi_new_titulo").getValue(),
                     ZDESCRIPCION: this.getView().byId("gi_new_descrip").getValue(),
@@ -198,8 +212,21 @@ sap.ui.define([
                     ZID_COD_TRABAJADOR: this.getView().byId("gi_codEmp_afectado").getValue(), //codigo de empleado afectado
                     ZID_COD_INFORMANTE: this.getView().byId("gi_codEmp_informante").getValue(), //codigo de empleado informante
                     ZMANIFESTACION: this.getView().byId("gi_codEmp_detalleInf").getValue(), 
+
+                    // INFORME
+                    ZACTOS_SUBESTAND : this.getView().byId("info_acto").getValue(),
+                    ZCOND_SUBESTAND : this.getView().byId("info_descrip").getValue(),
+                    ZFACT_PERSONALES : this.getView().byId("info_facPers").getValue(),
+                    ZFACT_TRABAJO : this.getView().byId("info_facTrab").getValue(),
+                    ZLECCIONES : this.getView().byId("info_lecion").getValue(),
+                    ZINVEST_POR : this.getView().byId("info_invesNombre").getValue(),
+                    ZCARGO : this.getView().byId("info_invesCargo").getValue(),
+                    ZFIRMA : this.getView().byId("info_invesFirma").getValue(),
+
                 },
-                "detalle" : docsIncidente}
+                "detalle" : docsIncidente,
+                "detalle2" : tbAcciones
+                }
                
                 console.log("incidenteForm",incidenteForm)
 

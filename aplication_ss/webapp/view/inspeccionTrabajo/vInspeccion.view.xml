@@ -138,7 +138,7 @@
                     <OverflowToolbar style="Clear">
                         <Title text="Nuevo personal involucrado" />
                         <ToolbarSpacer />
-                         <Button text="Buscar" icon="sap-icon://employee-lookup" type="Emphasized" press="buscarTrb" />
+                         <Button text="Buscar" icon="sap-icon://employee-lookup" type="Emphasized" press="buscarTrabajador" />
                         <Button icon="sap-icon://save" press="savePerInvolucrado" text="Guardar" type="Emphasized" /> 
                         <Button icon="sap-icon://decline" press="cancelPerInvolucrado" text="Cancelar" type="Emphasized" /> 
                     </OverflowToolbar>
@@ -269,34 +269,35 @@
                     </f:Form> 
                 </content>
             </Panel>
-            <tab:Table showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/tabRiAsociados' }" class="sapUiSmallMargin">
+            <tab:Table id="tableRiesgosAsociados" showNoData="true" selectionMode="Single"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/tabRiAsociados' }" class="sapUiSmallMargin">
                 <tab:extension>
 					<OverflowToolbar>
 						<Title text="Riesgos asociados"/>
 						<ToolbarSpacer/>
                         <Button icon="sap-icon://add-employee" text="Agregar" press="addRiAsociados"/>
+                        <Button icon="sap-icon://add-employee" text="Eliminar" press="deleteRiAsociados"/>
 					</OverflowToolbar>
 				</tab:extension>
                 <tab:columns>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Condición insegura" />
-                        <tab:template> <Text text="{myParam>conInsegura}" />  </tab:template>
+                        <tab:template> <Text text="{myParam>ZCOND_INSEGURA}" />  </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Riesgo" />
-                        <tab:template> <Text text="{myParam>riesgo}" /> </tab:template>
+                        <tab:template> <Text text="{myParam>ZRIESGO}" /> </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Consecuencia" />
-                        <tab:template> <Text text="{myParam>consecuencia}" /> </tab:template>
+                        <tab:template> <Text text="{myParam>ZCONSECUENCIA}" /> </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Nivel riesgo" />
-                        <tab:template> <Text text="{myParam>nivelRiesgo}" /> </tab:template>
+                        <tab:template> <Text text="{myParam>ZNIVEL_RIESGO}" /> </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Anexo" />
-                        <tab:template> <Text text="{myParam>file}" /> </tab:template>
+                        <tab:template> <Text text="{myParam>ZANEXO}" /> </tab:template>
                     </tab:Column>
                 </tab:columns>
             </tab:Table> 
@@ -353,33 +354,34 @@
                     </f:Form> 
                 </content>
             </Panel>
-            <tab:Table showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/tabMedCorrectiva' }" class="sapUiSmallMargin">
+            <tab:Table id="tableMedidaCorrectiva" showNoData="true" selectionMode="Single"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/tabMedCorrectiva' }" class="sapUiSmallMargin">
                 <tab:extension>
 					<OverflowToolbar>
 						<Title text="Medidas correctivas"/> 
                         <ToolbarSpacer/>
 						<Button icon="sap-icon://add-employee" text="Agregar" press="addMedCorrectiva"/>
+						<Button icon="sap-icon://add-employee" text="Eliminar" press="deleteMedCorrectiva"/>
 					</OverflowToolbar>
 				</tab:extension>
                 <tab:columns>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Descripción de la medida correctiva" />
-                        <tab:template> <Text text="{myParam>descrip}"/>  </tab:template>
+                        <tab:template> <Text text="{myParam>ZMEDIDA}"/>  </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Responsable" />
-                        <tab:template> <Text text="{myParam>responsable}" /> </tab:template>
+                        <tab:template> <Text text="{myParam>ZRESPONSABLE}" /> </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Fecha de ejecución" />
-                        <tab:template> <Text text="{myParam>fechaEjc}"/>  </tab:template>
+                        <tab:template> <Text text="{myParam>ZFEC_EJECUCION}"/>  </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Estado de acción correctiva" />
                         <tab:template>
                             <!-- <Text text="{ path: 'myParam>ANLN1', formatter: '.formatNumerico', parameters: {param1: 'Valor1', param2: 'Valor2'} }" wrapping="false" /> -->
 
-                            <Text text="{ parts: [{path: 'myParam>estadoAccCor'},{ path: 'myParam>/estadoAccionCorrectiva' }], formatter: '.keyValorEstadoAccionCorrectiva'}"/>  
+                            <Text text="{ parts: [{path: 'myParam>ZESTADO'},{ path: 'myParam>/estadoAccionCorrectiva' }], formatter: '.keyValorEstadoAccionCorrectiva'}"/>  
                             <!-- <Select items="{ path: 'myParam>/estadoAccionCorrectiva' }" selectedKey="{myParam>estadoAccCor}" enabled="false" width="100%">
                                 <core:ListItem key="{myParam>key}" text="{myParam>state}"/>
                             </Select>  -->
@@ -433,26 +435,27 @@
                     </f:Form> 
                 </content>
             </Panel>
-            <tab:Table showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/tabResponsables' }" class="sapUiSmallMargin">
+            <tab:Table id="idTableResponsable"  showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/tabResponsables' }" class="sapUiSmallMargin">
                 <tab:extension>
 					<OverflowToolbar>
 						<Title text="Responsables del registro"/>
                         <ToolbarSpacer/>
 						<Button icon="sap-icon://add-employee" text="Agregar" press="addResponsables"/>
+                        <Button icon="sap-icon://add-employee" text="Eliminar" press="deleteResponsables"/>
 					</OverflowToolbar>
 				</tab:extension>
                 <tab:columns>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Nombre" />
-                        <tab:template> <Text text="{myParam>nombre}" />  </tab:template>
+                        <tab:template> <Text text="{myParam>ZAPELLIDO_NOMBRE}" />  </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Cargo" />
-                        <tab:template> <Text text="{myParam>cargo}" /> </tab:template>
+                        <tab:template> <Text text="{myParam>ZCARGO}" /> </tab:template>
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Fecha" />
-                        <tab:template> <Text text="{myParam>fecha}" />  </tab:template>
+                        <tab:template> <Text text="{myParam>ZFECHA}" />  </tab:template>
                     </tab:Column> 
                 </tab:columns>
             </tab:Table>

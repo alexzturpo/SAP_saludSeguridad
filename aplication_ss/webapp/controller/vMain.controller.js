@@ -27,28 +27,55 @@
                 
             },
             onAfterRendering:async function () {
+                this.onPressBuscaerDocReporte()
                 // console.log('INICIO GET LIST')
+                this.getGerenciaAreaDepartamento()
                 this.getListInc() 
+                // this.getDataRESERVAEPP() 
                 // this.getListEmpleado() 
 
                 //datos iniciales inspecciones
-                // this.getDataDepartamento()
-                // this.getDataArea()
                 // this.getDataGerencia()
+                // this.getDataArea()
+                // this.getDataDepartamento()
                 // this.getListInspeccion()
             },
             
-            getListEmpleado:  function () { 
-                // https://vheaids4ci.sap.agroindustriallaredo.com:44300/sap/bc/ZSISMART/smart/GET_LIST_EMPLEADO/1000/0/0/0/0/0/0 
+            buscarTrabajadorAfectado:  function () {  
                 console.log('getListEmpleado')
+                var iCodTrabajador = this.getView().byId("gi_codEmp_afectado").getValue()
+                console.log("iCodTrabajador",iCodTrabajador)
                 var oModel = this.getView().getModel("myParam");  
-                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_EMPLEADO/1000/0/0/0/0/0/0 ";
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${iCodTrabajador}/0/0/0/0`;
                 var dataRes =  this.f_GetJson(url) 
                 console.log('getListEmpleado DATA ',dataRes)
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
                     MessageToast.show("Error (" + dataRes.descripcion + ")");
                 }else{
-                    oModel.setProperty('/listEmpleados',dataRes);  
+                    dataRes= dataRes[0]
+                    this.getView().byId("gi_codEmp_nombreAfec").setValue(dataRes.NOMBRE)
+                    this.getView().byId("gi_codEmp_apellidoAfec").setValue(dataRes.APELLIDO)
+                    this.getView().byId("gi_codEmp_dniAfec").setValue(dataRes.DNI)
+                    this.getView().byId("gi_codEmp_areaTrabajoAfec").setValue(dataRes.AREA)
+                    // oModel.setProperty('/listEmpleados',dataRes);  
+                }
+            },
+            buscarTrabajadorTestigo:  function () {  
+                console.log('getListEmpleado')
+                var iCodTrabajador = this.getView().byId("gi_codEmp_informante").getValue()
+                var oModel = this.getView().getModel("myParam");  
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${iCodTrabajador}/0/0/0/0`;
+                var dataRes =  this.f_GetJson(url) 
+                console.log('getListEmpleado DATA ',dataRes)
+                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                    MessageToast.show("Error (" + dataRes.descripcion + ")");
+                }else{
+                    dataRes= dataRes[0]
+                    this.getView().byId("gi_codEmp_nombreInf").setValue(dataRes.NOMBRE)
+                    this.getView().byId("gi_codEmp_apellidoInf").setValue(dataRes.APELLIDO)
+                    this.getView().byId("gi_codEmp_dniInf").setValue(dataRes.DNI)
+                    this.getView().byId("gi_codEmp_areaTrabajoInf").setValue(dataRes.AREA)
+                    // oModel.setProperty('/listEmpleados',dataRes);  
                 }
             },
             getListInc:  function () { 
@@ -142,28 +169,145 @@
                     }.bind(this)
                 });
             },
-            //funciones EPPs
-            vDevolucionEpp: function () {
-                this.getRouter().getTargets().display("vDevolucionEpp");
-            },
-            addRequerientoEpp: function () {
-                this.getRouter().getTargets().display("vNewRequerimientoEpp");
-            },
-            visualizarEpp: function () {
-                this.getRouter().getTargets().display("vVisualizarEpp");
-            },
-            entregaEpp: function () {
-                this.getRouter().getTargets().display("vEntregarEpp");
-            },
+            
 
 
             addTrabajador: function () {
                 this.getRouter().getTargets().display("vNewTrabajador");
             },
-            onSelectTrabajador: function () {
+            onSelectTrabajador: function (oEvent) {
+                var ovalor= oEvent.mParameters.rowBindingContext.sPath;
+                var oModel = this.getView().getModel("myParam");  
+                var oDato=oModel.getProperty(ovalor);  
+                console.log(oDato);
+                var ocodigo=oDato.COD_PERSONAL;
+                this.onPressBuscaerInduccion(ocodigo);
+                this.onPressBuscaerListRegistroMED(ocodigo);
+                this.onPressBuscaerListRegistroSCTR(ocodigo);
+                this.onPressBuscaerDocTrabajador(ocodigo);
                 this.getRouter().getTargets().display("vTrabajador");
             },
             //ASSITENCIA
+            //GMT//
+            onPressBuscaerGCASISV1:function(e){
+                console.log('getListPersonal')
+                var oModel = this.getView().getModel("myParam");  
+
+                let prov =  this.getView().byId("dateProv").getValue()  
+                let provNombre =  this.getView().byId("dateNombreProv").getValue()  
+                let provRuc =  this.getView().byId("dateRucProv").getValue()  
+                let sociedad =  this.getView().byId("idsociedadAC").getValue()  
+                if(sociedad){
+                    //lista personal  por sociedad
+                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/${sociedad}/0/0/0/0/0/0`;
+                    var dataRes =  this.f_GetJson(url) 
+                    console.log('getListPersonal DATA ',dataRes)
+                    if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                        MessageToast.show("Error (" + dataRes.descripcion + ")");
+                    }else{
+                        oModel.setProperty('/ListPersonal',dataRes);  
+                    } 
+                }
+                if(prov){
+                    //lista personal por proveedor
+                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/${prov}/0/0/0/0/0/0`;
+                    var dataRes =  this.f_GetJson(url) 
+                    console.log('getListPersonal DATA ',dataRes)
+                    if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                        MessageToast.show("Error (" + dataRes.descripcion + ")");
+                    }else{
+                        oModel.setProperty('/ListPersonal',dataRes);  
+                    } 
+                }
+                if(provRuc){
+                    //lista personal por RUC
+                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/${provRuc}/0/0/0/0/0/0`;
+                    var dataRes =  this.f_GetJson(url) 
+                    console.log('getListPersonal DATA ',dataRes)
+                    if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                        MessageToast.show("Error (" + dataRes.descripcion + ")");
+                    }else{
+                        oModel.setProperty('/ListPersonal',dataRes);  
+                    } 
+                }
+        
+            },
+            onPressBuscaerInduccion:function(ocodigo,tipo){
+                console.log('getListInducciong')
+                var oModel = this.getView().getModel("myParam");  
+                var sociedad = this.getView().byId("idsociedadAC").getValue(); 
+                var oModel = this.getView().getModel("myParam");  
+                // var tipo
+                // contratista P
+                // sociedad    S
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INDUCCION/${sociedad}/0/${ocodigo}/${tipo}/0/0/0`;
+                var dataRes =  this.f_GetJson(url) 
+                console.log('getListInducciong DATA ',dataRes)
+                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                    MessageToast.show("Error (" + dataRes.descripcion + ")");
+                }else{
+                    oModel.setProperty('/ListPersonalInduccion',dataRes);  
+                }
+        
+            },
+            onPressBuscaerListRegistroMED:function(ocodigo,tipo){
+                console.log('getListRgstrMedico')
+                var oModel = this.getView().getModel("myParam");  
+                var sociedad = this.getView().byId("idsociedadAC").getValue(); 
+                var oModel = this.getView().getModel("myParam");  
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_REGISTRO/${sociedad}/0/${ocodigo}/${tipo}/0/0/0`;
+                var dataRes =  this.f_GetJson(url) 
+                console.log('getListRgstrMedico DATA ',dataRes)
+                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                    MessageToast.show("Error (" + dataRes.descripcion + ")");
+                }else{
+                    oModel.setProperty('/ListRegistroMedico',dataRes);  
+                }
+        
+            },
+            onPressBuscaerListRegistroSCTR:function(ocodigo,tipo){
+                console.log('getListRgstrSCTR')
+                var oModel = this.getView().getModel("myParam");  
+                var sociedad = this.getView().byId("idsociedadAC").getValue(); 
+                var oModel = this.getView().getModel("myParam");  
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_REGISTRO/${sociedad}/0/${ocodigo}/${tipo}/0/0/0`;
+                var dataRes =  this.f_GetJson(url) 
+                console.log('getListRgstrSCTR DATA ',dataRes)
+                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                    MessageToast.show("Error (" + dataRes.descripcion + ")");
+                }else{
+                    oModel.setProperty('/ListRegistroSCTR',dataRes);  
+                }
+        
+            },
+            onPressBuscaerDocTrabajador:function(ocodigo){
+                console.log('getListRgstrDOC')
+                var oModel = this.getView().getModel("myParam");  
+                var sociedad = this.getView().byId("idsociedadAC").getValue(); 
+                var oModel = this.getView().getModel("myParam");  
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_DOC_TRABAJADOR/${sociedad}/0/${ocodigo}/${tipo}/0/0/0`;
+                var dataRes =  this.f_GetJson(url) 
+                console.log('getListRgstrDOC DATA ',dataRes)
+                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                    MessageToast.show("Error (" + dataRes.descripcion + ")");
+                }else{
+                    oModel.setProperty('/getListRgstrDOC',dataRes);  
+                }
+        
+            },
+            onPressBuscaerDocReporte:function(){
+                console.log('getListRgstrREPORTE')               
+                var oModel = this.getView().getModel("myParam");  
+                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_REP_CAP_TRABAJADOR/0/0/0/0/0/0/0 ";
+                var dataRes =  this.f_GetJson(url) 
+                console.log('getListRgstrREPORTE DATA ',dataRes)
+                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                    MessageToast.show("Error (" + dataRes.descripcion + ")");
+                }else{
+                    oModel.setProperty('/getListRgstrREPORTE',dataRes);  
+                }
+        
+            },
             onPressBuscaerGCASIS:function(e){
                 var oModel = this.getView().getModel("myParam");  
                 var t = this.getView().byId("idsociedadAC").getValue(); 
@@ -410,7 +554,7 @@
                 } 
                 console.log("newIncidenteForm",newIncidenteForm)
 
-                var urlAjax = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INC/1000/0/0/0/0/0/0"
+                var urlAjax = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INC/1000/0/0/0/0/0/0" 
                 var dataRes = this.f_PostJsonData(urlAjax, newIncidenteForm) // envia nuevo registro
 
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
@@ -463,7 +607,7 @@
                 const credentials = btoa(`${usuario}:${password}`); 
                 // let url= url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INC/1000/0/0/0/0/0/0"
                 var res = null
-                var oVector = [dataForm]
+                var oVector = dataForm
                 $.ajax(url, {
 					type: "POST",
                     data: JSON.stringify(oVector),
@@ -493,8 +637,7 @@
 				}); 
                 // console.log(`RES ->`,res);
                 return res
-            },
-
+            }, 
             onSelectTbIncidente: function (evt) {
                 let oModel = this.getView().getModel("myParam");   
                 var context = evt.getParameters().rowBindingContext; 
@@ -502,35 +645,36 @@
                 var objeto = context.getObject(); 
                 console.log("objeto", objeto)
 
-                //consulta sobre el INCIDENTE seleccionado 
-                var urlIncidente = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_INC/1000/0/${objeto.ZINCIDENTE}/0/0/0/0`;
+                //consulta sobre el INCIDENTE seleccionado  | consultar data de INFORME para el incidente seleccionado
+                var urlIncidente = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/${objeto.ZINCIDENTE}/0/0/0/0`;
                 var dataIncidente = this.f_GetJson(urlIncidente)
-                    console.log('getListEmpleado DATA ',dataIncidente)
+                    console.log('onSelectTbIncidente DATA ',dataIncidente[0])
                     if(dataIncidente.cod != undefined && dataIncidente.cod == 'Error'){
                         MessageToast.show("Error (" + dataIncidente.descripcion + ")");
                     }else{ 
+                        dataIncidente = dataIncidente[0]
                         oModel.setProperty("/selectIncidente",dataIncidente);
                     }
                 //consulta sobre la tabla de DOCUMENTOS del incidente seleccionado
                 var urlListDocIncidente = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_DOC_INC/1000/0/${objeto.ZINCIDENTE}/0/0/0/0`;
                 var dataListDoc = this.f_GetJson(urlListDocIncidente) 
-                    console.log('documento DATA ',dataListDoc)
+                    console.log('dataListDoc DATA ',dataListDoc)
                     if(dataListDoc.cod != undefined && dataListDoc.cod == 'Error'){
                         MessageToast.show("Error (" + dataListDoc.descripcion + ")");
                     }else{ 
                         oModel.setProperty("/docTableIncidente",dataListDoc);
                     } 
-                // consultar data de INFORME para el incidente seleccionado
-                var urlInforme = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_INFORME/1000/0/${objeto.ZINCIDENTE}/0/0/0/0`;
+                // OBTENER TABLA DE ACCIONES CORERCTIVA Y PREEVENTIVAS INFORME
+                var urlInforme = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_INFORME2/1000/0/${objeto.ZINCIDENTE}/0/0/0/0`;
                 var dataInforme = this.f_GetJson(urlInforme) 
                     console.log('documento DATA ',dataInforme)
                     if(dataInforme.cod != undefined && dataInforme.cod == 'Error'){
                         MessageToast.show("Error (" + dataInforme.descripcion + ")");
                     }else{ 
-                        oModel.setProperty("/selectIncidenteInforme",dataInforme);
+                        oModel.setProperty("/tableAccionesInformeIncidente",dataInforme);
                     } 
 
-                oModel.setProperty("/selectIncidente",objeto); //modelo de data de incidente sin. consultar a JSON.  BORRAR
+                // oModel.setProperty("/selectIncidente",objeto); //modelo de data de incidente sin. consultar a JSON.  BORRAR
                 if(objeto.ZESTADO != 'T'){
                     //redirigir a la vista de incidente detalle 
                     this.getRouter().getTargets().display("vIncidente"); 
@@ -661,7 +805,7 @@
                 oEvent.getSource().getBinding("items").filter([]);
                 if (!oSelectedItem) { return } 
                 sDescription = oSelectedItem.getDescription(); 
-                console.log("ID INPUT",idInput)
+                console.log("ID INPUT",sDescription)
                 this.getView().byId(idInput).setValue(sDescription); 
                 // this.byId(idInput).setValue(sDescription); 
             }, 
@@ -756,40 +900,101 @@
             dgGetCloseDtpo: function (oEvent) {
                 let idInput = "gInsp_departamento"
                 this.dialogGetValueClose(oEvent,idInput)
-            }, 
-            getDataGerencia:  function () { 
-                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/0/0/0/0/0?sap-client=100"; 
+            },
+            //funciones MODULOS EPPs
+            vDevolucionEpp: function () {
+                this.getRouter().getTargets().display("vDevolucionEpp");
+            },
+            addRequerientoEpp: function () {
+                this.getRouter().getTargets().display("vNewRequerimientoEpp");
+            },
+            visualizarEpp: function () {
+                this.getRouter().getTargets().display("vVisualizarEpp");
+            },
+            entregaEpp: function () {
+                this.getRouter().getTargets().display("vEntregarEpp");
+            },
+            getDataRESERVAEPP:  function () { 
+                var oModel = this.getView().getModel("myParam");
+
+                /*let incidenteForm = {"cabecera" : {
+                    ZRESERVA:this.getView().byId("gi_codEmp_afectado").getValue(),
+                    ZID_COD_TRABAJADOR: this.getView().byId("gi_codEmp_afectado").getValue(), //codigo de empleado afectado
+                    ZFECHA: this.cambiarFormatoFecha(this.getView().byId("gi_new_fecha").getValue()),
+                    ZHORA: this.getView().byId("gi_new_hora").getValue(),
+                    ZSTATUS: this.cambiarFormatoFecha(this.getView().byId("gi_new_fecha3").getValue()),             
+                },}*/
+                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_RESERVA_EPPS/0/0/1/0/0/0/0?sap-client=100"; 
+               
+                var dataRes = this.f_PostJsonData(url, incidenteForm) // envia nuevo registro
+                console.log('getListReserva EPP DATA ',dataRes)
+                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                    MessageToast.show("Error (" + dataRes.descripcion + ")");
+                }else{
+                    oModel.setProperty('/dataTab',dataRes);  
+                }
+            },
+            getDataINSRESERVAEPP:  function () { 
+                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_RESERVA_EPPS/1000/0/0/0/0/0/0?sap-client=100"; 
                
                 var dataRes =  this.f_GetJson(url) 
-                console.log('getDataGerencia DATA ',dataRes)
+                console.log('INS_RESERVA_EPPS EPP DATA ',dataRes)
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
                     MessageToast.show("Error (" + dataRes.descripcion + ")");
                 }else{
-                    oModel.setProperty('/ZSYSO_GERENCIASet',dataRes);  
+                    oModel.setProperty('/dataTab_Nuevo',dataRes);  
                 }
             },
-            getDataArea:  function () { 
-                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/0/0/0/0/0?sap-client=100";
-                
+
+            getGerenciaAreaDepartamento:  function () { 
+                var oModel = this.getView().getModel("myParam");
+                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_NIVEL/1000/0/0/0/0/0/0"; 
+               
                 var dataRes =  this.f_GetJson(url) 
-                console.log('getDataArea DATA ',dataRes)
+                dataRes = dataRes[0]
+                console.log('getGerenciaAreaDepartamento DATA ',dataRes)
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
                     MessageToast.show("Error (" + dataRes.descripcion + ")");
                 }else{
-                    oModel.setProperty('/ZSYSO_AREASet',dataRes);  
+                    oModel.setProperty('/ZSYSO_GERENCIASet',dataRes.GERENCIA);  
+                    oModel.setProperty('/ZSYSO_AREASet',dataRes.AREA); 
+                    oModel.setProperty('/ZSYSO_DPTO',dataRes.DEPARTAMENTO);   
                 }
             },
-            getDataDepartamento:  function () { 
-                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/0/0/0/0/0?sap-client=100";
+
+            // getDataGerencia:  function () { 
+            //     var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/0/0/0/0/0?sap-client=100"; 
+               
+            //     var dataRes =  this.f_GetJson(url) 
+            //     console.log('getDataGerencia DATA ',dataRes)
+            //     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+            //         MessageToast.show("Error (" + dataRes.descripcion + ")");
+            //     }else{
+            //         oModel.setProperty('/ZSYSO_GERENCIASet',dataRes);  
+            //     }
+            // },
+            // getDataArea:  function () { 
+            //     var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/0/0/0/0/0?sap-client=100";
                 
-                var dataRes =  this.f_GetJson(url) 
-                console.log('getDataArea DATA ',dataRes)
-                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                    MessageToast.show("Error (" + dataRes.descripcion + ")");
-                }else{
-                    oModel.setProperty('/ZSYSO_DPTO',dataRes);  
-                }
-            },
+            //     var dataRes =  this.f_GetJson(url) 
+            //     console.log('getDataArea DATA ',dataRes)
+            //     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+            //         MessageToast.show("Error (" + dataRes.descripcion + ")");
+            //     }else{
+            //         oModel.setProperty('/ZSYSO_AREASet',dataRes);  
+            //     }
+            // },
+            // getDataDepartamento:  function () { 
+            //     var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/0/0/0/0/0?sap-client=100";
+                
+            //     var dataRes =  this.f_GetJson(url) 
+            //     console.log('getDataArea DATA ',dataRes)
+            //     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+            //         MessageToast.show("Error (" + dataRes.descripcion + ")");
+            //     }else{
+            //         oModel.setProperty('/ZSYSO_DPTO',dataRes);  
+            //     }
+            // },
     
             //Nueva Inspeccion
                     // setCod: function (array) {
@@ -806,15 +1011,25 @@
                     //     return nuevoCodigo;
                     // },
             getListInspeccion:  function () { 
-                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/0/0/0/0/0?sap-client=100";
+                var filtro = {
+                    ZINSPECCION: this.getView().byId("Iinspeccion").getValue(),
+                    ZGERENCIA: this.getView().byId("Igerencia").getValue(),
+                    ZAREA: this.getView().byId("Iarea").getValue(),
+                    ZDPTO: this.getView().byId("Idepartamento").getValue(),
+                    ZFEC_PROGRAM: this.getView().byId("Ifechap").getValue(),
+                    ZESTADO: this.getView().byId("Istatus").getValue(),
+                }
+                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INSP/1000/0/0/0/0/0/0?sap-client=100";
                 
-                var dataRes =  this.f_GetJson(url) 
-                console.log('getListInspeccion DATA ',dataRes)
+                var dataRes = this.f_PostJsonData(url, filtro) // envia nuevo registro
+
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
                     MessageToast.show("Error (" + dataRes.descripcion + ")");
-                }else{
-                    oModel.setProperty('/ZSYSO_INSPECCION',dataRes);  
-                }
+                }else{ 
+                    MessageToast.show("Solicitud exitosa")
+                    // this.limpiarObjeto(objClean) // vuelve a consultar toda los incidentes y actualizar los registros 
+                    // this.getListInc() 
+                } 
             },
             test: async function () {
                 let objInspeccionClean = [
@@ -832,18 +1047,31 @@
                 if(ok){
                     var oModel = this.getView().getModel("myParam");  
                     // let listInspeccion = oModel.getProperty("/listInspeccion");
-                    let listInspeccion = oModel.getProperty("/ZSYSO_INSPECCION");
-                    let objInspeccion = { 
-                        ZINSPECCION: this.setCod(listInspeccion),
-                        gerencia: this.getView().byId("gInsp_gerencia").getValue(),
-                        area: this.getView().byId("gInsp_area").getValue(),
+                    // let listInspeccion = oModel.getProperty("/ZSYSO_INSPECCION");
+                    let objInspeccion = [{ 
+                        // ZINSPECCION: this.setCod(listInspeccion),
+                        ZGERENCIA: this.getView().byId("gInsp_gerencia").getValue(),
+                        ZAREA: this.getView().byId("gInsp_area").getValue(),
                         ZDPTO: this.getView().byId("gInsp_departamento").getValue(),
                         ZFEC_PROGRAM: this.cambiarFormatoFecha(this.getView().byId("gInsp_programada").getValue()),
                         ZESTADO: "N"
-                    }
+                    }]
                     console.log("objInspeccion antes de SAVE",objInspeccion) 
-                    listInspeccion.push(objInspeccion)
-                    oModel.setProperty("/ZSYSO_INSPECCION",listInspeccion); 
+                    //GUARDAR LA INSPECCION POST 
+
+                    // listInspeccion.push(objInspeccion)
+                    var urlAjax = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INSP/1000/0/0/0/0/0/0` 
+                    var dataRes = this.f_PostJsonData(urlAjax, objInspeccion) // envia nuevo registro
+
+                    if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                        MessageToast.show("Error (" + dataRes.descripcion + ")");
+                    }else{ 
+                        MessageToast.show("Solicitud exitosa")
+                        // this.limpiarObjeto(objClean) // vuelve a consultar toda los incidentes y actualizar los registros 
+                        // this.getListInc() 
+                    } 
+
+                    // oModel.setProperty("/ZSYSO_INSPECCION",listInspeccion); 
 
                     sap.m.MessageToast.show("Realizado correctamente")
 
@@ -879,17 +1107,44 @@
 
             //ver inspeccion
             buscarInspecciones: function () { 
+                let oModel = this.getView().getModel("myParam");  
                 console.log("buscarInspecciones") 
-                let idTable = "tbInspecciones"; 
-                let objBusqueda = [
-                    {id:"Iinspeccion",tabAtr:"ZINSPECCION"},
-                    {id:"Igerencia",tabAtr:"gerencia"},
-                    {id:"Iarea",tabAtr:"area"},
-                    {id:"Idepartamento",tabAtr:"ZDPTO"},
-                    {id:"Ifechap",tabAtr:"ZFEC_PROGRAM",fecha:true},
-                    {id:"Istatus",tabAtr:"ZESTADO"},
-                 ] 
-                 this.fBusqueda(objBusqueda,idTable)
+                var filtro = {
+                    ZINSPECCION: this.getView().byId("Iinspeccion").getValue(),
+                    ZGERENCIA: this.getView().byId("Igerencia").getValue(),
+                    ZAREA: this.getView().byId("Iarea").getValue(),
+                    ZDPTO: this.getView().byId("Idepartamento").getValue(),
+                    ZFEC_PROGRAM: this.getView().byId("Ifechap").getValue(),
+                    ZESTADO: this.getView().byId("Istatus").getValue(),
+                }
+                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INSP/1000/0/0/0/0/0/0?sap-client=100";
+                
+                console.log("buscarInspecciones filtro",filtro)
+                var dataRes = this.f_PostJsonData(url, filtro) // envia nuevo registro
+
+                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                    MessageToast.show("Error (" + dataRes.descripcion + ")");
+                }else{ 
+                    dataRes = dataRes.ITAB
+                    console.log("dataRes",dataRes)
+                    MessageToast.show("Solicitud exitosa")
+                    oModel.setProperty("/ZSYSO_INSPECCION",dataRes);
+                    // ZSYSO_INSPECCION
+                    // this.limpiarObjeto(objClean) // vuelve a consultar toda los incidentes y actualizar los registros 
+                    // this.getListInc() 
+                } 
+
+                //LOGICA DE ABAJO FILTRA CUANDO TE EL INICIAR LA VISTA YA TE TRAER TODAS LAS INSPECCIONES
+                // let idTable = "tbInspecciones"; 
+                // let objBusqueda = [
+                //     {id:"Iinspeccion",tabAtr:"ZINSPECCION"},
+                //     {id:"Igerencia",tabAtr:"gerencia"},
+                //     {id:"Iarea",tabAtr:"area"},
+                //     {id:"Idepartamento",tabAtr:"ZDPTO"},
+                //     {id:"Ifechap",tabAtr:"ZFEC_PROGRAM",fecha:true},
+                //     {id:"Istatus",tabAtr:"ZESTADO"},
+                //  ] 
+                //  this.fBusqueda(objBusqueda,idTable)
                  
             },
             fBusqueda: function (objBusqueda,idTable) {
@@ -929,18 +1184,57 @@
                 let objTab = evt.getParameters().rowBindingContext.getObject();
                 console.log("objeto", objTab) 
                 if(objTab.ZESTADO !== "F"){
-                    // consulta ala inspeccion seleccionada 
-                        // var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/0/0/0/0/0?sap-client=100";
-                        
-                        // var dataRes =  this.f_GetJson(url) 
-                        // console.log('selectTabInspecciones DATA ',dataRes)
-                        // if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                        //     MessageToast.show("Error (" + dataRes.descripcion + ")");
-                        // }else{
-                        //     oModel.setProperty('/tempInspecciones',dataRes);  
-                        // } 
-                    oModel.setProperty("/tempInspecciones",objTab);
-                    this.getRouter().getTargets().display("vInspeccion"); 
+                    // consulta ala inspeccion seleccionada  traer la data de esa inspeccion 
+                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_INSP/1000/0/${objTab.ZINSPECCION}/0/0/0/0?sap-client=100`;
+                    
+                    var dataRes =  this.f_GetJson(url) 
+                    if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                        MessageToast.show("Error (" + dataRes.descripcion + ")");
+                    }else{
+                        dataRes = dataRes[0]
+                        console.log('selectTabInspecciones DATA ',dataRes)
+                        oModel.setProperty("/tempInspecciones",dataRes);
+                        this.getRouter().getTargets().display("vInspeccion");  
+                    } 
+                    //CONSULTAS PARA OBTENER TABLAS 
+                    //TABLA INVOLUCRADOS
+                    var urlTabInv = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERS_INVOLUC/1000/0/${objTab.ZINSPECCION}/0/0/0/0?sap-client=100`
+                    var dataRes =  this.f_GetJson(urlTabInv) 
+                    if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                        MessageToast.show("Error (" + dataRes.descripcion + ")");
+                    }else{
+                        console.log('tabPerInvolucrados DATA ',dataRes)
+                        oModel.setProperty("/tabPerInvolucrados",dataRes);
+                    }  
+                    //TABLA ASOCIADOS - OK
+                    var urlTabAsoc = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_RIESGO_ASOC/1000/0/${objTab.ZINSPECCION}/0/0/0/0?sap-client=100`
+                    var dataRes =  this.f_GetJson(urlTabAsoc) 
+                    if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                        MessageToast.show("Error (" + dataRes.descripcion + ")");
+                    }else{
+                        console.log('tabRiAsociados DATA ',dataRes)
+                        oModel.setProperty("/tabRiAsociados",dataRes);
+                    }  
+                    //TABLA CORRECTIVA - OK
+                    var urlTabCorr = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_MEDIDA_CORR/1000/0/${objTab.ZINSPECCION}/0/0/0/0?sap-client=100`
+                    var dataRes =  this.f_GetJson(urlTabCorr) 
+                    if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                        MessageToast.show("Error (" + dataRes.descripcion + ")");
+                    }else{
+                        console.log('tabMedCorrectiva DATA ',dataRes)
+                        oModel.setProperty("/tabMedCorrectiva",dataRes);
+                    } 
+                    //TABLA RESPONSABLES - OK
+                    var urlTabResp = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_RESP_RIESGO/1000/0/${objTab.ZINSPECCION}/0/0/0/0?sap-client=100`
+                    var dataRes =  this.f_GetJson(urlTabResp) 
+                    if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                        MessageToast.show("Error (" + dataRes.descripcion + ")");
+                    }else{
+                        console.log('tabResponsables DATA ',dataRes)
+                        oModel.setProperty("/tabResponsables",dataRes);
+                    }  
+                    //ENVIAR ALA VISTA DE INSPECCION
+                    this.getRouter().getTargets().display("vInspeccion");  
                 } 
             },
             excelDownload: function (ele) { 
