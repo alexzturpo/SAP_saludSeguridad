@@ -251,7 +251,7 @@
         
             },
             onPressBuscaerListRegistroMED:function(ocodigo,tipo){
-                console.log('getListRgstrMedico')
+                console.log('getListRgstrMedico') 
                 var oModel = this.getView().getModel("myParam");  
                 var sociedad = this.getView().byId("idsociedadAC").getValue(); 
                 var oModel = this.getView().getModel("myParam");  
