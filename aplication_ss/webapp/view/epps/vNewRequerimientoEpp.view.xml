@@ -46,7 +46,7 @@
                                 </f:FormElement>
                                 <f:FormElement label="Fecha reserva">
                                     <f:fields> 
-                                        <DatePicker id="rEpp_fechaReq" value="" displayFormat="short"/>
+                                        <DatePicker id="rEpp_fechaReq" value="" displayFormat="yyyy-MM-dd"/>
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Centro">
@@ -152,7 +152,7 @@
                                             <f:fields>  <Switch id="epp_cambio" type="AcceptReject" state="false"/>   </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Fecha de entrega">
-                                            <f:fields> <DatePicker id="epp_fechaEntrega"  displayFormat="short" change="handleChange" value="" />    </f:fields>
+                                            <f:fields> <DatePicker id="epp_fechaEntrega"  displayFormat="yyyy-MM-dd" change="handleChange" value="" />    </f:fields>
                                         </f:FormElement> 
                                     </f:formElements>
                                 </f:FormContainer> 

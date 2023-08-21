@@ -8,9 +8,9 @@
     <Page title="Incidente {myParam>/selectIncidente/ZINCIDENTE}" showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
 		<headerContent>
             <Button text="Guardar" icon="sap-icon://save" type="Emphasized" press="saveIncidente" /> 
-			<Button text="Culminar atensión" icon="sap-icon://paper-plane" type="Emphasized" press="IncTerminar" />
+			<!-- <Button text="Culminar atensión" icon="sap-icon://paper-plane" type="Emphasized" press="IncTerminar" /> -->
             <Button text="Enviar notificación" icon="sap-icon://notification-2" press="IncNotificacion" /> 
-            <Button text="Cancelar" icon="sap-icon://delete" press="onEnviartab2" /> 
+            <Button text="Cancelar" icon="sap-icon://decline" press="onEnviartab2" /> 
 		</headerContent> 
         <content >
             <IconTabBar expanded="{device>/isNoPhone}" >
@@ -19,7 +19,7 @@
                         <Panel width="auto" >
                             <headerToolbar>
                                 <OverflowToolbar>
-                                    <Title text="Datos conplementario"/>
+                                    <Title text="Datos complementario"/>
                                     <ToolbarSpacer />
                                     <!-- <Button text="Guardar" icon="sap-icon://save" type="Emphasized" press="saveIncidente" />  -->
                                 </OverflowToolbar>
@@ -97,7 +97,7 @@
                                         <f:formElements>
                                             <f:FormElement label="Fecha" >
                                                 <f:fields> 
-                                                        <DatePicker id="gi_new_fecha" value="{myParam>ZFECHA}" displayFormat="short" change="handleChange"/>   
+                                                        <DatePicker id="gi_new_fecha" value="{myParam>ZFECHA}" displayFormat="yyyy-MM-dd" change="handleChange"/>   
                                                 </f:fields>
                                             </f:FormElement> 
                                             <f:FormElement label="Hora" >
@@ -156,22 +156,22 @@
                                             </f:FormElement>
                                             <f:FormElement label="Nombres">
                                                 <f:fields> 
-                                                    <Input id="gi_new_nombreEmp" value="{myParam>afectado/nombreEmp}"/>
+                                                    <Input id="gi_new_nombreEmp" value="" editable="false"/>
                                                 </f:fields>
                                             </f:FormElement>
                                             <f:FormElement label="Apellidos">
                                                 <f:fields> 
-                                                    <Input id="gi_new_apellidoEmp" value="{myParam>afectado/apellidoEmp}"/>
+                                                    <Input id="gi_new_apellidoEmp" value="" editable="false"/>
                                                 </f:fields>
                                             </f:FormElement>  
                                             <f:FormElement label="DNI">
                                                 <f:fields> 
-                                                    <Input id="gi_new_dniEmp" value="{myParam>afectado/dniEmp}"/>
+                                                    <Input id="gi_new_dniEmp" value="" editable="false"/>
                                                 </f:fields>
                                             </f:FormElement>  
                                             <f:FormElement label="Área de trabajo">
                                                 <f:fields> 
-                                                    <Input id="gi_new_areaTrabajoEmp" value="{myParam>afectado/areaTrabajoEmp}"/>
+                                                    <Input id="gi_new_areaTrabajoEmp" value="" editable="false"/>
                                                 </f:fields>
                                             </f:FormElement>  
                                         </f:formElements>
@@ -193,27 +193,27 @@
                                             </f:FormElement>
                                             <f:FormElement label="Nombres">
                                                 <f:fields> 
-                                                    <Input id="gi_new_nombreEmpTest" value="{myParam>testigo/nombreEmp}"/>
+                                                    <Input id="gi_new_nombreEmpTest" value="" editable="false"/>
                                                 </f:fields>
                                             </f:FormElement>
                                             <f:FormElement label="Apellidos">
                                                 <f:fields> 
-                                                    <Input id="gi_new_apellidoEmpTest" value="{myParam>testigo/apellidoEmp}"/>
+                                                    <Input id="gi_new_apellidoEmpTest" value="" editable="false"/>
                                                 </f:fields>
                                             </f:FormElement>  
                                             <f:FormElement label="DNI">
                                                 <f:fields> 
-                                                    <Input id="gi_new_dniEmpTest" value="{myParam>testigo/dniEmp}"/>
+                                                    <Input id="gi_new_dniEmpTest" value="" editable="false"/>
                                                 </f:fields>
                                             </f:FormElement>  
                                             <f:FormElement label="Área de trabajo">
                                                 <f:fields> 
-                                                    <Input id="gi_new_areaTrabajoEmpTest" value="{myParam>testigo/areaTrabajoEmp}"/>
+                                                    <Input id="gi_new_areaTrabajoEmpTest" value="" editable="false"/>
                                                 </f:fields>
                                             </f:FormElement>  
                                             <f:FormElement label="Detalle">
                                                 <f:fields> 
-                                                    <Input id="gi_codEmp_detalleInf" value="{myParam>testigo/detalleEmp}"/>
+                                                    <Input id="gi_codEmp_detalleInf" value="{myParam>ZMANIFESTACION}"/>
                                                 </f:fields>
                                             </f:FormElement>  
                                         </f:formElements>
@@ -244,7 +244,7 @@
                                     </tab:Column>
                                     <tab:Column>
                                         <Label textAlign="Center" wrapping ="true"  text="Documento" />
-                                        <tab:template> <Text text="{myParam>ZNOM_DOC}" wrapping="false" /> </tab:template>
+                                        <tab:template> <Link text="{myParam>ZNOM_DOC}" press="handleLinkPress" />  </tab:template>
                                     </tab:Column>     
                                 </tab:columns>
                             </tab:Table>   
@@ -367,11 +367,6 @@
                                                     <Input id="info_facTrab" value="{myParam>ZFACT_TRABAJO}" /> 
                                                 </f:fields>
                                             </f:FormElement>
-                                            <!-- <f:FormElement label="Detalle" >
-                                                <f:fields>
-                                                    <TextArea id="info_detalle" value="" height="5rem"/> 
-                                                </f:fields>
-                                            </f:FormElement> -->
                                         </f:formElements>
                                     </f:FormContainer> 
                                     <f:FormContainer title="Lecciones aprendidas" >
@@ -391,9 +386,9 @@
                                             <f:FormElement label="Cargo" >
                                                 <f:fields> <Input id="info_invesCargo" value="{myParam>ZCARGO}" />  </f:fields>
                                             </f:FormElement> 
-                                            <f:FormElement label="Firma" >
+                                            <!-- <f:FormElement label="Firma" >
                                                 <f:fields> <Input id="info_invesFirma" value="{myParam>ZFIRMA}" />  </f:fields>
-                                            </f:FormElement> 
+                                            </f:FormElement>  -->
                                         </f:formElements>
                                     </f:FormContainer> 
                                 </f:formContainers> 
@@ -409,7 +404,7 @@
                                     </OverflowToolbar>
                                 </headerToolbar>
                                 <content> 
-                                    <Panel id="panelAcciones" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
+                                    <Panel id="panelAcciones"  expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
                                         <headerToolbar>
                                             <OverflowToolbar style="Clear">
                                                 <Title text="Registrar acciónes correctivas | preventivas" />
@@ -449,19 +444,86 @@
                                                                 <f:fields> <Input value="" id="info_responsable"/> </f:fields>
                                                             </f:FormElement> 
                                                             <f:FormElement label="Fecha">
-                                                                <f:fields> <DatePicker id="info_fecha" value=""  displayFormat="dd/MM/yyyy"/> </f:fields>
+                                                                <f:fields> <DatePicker id="info_fecha" value=""  displayFormat="yyyy-MM-dd"/> </f:fields>
                                                             </f:FormElement> 
                                                             <f:FormElement label="Tipo">
                                                                 <f:fields> 
-                                                                    <Select forceSelection="false" id="info_tipo" showSecondaryValues= "true" > 
-                                                                        <core:Item key="cor" text="Correctivo" />
-                                                                        <core:Item key="pre" text="Preventivo" />  
+                                                                    <Select forceSelection="false" id="info_tipo" selectedKey="" showSecondaryValues= "true" > 
+                                                                        <core:Item key="c" text="Correctivo" />
+                                                                        <core:Item key="p" text="Preventivo" />  
                                                                     </Select> 
                                                                 </f:fields>
                                                             </f:FormElement> 
                                                             <f:FormElement label="Estado">
                                                                 <f:fields> 
-                                                                    <Select forceSelection="false" id="info_estado" showSecondaryValues= "true" > 
+                                                                    <Select forceSelection="false" id="info_estado" selectedKey="" showSecondaryValues= "true" > 
+                                                                        <core:Item key="P" text="Pendiente" />
+                                                                        <core:Item key="F" text="Completado" />  
+                                                                        <core:Item key="V" text="Vencido" />  
+                                                                        <core:Item key="X" text="Por Vencer" />  
+                                                                    </Select> 
+                                                                </f:fields>
+                                                            </f:FormElement> 
+                                                            
+                                                        </f:formElements>
+                                                    </f:FormContainer> 
+                                                </f:formContainers>
+                                            </f:Form> 
+                                        </content>
+                                    </Panel>
+                                    <Panel id="panelAccionesEditar" binding="{path : 'myParam>/temEditAcciones'}" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
+                                        <headerToolbar>
+                                            <OverflowToolbar style="Clear">
+                                                <Title text="Editar acciónes correctivas | preventivas" />
+                                                <ToolbarSpacer />
+                                                <Button icon="sap-icon://save" press="saveEditAcciones" text="Guardar" type="Emphasized" /> 
+                                                <Button icon="sap-icon://decline" press="cancelAcciones" text="Cancelar" type="Emphasized" /> 
+                                            </OverflowToolbar>
+                                        </headerToolbar>
+                                        <content>
+                                            <f:Form editable="true"> 
+                                                <f:layout>
+                                                    <f:ResponsiveGridLayout
+                                                        labelSpanXL="4"
+                                                        labelSpanL="3"
+                                                        labelSpanM="4"
+                                                        labelSpanS="12"
+                                                        adjustLabelSpan="false"
+                                                        emptySpanXL="0"
+                                                        emptySpanL="4"
+                                                        emptySpanM="0"
+                                                        emptySpanS="0"
+                                                        columnsXL="2"
+                                                        columnsL="1"
+                                                        columnsM="1"
+                                                        singleContainerFullSize="false" />
+                                                </f:layout>
+                                                <f:formContainers>
+                                                    <f:FormContainer > 
+                                                        <f:formElements>
+                                                            <f:FormElement label="Titulo">
+                                                                <f:fields> <Input value="{myParam>ZTITULO}" id="edit_info_titulo"/> </f:fields>
+                                                            </f:FormElement> 
+                                                            <f:FormElement label="Descripción">
+                                                                <f:fields> <Input value="{myParam>ZDESCRIPCION}" id="edit_info_desc"/> </f:fields>
+                                                            </f:FormElement> 
+                                                            <f:FormElement label="Responsable">
+                                                                <f:fields> <Input value="{myParam>ZRESPONSABLE}" id="edit_info_responsable"/> </f:fields>
+                                                            </f:FormElement> 
+                                                            <f:FormElement label="Fecha">
+                                                                <f:fields> <DatePicker id="edit_info_fecha" value="{myParam>ZFECHA}"  displayFormat="yyyy-MM-dd"/> </f:fields>
+                                                            </f:FormElement> 
+                                                            <f:FormElement label="Tipo">
+                                                                <f:fields> 
+                                                                    <Select forceSelection="false" id="edit_info_tipo" selectedKey="{myParam>ZTIPO}" showSecondaryValues= "true" > 
+                                                                        <core:Item key="c" text="Correctivo" />
+                                                                        <core:Item key="p" text="Preventivo" />  
+                                                                    </Select> 
+                                                                </f:fields>
+                                                            </f:FormElement> 
+                                                            <f:FormElement label="Estado">
+                                                                <f:fields> 
+                                                                    <Select forceSelection="false" id="edit_info_estado" selectedKey="{myParam>ZESTATUS}" showSecondaryValues= "true" > 
                                                                         <core:Item key="P" text="Pendiente" />
                                                                         <core:Item key="F" text="Completado" />  
                                                                         <core:Item key="V" text="Vencido" />  
@@ -482,6 +544,7 @@
                                                 <Title text="Tabla de acciónes correctivas | preventivas"/>
                                                 <ToolbarSpacer/>
                                                 <Button icon="sap-icon://add-employee" text="Agregar" press="addAcciones"/>
+                                                <Button icon="sap-icon://edit" text="Editar" press="editAcciones"/>
                                                 <Button icon="sap-icon://delete" text="Eliminar" press="deleteAcciones"/>
                                             </OverflowToolbar>
                                         </tab:extension>

@@ -8,6 +8,11 @@
       "target": "/$1",
       "destination": "Capdbsrvldpp_qas_salud"
   },  
+  {
+    "source": "^/dms/(.*)$",
+    "target": "/$1",
+    "destination": "DMSrvQAS"
+  },
     {
       "source": "^/odataent/odata2.svc/(.*)$",
       "target": "/$1",

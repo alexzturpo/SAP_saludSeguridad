@@ -42,39 +42,39 @@
                                     <f:fields> <Input value=""/> </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="Nombre">
-                                    <f:fields> <Input value=""/> </f:fields>
+                                    <f:fields> <Input value="" editable="false"/> </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="RUC">
                                     <f:fields> <Input value=""/> </f:fields>
                                 </f:FormElement> 
                             </f:formElements>
                         </f:FormContainer>
-                        <f:FormContainer title="Empresa del grupo">
+                        <!-- <f:FormContainer title="Empresa del grupo">
                             <f:formElements>
                                 <f:FormElement label="Sociedad">
                                     <f:fields> <Input value=""/> </f:fields>
                                 </f:FormElement> 
                             </f:formElements>
-                        </f:FormContainer> 
+                        </f:FormContainer>  -->
                         <f:FormContainer title="Datos del trabajador">
                             <f:formElements>
                                 <f:FormElement label="Código del trabajador">
                                     <f:fields> <Input id="idcodigoAC" value=""/> </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="Apellidos">
-                                    <f:fields> <Input id="idapellidoAC" value=""/> </f:fields>
+                                    <f:fields> <Input id="idapellidoAC" value="" editable="false"/> </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="Nombres">
-                                    <f:fields> <Input id="idnombreAC" value=""/> </f:fields>
+                                    <f:fields> <Input id="idnombreAC" value="" editable="false"/> </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="Área">
-                                    <f:fields> <Input id="idAreaAC" value=""/> </f:fields>
+                                    <f:fields> <Input id="idAreaAC" value="" editable="false"/> </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="Puesto de trabajo">
-                                    <f:fields> <Input id="idPuestoAC" value=""/> </f:fields>
+                                    <f:fields> <Input id="idPuestoAC" value="" editable="false"/> </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="DNI">
-                                    <f:fields> <Input id="iddniAC" value=""/> </f:fields>
+                                    <f:fields> <Input id="iddniAC" value="" editable="false"/> </f:fields>
                                 </f:FormElement> 
                             </f:formElements>
                         </f:FormContainer> 

@@ -48,7 +48,7 @@
                                 </f:FormElement>
                                 <f:FormElement label="Fecha reserva">
                                     <f:fields> 
-                                        <DatePicker id="dvEpp_fechaReq" value="" displayFormat="short"/>
+                                        <DatePicker id="dvEpp_fechaReq" value="" displayFormat="yyyy-MM-dd"/>
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Centro">
@@ -113,7 +113,7 @@
                                 </f:FormElement>
                                 <f:FormElement label="Fecha de transferencia">
                                     <f:fields> 
-                                        <DatePicker id="dvEpp_fechaTrans" value="" displayFormat="short"/>
+                                        <DatePicker id="dvEpp_fechaTrans" value="" displayFormat="yyyy-MM-dd"/>
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Fecha de devolución">

@@ -3,6 +3,7 @@
     xmlns:f="sap.ui.layout.form"
     xmlns:core="sap.ui.core"
     xmlns:tab="sap.ui.table"
+    xmlns:u="sap.ui.unified"
     xmlns="sap.m">
     <Page title="Editar Inspeccion" showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
 		<headerContent>
@@ -58,7 +59,7 @@
                                 </f:FormElement>
                                 <f:FormElement label="Fecha programada">
                                     <f:fields>
-                                        <DatePicker id="gInsp_programada" value="{myParam>ZFEC_PROGRAM}" displayFormat="dd/MM/yyyy" placeholder="Ingresar fecha"/>
+                                        <DatePicker id="gInsp_programada" value="{myParam>ZFEC_PROGRAM}" displayFormat="yyyy-MM-dd" placeholder="Ingresar fecha"/>
                                     </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="Categoría">
@@ -81,7 +82,7 @@
                             <f:formElements>
                                 <f:FormElement label="Fecha real">
                                     <f:fields>
-                                        <DatePicker value="{myParam>ZFEC_REAL}" id="gInsp_fechaReal" displayFormat="dd/MM/yyyy" placeholder="Ingresar fecha"/>  
+                                        <DatePicker value="{myParam>ZFEC_REAL}" id="gInsp_fechaReal" displayFormat="yyyy-MM-dd" placeholder="Ingresar fecha"/>  
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Hora real">
@@ -168,16 +169,68 @@
                                         <f:fields> <Input value="" id="perInv_codTrab"/> </f:fields>
                                     </f:FormElement> 
                                     <f:FormElement label="Apellidos y nombres">
-                                        <f:fields> <Input value="" id="perInv_fullName"/> </f:fields>
+                                        <f:fields> <Input value="" id="perInv_fullName" editable="false"/> </f:fields>
                                     </f:FormElement> 
                                     <f:FormElement label="DNI">
-                                        <f:fields> <Input value="" id="perInv_dni"/> </f:fields>
+                                        <f:fields> <Input value="" id="perInv_dni" editable="false"/> </f:fields>
                                     </f:FormElement> 
                                     <f:FormElement label="Contratista">
-                                        <f:fields> <Input value="" id="perInv_contratista"/> </f:fields>
+                                        <f:fields> <Input value="" id="perInv_contratista" editable="false"/> </f:fields>
                                     </f:FormElement> 
                                     <f:FormElement label="Puesto de trabajo">
-                                        <f:fields> <Input value="" id="perInv_puestoTrb"/> </f:fields>
+                                        <f:fields> <Input value="" id="perInv_puestoTrb" editable="false"/> </f:fields>
+                                    </f:FormElement>  
+                                </f:formElements>
+                            </f:FormContainer> 
+                        </f:formContainers>
+                    </f:Form> 
+                </content>
+            </Panel>
+            <Panel id="panelPerInvolucradoEdit"  binding="{path : 'myParam>/temEditInvolucrado'}" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
+                <headerToolbar>
+                    <OverflowToolbar style="Clear">
+                        <Title text="Editar personal involucrado" />
+                        <ToolbarSpacer />
+                         <Button text="Buscar" icon="sap-icon://employee-lookup" type="Emphasized" press="buscarTrabajador" />
+                        <Button icon="sap-icon://save" press="saveEditPerInvolucrado" text="Guardar" type="Emphasized" /> 
+                        <Button icon="sap-icon://decline" press="cancelPerInvolucrado" text="Cancelar" type="Emphasized" /> 
+                    </OverflowToolbar>
+                </headerToolbar>
+                <content>
+                    <f:Form editable="true"> 
+                        <f:layout>
+                            <f:ResponsiveGridLayout
+                                labelSpanXL="4"
+                                labelSpanL="3"
+                                labelSpanM="4"
+                                labelSpanS="12"
+                                adjustLabelSpan="false"
+                                emptySpanXL="0"
+                                emptySpanL="4"
+                                emptySpanM="0"
+                                emptySpanS="0"
+                                columnsXL="2"
+                                columnsL="1"
+                                columnsM="1"
+                                singleContainerFullSize="false" />
+                        </f:layout>
+                        <f:formContainers>
+                            <f:FormContainer > 
+                                <f:formElements>
+                                    <f:FormElement label="Codigo de trabajador">
+                                        <f:fields> <Input value="{myParam>ZID_TRAB_LAREDO}" id="edit_perInv_codTrab"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Apellidos y nombres">
+                                        <f:fields> <Input value="{myParam>ZAPELLIDO_NOMBRE}" id="edit_perInv_fullName" editable="false"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="DNI">
+                                        <f:fields> <Input value="{myParam>ZDNI}" id="edit_perInv_dni" editable="false"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Contratista">
+                                        <f:fields> <Input value="{myParam>ZPROVEEDOR}" id="edit_perInv_contratista" editable="false"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Puesto de trabajo">
+                                        <f:fields> <Input value="{myParam>ZPUESTO}" id="edit_perInv_puestoTrb" editable="false"/> </f:fields>
                                     </f:FormElement>  
                                 </f:formElements>
                             </f:FormContainer> 
@@ -191,6 +244,7 @@
 						<Title text="Datos del personal involucrado"/>
 						<ToolbarSpacer/>
 						<Button icon="sap-icon://add-employee" text="Agregar" press="addPerInvolucrado"/>
+                        <!-- <Button icon="sap-icon://edit" text="Editar" press="editPerInvolucrado"/> -->
 						<Button icon="sap-icon://add-employee" text="Eliminar" press="deletePerInvolucrado"/>
 					</OverflowToolbar>
 				</tab:extension>
@@ -261,7 +315,9 @@
                                         <f:fields> <Input value="" id="riAsoc_nivelRiesgo"/> </f:fields>
                                     </f:FormElement>  
                                     <f:FormElement label="Anexo">
-                                        <f:fields> <Input value="" id="riAsoc_file"/> </f:fields>
+                                        <f:fields> 
+                                            <u:FileUploader id="riAsoc_file" name="myFileUpload" uploadUrl="upload/" tooltip="Subir archivo" change="onFileSelected"/>
+                                        </f:fields>
                                     </f:FormElement>  
                                 </f:formElements>
                             </f:FormContainer> 
@@ -339,7 +395,8 @@
                                         <f:fields> <Input value="" id="medCor_responsable"/> </f:fields>
                                     </f:FormElement> 
                                     <f:FormElement label="Fecha de ejecución">
-                                        <f:fields> <Input value="" id="medCor_fechaEjc"/> </f:fields>
+                                        <f:fields> 
+                                            <DatePicker id="medCor_fechaEjc" value="" displayFormat="yyyy-MM-dd" change="handleChange"/> </f:fields>
                                     </f:FormElement> 
                                     <f:FormElement label="Estado de acción correctiva">
                                         <f:fields> 
@@ -427,7 +484,7 @@
                                         <f:fields> <Input value="" id="responsable_cargo"/> </f:fields>
                                     </f:FormElement> 
                                     <f:FormElement label="Fecha">
-                                        <f:fields> <DatePicker id="responsable_fecha" value=""  displayFormat="dd/MM/yyyy"/> </f:fields>
+                                        <f:fields> <DatePicker id="responsable_fecha" value=""  displayFormat="yyyy-MM-dd"/> </f:fields>
                                     </f:FormElement> 
                                 </f:formElements>
                             </f:FormContainer> 

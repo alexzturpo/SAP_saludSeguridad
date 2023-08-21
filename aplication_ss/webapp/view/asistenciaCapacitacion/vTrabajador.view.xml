@@ -7,7 +7,7 @@
     xmlns="sap.m">
     <Page title="Trabajador" showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
 		<headerContent>
-			<Button icon="sap-icon://save" text="Guardar" type="Emphasized" />
+			<Button icon="sap-icon://save" text="Guardar" type="Emphasized" press="saveTrabajador" />
 		</headerContent> 
 		<content>  
             <!-- TABLA DE  LSUTA DE INDUCCIONES  -->
@@ -81,7 +81,7 @@
                                 <f:FormContainer > 
                                     <f:formElements>
                                         <f:FormElement label="Fecha">
-                                            <f:fields>  <DatePicker id="RMedico_fecha" value=""  displayFormat="dd/MM/yyyy"/> </f:fields>
+                                            <f:fields>  <DatePicker id="RMedico_fecha" value=""  displayFormat="yyyy-MM-dd"/> </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Observaciones">
                                             <f:fields> <Input value="" id="RMedico_obs"/> </f:fields>
@@ -95,7 +95,60 @@
                                             </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Fecha de vencimiento">
-                                            <f:fields> <DatePicker id="RMedico_fechaVenc" value=""  displayFormat="dd/MM/yyyy"/> </f:fields>
+                                            <f:fields> <DatePicker id="RMedico_fechaVenc" value=""  displayFormat="yyyy-MM-dd"/> </f:fields>
+                                        </f:FormElement>   
+                                    </f:formElements>
+                                </f:FormContainer> 
+                            </f:formContainers>
+                        </f:Form> 
+                    </content>
+                </Panel>
+                <Panel id="panelRegistroMedicoEdit" binding="{path : 'myParam>/temEditRMedico'}" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
+                    <headerToolbar>
+                        <OverflowToolbar style="Clear">
+                            <Title text="Editar registro médico" />
+                            <ToolbarSpacer />
+                            <Button icon="sap-icon://save" press="saveEditRMedico" text="Guardar" type="Emphasized" /> 
+                            <Button icon="sap-icon://decline" press="cancelRMedico" text="Cancelar" type="Emphasized" /> 
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <content>
+                        <f:Form editable="true"> 
+                            <f:layout>
+                                <f:ResponsiveGridLayout
+                                    labelSpanXL="4"
+                                    labelSpanL="3"
+                                    labelSpanM="4"
+                                    labelSpanS="12"
+                                    adjustLabelSpan="false"
+                                    emptySpanXL="0"
+                                    emptySpanL="4"
+                                    emptySpanM="0"
+                                    emptySpanS="0"
+                                    columnsXL="2"
+                                    columnsL="1"
+                                    columnsM="1"
+                                    singleContainerFullSize="false" />
+                            </f:layout>
+                            <f:formContainers>
+                                <f:FormContainer > 
+                                    <f:formElements>
+                                        <f:FormElement label="Fecha">
+                                            <f:fields>  <DatePicker id="edit_RMedico_fecha" value="{myParam>ZFEC_EMISION}"  displayFormat="yyyy-MM-dd"/> </f:fields>
+                                        </f:FormElement> 
+                                        <f:FormElement label="Observaciones">
+                                            <f:fields> <Input value="{myParam>ZOBSERVACIONES}" id="edit_RMedico_obs"/> </f:fields>
+                                        </f:FormElement> 
+                                        <f:FormElement label="Estado">
+                                            <f:fields> 
+                                                <Select forceSelection="false" selectedKey="{myParam>ZESTADO}" id="edit_RMedico_estado" showSecondaryValues= "true" > 
+                                                    <core:Item key="A" text="Vigente" />
+                                                    <core:Item key="V" text="Vencido" />   
+                                                </Select> 
+                                            </f:fields>
+                                        </f:FormElement> 
+                                        <f:FormElement label="Fecha de vencimiento">
+                                            <f:fields> <DatePicker id="edit_RMedico_fechaVenc" value="{myParam>ZFEC_VENCIMIENTO}"  displayFormat="yyyy-MM-dd"/> </f:fields>
                                         </f:FormElement>   
                                     </f:formElements>
                                 </f:FormContainer> 
@@ -109,6 +162,7 @@
                             <Title text="Registro médico"/> 
                             <ToolbarSpacer />
                             <Button icon="sap-icon://add-employee" text="Agregar" press="addRMedico"/>
+                            <Button icon="sap-icon://edit" text="Editar" press="editRMedico"/>
                             <Button icon="sap-icon://delete" text="Eliminar" press="deleteRMedico"/>
                         </OverflowToolbar>
                     </tab:extension>
@@ -165,7 +219,7 @@
                                 <f:FormContainer > 
                                     <f:formElements>
                                         <f:FormElement label="Fecha">
-                                            <f:fields>  <DatePicker id="SCTR_fecha" value=""  displayFormat="dd/MM/yyyy"/> </f:fields>
+                                            <f:fields>  <DatePicker id="SCTR_fecha" value=""  displayFormat="yyyy-MM-dd"/> </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Observaciones">
                                             <f:fields> <Input value="" id="SCTR_obs"/> </f:fields>
@@ -181,7 +235,62 @@
                                             </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Fecha de vencimiento">
-                                            <f:fields> <DatePicker id="SCTR_fechaVenc" value=""  displayFormat="dd/MM/yyyy"/> </f:fields>
+                                            <f:fields> <DatePicker id="SCTR_fechaVenc" value=""  displayFormat="yyyy-MM-dd"/> </f:fields>
+                                        </f:FormElement>   
+                                    </f:formElements>
+                                </f:FormContainer> 
+                            </f:formContainers>
+                        </f:Form> 
+                    </content>
+                </Panel>
+                <Panel id="panelRegistroSCTREdit"  binding="{path : 'myParam>/temEditSCTR'}" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
+                    <headerToolbar>
+                        <OverflowToolbar style="Clear">
+                            <Title text="Editar registro médico" />
+                            <ToolbarSpacer />
+                            <Button icon="sap-icon://save" press="saveEditSCTR" text="Guardar" type="Emphasized" /> 
+                            <Button icon="sap-icon://decline" press="cancelSCTR" text="Cancelar" type="Emphasized" /> 
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <content>
+                        <f:Form editable="true"> 
+                            <f:layout>
+                                <f:ResponsiveGridLayout
+                                    labelSpanXL="4"
+                                    labelSpanL="3"
+                                    labelSpanM="4"
+                                    labelSpanS="12"
+                                    adjustLabelSpan="false"
+                                    emptySpanXL="0"
+                                    emptySpanL="4"
+                                    emptySpanM="0"
+                                    emptySpanS="0"
+                                    columnsXL="2"
+                                    columnsL="1"
+                                    columnsM="1"
+                                    singleContainerFullSize="false" />
+                            </f:layout>
+                            <f:formContainers>
+                                <f:FormContainer > 
+                                    <f:formElements>
+                                        <f:FormElement label="Fecha">
+                                            <f:fields>  <DatePicker id="edit_SCTR_fecha" value="{myParam>ZFEC_EMISION}"  displayFormat="yyyy-MM-dd"/> </f:fields>
+                                        </f:FormElement> 
+                                        <f:FormElement label="Observaciones">
+                                            <f:fields> <Input value="{myParam>ZOBSERVACIONES}" id="edit_SCTR_obs"/> </f:fields>
+                                        </f:FormElement> 
+                                        <f:FormElement label="Estado">
+                                            <f:fields> 
+                                                <Select forceSelection="false" selectedKey="{myParam>ZESTADO}" id="edit_SCTR_estado" showSecondaryValues= "true" > 
+                                                    <core:Item key="P" text="Pendiente" />
+                                                    <core:Item key="F" text="Completado" />  
+                                                    <core:Item key="V" text="Vencido" />  
+                                                    <core:Item key="X" text="Por Vencer" />  
+                                                </Select> 
+                                            </f:fields>
+                                        </f:FormElement> 
+                                        <f:FormElement label="Fecha de vencimiento">
+                                            <f:fields> <DatePicker id="edit_SCTR_fechaVenc" value="{myParam>ZFEC_VENCIMIENTO}"  displayFormat="yyyy-MM-dd"/> </f:fields>
                                         </f:FormElement>   
                                     </f:formElements>
                                 </f:FormContainer> 
@@ -195,6 +304,7 @@
                             <Title text="SCTR"/> 
                             <ToolbarSpacer />
                             <Button icon="sap-icon://add-employee" text="Agregar" press="addSCTR"/>
+                            <Button icon="sap-icon://edit" text="Editar" press="editSCTR"/>
                             <Button icon="sap-icon://delete" text="Eliminar" press="deleteSCTR"/>
                         </OverflowToolbar>
                     </tab:extension>
@@ -293,31 +403,23 @@
                         <tab:Column>
                             <Label textAlign="Center" wrapping ="true"  text="Formato" />
                             <tab:template> <Text text="{myParam>ZFORMATO}" wrapping="false" /> </tab:template>
-                        </tab:Column>
-                        <!-- <tab:Column >
-                            <Label textAlign="Center" wrapping ="true"  text="Revisar" />
-                            <tab:template> 
-                                <Button text="Revisar" type="Emphasized" icon="sap-icon://upload" press="saveDocIncidente" width="6rem"/>  
-                            </tab:template>
-                        </tab:Column>       -->
+                        </tab:Column> 
                     </tab:columns>
                 </tab:Table> 
             </VBox>
             <VBox class="sapUiSmallMargin">
-                <tab:Table  cellClick="onSelectTab" rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                <tab:Table id="detalleTableDocs" visible="false" cellClick="onSelectTab" rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
                     <tab:extension>
                         <OverflowToolbar > 
-                            <Title text="Documentos"/>
-                            <ToolbarSpacer /> 
-                            <u:FileUploader id="fileDocIncidentes" name="myFileUpload" uploadUrl="upload/" tooltip="Subir archivo" change="onFileSelected"/>
-                            <Button text="Subir" type="Emphasized" icon="sap-icon://upload" press="saveDocIncidente" width="6rem"/> 
-                            <Button text="Eliminar" icon="sap-icon://delete" press="deleteDocIncidente" />  
+                            <Title text="Versiones de documentos"/>
+                            <ToolbarSpacer />  
+                            <Button text="Cancelar" icon="sap-icon://delete" press="deleteDocIncidente" />  
                         </OverflowToolbar>
                     </tab:extension>
                     <tab:columns>
                         <tab:Column  >
                             <Label textAlign="Center" wrapping ="true"  text="Nombre de documento" />
-                            <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text text="{myParam>ZDOCUMENTO}" wrapping="false" /> </tab:template>
                         </tab:Column>
                         <tab:Column >
                             <Label textAlign="Center" wrapping ="true"  text="Versión" />

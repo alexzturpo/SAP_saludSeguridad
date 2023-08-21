@@ -45,7 +45,7 @@
                                             <!-- <Title text="Header"/> -->
                                             <ToolbarSpacer />
                                             <Button text="Enviar" icon="sap-icon://paper-plane" type="Emphasized" press="newIncidente" />
-                                            <Button text="Cancelar post" icon="sap-icon://delete" press="postTest" />  
+                                            <!-- <Button text="Cancelar post" icon="sap-icon://delete" press="postTest" />   -->
                                         </OverflowToolbar>
                                     </headerToolbar>
                                     <content>
@@ -67,21 +67,21 @@
                                                     singleContainerFullSize="false"  />
                                             </f:layout>
                                             <f:formContainers >
-                                                <f:FormContainer title="Qué pasó y qué acciones inmediatas se han realizado?">
+                                                <f:FormContainer title="¿Qué pasó y qué acciones inmediatas se han realizado?">
                                                     <f:formElements>
                                                         <f:FormElement label="Titulo">
                                                             <f:fields>
-                                                                <Input id="gi_new_titulo" value="" /> 
+                                                                <Input id="gi_new_titulo" value="" required="true"/> 
                                                             </f:fields>
                                                         </f:FormElement>
                                                         <f:FormElement label="Descripción del evento">
                                                             <f:fields> 
-                                                                <TextArea id="gi_new_descrip" value="" height="5rem"/>
+                                                                <TextArea id="gi_new_descrip" value="" required="true" height="5rem"/>
                                                             </f:fields>
                                                         </f:FormElement>
                                                         <f:FormElement label="Acciones inmediatas">
                                                             <f:fields> 
-                                                                <TextArea id="gi_new_accionInmediata" value="" height="5rem" enabled="false" />
+                                                                <TextArea id="gi_new_accionInmediata" value="" required="true" height="5rem" />
                                                             </f:fields>
                                                         </f:FormElement>  
                                                     </f:formElements>
@@ -90,14 +90,14 @@
                                                     <f:formElements>
                                                         <f:FormElement label="Sociedad" >
                                                             <f:fields>
-                                                                <ComboBox id="gi_new_sociedad" class="sapUiSmallMarginBottom" enabled="true" selectedKey="1000">
+                                                                <ComboBox id="gi_new_sociedad" class="sapUiSmallMarginBottom" enabled="true" selectedKey="1000" required="true">
                                                                     <core:Item key="1000" text="1000" />
                                                                 </ComboBox>     
                                                             </f:fields>
                                                         </f:FormElement> 
                                                         <f:FormElement label="Ubicación" >
                                                             <f:fields>
-                                                                <Input id="gi_new_ubicacion" value="" /> 
+                                                                <Input id="gi_new_ubicacion" value="" required="true" /> 
                                                             </f:fields>
                                                         </f:FormElement>
                                                         <f:FormElement label="Detalle" >
@@ -112,12 +112,12 @@
                                                     <f:formElements>
                                                         <f:FormElement label="Fecha" >
                                                             <f:fields> 
-                                                                    <DatePicker id="gi_new_fecha" value="" displayFormat="dd/MM/yyyy" />   
+                                                                    <DatePicker id="gi_new_fecha" required="true" value="" displayFormat="yyyy-MM-dd" />   
                                                             </f:fields>
                                                         </f:FormElement> 
                                                         <f:FormElement label="Hora" >
                                                             <f:fields>  
-                                                                    <TimePicker id="gi_new_hora" value="08:57" valueFormat="HH:mm" width="100%" 
+                                                                    <TimePicker id="gi_new_hora" required="true" value="08:57" valueFormat="HH:mm" width="100%" 
                                                                     displayFormat="HH:mm" change="handleChange" maskMode="{= ${/maskMode/state} ? 'On' : 'Off'}"/>   
                                                             </f:fields>
                                                         </f:FormElement> 
@@ -166,27 +166,27 @@
                                                     <f:formElements>
                                                         <f:FormElement label="Código de empleado:">
                                                             <f:fields>
-                                                                <Input id="gi_codEmp_afectado" value="" /> 
+                                                                <Input id="gi_codEmp_afectado" required="true" value="" /> 
                                                             </f:fields>
                                                         </f:FormElement>
                                                         <f:FormElement label="Nombres">
                                                             <f:fields> 
-                                                                <Input id="gi_codEmp_nombreAfec" value=""/>
+                                                                <Input id="gi_codEmp_nombreAfec" value="" editable="false"/>
                                                             </f:fields>
                                                         </f:FormElement>
                                                         <f:FormElement label="Apellidos">
                                                             <f:fields> 
-                                                                <Input id="gi_codEmp_apellidoAfec" value=""/>
+                                                                <Input id="gi_codEmp_apellidoAfec" value="" editable="false"/>
                                                             </f:fields>
                                                         </f:FormElement>  
                                                         <f:FormElement label="DNI">
                                                             <f:fields> 
-                                                                <Input id="gi_codEmp_dniAfec" value=""/>
+                                                                <Input id="gi_codEmp_dniAfec" value="" editable="false"/>
                                                             </f:fields>
                                                         </f:FormElement>  
                                                         <f:FormElement label="Área de trabajo">
                                                             <f:fields> 
-                                                                <Input id="gi_codEmp_areaTrabajoAfec" value=""/>
+                                                                <Input id="gi_codEmp_areaTrabajoAfec" value="" editable="false"/>
                                                             </f:fields>
                                                         </f:FormElement>  
                                                     </f:formElements>
@@ -203,27 +203,27 @@
                                                     <f:formElements>
                                                         <f:FormElement label="Código de empleado:">
                                                             <f:fields>
-                                                                <Input value="" id="gi_codEmp_informante"/> 
+                                                                <Input value="" id="gi_codEmp_informante" required="true"/> 
                                                             </f:fields>
                                                         </f:FormElement>
                                                         <f:FormElement label="Nombres">
                                                             <f:fields> 
-                                                                <Input value="" id="gi_codEmp_nombreInf"/>
+                                                                <Input value="" id="gi_codEmp_nombreInf" editable="false"/>
                                                             </f:fields>
                                                         </f:FormElement>
                                                         <f:FormElement label="Apellidos">
                                                             <f:fields> 
-                                                                <Input value="" id="gi_codEmp_apellidoInf"/>
+                                                                <Input value="" id="gi_codEmp_apellidoInf" editable="false"/>
                                                             </f:fields>
                                                         </f:FormElement>  
                                                         <f:FormElement label="DNI">
                                                             <f:fields> 
-                                                                <Input value="" id="gi_codEmp_dniInf" />
+                                                                <Input value="" id="gi_codEmp_dniInf"  editable="false"/>
                                                             </f:fields>
                                                         </f:FormElement>  
                                                         <f:FormElement label="Área de trabajo">
                                                             <f:fields> 
-                                                                <Input value="" id="gi_codEmp_areaTrabajoInf"/>
+                                                                <Input value="" id="gi_codEmp_areaTrabajoInf" editable="false"/>
                                                             </f:fields>
                                                         </f:FormElement>  
                                                         <f:FormElement label="Detalle">
@@ -255,7 +255,7 @@
                                             </fb:FilterGroupItem> 
                                             <fb:FilterGroupItem groupName="G1" name="A3" groupTitle="Group1"  label="Fecha de incidente" visibleInFilterBar="true" >
                                                 <fb:control>
-                                                    <DatePicker id="bFechaInc"  value=""  displayFormat="dd/MM/yyyy" placeholder="Ingresar fecha" />   
+                                                    <DatePicker id="bFechaInc"  value=""  displayFormat="yyyy-MM-dd" placeholder="Ingresar fecha" />   
                                                 </fb:control>
                                             </fb:FilterGroupItem> 
                                             <fb:FilterGroupItem groupName="G1" name="A4" groupTitle="Group1"  label="Status" visibleInFilterBar="true" >
@@ -303,13 +303,6 @@
                                         </tab:columns>
                                     </tab:Table> 
                                 </VBox>
-                            </IconTabFilter>
-
-                            <!-- <IconTabFilter icon="sap-icon://course-program" text="Acciones correctivas"> 
-                            </IconTabFilter> -->
-
-                            <IconTabFilter icon="sap-icon://attachment" text="Informes"> 
-                                
                             </IconTabFilter>
                             
                         </items>
@@ -367,7 +360,7 @@
                                                     <f:fields> <Input id="gInsp_departamento" type="Text" value="" placeholder="Seleccione.." valueHelpRequest="changeZSYSO_DPTO" showSuggestion="true" showValueHelp="true"/></f:fields>
                                                 </f:FormElement>
                                                 <f:FormElement label="Fecha programada">
-                                                    <f:fields> <DatePicker id="gInsp_programada" value="" displayFormat="dd/MM/yyyy" placeholder="Ingresar fecha"/> </f:fields>
+                                                    <f:fields> <DatePicker id="gInsp_programada" value="" displayFormat="yyyy-MM-dd" placeholder="Ingresar fecha"/> </f:fields>
                                                 </f:FormElement> 
                                             </f:formElements>
                                         </f:FormContainer> 
@@ -402,7 +395,7 @@
                                         </fb:FilterGroupItem> 
                                         <fb:FilterGroupItem groupName="G1" name="A5" groupTitle="Group1"  label="Fecha programada" visibleInFilterBar="true" >
                                             <fb:control>
-                                                <DatePicker id="Ifechap"  value=""  displayFormat="dd/MM/yyyy" placeholder="Ingresar fecha" required="true"/> 
+                                                <DatePicker id="Ifechap"  value=""  displayFormat="yyyy-MM-dd" placeholder="Ingresar fecha" required="true"/> 
                                             </fb:control>
                                         </fb:FilterGroupItem> 
                                         <fb:FilterGroupItem groupName="G1" name="A6" groupTitle="Group1"  label="Status" visibleInFilterBar="true" >
@@ -827,7 +820,7 @@
                                             <OverflowToolbar >
                                                 <Title text="Personal"/>
                                                 <ToolbarSpacer />
-                                                <Button text="Añadir contratista" icon="sap-icon://add" type="Emphasized" press="addTrabajador" />  
+                                                <Button id="btnAddContratista" text="Añadir contratista" icon="sap-icon://add" type="Emphasized" press="addTrabajador" visible="true" />  
                                                 <Button text="Dar de baja" icon="sap-icon://pull-down" type="Emphasized" press="addTrabajador" />  
                                             </OverflowToolbar>
                                         </tab:extension>
@@ -908,7 +901,7 @@
                                                             <f:fields> <Input id="iddescripcionAI" value=""/> </f:fields>
                                                         </f:FormElement> 
                                                         <f:FormElement label="Fecha programada">
-                                                            <f:fields> <DatePicker placeholder="Fecha" id="idfechaprogAI" valueFormat="dd/MM/yyyy" displayFormat="dd/MM/yyyy"/> </f:fields>
+                                                            <f:fields> <DatePicker placeholder="Fecha" id="idfechaprogAI" valueFormat="dd/MM/yyyy" displayFormat="yyyy-MM-dd"/> </f:fields>
                                                         </f:FormElement> 
                                                     </f:formElements>
                                                 </f:FormContainer> 
@@ -992,7 +985,7 @@
                                                 </f:FormElement> 
                                                 <f:FormElement label="Fecha programada">
                                                  <f:fields> <Input id="dFechaprog" value="" editable="false"/> </f:fields>
-                                              <!--       <f:fields> <DatePicker id="dFechaprog" editable="false" placeholder="Fecha" valueFormat="yyyyMMdd" displayFormat="dd/MM/yyyy"/> </f:fields>
+                                              <!--       <f:fields> <DatePicker id="dFechaprog" editable="false" placeholder="Fecha" valueFormat="yyyyMMdd" displayFormat="yyyy-MM-dd"/> </f:fields>
                                             --> </f:FormElement> 
                                             </f:formElements>
                                         </f:FormContainer> 
@@ -1079,7 +1072,7 @@
                                                 </f:FormElement> 
                                                 <f:FormElement label="Fecha programada">
                                                     <f:fields> <Input id="dFechaprogRC" editable="false" value=""/> </f:fields>
-                                                    <!-- <f:fields> <DatePicker placeholder="Fecha" valueFormat="yyyyMMdd" displayFormat="dd/MM/yyyy"/> </f:fields>
+                                                    <!-- <f:fields> <DatePicker placeholder="Fecha" valueFormat="yyyyMMdd" displayFormat="yyyy-MM-dd"/> </f:fields>
                                                 --> </f:FormElement> 
                                             </f:formElements>
                                         </f:FormContainer> 
@@ -1306,7 +1299,7 @@
                                         </fb:FilterGroupItem> 
                                         <fb:FilterGroupItem groupName="G1" name="A6" groupTitle="Group1"  label="Fecha de reserva" visibleInFilterBar="true" >
                                             <fb:control>
-                                                <DatePicker id="idFechaReserva"  value=""  displayFormat="dd/MM/yyyy" placeholder="Ingresar fecha" />   
+                                                <DatePicker id="idFechaReserva"  value=""  displayFormat="yyyy-MM-dd" placeholder="Ingresar fecha" />   
                                             </fb:control>
                                         </fb:FilterGroupItem> 
                                         <fb:FilterGroupItem groupName="G1" name="A7" groupTitle="Group1"  label="Status" visibleInFilterBar="true" >
@@ -1415,7 +1408,9 @@
                                 </tab:Table>  
                             </IconTabFilter> 
                             <IconTabFilter text="Kárdex de materiales EPPs" >
+
                             </IconTabFilter> 
+                            
                         </items>
                     </IconTabBar>
                 </IconTabFilter>

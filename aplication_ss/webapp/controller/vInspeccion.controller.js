@@ -182,8 +182,50 @@ sap.ui.define([
             addPerInvolucrado: function () {  
                 this.getView().byId("panelPerInvolucrado").setVisible(true)
             },
+            editPerInvolucrado: function () {  
+                this.getView().byId("panelPerInvolucradoEdit").setVisible(true) 
+                let oModel = this.getView().getModel("myParam");  
+                let varTemEdit = "/temEditInvolucrado"
+                let varTemEditId = "/temEditInvolucradoId"
+                let varTabaLista = "/tabPerInvolucrados"
+                let varIdTabla = "tablePersInvolucrado"
+                let tableList = oModel.getProperty(varTabaLista); 
+
+                var oTable = this.getView().byId(varIdTabla);
+                var indiceEdit = oTable.getSelectedIndices();
+                if (indiceEdit >= 0) {
+                    console.log("Registro A EDITAR.",tableList[indiceEdit]);
+                    oModel.setProperty(varTemEdit,tableList[indiceEdit]); 
+                    oModel.setProperty(varTemEditId,indiceEdit); 
+                } else {
+                console.log("Índice inválido, no se eliminó ningún registro.");
+                }  
+            },
             cancelPerInvolucrado: function () {  
                 this.getView().byId("panelPerInvolucrado").setVisible(false)
+                this.getView().byId("panelPerInvolucradoEdit").setVisible(false)
+            },
+            saveEditPerInvolucrado: function () {  
+                // let varTemEdit = "/temEditAcciones"
+                let varTemEditId = "/temEditInvolucradoId"
+                let varTabaLista = "/tabPerInvolucrados"
+                // let varIdTabla = "tableAccionesInforme"
+
+                let oModel = this.getView().getModel("myParam");  
+                let list = oModel.getProperty(varTabaLista);
+                let tempEditId = oModel.getProperty(varTemEditId);
+                // console.log("saveEditAcciones list init",list)
+                let obj = { 
+                    ZID_TRAB_LAREDO: this.getView().byId("edit_perInv_codTrab").getValue(), 
+                    ZAPELLIDO_NOMBRE: this.getView().byId("edit_perInv_fullName").getValue(), 
+                    ZDNI: this.getView().byId("edit_perInv_dni").getValue(),
+                    ZPROVEEDOR: this.getView().byId("edit_perInv_contratista").getValue(),
+                    ZPUESTO: this.getView().byId("edit_perInv_puestoTrb").getValue()
+                }
+                this.actualizarCamposPorIndice(list, tempEditId, obj); 
+                // console.log("saveEditAcciones list FIN",list)
+                oModel.setProperty(varTabaLista,list); 
+                this.cancelPerInvolucrado()
             },
             savePerInvolucrado: function () {  
                 let oModel = this.getView().getModel("myParam"); 
@@ -235,7 +277,9 @@ sap.ui.define([
                 console.log('getListEmpleado DATA ',dataRes)
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
                     MessageToast.show("Error (" + dataRes.descripcion + ")");
+                    MessageToast.show("NO ENCONTRADO");
                 }else{
+                    console.log("PERSONAL",dataRes)
                     dataRes= dataRes[0]
                     this.getView().byId("perInv_fullName").setValue(`${dataRes.NOMBRE} ${dataRes.APELLIDO}`) 
                     this.getView().byId("perInv_dni").setValue(dataRes.DNI)
@@ -319,10 +363,11 @@ sap.ui.define([
                 let listMedCorrectiva = oModel.getProperty("/tabMedCorrectiva");
                 let objMedCor= { 
                     ZMEDIDA: this.getView().byId("medCor_descrip").getValue(), 
-                    ZRESPONSABLE: this.getView().byId("medCor_responsable").getValue(),
-                    ZFEC_EJECUCION: this.getView().byId("medCor_fechaEjc").getValue(),
+                    ZRESPONSABLE: this.getView().byId("medCor_responsable").getValue(), 
+                    ZFEC_EJECUCION: this.cambiarFormatoFecha(this.getView().byId("medCor_fechaEjc").getValue()),
                     ZESTADO: this.getView().byId("medCor_estadoAccCor").getSelectedKey()
                 }
+                console.log("objMedCor correctivo",objMedCor)
                 listMedCorrectiva.push(objMedCor)
                 oModel.setProperty("/tabMedCorrectiva",listMedCorrectiva); 
 
@@ -334,6 +379,7 @@ sap.ui.define([
                     estadoAccCor: "medCor_estadoAccCor"
                 }
                 this.limpiarObjeto(objRiAsocClean)
+                this.onPageBack()
             },
             deleteMedCorrectiva : function () {  
                 let oModel = this.getView().getModel("myParam");  
@@ -406,29 +452,49 @@ sap.ui.define([
                 }
             },
 
-            cambiarFormatoFecha: function (fecha) {  
-                var partesFecha = fecha.split('/');
-                var mes = partesFecha[0];
-                var dia = partesFecha[1];
-                var anio = partesFecha[2];
-              
-                // Obtener el año actual (solo los últimos dos dígitos)
-                var anioActual = new Date().getFullYear().toString().slice(-2);
-              
-                // Agregar el siglo al año
-                var siglo = (anio <= anioActual) ? '20' : '19';
-                anio = siglo + anio;
-              
-                // Asegurarse de que el día y mes tengan dos dígitos
-                dia = (dia.length === 1) ? '0' + dia : dia;
-                mes = (mes.length === 1) ? '0' + mes : mes;
-              
-                // Combinar los elementos en el nuevo formato de fecha
-                var nuevaFecha = dia + '/' + mes + '/' + anio;
-              
-                return nuevaFecha; 
+            cambiarFormatoFecha: function (fecha) {
+                let fechaReturn 
+                // para saber si el la fecha q se envia es 8/21/23
+                if (fecha.includes('/')) {
+                    const partes = fecha.split('/');
+                    if (partes.length !== 3) {
+                        fechaReturn = "Formato de fecha incorrecto";
+                    }
+    
+                    let mes = partes[0];
+                    let dia = partes[1];
+                    let año = partes[2];
+    
+                    // Convertir el año a formato completo (yyyy)
+                    if (año.length === 2) {
+                        const añoActual = new Date().getFullYear().toString();
+                        const siglo = añoActual.slice(0, 2);
+                        año = siglo + año;
+                    }
+    
+                    // Asegurarse de que los componentes de fecha tengan dos dígitos
+                    dia = dia.padStart(2, '0');
+                    mes = mes.padStart(2, '0');
+    
+                    const fechaFormateada = `${año}-${mes}-${dia}`;
+                    fechaReturn = fechaFormateada;
+                }else{
+                    if (fecha.includes('-')) {
+                        fechaReturn = fecha; 
+                    }else{
+                        fechaReturn = "Formato de fecha incorrecto";
+                    } 
+                }
+                return fechaReturn
             },
             // funciones generales
+            actualizarCamposPorIndice: function (array, indice, nuevosCampos) {
+                if (indice >= 0 && indice < array.length) {
+                  array[indice] = { ...array[indice], ...nuevosCampos };
+                } else {
+                  console.log("Índice fuera de rango");
+                }
+            },
             f_GetJson: function (p_url_path) {
                 // return new Promise((resolve, reject) => {    
                     var credentials = btoa(`${usuario}:${password}`);  

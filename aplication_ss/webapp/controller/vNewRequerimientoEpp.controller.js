@@ -156,7 +156,7 @@ sap.ui.define([
             },*/
             getDataILISTMAT_RESERVAEPP:  function () { 
                 var oModel = this.getView().getModel("myParam"); 
-                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_MAT_EPPS/1000/1001/0300/0/0/0/0?sap-client=120"; 
+                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_MAT_EPPS/1000/1001/0300/0/0/0/0?sap-client=100"; 
                 var dataRes =  this.f_GetJson(url) 
                 console.log('LISTMAT_RESERVAEPP DATA ',dataRes)
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){

@@ -6,18 +6,19 @@
     "sap/ui/model/FilterType",
     "sap/ui/core/Fragment", 
     "sap/m/MessageToast",
-    "sap/ui/export/Spreadsheet",
-    
-
+    "sap/ui/export/Spreadsheet", 
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
     function (Controller,MessageBox,Filter,FilterOperator,FilterType,Fragment,MessageToast,Spreadsheet) {
         "use strict";
+        // var usuario = "CONSULT_MM";
+        // var password = "Laredo2023.";
+        var url_ini = "";
         var usuario = "CONSULT_PQ01";
         var password = "Rcom2023..";
-        var url_ini = "";
+        // var url_ini = "";
 
         return Controller.extend("appss.aplicationss.controller.vMain", {
             getRouter: function () {
@@ -50,7 +51,8 @@
                 var dataRes =  this.f_GetJson(url) 
                 console.log('getListEmpleado DATA ',dataRes)
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                    MessageToast.show("Error (" + dataRes.descripcion + ")");
+                    // MessageToast.show("Error (" + dataRes.descripcion + ")");
+                    MessageToast.show("No encontrado");
                 }else{
                     dataRes= dataRes[0]
                     this.getView().byId("gi_codEmp_nombreAfec").setValue(dataRes.NOMBRE)
@@ -68,7 +70,8 @@
                 var dataRes =  this.f_GetJson(url) 
                 console.log('getListEmpleado DATA ',dataRes)
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                    MessageToast.show("Error (" + dataRes.descripcion + ")");
+                    // MessageToast.show("Error (" + dataRes.descripcion + ")");
+                    MessageToast.show("No encontrado");
                 }else{
                     dataRes= dataRes[0]
                     this.getView().byId("gi_codEmp_nombreInf").setValue(dataRes.NOMBRE)
@@ -176,29 +179,36 @@
                 this.getRouter().getTargets().display("vNewTrabajador");
             },
             onSelectTrabajador: function (oEvent) {
+                var oModel = this.getView().getModel("myParam"); 
                 var ovalor= oEvent.mParameters.rowBindingContext.sPath;
                 var oModel = this.getView().getModel("myParam");  
-                var oDato=oModel.getProperty(ovalor);  
-                console.log(oDato);
+                var tipo = oModel.setProperty('/tipoConsultaPersonal');  
+                var oDato= oModel.getProperty(ovalor);  
+                console.log("onSelectTrabajador data",oDato);
+                oModel.setProperty('/tempTrabajadorSelect',oDato);  
+                
                 var ocodigo=oDato.COD_PERSONAL;
-                this.onPressBuscaerInduccion(ocodigo);
-                this.onPressBuscaerListRegistroMED(ocodigo);
-                this.onPressBuscaerListRegistroSCTR(ocodigo);
-                this.onPressBuscaerDocTrabajador(ocodigo);
+                //ibtener tablas correspondientes del trabajador 
+                this.onPressBuscaerInduccion(ocodigo,tipo);
+                this.onPressBuscaerListRegistroMED(ocodigo,tipo);
+                this.onPressBuscaerListRegistroSCTR(ocodigo,tipo);
+                this.onPressBuscaerDocTrabajador(ocodigo,tipo);
                 this.getRouter().getTargets().display("vTrabajador");
             },
             //ASSITENCIA
             //GMT//
             onPressBuscaerGCASISV1:function(e){
                 console.log('getListPersonal')
-                var oModel = this.getView().getModel("myParam");  
-
+                var oModel = this.getView().getModel("myParam");   
                 let prov =  this.getView().byId("dateProv").getValue()  
-                let provNombre =  this.getView().byId("dateNombreProv").getValue()  
+                // let provNombre =  this.getView().byId("dateNombreProv").getValue()  
                 let provRuc =  this.getView().byId("dateRucProv").getValue()  
+                //definimos si consulta en el filtro es tipo P proveedor - S sociedad  
+                let tipo
                 let sociedad =  this.getView().byId("idsociedadAC").getValue()  
                 if(sociedad){
                     //lista personal  por sociedad
+                    console.log("lista personal  por sociedad")
                     var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/${sociedad}/0/0/0/0/0/0`;
                     var dataRes =  this.f_GetJson(url) 
                     console.log('getListPersonal DATA ',dataRes)
@@ -206,37 +216,43 @@
                         MessageToast.show("Error (" + dataRes.descripcion + ")");
                     }else{
                         oModel.setProperty('/ListPersonal',dataRes);  
+                        this.getView().byId("btnAddContratista").setVisible(false)  
+                        tipo = "S"
                     } 
                 }
                 if(prov){
                     //lista personal por proveedor
-                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/${prov}/0/0/0/0/0/0`;
+                    console.log("lista personal  por sociedad")
+                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${prov}/0/0/0/0`;
                     var dataRes =  this.f_GetJson(url) 
                     console.log('getListPersonal DATA ',dataRes)
                     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
                         MessageToast.show("Error (" + dataRes.descripcion + ")");
                     }else{
                         oModel.setProperty('/ListPersonal',dataRes);  
+                        this.getView().byId("btnAddContratista").setVisible(true)  
+                        tipo = "P"
                     } 
                 }
                 if(provRuc){
                     //lista personal por RUC
-                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/${provRuc}/0/0/0/0/0/0`;
+                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_CONTRATISTA/0/0/0/${provRuc}/0/0/0`;
                     var dataRes =  this.f_GetJson(url) 
                     console.log('getListPersonal DATA ',dataRes)
                     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
                         MessageToast.show("Error (" + dataRes.descripcion + ")");
                     }else{
                         oModel.setProperty('/ListPersonal',dataRes);  
+                        this.getView().byId("btnAddContratista").setVisible(true)  
+                        tipo = "P"
                     } 
                 }
-        
+                oModel.setProperty('/tipoConsultaPersonal',tipo);
             },
             onPressBuscaerInduccion:function(ocodigo,tipo){
                 console.log('getListInducciong')
                 var oModel = this.getView().getModel("myParam");  
-                var sociedad = this.getView().byId("idsociedadAC").getValue(); 
-                var oModel = this.getView().getModel("myParam");  
+                var sociedad = this.getView().byId("idsociedadAC").getValue();  
                 // var tipo
                 // contratista P
                 // sociedad    S
@@ -253,8 +269,7 @@
             onPressBuscaerListRegistroMED:function(ocodigo,tipo){
                 console.log('getListRgstrMedico') 
                 var oModel = this.getView().getModel("myParam");  
-                var sociedad = this.getView().byId("idsociedadAC").getValue(); 
-                var oModel = this.getView().getModel("myParam");  
+                var sociedad = this.getView().byId("idsociedadAC").getValue();  
                 var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_REGISTRO/${sociedad}/0/${ocodigo}/${tipo}/0/0/0`;
                 var dataRes =  this.f_GetJson(url) 
                 console.log('getListRgstrMedico DATA ',dataRes)
@@ -269,7 +284,6 @@
                 console.log('getListRgstrSCTR')
                 var oModel = this.getView().getModel("myParam");  
                 var sociedad = this.getView().byId("idsociedadAC").getValue(); 
-                var oModel = this.getView().getModel("myParam");  
                 var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_REGISTRO/${sociedad}/0/${ocodigo}/${tipo}/0/0/0`;
                 var dataRes =  this.f_GetJson(url) 
                 console.log('getListRgstrSCTR DATA ',dataRes)
@@ -280,11 +294,10 @@
                 }
         
             },
-            onPressBuscaerDocTrabajador:function(ocodigo){
+            onPressBuscaerDocTrabajador:function(ocodigo,tipo){
                 console.log('getListRgstrDOC')
                 var oModel = this.getView().getModel("myParam");  
                 var sociedad = this.getView().byId("idsociedadAC").getValue(); 
-                var oModel = this.getView().getModel("myParam");  
                 var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_DOC_TRABAJADOR/${sociedad}/0/${ocodigo}/${tipo}/0/0/0`;
                 var dataRes =  this.f_GetJson(url) 
                 console.log('getListRgstrDOC DATA ',dataRes)
@@ -534,7 +547,7 @@
             newIncidente: function () {
                 let oModel = this.getView().getModel("myParam");  
                 // creando nuevo incidentes 
-                let newIncidenteForm = {
+                let newIncidenteForm = [{
                     ZTITULO: this.getView().byId("gi_new_titulo").getValue(),
                     ZDESCRIPCION: this.getView().byId("gi_new_descrip").getValue(),
                     ZACCIONES: this.getView().byId("gi_new_accionInmediata").getValue(),
@@ -551,7 +564,7 @@
                     ZID_COD_INFORMANTE: this.getView().byId("gi_codEmp_informante").getValue(), //codigo de empleado informante
                     ZMANIFESTACION: this.getView().byId("gi_codEmp_detalleInf").getValue(), 
                     ZESTADO: "N"
-                } 
+                }]
                 console.log("newIncidenteForm",newIncidenteForm)
 
                 var urlAjax = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INC/1000/0/0/0/0/0/0" 
@@ -643,7 +656,7 @@
                 var context = evt.getParameters().rowBindingContext; 
                 // console.log("context", context)
                 var objeto = context.getObject(); 
-                console.log("objeto", objeto)
+                // console.log("objeto", objeto)
 
                 //consulta sobre el INCIDENTE seleccionado  | consultar data de INFORME para el incidente seleccionado
                 var urlIncidente = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/${objeto.ZINCIDENTE}/0/0/0/0`;
@@ -653,6 +666,7 @@
                         MessageToast.show("Error (" + dataIncidente.descripcion + ")");
                     }else{ 
                         dataIncidente = dataIncidente[0]
+                        console.log("selectIncidente",dataIncidente)
                         oModel.setProperty("/selectIncidente",dataIncidente);
                     }
                 //consulta sobre la tabla de DOCUMENTOS del incidente seleccionado
@@ -667,23 +681,21 @@
                 // OBTENER TABLA DE ACCIONES CORERCTIVA Y PREEVENTIVAS INFORME
                 var urlInforme = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_INFORME2/1000/0/${objeto.ZINCIDENTE}/0/0/0/0`;
                 var dataInforme = this.f_GetJson(urlInforme) 
-                    console.log('documento DATA ',dataInforme)
-                    if(dataInforme.cod != undefined && dataInforme.cod == 'Error'){
-                        MessageToast.show("Error (" + dataInforme.descripcion + ")");
-                    }else{ 
-                        oModel.setProperty("/tableAccionesInformeIncidente",dataInforme);
-                    } 
-
+                console.log('DATA TB CORRECTIVO PREVENTICO',dataInforme)
+                if(dataInforme.cod != undefined && dataInforme.cod == 'Error'){
+                    MessageToast.show("Error (" + dataInforme.descripcion + ")");
+                }else{ 
+                    oModel.setProperty("/tableAccionesInformeIncidente",dataInforme);
+                }  
                 // oModel.setProperty("/selectIncidente",objeto); //modelo de data de incidente sin. consultar a JSON.  BORRAR
                 if(objeto.ZESTADO != 'T'){
                     //redirigir a la vista de incidente detalle 
                     this.getRouter().getTargets().display("vIncidente"); 
                 }else{
+                    MessageToast.show("Estado del incidente TERMINADO")  
                     //vista de de incidente de detalle que no se puede modificar nada 
                     // this.getRouter().getTargets().display("vIncidente"); 
-                }
-                
-                
+                } 
             },
             idguardarnewINDAI : function (e) {  
                 console.log(e);
@@ -732,12 +744,12 @@
                     }else{
                         valor = this.getView().byId(item.id).getValue(); 
                     }
-                    // console.log("valor item"+item.id,valor)
+                    console.log("valor item FILTRO "+item.tabAtr,valor)
                     if (valor) {
-                        // console.log("prime if CON DATO" ,item.id)
-                        if (item.fecha) {
-                            // console.log("if si es una fecha")
+                        console.log("prime if CON DATO" ,item.id)
+                        if (item.iFecha) {
                             const fechaFormateada = this.cambiarFormatoFecha(valor);
+                            console.log("fechaFormateada",fechaFormateada)
                             result.push(new sap.ui.model.Filter(item.tabAtr, sap.ui.model.FilterOperator.Contains, fechaFormateada));
                         } else {
                             result.push(new sap.ui.model.Filter(item.tabAtr, sap.ui.model.FilterOperator.Contains, valor));
@@ -747,27 +759,40 @@
                 return result;
 
               },
-            cambiarFormatoFecha: function (fecha) {  
-                var partesFecha = fecha.split('/');
-                var mes = partesFecha[0];
-                var dia = partesFecha[1];
-                var anio = partesFecha[2];
-              
-                // Obtener el año actual (solo los últimos dos dígitos)
-                var anioActual = new Date().getFullYear().toString().slice(-2);
-              
-                // Agregar el siglo al año
-                var siglo = (anio <= anioActual) ? '20' : '19';
-                anio = siglo + anio;
-              
-                // Asegurarse de que el día y mes tengan dos dígitos
-                dia = (dia.length === 1) ? '0' + dia : dia;
-                mes = (mes.length === 1) ? '0' + mes : mes;
-              
-                // Combinar los elementos en el nuevo formato de fecha
-                var nuevaFecha = dia + '/' + mes + '/' + anio;
-              
-                return nuevaFecha; 
+              cambiarFormatoFecha: function (fecha) {
+                let fechaReturn 
+                // para saber si el la fecha q se envia es 8/21/23
+                if (fecha.includes('/')) {
+                    const partes = fecha.split('/');
+                    if (partes.length !== 3) {
+                        fechaReturn = "Formato de fecha incorrecto";
+                    }
+    
+                    let mes = partes[0];
+                    let dia = partes[1];
+                    let año = partes[2];
+    
+                    // Convertir el año a formato completo (yyyy)
+                    if (año.length === 2) {
+                        const añoActual = new Date().getFullYear().toString();
+                        const siglo = añoActual.slice(0, 2);
+                        año = siglo + año;
+                    }
+    
+                    // Asegurarse de que los componentes de fecha tengan dos dígitos
+                    dia = dia.padStart(2, '0');
+                    mes = mes.padStart(2, '0');
+    
+                    const fechaFormateada = `${año}-${mes}-${dia}`;
+                    fechaReturn = fechaFormateada;
+                }else{
+                    if (fecha.includes('-')) {
+                        fechaReturn = fecha; 
+                    }else{
+                        fechaReturn = "Formato de fecha incorrecto";
+                    } 
+                }
+                return fechaReturn
             },
                 //informe de incidentes
             addInfoCorrectivo: function () {  
@@ -790,6 +815,7 @@
             dialogsSearch: function (oEvent,arrSearch,sValue) { 
                 let comFil = []; 
                 for (const objeto of arrSearch) { 
+                    console.log("objeto BUSQUEDA",objeto )
                     let oFilter = new sap.ui.model.Filter (objeto.atr, sap.ui.model.FilterOperator.Contains, sValue);
                     comFil.push(oFilter);
                 } 
@@ -846,8 +872,8 @@
                 var sValue = oEvent.getParameter("value");
                 // console.log("sValue",sValue)
                 let arrSearch = [
-                    {atr:"ZGERENCIA"},
-                    {atr:"ZDESCRIPCION"}
+                    {atr:"STEXT"},
+                    {atr:"ORGEH"}
                 ] 
                 this.dialogsSearch(oEvent,arrSearch,sValue)
             }, 
@@ -869,8 +895,8 @@
                 var sValue = oEvent.getParameter("value");
                 // console.log("sValue",sValue)
                 let arrSearch = [
-                    {atr:"ZAREA"},
-                    {atr:"ZDESCRIPCION"}
+                    {atr:"DESCRIP"},
+                    {atr:"DIVISION"}
                 ] 
                 this.dialogsSearch(oEvent,arrSearch,sValue)
             }, 
@@ -892,8 +918,8 @@
                 var sValue = oEvent.getParameter("value");
                 // console.log("sValue",sValue)
                 let arrSearch = [
-                    {atr:"ZDPTO"},
-                    {atr:"ZDESCRIPCION"}
+                    {atr:"DESCRIP"},
+                    {atr:"DEPARTAM"}
                 ] 
                 this.dialogsSearch(oEvent,arrSearch,sValue)
             }, 
@@ -1066,14 +1092,15 @@
                     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
                         MessageToast.show("Error (" + dataRes.descripcion + ")");
                     }else{ 
-                        MessageToast.show("Solicitud exitosa")
+                        console.log("RESPUESTA DE GRABADO",dataRes)
+                        MessageToast.show(`Solicitud exitosa INSPECCION: ${dataRes.ITAB[0].PARAMETER}`)
                         // this.limpiarObjeto(objClean) // vuelve a consultar toda los incidentes y actualizar los registros 
                         // this.getListInc() 
                     } 
 
                     // oModel.setProperty("/ZSYSO_INSPECCION",listInspeccion); 
 
-                    sap.m.MessageToast.show("Realizado correctamente")
+                    // sap.m.MessageToast.show("Realizado correctamente")
 
                     let objInspeccionClean = [
                         {id:"gInsp_gerencia"},
@@ -1155,7 +1182,7 @@
                     if (valor != "") {
                         if (objBusqueda[i].fecha) {
                             console.log("valor I",valor)
-                            valor = this.cambiarFormatoFecha(valor) 
+                            valor = valor
                             console.log("valor F",valor)
                         }  
                         var oFilter = new sap.ui.model.Filter (objBusqueda[i].tabAtr, sap.ui.model.FilterOperator.Contains, valor);
