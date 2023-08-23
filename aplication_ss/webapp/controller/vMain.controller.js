@@ -239,6 +239,7 @@
                 //ibtener tablas correspondientes del trabajador 
                 this.onPressBuscaerInduccion(ocodigo,tipo);
                 this.buscarListRegistrosTrabajador(ocodigo,tipo);
+                this.listaDocumentoTrabajador(ocodigo,tipo);
 
                 // this.onPressBuscaerListRegistroSCTR(ocodigo,tipo);
                 // this.onPressBuscaerDocTrabajador(ocodigo,tipo);
@@ -372,9 +373,28 @@
                     oModel.setProperty('/ListRegistroSCTR',dataRes.PERS_SCTR);  
                     oModel.setProperty('/getListRgstrDOC',dataRes.PERS_DOC);  
                     oModel.setProperty('/getListRgstrDOCVersiones',dataRes.PERS_DOC_VER);  
-                }
-        
+                } 
             },
+            listaDocumentoTrabajador:function(ocodigo,tipo){
+                console.log('getListRgstrMedico') 
+                var oModel = this.getView().getModel("myParam");  
+                var sociedad = this.getView().byId("idsociedadAC").getValue();  
+                if(!sociedad){
+                    sociedad = 0
+                }
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_DOCUMENTOS/${sociedad}/0/0/0/0/0/0?sap-client=120`;
+                var dataRes =  this.f_GetJson(url,true) 
+                // debugger
+                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                    MessageToast.show("Error (" + dataRes.descripcion + ")");
+                }else{
+                    // dataRes = dataRes[0]
+                    console.log('ListDocumentosNecesario DATA ',dataRes)  
+                    oModel.setProperty('/ListDocumentosNecesario',dataRes);   
+                    // oModel.setProperty('/ListDocumentosNecesario',dataRes);   
+                } 
+            },
+
             // onPressBuscaerListRegistroSCTR:function(ocodigo,tipo){
             //     console.log('getListRgstrSCTR')
             //     var oModel = this.getView().getModel("myParam");  
@@ -530,7 +550,7 @@
                     "ZID_PERSONA": dataAsist.ZID_PERSONA, 
                     "ZNOTA": this.byId("calif_nota").getValue(), 
                   }]
-                  debugger
+                //   debugger
                 var urlAjax = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INDUCCION_TRABAJADOR/1000/0/${dataAsist.ZINDUCCION}/0/A/${dataAsist.ZID_INDUC_ASIST}/0?sap-client=120` 
                 var dataRes = this.f_PostJsonData(urlAjax,formData,true) // envia nuevo registro
                 console.log("RESPUES DE DE ASISTENCIA",dataRes)

@@ -26,6 +26,9 @@ sap.ui.define([
                 //this.getDataINSRESERVAEPP()
                 // this.getDataILISTMAT_RESERVAEPP()
             }, 
+            onAfterRendering:async function () { 
+                this.buscarTrabajador()
+            },
             onPageBack : function () {  
                 this.getRouter().getTargets().display("TargetvMain");
             }, 
@@ -155,11 +158,15 @@ sap.ui.define([
                     MessageToast.show("No encontrado");
                 }else{
                     dataRes= dataRes[0]
-                    this.getView().byId("rEpp_nombres").setValue(dataRes.NOMBRE)
-                    this.getView().byId("rEpp_apellido").setValue(dataRes.APELLIDO)
-                    this.getView().byId("rEpp_dni").setValue(dataRes.DNI)
-                    this.getView().byId("rEpp_cargo").setValue(dataRes.PUESTO)
-                    this.getView().byId("rEpp_areaTrb").setValue(dataRes.AREA) 
+                    debugger
+                    if(dataRes){
+                        this.getView().byId("rEpp_nombres").setValue(dataRes.NOMBRE)
+                        this.getView().byId("rEpp_apellido").setValue(dataRes.APELLIDO)
+                        this.getView().byId("rEpp_dni").setValue(dataRes.DNI)
+                        this.getView().byId("rEpp_cargo").setValue(dataRes.PUESTO)
+                        this.getView().byId("rEpp_areaTrb").setValue(dataRes.AREA)  
+                    }
+                    MessageToast.show("No encontrado");
                 }
             },
             buscarTrabajadorSociedad:  function (iCodTrabajador) {   

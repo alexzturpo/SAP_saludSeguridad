@@ -34,6 +34,25 @@ sap.ui.define([
                     "temEditInvolucrado":{},
                     "ListPersonal":{},
                     "newListMaterialReserva":[],
+                    "listaDocumentoTrabajador":[],
+                    "listTempDocSubidos":[],
+                    // "listTempDocSubidos":[
+                    //     {
+                    //       "ZID_DOCUMENTO": "0001",
+                    //       "ZDOCUMENTO": "Manual de Seguridad",
+                    //       "ZOBLIGATORIO": true,
+                    //       "ZFORMATO": "PDF",
+                    //       "ZVERSION":""
+                    //     },
+                    //     {
+                    //       "ZID_DOCUMENTO": "0002",
+                    //       "ZDOCUMENTO": "Política de Calidad",
+                    //       "ZOBLIGATORIO": true,
+                    //       "ZFORMATO": "DOCX",
+                    //       "ZVERSION":""
+                    //     }
+                    //   ]
+                    //   ,
                     // "listReservas":[],
                     "listReservas":[
                         {

@@ -73,6 +73,28 @@ sap.ui.define([
                     oModel.setProperty('/dataTabReserva_Material', dataRes);  
                 }
             },
+            actualizarStatusReservaEPP: function(){ 
+                var oModel = this.getView().getModel("myParam"); 
+                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UPD_LIST_EPPS_UPDATE/1000/0/0/0/0/0/0?sap-client=120"; 
+                var dataRes =  this.f_GetJson(url) 
+                console.log('UPDATEMATRESERVA_EPP DATA ', dataRes)
+                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                    MessageToast.show("Error (" + dataRes.descripcion + ")");
+                }else{
+                    oModel.setProperty('/dataTabReserva1_Material', dataRes);  
+                }
+            },
+            deleteMaterialReservaEPP: function(){ 
+                var oModel = this.getView().getModel("myParam"); 
+                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UUPD_LIST_EPPS_DELETE/1000/0/0/0/0/0/0?sap-client=120"; 
+                var dataRes =  this.f_GetJson(url) 
+                console.log('UPDATEMATRESERVA_EPP DATA ', dataRes)
+                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                    MessageToast.show("Error (" + dataRes.descripcion + ")");
+                }else{
+                    oModel.setProperty('/dataTabReserva2_Material', dataRes);  
+                }
+            },
             // funciones generales para los input con fragment
             dialogsSearch: function (oEvent,arrSearch,sValue) { 
                 let comFil = []; 

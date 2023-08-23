@@ -1477,7 +1477,7 @@
                                             <!-- <Title text="Asistentes"/> -->
                                             <ToolbarSpacer />
                                             <Button text="Nuevo" icon="sap-icon://add-document" type="Emphasized" press="addRequerientoEpp" />  
-                                            <Button text="Editar" icon="sap-icon://add-document" type="Emphasized" press="editarRequerientoEpp" />  
+                                            <Button text="Editar" icon="sap-icon://edit" type="Emphasized" press="editarRequerientoEpp" />  
                                             <Button text="Visualizar" icon="sap-icon://detail-view" press="visualizarEpp" />  
                                             <Button text="Entrega" icon="sap-icon://paper-plane" press="entregaEpp" />  
                                             <Button text="Devolución" icon="sap-icon://synchronize" press="vDevolucionEpp" />  

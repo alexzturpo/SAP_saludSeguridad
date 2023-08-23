@@ -328,12 +328,43 @@
                     </tab:columns>
                 </tab:Table> 
             </VBox>
-            <!-- TABLA DE LISTA DE  RESGISTROS DOCUMENTOS  -->
+            <!-- lista de documentos necesarios -->
+            <VBox class="sapUiSmallMargin">  
+                <!-- <tab:Table id="idtableListDocNecesarios" rows="{  path: 'myParam>/listaDocumentoTrabajador' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title"> -->
+                <tab:Table id="idtableListDocNecesarios" rows="{  path: 'myParam>/ListDocumentosNecesario' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                    <tab:extension>
+                        <OverflowToolbar > 
+                            <Title text="Documentos a cumplir"/>
+                            <ToolbarSpacer />   
+                            <Button text="Revisar" icon="sap-icon://delete" press="revisarRDocsNecesario" />  
+                        </OverflowToolbar>
+                    </tab:extension>
+                    <tab:columns>
+                        <tab:Column  >
+                            <Label textAlign="Center" wrapping ="true"  text="Codigo" />
+                            <tab:template> <Text text="{myParam>ZID_DOCUMENTO}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column  >
+                            <Label textAlign="Center" wrapping ="true"  text="Descripcion" />
+                            <tab:template> <Text text="{myParam>ZDOCUMENTO}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column >
+                            <Label textAlign="Center" wrapping ="true"  text="¿Obligatorio?" />
+                            <tab:template> <Text  text="{myParam>ZOBLIGATORIO}" wrapping="false" /> </tab:template>
+                        </tab:Column>
+                        <tab:Column>
+                            <Label textAlign="Center" wrapping ="true"  text="Formato" />
+                            <tab:template> <Text text="{myParam>ZFORMATO}" wrapping="false" /> </tab:template>
+                        </tab:Column> 
+                    </tab:columns>
+                </tab:Table> 
+            </VBox>
+            <!-- TABLA DE LISTA DE  RESGISTROS DOCUMENTOS POR VERSION  -->
             <VBox class="sapUiSmallMargin"> 
                 <Panel id="panelRDocs" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
                     <headerToolbar>
                         <OverflowToolbar style="Clear">
-                            <Title text="Agregar registro médico" />
+                            <Title text="Agregar documento" />
                             <ToolbarSpacer />
                             <Button icon="sap-icon://save" press="saveRDocs" text="Guardar" type="Emphasized" /> 
                             <Button icon="sap-icon://decline" press="cancelRDocs" text="Cancelar" type="Emphasized" /> 
@@ -362,14 +393,6 @@
                                     <f:formElements> 
                                         <f:FormElement label="Documento">
                                             <f:fields> <u:FileUploader id="RDocs_doc" name="myFileUpload" uploadUrl="upload/" tooltip="Subir archivo" change="onFileSelected"/> </f:fields>
-                                        </f:FormElement> 
-                                        <f:FormElement label="¿Obligatorio?">
-                                            <f:fields> 
-                                                <Select forceSelection="false" id="RDocs_obligatorio" showSecondaryValues= "true" > 
-                                                    <core:Item key="Si" text="Si" />
-                                                    <core:Item key="No" text="No" />   
-                                                </Select> 
-                                            </f:fields>
                                         </f:FormElement>  
                                     </f:formElements>
                                 </f:FormContainer> 
@@ -377,32 +400,97 @@
                         </f:Form> 
                     </content>
                 </Panel>
-                <tab:Table id="tableRegistroDocs" cellClick="onSelectTab" rows="{  path: 'myParam>/getListRgstrDOC' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                <Panel id="panelRDocsEdit" binding="{path : 'myParam>/temSelectDoc'}" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
+                    <headerToolbar>
+                        <OverflowToolbar style="Clear">
+                            <Title text="Agregar documento" />
+                            <ToolbarSpacer />
+                            <Button icon="sap-icon://save" press="saveEditRDocs" text="Guardar" type="Emphasized" /> 
+                            <Button icon="sap-icon://decline" press="cancelRDocs" text="Cancelar" type="Emphasized" /> 
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <content>
+                        <f:Form editable="true"> 
+                            <f:layout>
+                                <f:ResponsiveGridLayout
+                                    labelSpanXL="4"
+                                    labelSpanL="3"
+                                    labelSpanM="4"
+                                    labelSpanS="12"
+                                    adjustLabelSpan="false"
+                                    emptySpanXL="0"
+                                    emptySpanL="4"
+                                    emptySpanM="0"
+                                    emptySpanS="0"
+                                    columnsXL="2"
+                                    columnsL="1"
+                                    columnsM="1"
+                                    singleContainerFullSize="false" />
+                            </f:layout>
+                            <f:formContainers>
+                                <f:FormContainer > 
+                                    <f:formElements> 
+                                        <f:FormElement label="Codigo de categoria del documento">
+                                            <f:fields><Input value="{myParam>ZID_DOCUMENTO}" id="doc" editable="false"/> </f:fields>
+                                        </f:FormElement> 
+                                        <f:FormElement label="Nombre del documento">
+                                            <f:fields><Input value="{myParam>ZNOMBRE_DOC}" id="codPersonal" editable="false"/> </f:fields>
+                                        </f:FormElement> 
+                                        <f:FormElement label="Estado">
+                                            <f:fields> 
+                                                <Select forceSelection="false" selectedKey="{myParam>ZESTADO}" id="RDocs_estado" showSecondaryValues= "true" > 
+                                                    <core:Item key="A" text="Aprobado" />
+                                                    <core:Item key="E" text="En Revisión" />
+                                                    <core:Item key="R" text="Rechazado" /> 
+                                                </Select> 
+                                            </f:fields>
+                                        </f:FormElement>  
+                                         <f:FormElement label="Observacion">
+                                            <f:fields> 
+                                                 <Input value="{myParam>ZOBSERVACION}" id="RDocs_observacion"/>
+                                            </f:fields>
+                                        </f:FormElement> 
+                                    </f:formElements>
+                                </f:FormContainer> 
+                            </f:formContainers>
+                        </f:Form> 
+                    </content>
+                </Panel>
+                <tab:Table id="tableRegistroDocs" cellClick="onSelectTab" rows="{  path: 'myParam>/versionesDocSelect' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
                     <tab:extension>
                         <OverflowToolbar > 
-                            <Title text="Documentos"/>
+                            <Title text="Documentos a subir"/>
                             <ToolbarSpacer />  
                             <Button icon="sap-icon://add-employee" text="Agregar" press="addRDocs"/>
+                            <Button icon="sap-icon://edit" text="Validar" press="editRDocs"/>
                             <Button icon="sap-icon://delete" text="Eliminar" press="deleteRDocs"/>
-                            <Button text="Revisar" icon="sap-icon://delete" press="revisarRDocs" />  
+                            <!-- <Button text="Revisar" icon="sap-icon://delete" press="revisarRDocs" />   -->
                         </OverflowToolbar>
                     </tab:extension>
                     <tab:columns>
-                        <!-- <tab:Column  >
-                            <Label textAlign="Center" wrapping ="true"  text="ZPERS_DOC" />
-                            <tab:template> <Text text="{myParam>ZPERS_DOC}" wrapping="false" /> </tab:template>
-                        </tab:Column> -->
+                        <tab:Column  >
+                            <Label textAlign="Center" wrapping ="true"  text="Documento" />
+                            <tab:template> <Text text="{myParam>ZID_DOCUMENTO}" wrapping="false" /> </tab:template>
+                        </tab:Column>
                         <tab:Column  >
                             <Label textAlign="Center" wrapping ="true"  text="Nombre de documento" />
-                            <tab:template> <Text text="{myParam>ZDOCUMENTO}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text text="{myParam>ZNOMBRE_DOC}" wrapping="false" /> </tab:template>
                         </tab:Column>
                         <tab:Column >
-                            <Label textAlign="Center" wrapping ="true"  text="¿Obligatorio?" />
-                            <tab:template> <Text  text="{myParam>ZOBLIGATORIO}" wrapping="false" /> </tab:template>
+                            <Label textAlign="Center" wrapping ="true"  text="Version" />
+                            <tab:template> <Text  text="{myParam>ZVERSION}" wrapping="false" /> </tab:template>
                         </tab:Column>
                         <tab:Column>
-                            <Label textAlign="Center" wrapping ="true"  text="Formato" />
-                            <tab:template> <Text text="{myParam>ZFORMATO}" wrapping="false" /> </tab:template>
+                            <Label textAlign="Center" wrapping ="true"  text="Observación" />
+                            <tab:template> <Text text="{myParam>ZOBSERVACION}" wrapping="false" /> </tab:template>
+                        </tab:Column> 
+                        <tab:Column>
+                            <Label textAlign="Center" wrapping ="true"  text="Codigo Personal" />
+                            <tab:template> <Text text="{myParam>ZID_PERSONA}" wrapping="false" /> </tab:template>
+                        </tab:Column> 
+                        <tab:Column>
+                            <Label textAlign="Center" wrapping ="true"  text="Estado" />
+                            <tab:template> <Text text="{myParam>ZESTADO}" wrapping="false" /> </tab:template>
                         </tab:Column> 
                     </tab:columns>
                 </tab:Table> 

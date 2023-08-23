@@ -32,15 +32,20 @@ sap.ui.define([
                 let ListRegistroMedico = oModel.getProperty("/ListRegistroMedico");  
                 let ListRegistroSCTR = oModel.getProperty("/ListRegistroSCTR");  
                 let getListRgstrDOC = oModel.getProperty("/getListRgstrDOC");   
+                //LOGICA PARA UNIR LAS LISTA DE DOCUMENTOS VERSION
                 let getListRgstrDOCVers = oModel.getProperty("/getListRgstrDOCVersiones");  
+                let listTempDocSubidos = oModel.getProperty("/listTempDocSubidos");  
+                //AQUI LOGICA PARA VERIFICAR QUE NOMBRES DE DOCUMENTOS NO SEAN IGUALES Y PODER SUBIRLO A CEMIS
+                let getListRgstrDOCVersTotal = [...getListRgstrDOCVers,...listTempDocSubidos]
+
                 //INSERTAR Y ACTUALIZAR DETALLES DEL TRABAJADOR
                 var formTrab = {
                     "PERS_REGMED": ListRegistroMedico,
                     "PERS_SCTR": ListRegistroSCTR,
                     "PERS_DOC": getListRgstrDOC,
-                    "PERS_DOC_VER": getListRgstrDOCVers,
+                    "PERS_DOC_VER": getListRgstrDOCVersTotal,
                 }
-                // debugger
+                debugger
                 //FALTA IMPLEMENTAR LOS CAMBIOS
                 var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_DETALLE_TRABAJADOR/1000/0/${trabajador.COD_PERSONAL}/${tipo}/0/0/0?sap-client=120`;
                 var dataRes = this.f_PostJsonData(url, formTrab,true) // envia nuevo registro
@@ -51,6 +56,9 @@ sap.ui.define([
                     this.onPageBack()
                     MessageToast.show("Solicitud exitosa")
                     MessageBox.success("Realice de nuevo la busqueda para actualizar los registros"); 
+                    //limpiar arreglo de documentos subidos temporalmente 
+                    oModel.setProperty("/listTempDocSubidos",[]);  
+                    // let ojo = oModel.getProperty("/listTempDocSubidos");  
                 }
             },
             //PANEL TABLE DE REGISTRO MEDICO
@@ -183,16 +191,17 @@ sap.ui.define([
 
                 var oTable = this.getView().byId(varOTableId);
                 var indiceEdit = oTable.getSelectedIndices();
-                console.log("indiceEdit",indiceEdit)
-                if (indiceEdit.length > 0 && listTable < dataTable.length  && listTable[indiceAEliminar] != undefined) {
+                console.log("indiceEdit",listTable[indiceEdit])
+                debugger
+                if (indiceEdit.length > 0 && indiceEdit < listTable.length  && listTable[indiceEdit] != undefined) {
                     console.log("indice seleccionado")
                     this.getView().byId(varPanel).setVisible(true)
                     // console.log("Registro A EDITAR.",listTable[indiceEdit]);
-                    oModel.setProperty(varTemEdit,listTable[indiceEdit]);  //nombre de modelo temporal a editar
+                    oModel.setProperty(varTemEdit,listTable[indiceEdit]); //nombre de modelo temporal a editar
                     oModel.setProperty(varTemEditIndice,indiceEdit); //indice de modelo temporal a editar
                 } else {
                     MessageToast.show("Seleccione un registro");
-                console.log("Índice inválido, SELECCIONEE UNO");
+                    console.log("Índice inválido, SELECCIONEE UNO");
                 }  
             },
             saveEditSCTR: function () {  
@@ -226,61 +235,211 @@ sap.ui.define([
                 console.log("Índice inválido, no se eliminó ningún registro.");
                 }  
             },
-             //TABLA DE LISTA DE  RESGISTROS DOCUMENTOS 
+            //TABLA DE DOCUMENTOS NECESARIOS 
+            revisarRDocsNecesario : function () {  
+                let oModel = this.getView().getModel("myParam");  
+                
+                let docVersPersonal = oModel.getProperty("/getListRgstrDOCVersiones"); 
+
+                let varOTableId = "idtableListDocNecesarios"
+                let varListTable = "/ListDocumentosNecesario"
+                let varTemVerDoc = "/versionesDocSelect" //MODELO PARA SELECCION DE DOCUMENTO
+                
+                let listTable = oModel.getProperty(varListTable); 
+                var oTable = this.getView().byId(varOTableId);
+                var indiceEdit = oTable.getSelectedIndices();
+                console.log("indiceEdit",indiceEdit)
+                if (indiceEdit.length > 0 && indiceEdit < listTable.length  && listTable[indiceEdit] != undefined) {
+                    console.log("indice seleccionado")
+                    // this.getView().byId(varPanel).setVisible(true)
+                    console.log("Registro A EDITAR.",listTable[indiceEdit]);
+                    //LOGICA PARA TRAER LOS DOC VERSION O FILTRAR Y PONERLO EN EL MODELO
+                    console.log("docVersPersonal ",docVersPersonal)
+                    console.log("listTable[indiceEdit].ZID_DOCUMENTO ",listTable[indiceEdit].ZID_DOCUMENTO)
+                    const versDocSelect = docVersPersonal.filter(doc => {return  doc.ZID_DOCUMENTO === listTable[indiceEdit].ZID_DOCUMENTO});
+                    let listTempDocSubidos = oModel.getProperty("/listTempDocSubidos"); 
+                    const tempSubidoSelect = listTempDocSubidos.filter(doc => {return  doc.ZID_DOCUMENTO === listTable[indiceEdit].ZID_DOCUMENTO});
+                    let totalVersDocSelect = [...versDocSelect,...tempSubidoSelect]
+                    console.log("documentos filtrados de la seleccion",totalVersDocSelect)
+                    oModel.setProperty("/selectDocNecesario",listTable[indiceEdit]); //modelo de version de documentos seleccionado
+                    oModel.setProperty(varTemVerDoc,totalVersDocSelect); //modelo de version de documentos seleccionado
+                    debugger
+                } else {
+                    MessageToast.show("Seleccione un registro");
+                console.log("Índice inválido, SELECCIONEE UNO");
+                }  
+            },
+
+             //TABLA DE LISTA DE  VERESION DE DOCUMENTOS
             addRDocs: function () { this.getView().byId("panelRDocs").setVisible(true) },
-            cancelRDocs: function () { this.getView().byId("panelRDocs").setVisible(false) }, 
+            // addRDocsEdit: function () { this.getView().byId("panelRDocsEdit").setVisible(true) },
+            cancelRDocs: function () { 
+                this.getView().byId("panelRDocs").setVisible(false) 
+                this.getView().byId("panelRDocsEdit").setVisible(false) 
+            }, 
             saveRDocs : function () {  
                 console.log("saveRMedico")
                 let oModel = this.getView().getModel("myParam");  
-                let list = oModel.getProperty("/getListRgstrDOC");  
-
+                let selectDocNecesario = oModel.getProperty("/selectDocNecesario");  
+                let list = oModel.getProperty("/versionesDocSelect");  
+                let tempTrabajadorSelect = oModel.getProperty("/tempTrabajadorSelect");  
                 const oFileUploader = this.byId("RDocs_doc").oFileUpload.files[0];  
                 var formData = {  
-                ZPERS_DOC :"",
-                ZDOCUMENTO : oFileUploader.name,
-                ZFORMATO : this.determinarTipoArchivo(oFileUploader.name), 
-                ZOBLIGATORIO : this.getView().byId("RDocs_obligatorio").getSelectedKey(),
-                //  ZFEC_VENCIMIENTO : this.getView().byId("SCTR_fechaVenc").getValue(), 
+                    ZID_DOCUMENTO : selectDocNecesario.ZID_DOCUMENTO,
+                    ZDOCUMENTO : "",
+                    ZNOMBRE_DOC : oFileUploader.name,
+                    ZVERSION :"",
+                    ZOBSERVACION :"",
+                    ZID_PERSONA : tempTrabajadorSelect.COD_PERSONAL, 
+                    ZESTADO : "E",
+                    //  ZFEC_VENCIMIENTO : this.getView().byId("SCTR_fechaVenc").getValue(), 
                 } 
                 console.log("formData",formData)
                 list.push(formData)
-                oModel.setProperty("/getListRgstrDOC",list); 
+                oModel.setProperty("/versionesDocSelect",list); 
+                //logica agregar en el modelo temporal de archivos subidos
+                let listTempDocSubidos = oModel.getProperty("/listTempDocSubidos");   
+                listTempDocSubidos.push(formData)
+                oModel.setProperty("/listTempDocSubidos",listTempDocSubidos); 
+                debugger
+                
                 // limpiar formulario
-                let accionClean = [ 
-                    {id:"RDocs_obligatorio", select: true},
+                let accionClean = [  
                     {id:"RDocs_doc"}
                 ]
                 this.limpiarObjeto(accionClean)
                 this.cancelRDocs()
             },
-            deleteRDocs : function () {  
+            saveEditRDocs : function () {  
+                let oModel = this.getView().getModel("myParam");   
+                let dataDoc = oModel.getProperty("/temSelectDoc" );
+                let varListTable = "/versionesDocSelect" 
+                let varTemEditIndice = "/temSelectDocIndice" 
+                console.log("dataDoc",dataDoc)
+                ///guarda en el modelo tmporal versionesDocSelect
+                let list = oModel.getProperty(varListTable);
+                let tempEditId = oModel.getProperty(varTemEditIndice);
+                var formData = {  
+                    ZID_DOCUMENTO : dataDoc.ZID_DOCUMENTO,
+                    ZDOCUMENTO : dataDoc.ZDOCUMENTO,
+                    ZNOMBRE_DOC : dataDoc.ZNOMBRE_DOC, 
+                    ZVERSION : dataDoc.ZVERSION,
+                    ZOBSERVACION : this.getView().byId("RDocs_observacion").getValue(),
+                    ZID_PERSONA : dataDoc.ZID_PERSONA,  
+                    ZESTADO : this.getView().byId("RDocs_estado").getSelectedKey(),
+                } 
+                this.actualizarCamposPorIndice(list, tempEditId, formData); 
+                oModel.setProperty(varListTable,list); 
+                //logica de replica en la el modelo maestro   
+                let modelMaestroDoc = oModel.getProperty("/getListRgstrDOCVersiones");
+                debugger
+                // formData  // es el objeto con los cambios 
+                this.actualizarArregloMaestro(modelMaestroDoc,formData) 
+                console.log("data replicada ",modelMaestroDoc)
+
+                this.cancelRDocs()
+            },
+            actualizarArregloMaestro : function (arregloMaestro, objeto) {
+                const { ZVERSION, ZID_DOCUMENTO, ...nuevosCampos } = objeto;
+              
+                const indice = arregloMaestro.findIndex(registro => 
+                  registro.ZVERSION === ZVERSION && registro.ZID_DOCUMENTO === ZID_DOCUMENTO
+                );
+              
+                if (indice !== -1) {
+                  arregloMaestro[indice] = { ...arregloMaestro[indice], ...nuevosCampos };
+                }
+            },
+            deleteRDocs : function () {   
                 let oModel = this.getView().getModel("myParam");  
-                let list = oModel.getProperty("/getListRgstrDOC");   
-                var oTable = this.getView().byId("tableSCTR");
-                var indiceAEliminar = oTable.getSelectedIndices();
-                if (indiceAEliminar >= 0 && indiceAEliminar < list.length && list[indiceAEliminar] != undefined) {
-                    list.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
-                    oModel.setProperty("/getListRgstrDOC",list);
-                    console.log("Registro eliminado.");
+
+                let varPanel = "panelRDocsEdit"
+                let varListTable = "/versionesDocSelect"
+                let varOTableId = "tableRegistroDocs"
+                let listTable = oModel.getProperty(varListTable); 
+
+                var oTable = this.getView().byId(varOTableId);
+                var indiceEdit = oTable.getSelectedIndices();
+                console.log("indiceEdit",listTable[indiceEdit])
+                // debugger
+                debugger
+                if (indiceEdit.length > 0 && indiceEdit < listTable.length  && listTable[indiceEdit] != undefined) {
+                    if(!listTable[indiceEdit].ZVERSION){
+                        let dataSelect= listTable[indiceEdit]
+                        console.log("indice seleccionado")
+                        // ELIMINAR
+                        listTable.splice(indiceEdit, 1); // Eliminar 1 elemento desde el índice dado
+                        oModel.setProperty("/versionesDocSelect",listTable); 
+                        //logica replica de eliminacion en la tabla temporal de archivos subidos 
+                        let listDocTempSubidos = oModel.getProperty("/listTempDocSubidos");  //documentos temporales subidos
+                        listDocTempSubidos = this.eliminarRegistroPorClaves(listDocTempSubidos,dataSelect.ZID_DOCUMENTO)
+                        //guardar en los modelos
+                        oModel.setProperty("/listTempDocSubidos",listDocTempSubidos); 
+                        MessageToast.show("Registro eliminado."); 
+                    }else{ 
+                        MessageToast.show("Este  documento ya esta registrado");
+                    }
                 } else {
                     MessageToast.show("Seleccione un registro");
-                console.log("Índice inválido, no se eliminó ningún registro.");
+                    console.log("Índice inválido, SELECCIONEE UNO");
                 }  
             },
-            revisarRDocs : function () {  
-                let oModel = this.getView().getModel("myParam");  
-                // let list = oModel.getProperty("/getListRgstrDOC");   
-                var oTable = this.getView().byId("tableRegistroDocs");
-                var indiceAEliminar = oTable.getSelectedIndices();
-                console.log("indiceAEliminar",indiceAEliminar);
-                // if (indiceAEliminar >= 0 && indiceAEliminar < list.length && list[indiceAEliminar] != undefined) {
-                //     list.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
-                //     oModel.setProperty("/getListRgstrDOC",list);
+            eliminarRegistroPorClaves : function (arregloMaestro, key) {   
+                const indice = arregloMaestro.findIndex(registro =>
+                    // registro.ZVERSION === ZVERSION && registro.ZID_DOCUMENTO === ZID_DOCUMENTO
+                    registro.ZID_DOCUMENTO === key
+                );
+                console.log(indice)
+                if (indice !== -1) {
+                    arregloMaestro.splice(indice, 1);
+                } 
+                debugger
+                return arregloMaestro
+            },
+            editRDocs : function () {  
+                // let oModel = this.getView().getModel("myParam");  
+                // let list = oModel.getProperty("/versionesDocSelect");   
+                // var oTable = this.getView().byId("tableRegistroDocs");
+                // var indice = oTable.getSelectedIndices();
+                // console.log("indice",list[indice]);
+                // if (indice >= 0 && indice < list.length && list[indice] != undefined) {
+                //     // list.splice(indice, 1); // Eliminar 1 elemento desde el índice dado
+                //     oModel.setProperty("/temSelectDoc",list[indice]);
+                //     oModel.setProperty("/temSelectDocIndice",indice);
                 //     console.log("Registro eliminado.");
                 // } else {
-                    MessageToast.show("Seleccione un registro");
-                // console.log("Índice inválido, no se eliminó ningún registro.");
+                //     MessageToast.show("Seleccione un registro");
+                //     console.log("Índice inválido, no se eliminó ningún registro.");
                 // }  
+                ////
+                let oModel = this.getView().getModel("myParam");  
+
+                let varPanel = "panelRDocsEdit"
+                let varListTable = "/versionesDocSelect"
+                let varOTableId = "tableRegistroDocs"
+                let varTemEdit = "/temSelectDoc"
+                let varTemEditIndice = "/temSelectDocIndice" 
+                let listTable = oModel.getProperty(varListTable); 
+
+                var oTable = this.getView().byId(varOTableId);
+                var indiceEdit = oTable.getSelectedIndices();
+                console.log("indiceEdit",listTable[indiceEdit])
+                // debugger
+                if (indiceEdit.length > 0 && indiceEdit < listTable.length  && listTable[indiceEdit] != undefined) {
+                    debugger
+                    if(listTable[indiceEdit].ZVERSION){
+                        console.log("indice seleccionado")
+                        this.getView().byId(varPanel).setVisible(true)
+                        // console.log("Registro A EDITAR.",listTable[indiceEdit]);
+                        oModel.setProperty(varTemEdit,listTable[indiceEdit]); //nombre de modelo temporal a editar
+                        oModel.setProperty(varTemEditIndice,indiceEdit); //indice de modelo temporal a editar 
+                    }else{ 
+                        MessageToast.show("Este  documento aun no esta registrado");
+                    }
+                } else {
+                    MessageToast.show("Seleccione un registro");
+                    console.log("Índice inválido, SELECCIONEE UNO");
+                }  
             },
             determinarTipoArchivo: function (nombreArchivo) {
                 const extension = nombreArchivo.split('.').pop().toLowerCase(); 
