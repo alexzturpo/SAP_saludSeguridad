@@ -255,12 +255,13 @@ sap.ui.define([
 
                 var oTable = this.getView().byId("tableAccionesInforme");
                 var indiceAEliminar = oTable.getSelectedIndices();
-                if (indiceAEliminar >= 0 && indiceAEliminar < dataTable.length) {
+                if (indiceAEliminar >= 0 && indiceAEliminar < dataTable.length && dataTable[indiceAEliminar] != undefined) {
                     dataTable.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
                     oModel.setProperty("/tableAccionesInformeIncidente",dataTable);
                     console.log("Registro eliminado.");
                 } else {
-                console.log("Índice inválido, no se eliminó ningún registro.");
+                    MessageToast.show("Seleccione un registro");
+                    console.log("Índice inválido, no se eliminó ningún registro.");
                 }  
             },
             
@@ -547,7 +548,7 @@ sap.ui.define([
                 if (fecha.includes('/')) {
                     const partes = fecha.split('/');
                     if (partes.length !== 3) {
-                        fechaReturn = "Formato de fecha incorrecto";
+                        fechaReturn = "";
                     }
     
                     let mes = partes[0];

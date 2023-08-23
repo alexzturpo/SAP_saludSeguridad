@@ -4,13 +4,12 @@
     xmlns:core="sap.ui.core"
     xmlns:tab="sap.ui.table"
     xmlns="sap.m">
-    <Page title="Nuevo Contratista" showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
+    <Page title="Nuevo Contratista"  binding="{path : 'myParam>/dataContratista'}" showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
 		<headerContent>
 			<Button icon="sap-icon://save" text="Guardar" press="idguardarnewtrabAC" type="Emphasized" />
 		</headerContent> 
 		<content> 
-            <VBox class="sapUiSmallMargin">
-
+            <VBox class="sapUiSmallMargin"> 
                 <f:Form editable="true">  
                     <!-- <f:toolbar>
                         <Toolbar> 
@@ -39,13 +38,13 @@
                         <f:FormContainer title="Datos del proveedor">
                             <f:formElements>
                                 <f:FormElement label="Proveedor">
-                                    <f:fields> <Input value=""/> </f:fields>
+                                    <f:fields> <Input value="{myParam>ZPROVEEDOR}" editable="false"/> </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="Nombre">
-                                    <f:fields> <Input value="" editable="false"/> </f:fields>
+                                    <f:fields> <Input value="{myParam>NAME1} {myParam>NAME2}" editable="false"/> </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="RUC">
-                                    <f:fields> <Input value=""/> </f:fields>
+                                    <f:fields> <Input value="{myParam>RUC}" editable="false"/> </f:fields>
                                 </f:FormElement> 
                             </f:formElements>
                         </f:FormContainer>
@@ -58,23 +57,23 @@
                         </f:FormContainer>  -->
                         <f:FormContainer title="Datos del trabajador">
                             <f:formElements>
-                                <f:FormElement label="Código del trabajador">
+                                <!-- <f:FormElement label="Código del trabajador">
                                     <f:fields> <Input id="idcodigoAC" value=""/> </f:fields>
-                                </f:FormElement> 
+                                </f:FormElement>  -->
                                 <f:FormElement label="Apellidos">
-                                    <f:fields> <Input id="idapellidoAC" value="" editable="false"/> </f:fields>
+                                    <f:fields> <Input id="newTApellido" value="" editable="true"/> </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="Nombres">
-                                    <f:fields> <Input id="idnombreAC" value="" editable="false"/> </f:fields>
+                                    <f:fields> <Input id="newTNombre" value="" editable="true"/> </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="Área">
-                                    <f:fields> <Input id="idAreaAC" value="" editable="false"/> </f:fields>
+                                    <f:fields> <Input id="newTArea" value="" editable="true"/> </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="Puesto de trabajo">
-                                    <f:fields> <Input id="idPuestoAC" value="" editable="false"/> </f:fields>
+                                    <f:fields> <Input id="newTPuesto" value="" editable="true"/> </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="DNI">
-                                    <f:fields> <Input id="iddniAC" value="" editable="false"/> </f:fields>
+                                    <f:fields> <Input id="newTDni" value="" editable="true"/> </f:fields>
                                 </f:FormElement> 
                             </f:formElements>
                         </f:FormContainer> 

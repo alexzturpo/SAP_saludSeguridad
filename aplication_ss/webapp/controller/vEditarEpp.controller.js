@@ -18,21 +18,166 @@ sap.ui.define([
         var url_ini = "";
         var usuario = "CONSULT_PQ01";
         var password = "Rcom2023.."; 
-        return Controller.extend("appss.aplicationss.controller.vVisualizar", {
+        return Controller.extend("appss.aplicationss.controller.vEditarEpp", {
             getRouter: function () {
                 return sap.ui.core.UIComponent.getRouterFor(this);
             },
             onInit: function () {
-
+                //this.getDataINSRESERVAEPP()
+                // this.getDataILISTMAT_RESERVAEPP()
             }, 
             onPageBack : function () {  
                 this.getRouter().getTargets().display("TargetvMain");
             }, 
-            addEpp: function () {  
-                this.getView().byId("panelEpp").setVisible(true)
+            guardarReservasEpp: function () {  
+                this.cancelAddEpp()
+                let oModel = this.getView().getModel("myParam");  
+                let listMaterialesReserva = oModel.getProperty("/newListMaterialReserva");
+                
+                var formData = [{
+                    rEpp_fechaReq : this.getView().byId("rEpp_fechaReq").getValue(),
+                    rEpp_centro : this.getView().byId("rEpp_centro").getValue(),
+                    rEpp_almacen : this.getView().byId("rEpp_almacen").getValue(),
+                    rEpp_codTrab : this.getView().byId("rEpp_codTrab").getValue(),
+                }]
+                //FALTA IMPLEMENTAR LOS CAMBIOS
+                // var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_DETALLE_TRABAJADOR/1000/0/${trabajador.COD_PERSONAL}/${tipo}/0/0/0?sap-client=120`;
+                // var dataRes = this.f_PostJsonData(url, formData,true) // envia nuevo registro
+
+                // if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                //     MessageToast.show("Error (" + dataRes.descripcion + ")");
+                // }else{ 
+                //     this.onPageBack()
+                //     MessageToast.show("Solicitud exitosa")
+                //     MessageBox.success("Realice de nuevo la busqueda para actualizar los registros"); 
+                // }
             },
+
+            //PANEL TABLE DE REGISTRO MEDICO
+            addEpp: function () { this.getView().byId("panelEpp").setVisible(true) },
             cancelAddEpp: function () {  
                 this.getView().byId("panelEpp").setVisible(false)
+            },  
+            saveEpp : function () {  
+                console.log("saveRMedico")
+                let oModel = this.getView().getModel("myParam");  
+                let list = oModel.getProperty("/newListMaterialReserva");  
+                var formData = { 
+                    ZMATERIAL : this.getView().byId("epp_codMaterial").getValue(),
+                    ZDESCRIPCION : this.getView().byId("epp_descripcion").getValue(),
+                    ZCANTIDAD : this.getView().byId("epp_cantidad").getValue(),
+                    ZIND_CAMBIO : this.getView().byId("epp_cambio").getSelectedKey(),
+                    ZFECHA :  this.cambiarFormatoFecha(this.getView().byId("epp_fechaEntrega").getValue()) 
+                } 
+                console.log("formData",formData)
+                list.push(formData)
+                oModel.setProperty("/newListMaterialReserva",list); 
+                // limpiar formulario
+                let accionClean = [
+                    {id:"epp_codMaterial"},
+                    {id:"epp_cantidad"},
+                    {id:"epp_cambio", select: true},
+                    {id:"epp_fechaEntrega"}
+                ] 
+                this.limpiarObjeto(accionClean)
+                this.cancelAddEpp()
+            },
+            editEpp: function () {  
+                let oModel = this.getView().getModel("myParam");  
+
+                let varPanel = "panelEppEdit"
+                let varListTable = "/newListMaterialReserva"
+                let varOTableId = "idTableMateriales"
+                let varTemEdit = "/temEditMaterial"
+                let varTemEditIndice = "/temEditMaterialId" 
+                let listTable = oModel.getProperty(varListTable); 
+
+                var oTable = this.getView().byId(varOTableId);
+                var indiceEdit = oTable.getSelectedIndices();
+                console.log("indiceEdit",indiceEdit)
+                if (indiceEdit.length > 0 && indiceEdit < listTable.length  && listTable[indiceEdit] != undefined) {
+                    console.log("indice seleccionado")
+                    this.getView().byId(varPanel).setVisible(true)
+                    // console.log("Registro A EDITAR.",listTable[indiceEdit]);
+                    oModel.setProperty(varTemEdit,listTable[indiceEdit]);  //nombre de modelo temporal a editar
+                    oModel.setProperty(varTemEditIndice,indiceEdit); //indice de modelo temporal a editar
+                } else {
+                    MessageToast.show("Seleccione un registro");
+                console.log("Índice inválido, SELECCIONEE UNO");
+                }  
+            },
+            saveEditEpp: function () {  
+                let oModel = this.getView().getModel("myParam");   
+                let varListTable = "/newListMaterialReserva" 
+                let varTemEditIndice = "/temEditMaterialId" 
+
+                let list = oModel.getProperty(varListTable);
+                let tempEditId = oModel.getProperty(varTemEditIndice);
+                var formData = { 
+                    ZMATERIAL : this.getView().byId("edit_epp_codMaterial").getValue(),
+                    ZDESCRIPCION : this.getView().byId("edit_epp_descripcion").getValue(),
+                    ZCANTIDAD : this.getView().byId("edit_epp_cantidad").getValue(),
+                    ZIND_CAMBIO : this.getView().byId("edit_epp_cambio").getSelectedKey(),
+                    ZFECHA :  this.cambiarFormatoFecha(this.getView().byId("edit_epp_fechaEntrega").getValue())  
+                } 
+                this.actualizarCamposPorIndice(list, tempEditId, formData); 
+                oModel.setProperty(varListTable,list); 
+                this.cancelAddEpp()
+            },
+            deleteEpp : function () {  
+                let oModel = this.getView().getModel("myParam");  
+                let varListTable = "/newListMaterialReserva"   
+                let varOTableId = "idTableMateriales"
+                let varTemEdit = "/temEditMaterial" 
+
+                let list = oModel.getProperty(varListTable);   
+                var oTable = this.getView().byId(varOTableId);
+                var indiceAEliminar = oTable.getSelectedIndices();
+                console.log("indiceAEliminar ",indiceAEliminar)
+                if (indiceAEliminar >= 0 && indiceAEliminar < list.length && list[indiceAEliminar] != undefined ) {
+                    list.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
+                    oModel.setProperty(varTemEdit,list);
+                    console.log("Registro eliminado.");
+                } else {
+                    MessageToast.show("Seleccione un registro");
+                    console.log("Índice inválido, no se eliminó ningún registro.");
+                }  
+            },
+            buscarTrabajador:  function () {  
+                console.log('getListEmpleado')
+                var iCodTrabajador = this.getView().byId("rEpp_codTrab").getValue()
+                console.log("iCodTrabajador",iCodTrabajador)
+                // var oModel = this.getView().getModel("myParam");  
+                let dataRes = this.buscarTrabajadorSociedad(iCodTrabajador) 
+                console.log('getListEmpleado DATA ',dataRes)
+                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                    // MessageToast.show("Error (" + dataRes.descripcion + ")");
+                    MessageToast.show("No encontrado");
+                }else{
+                    dataRes= dataRes[0]
+                    this.getView().byId("rEpp_nombres").setValue(dataRes.NOMBRE)
+                    this.getView().byId("rEpp_apellido").setValue(dataRes.APELLIDO)
+                    this.getView().byId("rEpp_dni").setValue(dataRes.DNI)
+                    this.getView().byId("rEpp_cargo").setValue(dataRes.PUESTO)
+                    this.getView().byId("rEpp_areaTrb").setValue(dataRes.AREA) 
+                }
+            },
+            buscarTrabajadorSociedad:  function (iCodTrabajador) {   
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${iCodTrabajador}/0/0/0/0`;
+                var dataRes =  this.f_GetJson(url) 
+                return dataRes
+            },
+            
+            getDataILISTMAT_RESERVAEPP:  function () { 
+                var oModel = this.getView().getModel("myParam"); 
+                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_MAT_EPPS/1000/1001/0300/0/0/0/0?sap-client=120"; 
+                var dataRes =  this.f_GetJson(url) 
+                console.log('LISTMAT_RESERVAEPP DATA ', dataRes)
+                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                    MessageToast.show("Error (" + dataRes.descripcion + ")");
+                }else{
+                    oModel.setProperty('/dataTab_Material', dataRes);  
+                }
             },
             //input Epps
             changeEpps: function () { this._dgEpp().open() },
@@ -53,26 +198,12 @@ sap.ui.define([
                     {atr:"stock"}
                 ] 
                 this.dialogsSearch(oEvent,arrSearch,sValue)
-            },
-            addEpp: function (oEvent) { 
-                this.obtenerMaterialReservaEPP()
-            },
+            }, 
             dgGetCloseEpp: function (oEvent) { 
                 let idInput = "epp_desc"
                 this.dialogGetValueClose(oEvent,idInput)
             },
-            //input LALM
-            obtenerMaterialReservaEPP: function(){ 
-                var oModel = this.getView().getModel("myParam"); 
-                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_MAT_RES_EPPS/1000/0/0300/0/0/0/0?sap-client=120"; 
-                var dataRes =  this.f_GetJson(url) 
-                console.log('LISTMATRESERVA_EPP DATA ', dataRes)
-                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                    MessageToast.show("Error (" + dataRes.descripcion + ")");
-                }else{
-                    oModel.setProperty('/dataTabReserva_Material', dataRes);  
-                }
-            },
+
             // funciones generales para los input con fragment
             dialogsSearch: function (oEvent,arrSearch,sValue) { 
                 let comFil = []; 
@@ -96,32 +227,7 @@ sap.ui.define([
                 this.getView().byId(idInput).setValue(sDescription); 
                 // this.byId(idInput).setValue(sDescription); 
             }, 
-
-            buscarTrabajador:  function () {  
-                console.log('getListEmpleado')
-                var iCodTrabajador = this.getView().byId("rEpp_codTrab").getValue()
-                console.log("iCodTrabajador",iCodTrabajador)
-                // var oModel = this.getView().getModel("myParam");  
-                let dataRes = this.buscarTrabajadorSociedad(iCodTrabajador) 
-                console.log('getListEmpleado DATA ',dataRes)
-                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                    // MessageToast.show("Error (" + dataRes.descripcion + ")");
-                    MessageToast.show("No encontrado");
-                }else{
-                    dataRes= dataRes[0]
-                    this.getView().byId("rEpp_nombres").setValue(dataRes.NOMBRE)
-                    this.getView().byId("rEpp_apellido").setValue(dataRes.APELLIDO)
-                    this.getView().byId("rEpp_dni").setValue(dataRes.DNI)
-                    this.getView().byId("rEpp_cargo").setValue(dataRes.PUESTO)
-                    this.getView().byId("rEpp_areaTrb").setValue(dataRes.AREA) 
-                }
-            },
-            // FUNCIONES GENERALES 
-            buscarTrabajadorSociedad:  function (iCodTrabajador) {   
-                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${iCodTrabajador}/0/0/0/0`;
-                var dataRes =  this.f_GetJson(url) 
-                return dataRes
-            },
+            //FUNCIONES GENERALES
             actualizarCamposPorIndice: function (array, indice, nuevosCampos) {
                 if (indice >= 0 && indice < array.length) {
                   array[indice] = { ...array[indice], ...nuevosCampos };

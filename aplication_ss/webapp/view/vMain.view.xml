@@ -796,10 +796,10 @@
                                             <f:FormContainer title="Datos del proveedor">
                                                 <f:formElements>
                                                     <f:FormElement label="Proveedor">
-                                                        <f:fields> <Input value="" id="dateProv"/> </f:fields>
+                                                        <f:fields> <Input value="" id="dateProv" liveChange="liveInputProveedor" /> </f:fields>
                                                     </f:FormElement> 
                                                     <f:FormElement label="Nombre">
-                                                        <f:fields> <Input value="" id="dateNombreProv"/> </f:fields>
+                                                        <f:fields> <Input value="" id="dateNombreProv" editable="false"/> </f:fields>
                                                     </f:FormElement> 
                                                     <f:FormElement label="RUC">
                                                         <f:fields> <Input value="" id="dateRucProv"/> </f:fields>
@@ -809,26 +809,22 @@
                                             <f:FormContainer title="Empresa del grupo">
                                                 <f:formElements>
                                                     <f:FormElement label="Sociedad">
-                                                        <f:fields> <Input id="idsociedadAC" value=""/> </f:fields>
+                                                        <f:fields> <Input id="idsociedadAC" value=""  liveChange="liveInputSociedad"/> </f:fields>
                                                     </f:FormElement> 
                                                 </f:formElements>
                                             </f:FormContainer>  
                                         </f:formContainers>
                                     </f:Form> 
-                                    <tab:Table  cellClick="onSelectTrabajador" rows="{  path: 'myParam>/ListPersonal' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                                    <tab:Table id="listPersonalConSoc" cellClick="onSelectTrabajador" rows="{  path: 'myParam>/ListPersonal' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
                                         <tab:extension>
                                             <OverflowToolbar >
                                                 <Title text="Personal"/>
                                                 <ToolbarSpacer />
-                                                <Button id="btnAddContratista" text="Añadir contratista" icon="sap-icon://add" type="Emphasized" press="addTrabajador" visible="true" />  
-                                                <Button text="Dar de baja" icon="sap-icon://pull-down" type="Emphasized" press="addTrabajador" />  
+                                                <Button id="btnAddContratista" text="Añadir contratista" icon="sap-icon://add" type="Emphasized" press="addTrabajador" visible="false" />  
+                                                <Button text="Dar de baja" icon="sap-icon://pull-down" type="Emphasized" press="deleteTrabajador" />  
                                             </OverflowToolbar>
                                         </tab:extension>
                                         <tab:columns>
-                                            <tab:Column  >
-                                                <Label textAlign="Center" wrapping ="true"  text="Cod. Trabajador" />
-                                                <tab:template> <Text text="{myParam>ZID_COD_TRABAJADOR}" wrapping="false" /> </tab:template>
-                                            </tab:Column>
                                             <tab:Column  >
                                                 <Label textAlign="Center" wrapping ="true"  text="Cod. Personal" />
                                                 <tab:template> <Text text="{myParam>COD_PERSONAL}" wrapping="false" /> </tab:template>
@@ -853,21 +849,22 @@
                                                 <Label textAlign="Center" wrapping ="true"  text="DNI" />
                                                 <tab:template> <Text text="{myParam>DNI}" wrapping="false" /> </tab:template>
                                             </tab:Column>
-                                            <tab:Column >
+                                            <!-- <tab:Column >
                                                 <Label textAlign="Center" wrapping ="true"  text="Activo" />
                                                 <tab:template> <Text  text="{myParam>ACTIVO}" wrapping="false" /> </tab:template>
-                                            </tab:Column>             
+                                            </tab:Column>              -->
                                         </tab:columns>
                                     </tab:Table>  
                                 </VBox>
                             </IconTabFilter> 
                             <IconTabFilter text="Registro de inducciones" >
-                                <Panel expandable="true" expanded="true" visible="true" headerText="Añadir inducción" width="auto" class="sapUiResponsiveMargin">
+                                <Panel id="panelAddInduccion" expandable="true" expanded="true" visible="false" headerText="Añadir inducción" width="auto" class="sapUiResponsiveMargin">
                                     <headerToolbar>
                                         <OverflowToolbar style="Clear">
                                             <Title text="Añadir inducción" />
                                             <ToolbarSpacer />
-                                            <Button icon="sap-icon://save" text="Guardar" press="idguardarnewINDAI" type="Emphasized" /> 
+                                            <Button icon="sap-icon://save" text="Guardar" press="saveInduccion" type="Emphasized" /> 
+                                            <Button icon="sap-icon://decline" press="cancelInduccion" text="Cancelar" type="Emphasized" /> 
                                         </OverflowToolbar>
                                     </headerToolbar>
                                     <content>
@@ -891,9 +888,9 @@
                                             <f:formContainers>
                                                 <f:FormContainer > 
                                                     <f:formElements>
-                                                        <f:FormElement label="Código de inducción">
+                                                        <!-- <f:FormElement label="Código de inducción">
                                                             <f:fields> <Input id="idcodigoAI" value=""/> </f:fields>
-                                                        </f:FormElement> 
+                                                        </f:FormElement>  -->
                                                         <f:FormElement label="Titulo de inducción">
                                                             <f:fields> <Input id="idtituloAI" value=""/> </f:fields>
                                                         </f:FormElement> 
@@ -901,7 +898,15 @@
                                                             <f:fields> <Input id="iddescripcionAI" value=""/> </f:fields>
                                                         </f:FormElement> 
                                                         <f:FormElement label="Fecha programada">
-                                                            <f:fields> <DatePicker placeholder="Fecha" id="idfechaprogAI" valueFormat="dd/MM/yyyy" displayFormat="yyyy-MM-dd"/> </f:fields>
+                                                            <f:fields> <DatePicker id="idfechaprogAI"  displayFormat="yyyy-MM-dd"/> </f:fields>
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Tipo de inducción">
+                                                            <f:fields> 
+                                                                <Select forceSelection="false" id="idTipoAI" showSecondaryValues= "true" > 
+                                                                    <core:Item key="G" text="General" />
+                                                                    <core:Item key="E" text="Especifico" />   
+                                                                </Select> 
+                                                            </f:fields>
                                                         </f:FormElement> 
                                                     </f:formElements>
                                                 </f:FormContainer> 
@@ -909,39 +914,93 @@
                                         </f:Form> 
                                     </content>
                                 </Panel>
-                                <tab:Table rows="{  path: 'myParam>/dataInduccion' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                                <Panel id="panelAddInduccionEdit" binding="{path : 'myParam>/temEditInduccion'}" expandable="true" expanded="true" visible="false" headerText="Añadir inducción" width="auto" class="sapUiResponsiveMargin">
+                                    <headerToolbar>
+                                        <OverflowToolbar style="Clear">
+                                            <Title text="Editar inducción" />
+                                            <ToolbarSpacer />
+                                            <Button icon="sap-icon://save" text="Guardar" press="saveEditInduccion" type="Emphasized" /> 
+                                            <Button icon="sap-icon://decline" press="cancelInduccion" text="Cancelar" type="Emphasized" /> 
+                                        </OverflowToolbar>
+                                    </headerToolbar>
+                                    <content>
+                                        <f:Form editable="true"> 
+                                            <f:layout>
+                                                <f:ResponsiveGridLayout
+                                                    labelSpanXL="4"
+                                                    labelSpanL="3"
+                                                    labelSpanM="4"
+                                                    labelSpanS="12"
+                                                    adjustLabelSpan="false"
+                                                    emptySpanXL="0"
+                                                    emptySpanL="4"
+                                                    emptySpanM="0"
+                                                    emptySpanS="0"
+                                                    columnsXL="2"
+                                                    columnsL="1"
+                                                    columnsM="1"
+                                                    singleContainerFullSize="false" />
+                                            </f:layout>
+                                            <f:formContainers>
+                                                <f:FormContainer > 
+                                                    <f:formElements> 
+                                                        <f:FormElement label="Titulo de inducción">
+                                                            <f:fields> <Input id="edit_idtituloAI" value="{myParam>ZTITULO}"/> </f:fields>
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Descripción">
+                                                            <f:fields> <Input id="edit_iddescripcionAI" value="{myParam>ZDESCRIPCION}"/> </f:fields>
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Fecha programada">
+                                                            <f:fields> <DatePicker id="edit_idfechaprogAI"  value="{myParam>ZFEC_INDUCCION}" displayFormat="yyyy-MM-dd"/> </f:fields>
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Tipo de inducción">
+                                                            <f:fields> 
+                                                                <Select forceSelection="false" id="edit_idTipoAI" selectedKey="{myParam>ZTIPO}"  > 
+                                                                    <core:Item key="G" text="General" />
+                                                                    <core:Item key="E" text="Especifico" />   
+                                                                </Select> 
+                                                            </f:fields>
+                                                        </f:FormElement> 
+                                                    </f:formElements>
+                                                </f:FormContainer> 
+                                            </f:formContainers>
+                                        </f:Form> 
+                                    </content>
+                                </Panel>
+                                <tab:Table id="tableInduccionId" rows="{  path: 'myParam>/dataInduccion' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
                                     <tab:extension>
                                         <OverflowToolbar >
                                             <Title text="Lista de inducciones"/>
                                             <ToolbarSpacer />
                                             <Button text="Añadir" icon="sap-icon://add" type="Emphasized" press="addInduccion" />  
+                                            <Button icon="sap-icon://edit" text="Editar" press="editInduccion"/>
                                             <Button text="Eliminar" icon="sap-icon://delete" press="deleteInduccion" />  
                                         </OverflowToolbar>
                                     </tab:extension>
                                     <tab:columns>
                                         <tab:Column  >
                                             <Label textAlign="Center" wrapping ="true"  text="Cod. Induccion" />
-                                            <tab:template> <Text text="{myParam>keyinduc}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>ZINDUCCION}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Titulo inducción" />
-                                            <tab:template> <Text  text="{myParam>titulo}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text  text="{myParam>ZTITULO}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column>
                                             <Label textAlign="Center" wrapping ="true"  text="Descripción" />
-                                            <tab:template> <Text text="{myParam>descrip}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>ZDESCRIPCION}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Fecha programada" />
-                                            <tab:template> <Text text="{myParam>fechaprog}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>ZFEC_INDUCCION}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Tipo Inducción" />
-                                            <tab:template> <Text text="{myParam>tipoinducc}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>ZTIPO}" wrapping="false" /> </tab:template>
                                         </tab:Column>   
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Status" />
-                                            <tab:template> <Text text="{myParam>status}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>ZESTADO}" wrapping="false" /> </tab:template>
                                         </tab:Column>   
                                     </tab:columns>
                                 </tab:Table>  
@@ -991,44 +1050,107 @@
                                         </f:FormContainer> 
                                     </f:formContainers>
                                 </f:Form> 
-  
-                                <tab:Table rows="{  path: 'myParam>/dataAsistenteInd' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                                <!-- PANEL  DE AGREGAR UN ASISTENTE A LA INDUCCION  -->
+                                <Panel id="panelAddAsistente" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
+                                    <headerToolbar>
+                                        <OverflowToolbar style="Clear">
+                                            <Title text="Agregar asistente" />
+                                            <ToolbarSpacer />
+                                            <Button text="Buscar" icon="sap-icon://employee-lookup" type="Emphasized" press="buscarAsistente" />
+                                            <Button icon="sap-icon://save" press="saveAsistente" text="Guardar" type="Emphasized" /> 
+                                            <Button icon="sap-icon://decline" press="cancelAsistente" text="Cancelar" type="Emphasized" /> 
+                                        </OverflowToolbar>
+                                    </headerToolbar>
+                                    <content>
+                                        <f:Form editable="true"> 
+                                            <f:layout>
+                                                <f:ResponsiveGridLayout
+                                                    labelSpanXL="4"
+                                                    labelSpanL="3"
+                                                    labelSpanM="4"
+                                                    labelSpanS="12"
+                                                    adjustLabelSpan="false"
+                                                    emptySpanXL="0"
+                                                    emptySpanL="4"
+                                                    emptySpanM="0"
+                                                    emptySpanS="0"
+                                                    columnsXL="2"
+                                                    columnsL="1"
+                                                    columnsM="1"
+                                                    singleContainerFullSize="false" />
+                                            </f:layout>
+                                            <f:formContainers>
+                                                <f:FormContainer > 
+                                                    <f:formElements>
+                                                        <f:FormElement label="Contratista">
+                                                            <f:fields> <Input value="" id="asi_contratista" liveChange="liveAsisInputContratista"/> </f:fields>
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Sociedad">
+                                                            <f:fields> <Input value="" id="asi_sociedad" liveChange="liveAsisInputSociedad"/> </f:fields>
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Código de trabajador">
+                                                            <f:fields> <Input value="" id="asi_codTrabajador"/> </f:fields>
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Apellidos">
+                                                            <f:fields> <Input value="" id="asi_apellido"/> </f:fields>
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Nombres">
+                                                            <f:fields> <Input value="" id="asi_nombre"/> </f:fields>
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Área">
+                                                            <f:fields> <Input value="" id="asi_area"/> </f:fields>
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Puesto de trabajo">
+                                                            <f:fields> <Input value="" id="asi_puesto"/> </f:fields>
+                                                        </f:FormElement> 
+                                                    </f:formElements>
+                                                </f:FormContainer> 
+                                            </f:formContainers>
+                                        </f:Form> 
+                                    </content>
+                                </Panel>
+                                <tab:Table id="idTableListAsistente" rows="{  path: 'myParam>/dataAsistenteInd' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
                                     <tab:extension>
                                         <OverflowToolbar >
                                             <Title text="Lista de asistentes"/>
                                             <ToolbarSpacer />
-                                            <Button text="Añadir" icon="sap-icon://add" type="Emphasized" press="onDialogUserAgregar" />  
-                                            <Button text="Eliminar" icon="sap-icon://delete" press="onDialogUserEliminar" />  
+                                            <!-- <Button text="Añadir" icon="sap-icon://add" type="Emphasized" press="onDialogUserAgregar" />   -->
+                                            <Button text="Añadir" id="idAddAsistente" icon="sap-icon://add" type="Emphasized" press="addAsistente" enabled="false" />  
+                                            <Button text="Eliminar" id="idDeleteAsistente" icon="sap-icon://delete" press="deleteAsistente" enabled="false"/>  
                                         </OverflowToolbar>
                                     </tab:extension>
                                     <tab:columns>
                                         <tab:Column  >
                                             <Label textAlign="Center" wrapping ="true"  text="Contratista" />
-                                            <tab:template> <Text text="{myParam>keycontract}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>PROVEEDOR}" wrapping="false" /> </tab:template>
                                         </tab:Column>
-                                        <tab:Column >
+                                        <!-- <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Sociedad" />
                                             <tab:template> <Text  text="{myParam>sociedad}" wrapping="false" /> </tab:template>
+                                        </tab:Column> -->
+                                        <tab:Column>
+                                            <Label textAlign="Center" wrapping ="true"  text="Código de personal" />
+                                            <tab:template> <Text text="{myParam>ZID_PERSONA}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column>
                                             <Label textAlign="Center" wrapping ="true"  text="Código de trabajador" />
-                                            <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>ZID_COD_TRABAJADOR}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Apellidos" />
-                                            <tab:template> <Text text="{myParam>apellido}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>APELLIDO}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Nombres" />
-                                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>NOMBRE}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Área" />
-                                            <tab:template> <Text text="{myParam>area}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>AREA}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Puesto de trabajo" />
-                                            <tab:template> <Text text="{myParam>puesto}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>PUESTO}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                     </tab:columns>
                                 </tab:Table>  
@@ -1077,52 +1199,92 @@
                                             </f:formElements>
                                         </f:FormContainer> 
                                     </f:formContainers>
-                                </f:Form>                                 
+                                </f:Form>    
+                                <Panel id="panelCalificar"  binding="{path : 'myParam>/dataParaCalificar'}" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
+                                    <headerToolbar>
+                                        <OverflowToolbar style="Clear">
+                                            <Title text="Calificar asistente" />
+                                            <ToolbarSpacer /> 
+                                            <Button icon="sap-icon://save" press="saveAsistCalificacion" text="Guardar" type="Emphasized" /> 
+                                            <Button icon="sap-icon://decline" press="cancelAsistCalificacion" text="Cancelar" type="Emphasized" /> 
+                                        </OverflowToolbar>
+                                    </headerToolbar>
+                                    <content>
+                                        <f:Form editable="true"> 
+                                            <f:layout>
+                                                <f:ResponsiveGridLayout
+                                                    labelSpanXL="4"
+                                                    labelSpanL="3"
+                                                    labelSpanM="4"
+                                                    labelSpanS="12"
+                                                    adjustLabelSpan="false"
+                                                    emptySpanXL="0"
+                                                    emptySpanL="4"
+                                                    emptySpanM="0"
+                                                    emptySpanS="0"
+                                                    columnsXL="2"
+                                                    columnsL="1"
+                                                    columnsM="1"
+                                                    singleContainerFullSize="false" />
+                                            </f:layout>
+                                            <f:formContainers>
+                                                <f:FormContainer > 
+                                                    <f:formElements>
+                                                        <f:FormElement label="Asistente">
+                                                            <f:fields> <Text text="{myParam>NOMBRE} {myParam>APELLIDO} - {myParam>DNI}"/> </f:fields>
+                                                        </f:FormElement>  
+                                                        <f:FormElement label="Nota">
+                                                            <f:fields> <Input value="{myParam>ZNOTA}" id="calif_nota"/> </f:fields>  
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Anexo">
+                                                            <f:fields> <u:FileUploader id="calif_anexo" value="{myParam>ZANEXO}" name="myFileUpload" uploadUrl="upload/" tooltip="Subir archivo" change="onFileSelected"/> </f:fields>
+                                                        </f:FormElement>  
+                                                    </f:formElements>
+                                                </f:FormContainer> 
+                                            </f:formContainers>
+                                        </f:Form> 
+                                    </content>
+                                </Panel>                             
                                 <tab:Table id="table01AsisCalif" rows="{  path: 'myParam>/dataAsistenteIndNotas' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
                                     <tab:extension>
                                         <OverflowToolbar >
                                             <Title text="Asistentes"/>
                                             <ToolbarSpacer />
-                                            <Button text="Calificar" icon="sap-icon://add" type="Emphasized" press="onDialogcalifeditar" />  
-                                            <Button text="Eliminar" icon="sap-icon://delete" press="onDialogEliminar" />  
+                                            <Button text="Calificar" id="btnCal_Calificar" icon="sap-icon://add" type="Emphasized" press="selectAsistCalificacion" enabled="false"/>  
                                         </OverflowToolbar>
                                     </tab:extension>
                                     <tab:columns>
                                         <tab:Column  >
                                             <Label textAlign="Center" wrapping ="true"  text="Contratista" />
-                                            <tab:template> <Text text="{myParam>keycontract}" wrapping="false" /> </tab:template>
-                                        </tab:Column>
-                                        <tab:Column >
-                                            <Label textAlign="Center" wrapping ="true"  text="Sociedad" />
-                                            <tab:template> <Text  text="{myParam>sociedad}" wrapping="false" /> </tab:template>
-                                        </tab:Column>
+                                            <tab:template> <Text text="{myParam>PROVEEDOR}" wrapping="false" /> </tab:template>
+                                        </tab:Column> 
                                         <tab:Column>
                                             <Label textAlign="Center" wrapping ="true"  text="Código de trabajador" />
-                                            <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>ZID_COD_TRABAJADOR}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Apellidos" />
-                                            <tab:template> <Text text="{myParam>apellido}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>APELLIDO}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Nombres" />
-                                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>NOMBRE}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Área" />
-                                            <tab:template> <Text text="{myParam>area}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>AREA}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Puesto de trabajo" />
-                                            <tab:template> <Text text="{myParam>puesto}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>PUESTO}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Nota" />
-                                            <tab:template> <Text text="{myParam>nota}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>ZNOTA}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Anexo" />
-                                            <tab:template> <Text text="{myParam>anexo}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>ZANEXO}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                     </tab:columns>
                                 </tab:Table>  
@@ -1309,16 +1471,17 @@
                                         </fb:FilterGroupItem>
                                     </fb:filterGroupItems>   
                                 </fb:FilterBar> 
-                                <tab:Table rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                                <tab:Table id="idTableListReservas" rows="{path: 'myParam>/listReservas'}" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
                                     <tab:extension>
                                         <OverflowToolbar >
                                             <!-- <Title text="Asistentes"/> -->
                                             <ToolbarSpacer />
                                             <Button text="Nuevo" icon="sap-icon://add-document" type="Emphasized" press="addRequerientoEpp" />  
+                                            <Button text="Editar" icon="sap-icon://add-document" type="Emphasized" press="editarRequerientoEpp" />  
                                             <Button text="Visualizar" icon="sap-icon://detail-view" press="visualizarEpp" />  
                                             <Button text="Entrega" icon="sap-icon://paper-plane" press="entregaEpp" />  
                                             <Button text="Devolución" icon="sap-icon://synchronize" press="vDevolucionEpp" />  
-                                            <Button text="Liberar" icon="sap-icon://outbox" press="deleteInduccion" />  
+                                            <!-- <Button text="Liberar" icon="sap-icon://outbox" press="deleteInduccion" />   -->
                                             <Button text="Eliminar" icon="sap-icon://delete" press="deleteInduccion" />  
                                         </OverflowToolbar>
                                     </tab:extension>

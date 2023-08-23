@@ -129,6 +129,12 @@
           "pattern": "vEntregarEpp",
           "titleTarget": "vEntregarEpp",
           "target": "vEntregarEpp"
+        },
+        {
+          "name": "vEditarEpp",
+          "pattern": "vEditarEpp",
+          "titleTarget": "vEditarEpp",
+          "target": "vEditarEpp"
         }
       ],
       "targets": {
@@ -194,6 +200,13 @@
           "clearControlAggregation": false,
           "viewId": "vEntregarEpp",
           "viewName": "epps/vEntregarEpp"
+        },
+        "vEditarEpp": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "vEditarEpp",
+          "viewName": "epps/vEditarEpp"
         }
       }
     },

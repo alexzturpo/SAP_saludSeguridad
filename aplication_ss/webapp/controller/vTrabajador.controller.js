@@ -1,14 +1,18 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller"
+    "sap/ui/core/mvc/Controller",
+    "sap/m/MessageBox",
+    "sap/m/MessageToast",
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller) {
+    function (Controller,MessageBox,MessageToast) {
         "use strict";
-        var usuario = "CONSULT_PQ01";
-        var password = "Rcom2023..";
+        var usuario120 = "CONSULT_MM";
+        var password120 = "Laredo2023.";
         var url_ini = "";
+        var usuario = "CONSULT_PQ01";
+        var password = "Rcom2023.."; 
         return Controller.extend("appss.aplicationss.controller.vTrabajador", {
             getRouter: function () {
                 return sap.ui.core.UIComponent.getRouterFor(this);
@@ -22,25 +26,31 @@ sap.ui.define([
             saveTrabajador : function () {  
                 let oModel = this.getView().getModel("myParam"); 
                 
+                let tipo = oModel.getProperty("/tipoConsultaPersonal");  
+                console.log("saveTrabajador tipo",tipo)
                 let trabajador = oModel.getProperty("/tempTrabajadorSelect");  
                 let ListRegistroMedico = oModel.getProperty("/ListRegistroMedico");  
                 let ListRegistroSCTR = oModel.getProperty("/ListRegistroSCTR");  
                 let getListRgstrDOC = oModel.getProperty("/getListRgstrDOC");   
+                let getListRgstrDOCVers = oModel.getProperty("/getListRgstrDOCVersiones");  
                 //INSERTAR Y ACTUALIZAR DETALLES DEL TRABAJADOR
                 var formTrab = {
-                    "pers_regmed": ListRegistroMedico,
-                    "pers_sctr": ListRegistroSCTR,
-                    "pers_doc": getListRgstrDOC,
-                    // "pers_doc_ver": tbAcciones,
+                    "PERS_REGMED": ListRegistroMedico,
+                    "PERS_SCTR": ListRegistroSCTR,
+                    "PERS_DOC": getListRgstrDOC,
+                    "PERS_DOC_VER": getListRgstrDOCVers,
                 }
-                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_DETALLE_TRABAJADOR/1000/0/${trabajador.COD_PERSONAL}/0/0/0/0`;
-                var dataRes = this.f_PostJsonData(url, formTrab) // envia nuevo registro
+                // debugger
+                //FALTA IMPLEMENTAR LOS CAMBIOS
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_DETALLE_TRABAJADOR/1000/0/${trabajador.COD_PERSONAL}/${tipo}/0/0/0?sap-client=120`;
+                var dataRes = this.f_PostJsonData(url, formTrab,true) // envia nuevo registro
 
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
                     MessageToast.show("Error (" + dataRes.descripcion + ")");
                 }else{ 
-                    MessageToast.show("Solicitud exitosa")
                     this.onPageBack()
+                    MessageToast.show("Solicitud exitosa")
+                    MessageBox.success("Realice de nuevo la busqueda para actualizar los registros"); 
                 }
             },
             //PANEL TABLE DE REGISTRO MEDICO
@@ -80,18 +90,19 @@ sap.ui.define([
                 let varOTableId = "tableRegistroMedico"
                 let varTemEdit = "/temEditRMedico"
                 let varTemEditIndice = "/temEditRMedicoId" 
+                let listTable = oModel.getProperty(varListTable); 
 
                 var oTable = this.getView().byId(varOTableId);
                 var indiceEdit = oTable.getSelectedIndices();
                 console.log("indiceEdit",indiceEdit)
-                if (indiceEdit.length > 0) {
+                if (indiceEdit.length > 0 && indiceEdit < listTable.length  && listTable[indiceEdit] != undefined) {
                     console.log("indice seleccionado")
                     this.getView().byId(varPanel).setVisible(true)
-                    let listTable = oModel.getProperty(varListTable); 
                     // console.log("Registro A EDITAR.",listTable[indiceEdit]);
                     oModel.setProperty(varTemEdit,listTable[indiceEdit]);  //nombre de modelo temporal a editar
                     oModel.setProperty(varTemEditIndice,indiceEdit); //indice de modelo temporal a editar
                 } else {
+                    MessageToast.show("Seleccione un registro");
                 console.log("Índice inválido, SELECCIONEE UNO");
                 }  
             },
@@ -121,11 +132,13 @@ sap.ui.define([
                 let list = oModel.getProperty("/ListRegistroMedico");   
                 var oTable = this.getView().byId("tableRegistroMedico");
                 var indiceAEliminar = oTable.getSelectedIndices();
-                if (indiceAEliminar >= 0 && indiceAEliminar < list.length) {
+                console.log("indiceAEliminar ",indiceAEliminar)
+                if (indiceAEliminar >= 0 && indiceAEliminar < list.length && list[indiceAEliminar] != undefined ) {
                     list.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
                     oModel.setProperty("/tableAccionesInformeIncidente",list);
                     console.log("Registro eliminado.");
                 } else {
+                    MessageToast.show("Seleccione un registro");
                 console.log("Índice inválido, no se eliminó ningún registro.");
                 }  
             },
@@ -166,18 +179,19 @@ sap.ui.define([
                 let varOTableId = "tableSCTR"
                 let varTemEdit = "/temEditSCTR"
                 let varTemEditIndice = "/temEditSCTRIndice" 
+                let listTable = oModel.getProperty(varListTable); 
 
                 var oTable = this.getView().byId(varOTableId);
                 var indiceEdit = oTable.getSelectedIndices();
                 console.log("indiceEdit",indiceEdit)
-                if (indiceEdit.length > 0) {
+                if (indiceEdit.length > 0 && listTable < dataTable.length  && listTable[indiceAEliminar] != undefined) {
                     console.log("indice seleccionado")
                     this.getView().byId(varPanel).setVisible(true)
-                    let listTable = oModel.getProperty(varListTable); 
                     // console.log("Registro A EDITAR.",listTable[indiceEdit]);
                     oModel.setProperty(varTemEdit,listTable[indiceEdit]);  //nombre de modelo temporal a editar
                     oModel.setProperty(varTemEditIndice,indiceEdit); //indice de modelo temporal a editar
                 } else {
+                    MessageToast.show("Seleccione un registro");
                 console.log("Índice inválido, SELECCIONEE UNO");
                 }  
             },
@@ -203,11 +217,12 @@ sap.ui.define([
                 let list = oModel.getProperty("/ListRegistroSCTR");   
                 var oTable = this.getView().byId("tableSCTR");
                 var indiceAEliminar = oTable.getSelectedIndices();
-                if (indiceAEliminar >= 0 && indiceAEliminar < list.length) {
+                if (indiceAEliminar >= 0 && indiceAEliminar < list.length && list[indiceAEliminar] != undefined) {
                     list.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
                     oModel.setProperty("/ListRegistroSCTR",list);
                     console.log("Registro eliminado.");
                 } else {
+                    MessageToast.show("Seleccione un registro");
                 console.log("Índice inválido, no se eliminó ningún registro.");
                 }  
             },
@@ -243,11 +258,12 @@ sap.ui.define([
                 let list = oModel.getProperty("/getListRgstrDOC");   
                 var oTable = this.getView().byId("tableSCTR");
                 var indiceAEliminar = oTable.getSelectedIndices();
-                if (indiceAEliminar >= 0 && indiceAEliminar < list.length) {
+                if (indiceAEliminar >= 0 && indiceAEliminar < list.length && list[indiceAEliminar] != undefined) {
                     list.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
                     oModel.setProperty("/getListRgstrDOC",list);
                     console.log("Registro eliminado.");
                 } else {
+                    MessageToast.show("Seleccione un registro");
                 console.log("Índice inválido, no se eliminó ningún registro.");
                 }  
             },
@@ -257,11 +273,12 @@ sap.ui.define([
                 var oTable = this.getView().byId("tableRegistroDocs");
                 var indiceAEliminar = oTable.getSelectedIndices();
                 console.log("indiceAEliminar",indiceAEliminar);
-                // if (indiceAEliminar >= 0 && indiceAEliminar < list.length) {
+                // if (indiceAEliminar >= 0 && indiceAEliminar < list.length && list[indiceAEliminar] != undefined) {
                 //     list.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
                 //     oModel.setProperty("/getListRgstrDOC",list);
                 //     console.log("Registro eliminado.");
                 // } else {
+                    MessageToast.show("Seleccione un registro");
                 // console.log("Índice inválido, no se eliminó ningún registro.");
                 // }  
             },
@@ -295,7 +312,11 @@ sap.ui.define([
                   console.log("Índice fuera de rango");
                 }
             },
-            f_GetJson: function (p_url_path) {
+            f_GetJson: function (p_url_path,client120=false) {
+                if(client120){
+                    usuario = usuario120;
+                    password = password120;
+                }
                 // return new Promise((resolve, reject) => {    
                     var credentials = btoa(`${usuario}:${password}`);  
                     var res = null;
@@ -339,7 +360,11 @@ sap.ui.define([
                     return res
                 // }); 
             },
-            f_PostJsonSinData:  function (url) { 
+            f_PostJsonSinData:  function (url,client120=falsel) { 
+                if(client120){
+                    usuario = usuario120;
+                    password = password120;
+                }
                 const credentials = btoa(`${usuario}:${password}`); 
                 var res = null
                 $.ajax(url, {
@@ -370,7 +395,11 @@ sap.ui.define([
                 // console.log(`RES ->`,res);
                 return res
             },
-            f_PostJsonData:  function (url, dataForm) { 
+            f_PostJsonData:  function (url, dataForm,client120=false) { 
+                if(client120){
+                    usuario = usuario120;
+                    password = password120;
+                }
                 // console.log("INICIO f_PostJsonData")
                 const credentials = btoa(`${usuario}:${password}`); 
                 var res = null
@@ -411,7 +440,7 @@ sap.ui.define([
                 if (fecha.includes('/')) {
                     const partes = fecha.split('/');
                     if (partes.length !== 3) {
-                        fechaReturn = "Formato de fecha incorrecto";
+                        fechaReturn = "";
                     }
     
                     let mes = partes[0];

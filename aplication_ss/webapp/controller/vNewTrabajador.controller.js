@@ -1,12 +1,18 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    "sap/m/MessageBox"
+    "sap/m/MessageBox",
+    "sap/m/MessageToast",
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller,MessageBox) {
+    function (Controller,MessageBox,MessageToast) {
         "use strict";
+        var usuario120 = "CONSULT_MM";
+        var password120 = "Laredo2023.";
+        var url_ini = "";
+        var usuario = "CONSULT_PQ01";
+        var password = "Rcom2023..";
 
         return Controller.extend("appss.aplicationss.controller.vNewTrabajador", {
             getRouter: function () {
@@ -18,33 +24,38 @@ sap.ui.define([
             onPageBack : function () {  
                 this.getRouter().getTargets().display("TargetvMain");
             },
-            idguardarnewtrabAC : function (e) {  
-                console.log(e);
-                var oModel = this.getView().getModel("myParam");  
-                var oidcodigoAC = this.getView().byId("idcodigoAC").getValue(); 
-                var oidapellidoAC = this.getView().byId("idapellidoAC").getValue(); 
-                var oidnombreAC = this.getView().byId("idnombreAC").getValue(); 
-                var oidAreaAC = this.getView().byId("idAreaAC").getValue(); 
-                var oidPuestoAC = this.getView().byId("idPuestoAC").getValue(); 
-                var datafilter = oModel.getProperty("/dataContratistafilter");
-                var llave = {};
-                llave.key=oidcodigoAC;
-                llave.sociedad="1001";
-                llave.name=oidnombreAC;
-                llave.apellido=oidapellidoAC;
-                llave.area=oidAreaAC;
-                llave.puesto=oidPuestoAC;
-                llave.DNI="";
-                llave.activo="SI";
-                
-                datafilter.push(llave);
-                oModel.setProperty("/dataContratistafilter",datafilter);
-                MessageBox.success("Registro agregado correctamente");
-       
-                 
+            idguardarnewtrabAC : function () {  
+                let oModel = this.getView().getModel("myParam"); 
+                let dataContratista = oModel.getProperty("/dataContratista");  
+
+                var informeCab = { 
+                        ZPROVEEDOR: dataContratista.ZPROVEEDOR,
+                        ZAPELLIDOS : this.getView().byId("newTApellido").getValue(),
+                        ZNOMBRES : this.getView().byId("newTNombre").getValue(), 
+                        ZAREA : this.getView().byId("newTArea").getValue(),
+                        ZPUESTO : this.getView().byId("newTPuesto").getValue(),
+                        ZDNI : this.getView().byId("newTDni").getValue() 
+                }
+                console.log("informeCab",informeCab)
+                var urlAjax = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UPD_TRABAJADOR/1000/0/A/0/0/0/0?sap-client=120` 
+                var dataRes = this.f_PostJsonData(urlAjax, informeCab,true) // envia nuevo registro
+
+                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                    MessageToast.show("Error (" + dataRes.descripcion + ")");
+                }else{ 
+                    MessageToast.show("Solicitud exitosa")
+                    // MessageBox.success("Registro agregado correctamente");
+                    // this.limpiarObjeto(objClean) // vuelve a consultar toda los incidentes y actualizar los registros 
+                    // LLAMAR OTRA VES A LA CONSULTA GET  INFORME PARA ACTUALIZAR this.getListInc() 
+                }    
+                this.onPageBack()              
             },        
             //FUNCIONES GENERALES
-            f_GetJson: function (p_url_path) {
+            f_GetJson: function (p_url_path,client120=false) {
+                if(client120){
+                    usuario = usuario120;
+                    password = password120;
+                }
                 // return new Promise((resolve, reject) => {    
                     var credentials = btoa(`${usuario}:${password}`);  
                     var res = null;
@@ -88,7 +99,11 @@ sap.ui.define([
                     return res
                 // }); 
             },
-            f_PostJsonSinData:  function (url) { 
+            f_PostJsonSinData:  function (url,client120=false) { 
+                if(client120){
+                    usuario = usuario120;
+                    password = password120;
+                }
                 const credentials = btoa(`${usuario}:${password}`); 
                 var res = null
                 $.ajax(url, {
@@ -119,14 +134,19 @@ sap.ui.define([
                 // console.log(`RES ->`,res);
                 return res
             },
-            f_PostJsonData:  function (url, dataForm) { 
+            f_PostJsonData:  function (url, dataForm,client120=false) { 
+                if(client120){
+                    usuario = usuario120;
+                    password = password120;
+                }
                 // console.log("INICIO f_PostJsonData")
                 const credentials = btoa(`${usuario}:${password}`); 
+                // let url= url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INC/1000/0/0/0/0/0/0"
                 var res = null
-                // var oVector = [dataForm]
+                var oVector = dataForm
                 $.ajax(url, {
 					type: "POST",
-                    data: JSON.stringify(dataForm),
+                    data: JSON.stringify(oVector),
                     async: false,
 					headers: {
                         "Authorization": `Basic ${credentials}`,
@@ -153,14 +173,14 @@ sap.ui.define([
 				}); 
                 // console.log(`RES ->`,res);
                 return res
-            },
+            }, 
             cambiarFormatoFecha: function (fecha) {
                 let fechaReturn 
                 // para saber si el la fecha q se envia es 8/21/23
                 if (fecha.includes('/')) {
                     const partes = fecha.split('/');
                     if (partes.length !== 3) {
-                        fechaReturn = "Formato de fecha incorrecto";
+                        fechaReturn = "";
                     }
     
                     let mes = partes[0];

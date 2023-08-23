@@ -5,7 +5,7 @@
     xmlns:tab="sap.ui.table"
     xmlns:u="sap.ui.unified"
     xmlns="sap.m">
-    <Page title="Devolución Epp"  showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
+    <Page title="Devolución Epp"   binding="{path : 'myParam>/selectReservaTemp'}" showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
 		<headerContent>
 			<!-- <Button text="Guarda devolución" icon="sap-icon://paper-plane" type="Emphasized" press="updateIncidente" /> -->
 			<Button text="Ejecutar devolución" icon="sap-icon://paper-plane" type="Emphasized" press="updateIncidente" />

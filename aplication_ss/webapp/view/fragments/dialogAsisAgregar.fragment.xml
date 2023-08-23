@@ -13,49 +13,49 @@ xmlns:f="sap.ui.layout.form"
         <f:title>
             <core:Title id="dUserAdd001T" text="Añadir Asistente" />
         </f:title>
-                                            <f:layout>
-                                                <f:ResponsiveGridLayout
-                                                    labelSpanXL="4"
-                                                    labelSpanL="3"
-                                                    labelSpanM="4"
-                                                    labelSpanS="12"
-                                                    adjustLabelSpan="false"
-                                                    emptySpanXL="0"
-                                                    emptySpanL="4"
-                                                    emptySpanM="0"
-                                                    emptySpanS="0"
-                                                    columnsXL="2"
-                                                    columnsL="1"
-                                                    columnsM="1"
-                                                    singleContainerFullSize="false" />
-                                            </f:layout>
-                                            <f:formContainers>
-                                                <f:FormContainer > 
-                                                    <f:formElements>
-                                                        <f:FormElement label="Contratista">
-                                                            <f:fields> <Input value=""/> </f:fields>
-                                                        </f:FormElement> 
-                                                        <f:FormElement label="Sociedad">
-                                                            <f:fields> <Input value=""/> </f:fields>
-                                                        </f:FormElement> 
-                                                        <f:FormElement label="Código de trabajador">
-                                                            <f:fields> <Input value=""/> </f:fields>
-                                                        </f:FormElement> 
-                                                        <f:FormElement label="Apellidos">
-                                                            <f:fields> <Input value=""/> </f:fields>
-                                                        </f:FormElement> 
-                                                        <f:FormElement label="Nombres">
-                                                            <f:fields> <Input value=""/> </f:fields>
-                                                        </f:FormElement> 
-                                                        <f:FormElement label="Área">
-                                                            <f:fields> <Input value=""/> </f:fields>
-                                                        </f:FormElement> 
-                                                        <f:FormElement label="Puesto de trabajo">
-                                                            <f:fields> <Input value=""/> </f:fields>
-                                                        </f:FormElement> 
-                                                    </f:formElements>
-                                                </f:FormContainer> 
-                                            </f:formContainers>
+        <f:layout>
+            <f:ResponsiveGridLayout
+                labelSpanXL="4"
+                labelSpanL="3"
+                labelSpanM="4"
+                labelSpanS="12"
+                adjustLabelSpan="false"
+                emptySpanXL="0"
+                emptySpanL="4"
+                emptySpanM="0"
+                emptySpanS="0"
+                columnsXL="2"
+                columnsL="1"
+                columnsM="1"
+                singleContainerFullSize="false" />
+        </f:layout>
+        <f:formContainers>
+            <f:FormContainer > 
+                <f:formElements>
+                    <f:FormElement label="Contratista">
+                        <f:fields> <Input value=""/> </f:fields>
+                    </f:FormElement> 
+                    <f:FormElement label="Sociedad">
+                        <f:fields> <Input value=""/> </f:fields>
+                    </f:FormElement> 
+                    <f:FormElement label="Código de trabajador">
+                        <f:fields> <Input value=""/> </f:fields>
+                    </f:FormElement> 
+                    <f:FormElement label="Apellidos">
+                        <f:fields> <Input value=""/> </f:fields>
+                    </f:FormElement> 
+                    <f:FormElement label="Nombres">
+                        <f:fields> <Input value=""/> </f:fields>
+                    </f:FormElement> 
+                    <f:FormElement label="Área">
+                        <f:fields> <Input value=""/> </f:fields>
+                    </f:FormElement> 
+                    <f:FormElement label="Puesto de trabajo">
+                        <f:fields> <Input value=""/> </f:fields>
+                    </f:FormElement> 
+                </f:formElements>
+            </f:FormContainer> 
+        </f:formContainers>
     </f:Form>
     </VBox>
     <OverflowToolbar id="d2Footer">

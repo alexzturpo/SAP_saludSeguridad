@@ -182,6 +182,10 @@ sap.ui.define([
             addPerInvolucrado: function () {  
                 this.getView().byId("panelPerInvolucrado").setVisible(true)
             },
+            cancelPerInvolucrado: function () {  
+                this.getView().byId("panelPerInvolucrado").setVisible(false)
+                this.getView().byId("panelPerInvolucradoEdit").setVisible(false)
+            },
             editPerInvolucrado: function () {  
                 this.getView().byId("panelPerInvolucradoEdit").setVisible(true) 
                 let oModel = this.getView().getModel("myParam");  
@@ -200,10 +204,6 @@ sap.ui.define([
                 } else {
                 console.log("Índice inválido, no se eliminó ningún registro.");
                 }  
-            },
-            cancelPerInvolucrado: function () {  
-                this.getView().byId("panelPerInvolucrado").setVisible(false)
-                this.getView().byId("panelPerInvolucradoEdit").setVisible(false)
             },
             saveEditPerInvolucrado: function () {  
                 // let varTemEdit = "/temEditAcciones"
@@ -259,11 +259,12 @@ sap.ui.define([
 
                 var oTable = this.getView().byId("tablePersInvolucrado");
                 var indiceAEliminar = oTable.getSelectedIndices();
-                if (indiceAEliminar >= 0 && indiceAEliminar < dataTable.length) {
+                if (indiceAEliminar >= 0 && indiceAEliminar < dataTable.length && dataTable[indiceAEliminar] != undefined) {
                     dataTable.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
                     oModel.setProperty("/tabPerInvolucrados",dataTable);
                     console.log("Registro eliminado.");
                 }else {
+                    MessageToast.show("Seleccione un registro");
                 console.log("Índice inválido, no se eliminó ningún registro.");
                 }
             },
@@ -343,11 +344,12 @@ sap.ui.define([
 
                 var oTable = this.getView().byId("tableRiesgosAsociados");
                 var indiceAEliminar = oTable.getSelectedIndices();
-                if (indiceAEliminar >= 0 && indiceAEliminar < dataTable.length) {
+                if (indiceAEliminar >= 0 && indiceAEliminar < dataTable.length && dataTable[indiceAEliminar] != undefined) {
                     dataTable.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
                     oModel.setProperty("/tabRiAsociados",dataTable);
                     console.log("Registro eliminado.");
                 }else {
+                    MessageToast.show("Seleccione un registro");
                 console.log("Índice inválido, no se eliminó ningún registro.");
                 }
             },
@@ -387,11 +389,12 @@ sap.ui.define([
 
                 var oTable = this.getView().byId("tableMedidaCorrectiva");
                 var indiceAEliminar = oTable.getSelectedIndices();
-                if (indiceAEliminar >= 0 && indiceAEliminar < dataTable.length) {
+                if (indiceAEliminar >= 0 && indiceAEliminar < dataTable.length  && dataTable[indiceAEliminar] != undefined) {
                     dataTable.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
                     oModel.setProperty("/tabMedCorrectiva",dataTable);
                     console.log("Registro eliminado.");
                 }else {
+                    MessageToast.show("Seleccione un registro");
                 console.log("Índice inválido, no se eliminó ningún registro.");
                 }
             },
@@ -443,22 +446,24 @@ sap.ui.define([
 
                 var oTable = this.getView().byId("idTableResponsable");
                 var indiceAEliminar = oTable.getSelectedIndices();
-                if (indiceAEliminar >= 0 && indiceAEliminar < dataTable.length) {
+                if (indiceAEliminar >= 0 && indiceAEliminar < dataTable.length  && dataTable[indiceAEliminar] != undefined) {
                     dataTable.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
                     oModel.setProperty("/tabResponsables",dataTable);
                     console.log("Registro eliminado.");
                 }else {
+                    MessageToast.show("Seleccione un registro");
                 console.log("Índice inválido, no se eliminó ningún registro.");
                 }
             },
 
+            // funciones generales
             cambiarFormatoFecha: function (fecha) {
                 let fechaReturn 
                 // para saber si el la fecha q se envia es 8/21/23
                 if (fecha.includes('/')) {
                     const partes = fecha.split('/');
                     if (partes.length !== 3) {
-                        fechaReturn = "Formato de fecha incorrecto";
+                        fechaReturn = "";
                     }
     
                     let mes = partes[0];
@@ -487,7 +492,6 @@ sap.ui.define([
                 }
                 return fechaReturn
             },
-            // funciones generales
             actualizarCamposPorIndice: function (array, indice, nuevosCampos) {
                 if (indice >= 0 && indice < array.length) {
                   array[indice] = { ...array[indice], ...nuevosCampos };
