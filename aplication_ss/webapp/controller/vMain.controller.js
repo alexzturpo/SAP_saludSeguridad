@@ -14,10 +14,10 @@
     function (Controller,MessageBox,Filter,FilterOperator,FilterType,Fragment,MessageToast,Spreadsheet) {
         "use strict";
         var usuario120 = "CONSULT_MM";
-        var password120 = "Laredo2023.";
+        var password120 = "Laredo2023*";
         var url_ini = "";
-        var usuario = "CONSULT_PQ01";
-        var password = "Rcom2023..";
+        var usuario = "CONSULT_MM";
+        var password = "Laredo2023*";
         // var url_ini = "";
 
         return Controller.extend("appss.aplicationss.controller.vMain", {
@@ -35,7 +35,7 @@
                     MessageToast.show("Error obtener lista de empleados");
                 }else{ 
                     // MessageToast.show("Solicitud exitosa")   
-                    let oModel = this.getView().getModel("myParam");  
+                    let oModel = this.getView().getModel("myParam");   
                     oModel.setProperty("/listCodTrabajador",dataRes); 
                 }
             },
@@ -343,13 +343,14 @@
                 // var tipo
                 // contratista P
                 // sociedad    S
-                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INDUCCION/${sociedad}/0/${ocodigo}/0/${tipo}/0/0`;
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INDUCCION/${sociedad}/0/${ocodigo}/0/0/${tipo}/0?sap-client=120`;
                 var dataRes =  this.f_GetJson(url) 
                 console.log('getListInducciong DATA ',dataRes)
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
                     MessageToast.show("Error (" + dataRes.descripcion + ")");
                 }else{
                     oModel.setProperty('/ListPersonalInduccion',dataRes);  
+                    
                 }
         
             },
@@ -1107,7 +1108,19 @@
                 console.log("Índice inválido, SELECCIONEE UNO");
                 }  
             },
-
+            handleLinkPress:function(oEvent){
+                //var oSelectedItem = oEvent.getSource();
+                //var oContext = oSelectedItem.getBindingContext();
+                var oSelectedItem = oEvent.oSource.mProperties.text;       
+                var filename = "testt.pdf";//oContext.getObject().nombre;
+                var uri = "/dms/testt.pdf";// + filename;
+                var link = document.createElement("a");
+                link.download = oSelectedItem;
+                link.href = uri;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            },
             ///REGISTRAR ASISTENTES
             saveAsistente: function () {  
                 let oModel = this.getView().getModel("myParam");  
@@ -1435,23 +1448,27 @@
             },
             editarRequerientoEpp: function () {
                 let resp = this.selectTableListReservasEpp() 
+                this.getMaterialesReservaSelect()
                 if(resp){
                     this.getRouter().getTargets().display("vEditarEpp"); 
                 }
             },
             visualizarEpp: function () {
                 let resp = this.selectTableListReservasEpp() 
+                this.getMaterialesReservaSelect()
                 if(resp){
                     this.getRouter().getTargets().display("vVisualizarEpp"); 
                 }
             },
             vDevolucionEpp: function () {
+                this.getMaterialesReservaSelect()
                 let resp = this.selectTableListReservasEpp() 
                 if(resp){
                     this.getRouter().getTargets().display("vDevolucionEpp")
                 }
             },
             entregaEpp: function () {
+                this.getMaterialesReservaSelect()
                 let resp = this.selectTableListReservasEpp() 
                 if(resp){
                     this.getRouter().getTargets().display("vEntregarEpp")
@@ -1488,26 +1505,74 @@
                 // debugger
                 return res
             }, 
+            getMaterialesReservaSelect: function () {
+                let res = false 
+                let oModel = this.getView().getModel("myParam");  
+                let varListTable = "/listReservas"   
+                let varOTableId = "idTableListReservas"
+                let varTemEdit = "/materialesSelectReservaTemp" 
+
+                let list = oModel.getProperty(varListTable);   
+                var oTable = this.getView().byId(varOTableId);
+                var indiceAEliminar = oTable.getSelectedIndices();
+                // console.log("selectTableListReservasEpp ",indiceAEliminar, list[indiceAEliminar],list)
+                if (indiceAEliminar >= 0 && indiceAEliminar < list.length && list[indiceAEliminar] != undefined ) {
+                    // list.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
+                    // console.log("reserva seleccionado",list[indiceAEliminar]) 
+                    // let formdata = {
+                    //     ZID_RESERVA : list[indiceAEliminar].ZID_RESERVA,
+                    //     ZID_COD_TRABAJADOR : list[indiceAEliminar].ZID_COD_TRABAJADOR
+                    // } 
+                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_RESERVA_EPPS/1000/0/${list[indiceAEliminar].ZID_RESERVA}/0/0/0/0?sap-client=120`; 
+                    // console.log(formdata);
+                    var dataRes = this.f_PostJsonData(url, true) // envia nuevo registro
+                    console.log('getListReserva EPP DATA ',dataRes)
+                    if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                        MessageToast.show("Error (" + dataRes.descripcion + ")");
+                    }else{
+                        dataRes = dataRes.ITAB[0].DETALLE 
+                        debugger
+                        oModel.setProperty(varTemEdit,dataRes);   
+                    }
+                    console.log("Registro terminado.");
+                    res = true //solo si hay una seleccion
+                } else {
+                    MessageToast.show("Seleccione un registro");
+                    console.log("Índice inválido, no se eliminó ningún registro.");
+                }  
+                return res
+            }, 
+
+            
             buscarEpps: function () {
                 this.getDataRESERVAEPP() 
             },
             getDataRESERVAEPP:  function () { 
                 var oModel = this.getView().getModel("myParam");
 
-                let incidenteForm = {"cabecera" : {
-                    ZRESERVA:this.getView().byId("idReserva").getValue(),
+                let ZID_RESERVA = this.getView().byId("idReserva").getValue()
+                if(!ZID_RESERVA){
+                    ZID_RESERVA= 0
+                }
+                let incidenteForm = {
                     ZID_COD_TRABAJADOR: this.getView().byId("idTrabajador").getValue(), //codigo de empleado afectado
                     ZFECHA: this.cambiarFormatoFecha(this.getView().byId("idFechaReserva").getValue()),
-                    ZSTATUS: this.getView().byId("idStatus").getValue(),             
-                },}
-                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_RESERVA_EPPS/0/0/1/0/0/0/0?sap-client=120"; 
+                    // ZSTATUS: this.getView().byId("idStatus").getValue(),       
+                    ZDNI: this.getView().byId("idDNI").getValue(), //codigo de empleado afectado
+                    ZCARGO: this.getView().byId("idCargo").getValue(), //codigo de empleado afectado
+                    ZAREA: this.getView().byId("idCargoTrab").getValue(), //codigo de empleado afectado 
+                }
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_RESERVA_EPPS/1000/0/${ZID_RESERVA}/0/0/0/0?sap-client=120`; 
                 console.log(incidenteForm);
                 var dataRes = this.f_PostJsonData(url, incidenteForm, true) // envia nuevo registro
                 console.log('getListReserva EPP DATA ',dataRes)
+                // debugger
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
                     MessageToast.show("Error (" + dataRes.descripcion + ")");
                 }else{
+                    dataRes = dataRes.ITAB[0].CABECERA 
                     oModel.setProperty('/listReservas',dataRes);  
+                    console.log("data lista de reservas",dataRes)
                 }
             },
             getDataINSRESERVAEPP:  function () { 

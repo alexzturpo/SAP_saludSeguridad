@@ -1283,8 +1283,8 @@
                                             <tab:template> <Text text="{myParam>ZNOTA}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
-                                            <Label textAlign="Center" wrapping ="true"  text="Anexo" />
-                                            <tab:template> <Text text="{myParam>ZANEXO}" wrapping="false" /> </tab:template>
+                                            <Label textAlign="Center" wrapping ="true"  text="Anexo" />                                      
+                                            <tab:template> <Link text="{myParam>ZANEXO}" press="handleLinkPress" />  </tab:template>
                                         </tab:Column>          
                                     </tab:columns>
                                 </tab:Table>  
@@ -1464,11 +1464,11 @@
                                                 <DatePicker id="idFechaReserva"  value=""  displayFormat="yyyy-MM-dd" placeholder="Ingresar fecha" />   
                                             </fb:control>
                                         </fb:FilterGroupItem> 
-                                        <fb:FilterGroupItem groupName="G1" name="A7" groupTitle="Group1"  label="Status" visibleInFilterBar="true" >
+                                        <!-- <fb:FilterGroupItem groupName="G1" name="A7" groupTitle="Group1"  label="Status" visibleInFilterBar="true" >
                                             <fb:control>
                                                 <Input value="" id="idStatus"/>
                                             </fb:control>
-                                        </fb:FilterGroupItem>
+                                        </fb:FilterGroupItem> -->
                                     </fb:filterGroupItems>   
                                 </fb:FilterBar> 
                                 <tab:Table id="idTableListReservas" rows="{path: 'myParam>/listReservas'}" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
@@ -1477,8 +1477,8 @@
                                             <!-- <Title text="Asistentes"/> -->
                                             <ToolbarSpacer />
                                             <Button text="Nuevo" icon="sap-icon://add-document" type="Emphasized" press="addRequerientoEpp" />  
-                                            <Button text="Editar" icon="sap-icon://edit" type="Emphasized" press="editarRequerientoEpp" />  
-                                            <Button text="Visualizar" icon="sap-icon://detail-view" press="visualizarEpp" />  
+                                            <Button text="Editar" icon="sap-icon://edit" press="editarRequerientoEpp" />  
+                                            <Button text="Liberar" icon="sap-icon://detail-view" press="visualizarEpp" />  
                                             <Button text="Entrega" icon="sap-icon://paper-plane" press="entregaEpp" />  
                                             <Button text="Devolución" icon="sap-icon://synchronize" press="vDevolucionEpp" />  
                                             <!-- <Button text="Liberar" icon="sap-icon://outbox" press="deleteInduccion" />   -->
@@ -1508,12 +1508,12 @@
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Fecha de reserva" />
-                                            <tab:template> <Text text="{myParam>ZFECHA}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{myParam>BDTER}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
-                                        <tab:Column >
+                                        <!-- <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Status" />
                                             <tab:template> <Text text="{myParam>ZSTATUS}" wrapping="false" /> </tab:template>
-                                        </tab:Column>      
+                                        </tab:Column>       -->
                                     </tab:columns>
                                 </tab:Table> 
                             </IconTabFilter> 

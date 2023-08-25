@@ -32,10 +32,15 @@ sap.ui.define([
                 var oData = {
                     "temEditAcciones":{},
                     "temEditInvolucrado":{},
+                    "selectDocNecesario":{},
+                    "versionesDocSelect":[],
                     "ListPersonal":{},
                     "newListMaterialReserva":[],
                     "listaDocumentoTrabajador":[],
                     "listTempDocSubidos":[],
+                    "materialesSelectReservaTemp":[],
+                    "materialesTemp":[],
+                    // "dataTab_Material":[],
                     // "listTempDocSubidos":[
                     //     {
                     //       "ZID_DOCUMENTO": "0001",
@@ -53,44 +58,44 @@ sap.ui.define([
                     //     }
                     //   ]
                     //   ,
-                    // "listReservas":[],
-                    "listReservas":[
-                        {
-                          "ZID_RESERVA": "777",
-                          "ZID_POSICION": 23,
-                          "ZID_COD_TRABAJADOR": 1234,
-                          "ZDNI": 98765432,
-                          "ZCARGO": "Analista de Ventas",
-                          "ZAREA": "Ventas",
-                          "ZIND_CAMBIO": true,
-                          "ZIND_VALORADO": false,
-                          "ZRES_DEVOLUCION": "2023-08-15",
-                          "ZIND_PERDIDA": true,
-                          "ZOBSERVACIONES": "Producto defectuoso",
-                          "ZESTADO_EPP": "Pendiente",
-                          "ZLIBERADOR": "Juan Pérez",
-                          "ZSTATUS": "Activo",
-                          "ZSTAT_LIBER": "Liberado"
-                        },
-                        {
-                          "ZID_RESERVA": "555",
-                          "ZID_POSICION": 45,
-                          "ZID_COD_TRABAJADOR": 5678,
-                          "ZDNI": 54321678,
-                          "ZCARGO": "Supervisor de Producción",
-                          "ZAREA": "Producción",
-                          "ZIND_CAMBIO": false,
-                          "ZIND_VALORADO": true,
-                          "ZRES_DEVOLUCION": "2023-08-10",
-                          "ZIND_PERDIDA": false,
-                          "ZOBSERVACIONES": "Sin problemas",
-                          "ZESTADO_EPP": "Aprobado",
-                          "ZLIBERADOR": "María López",
-                          "ZSTATUS": "Activo",
-                          "ZSTAT_LIBER": "Liberado"
-                        }
-                      ]
-                      ,
+                    "listReservas":[],
+                    // "listReservas":[
+                    //     {
+                    //       "ZID_RESERVA": "777",
+                    //       "ZID_POSICION": 23,
+                    //       "ZID_COD_TRABAJADOR": 1234,
+                    //       "ZDNI": 98765432,
+                    //       "ZCARGO": "Analista de Ventas",
+                    //       "ZAREA": "Ventas",
+                    //       "ZIND_CAMBIO": true,
+                    //       "ZIND_VALORADO": false,
+                    //       "ZRES_DEVOLUCION": "2023-08-15",
+                    //       "ZIND_PERDIDA": true,
+                    //       "ZOBSERVACIONES": "Producto defectuoso",
+                    //       "ZESTADO_EPP": "Pendiente",
+                    //       "ZLIBERADOR": "Juan Pérez",
+                    //       "ZSTATUS": "Activo",
+                    //       "ZSTAT_LIBER": "Liberado"
+                    //     },
+                    //     {
+                    //       "ZID_RESERVA": "555",
+                    //       "ZID_POSICION": 45,
+                    //       "ZID_COD_TRABAJADOR": 5678,
+                    //       "ZDNI": 54321678,
+                    //       "ZCARGO": "Supervisor de Producción",
+                    //       "ZAREA": "Producción",
+                    //       "ZIND_CAMBIO": false,
+                    //       "ZIND_VALORADO": true,
+                    //       "ZRES_DEVOLUCION": "2023-08-10",
+                    //       "ZIND_PERDIDA": false,
+                    //       "ZOBSERVACIONES": "Sin problemas",
+                    //       "ZESTADO_EPP": "Aprobado",
+                    //       "ZLIBERADOR": "María López",
+                    //       "ZSTATUS": "Activo",
+                    //       "ZSTAT_LIBER": "Liberado"
+                    //     }
+                    //   ]
+                    //   ,
                     "listurlBD": {
                         "bdClientes2": "cpbl/browse/",
                         "bdClientes": "cpdb/mydb/",

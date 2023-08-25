@@ -353,7 +353,8 @@
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Anexo" />
-                        <tab:template> <Text text="{myParam>ZANEXO}" /> </tab:template>
+                        <tab:template> <Link text="{myParam>ZANEXO}" press="handleLinkPress" />  </tab:template>
+                    
                     </tab:Column>
                 </tab:columns>
             </tab:Table> 

@@ -14,39 +14,84 @@ sap.ui.define([
     function (Controller,MessageBox,Filter,FilterOperator,FilterType,Fragment,MessageToast,Spreadsheet) {
         "use strict";
         var usuario120 = "CONSULT_MM";
-        var password120 = "Laredo2023.";
+        var password120 = "Laredo2023*";
         var url_ini = "";
-        var usuario = "CONSULT_PQ01";
-        var password = "Rcom2023.."; 
+        var usuario = "CONSULT_MM";
+        var password = "Laredo2023*"; 
         return Controller.extend("appss.aplicationss.controller.vEditarEpp", {
             getRouter: function () {
                 return sap.ui.core.UIComponent.getRouterFor(this);
             },
-            onInit: function () {
-                //this.getDataINSRESERVAEPP()
-                // this.getDataILISTMAT_RESERVAEPP()
+            onInit: function () { 
             }, 
             onAfterRendering:async function () { 
+                // this.getDataListMateriales()
                 this.buscarTrabajador()
+                let oModel = this.getView().getModel("myParam");  
+                // let materialesSelectReservaTemp = oModel.getProperty("/materialesSelectReservaTemp");
+                let materialesSelectReservaTemp = oModel.getProperty("/materialesSelectReservaTemp");
+                let materialesTemp = oModel.getProperty("/materialesTemp");
+                let materialesEdit = [...materialesSelectReservaTemp,...materialesTemp]
+                debugger
+                oModel.setProperty("/materialesEdit",materialesEdit);
             },
             onPageBack : function () {  
                 this.getRouter().getTargets().display("TargetvMain");
             }, 
             guardarReservasEpp: function () {  
+                //
                 this.cancelAddEpp()
                 let oModel = this.getView().getModel("myParam");  
-                let listMaterialesReserva = oModel.getProperty("/newListMaterialReserva");
+                //array original editado
+                let materialesSelectReservaTemp = oModel.getProperty("/materialesSelectReservaTemp");
+                console.log("materialesSelectReservaTemp",materialesSelectReservaTemp)
                 
-                var formData = [{
-                    rEpp_fechaReq : this.getView().byId("rEpp_fechaReq").getValue(),
-                    rEpp_centro : this.getView().byId("rEpp_centro").getValue(),
-                    rEpp_almacen : this.getView().byId("rEpp_almacen").getValue(),
-                    rEpp_codTrab : this.getView().byId("rEpp_codTrab").getValue(),
-                }]
-                //FALTA IMPLEMENTAR LOS CAMBIOS
-                // var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_DETALLE_TRABAJADOR/1000/0/${trabajador.COD_PERSONAL}/${tipo}/0/0/0?sap-client=120`;
-                // var dataRes = this.f_PostJsonData(url, formData,true) // envia nuevo registro
-
+                debugger
+                let fechaReq = this.cambiarFormatoFecha(this.getView().byId("rEpp_fechaReq").getValue())
+                let centro = this.getView().byId("rEpp_centro").getValue()
+                let almacen = this.getView().byId("rEpp_almacen").getValue()
+                let codTrab = this.getView().byId("rEpp_codTrab").getValue()
+                let dni = this.getView().byId("rEpp_dni").getValue()
+                let cargo = this.getView().byId("rEpp_cargo").getValue()
+                let area = this.getView().byId("rEpp_areaTrb").getValue()
+                
+                let detalle = []
+                for (var valor of materialesSelectReservaTemp) {
+                    let obj =  {
+                        codigomaterial : valor.MATNR,
+                        cantidad : valor.BDMNG,
+                        ZIND_CAMBIO : valor.ZIND_CAMBIO,
+                        ZIND_VALORADO : "N",
+                        ZRES_DEVOLUCION : "N",
+                        ZIND_PERDIDA : "N",
+                        ZSTATUS : "N",
+                        // ZID_POSICION: 
+                    }
+                    detalle.push(obj)
+                }
+                //unir el  array temporal de nuevos materiales  y el array original editado
+                let materialesEdit = oModel.getProperty("/materialesEdit");
+                let detalleMaterialTotal = [...detalle,...materialesEdit]
+                console.log("detalleMaterialTotal",detalleMaterialTotal)
+                debugger
+                let data = {
+                    cabecera : {
+                        fecharequerimiento : fechaReq,
+                        centro : centro,
+                        almacen : almacen,
+                        codigotrabajador : codTrab,
+                        almacendestino : "0301",
+                        clasemovimiento : "311",
+                        dni,
+                        cargo,
+                        area
+                    },
+                    detalle 
+                } 
+                console.log("data",data)
+                debugger
+                // var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_RESERVA_EPPS/1000/0/0/0/0/0/0?sap-client=120`;
+                // var dataRes = this.f_PostJsonData(url, data,true) // envia nuevo registro
                 // if(dataRes.cod != undefined && dataRes.cod == 'Error'){
                 //     MessageToast.show("Error (" + dataRes.descripcion + ")");
                 // }else{ 
@@ -57,27 +102,41 @@ sap.ui.define([
             },
 
             //PANEL TABLE DE REGISTRO MEDICO
-            addEpp: function () { this.getView().byId("panelEpp").setVisible(true) },
+            addEpp: function () { 
+                this.getView().byId("panelEpp").setVisible(true)
+                this.getDataListMateriales()
+            },
             cancelAddEpp: function () {  
                 this.getView().byId("panelEpp").setVisible(false)
+                this.getView().byId("panelEppEdit").setVisible(false)
             },  
             saveEpp : function () {  
-                console.log("saveRMedico")
-                let oModel = this.getView().getModel("myParam");  
-                let list = oModel.getProperty("/newListMaterialReserva");  
+                // console.log("saveRMedico")
+                let oModel = this.getView().getModel("myParam");   
+                
+                var modelMateriales = "/materialesEdit"  //lista de la tabla
+                // var materialesEdit  = "/materialesEdit "
+                let list = oModel.getProperty(modelMateriales ); 
+
                 var formData = { 
-                    ZMATERIAL : this.getView().byId("epp_codMaterial").getValue(),
-                    ZDESCRIPCION : this.getView().byId("epp_descripcion").getValue(),
-                    ZCANTIDAD : this.getView().byId("epp_cantidad").getValue(),
+                    BDTER :  this.cambiarFormatoFecha(this.getView().byId("epp_fechaEntrega").getValue()),
+                    MATNR : this.getView().byId("epp_codMaterial").getValue(),
+                    MARKTX : this.getView().byId("epp_descripcion").getValue(),
+                    BDMNG : this.getView().byId("epp_cantidad").getValue(),
                     ZIND_CAMBIO : this.getView().byId("epp_cambio").getSelectedKey(),
-                    ZFECHA :  this.cambiarFormatoFecha(this.getView().byId("epp_fechaEntrega").getValue()) 
+                    ZSTAT_LIBER : "N",
                 } 
-                console.log("formData",formData)
+                // console.log("formData",formData)
                 list.push(formData)
-                oModel.setProperty("/newListMaterialReserva",list); 
+                oModel.setProperty(modelMateriales,list); 
+                //logica agregar en el modelo temporal
+                let materialesTemp = oModel.getProperty("/materialesTemp");  //lista de la tabla tamporal recian subidos
+                materialesTemp.push(formData)
+                oModel.setProperty("/materialesTemp",materialesTemp); 
                 // limpiar formulario
                 let accionClean = [
                     {id:"epp_codMaterial"},
+                    {id:"epp_descripcion"},
                     {id:"epp_cantidad"},
                     {id:"epp_cambio", select: true},
                     {id:"epp_fechaEntrega"}
@@ -86,10 +145,11 @@ sap.ui.define([
                 this.cancelAddEpp()
             },
             editEpp: function () {  
+                this.getDataListMateriales()
                 let oModel = this.getView().getModel("myParam");  
 
                 let varPanel = "panelEppEdit"
-                let varListTable = "/newListMaterialReserva"
+                let varListTable = "/materialesEdit"
                 let varOTableId = "idTableMateriales"
                 let varTemEdit = "/temEditMaterial"
                 let varTemEditIndice = "/temEditMaterialId" 
@@ -97,21 +157,21 @@ sap.ui.define([
 
                 var oTable = this.getView().byId(varOTableId);
                 var indiceEdit = oTable.getSelectedIndices();
-                console.log("indiceEdit",indiceEdit)
+                // console.log("indiceEdit",indiceEdit)
                 if (indiceEdit.length > 0 && indiceEdit < listTable.length  && listTable[indiceEdit] != undefined) {
-                    console.log("indice seleccionado")
+                    // console.log("indice seleccionado")
                     this.getView().byId(varPanel).setVisible(true)
                     // console.log("Registro A EDITAR.",listTable[indiceEdit]);
                     oModel.setProperty(varTemEdit,listTable[indiceEdit]);  //nombre de modelo temporal a editar
                     oModel.setProperty(varTemEditIndice,indiceEdit); //indice de modelo temporal a editar
                 } else {
                     MessageToast.show("Seleccione un registro");
-                console.log("Índice inválido, SELECCIONEE UNO");
+                // console.log("Índice inválido, SELECCIONEE UNO");
                 }  
             },
             saveEditEpp: function () {  
                 let oModel = this.getView().getModel("myParam");   
-                let varListTable = "/newListMaterialReserva" 
+                let varListTable = "/materialesEdit" 
                 let varTemEditIndice = "/temEditMaterialId" 
 
                 let list = oModel.getProperty(varListTable);
@@ -125,27 +185,44 @@ sap.ui.define([
                 } 
                 this.actualizarCamposPorIndice(list, tempEditId, formData); 
                 oModel.setProperty(varListTable,list); 
+                debugger
+                //LOGICA PARA REPLICAR DATA EN LISTA DE MATERIALES ORIGINAL /materialesSelectReservaTemp 
+                let modelMaestroMat = oModel.getProperty("/materialesSelectReservaTemp ");
+                this.actualizarArregloMaestro(modelMaestroMat,formData) 
                 this.cancelAddEpp()
+            },
+            actualizarArregloMaestro : function (arregloMaestro, objeto) {
+                const { ZVERSION, ZID_DOCUMENTO, ...nuevosCampos } = objeto;
+              
+                const indice = arregloMaestro.findIndex(registro => 
+                  registro.ZVERSION === ZVERSION && registro.ZID_DOCUMENTO === ZID_DOCUMENTO
+                );
+              
+                if (indice !== -1) {
+                  arregloMaestro[indice] = { ...arregloMaestro[indice], ...nuevosCampos };
+                }
             },
             deleteEpp : function () {  
                 let oModel = this.getView().getModel("myParam");  
-                let varListTable = "/newListMaterialReserva"   
+                let varListTable = "/materialesSelectReservaTemp"   
                 let varOTableId = "idTableMateriales"
                 let varTemEdit = "/temEditMaterial" 
 
                 let list = oModel.getProperty(varListTable);   
                 var oTable = this.getView().byId(varOTableId);
                 var indiceAEliminar = oTable.getSelectedIndices();
-                console.log("indiceAEliminar ",indiceAEliminar)
+                // console.log("indiceAEliminar ",indiceAEliminar)
                 if (indiceAEliminar >= 0 && indiceAEliminar < list.length && list[indiceAEliminar] != undefined ) {
                     list.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
                     oModel.setProperty(varTemEdit,list);
-                    console.log("Registro eliminado.");
+                    MessageToast.show("Registro eliminado");
+                    // console.log("Registro eliminado.");
                 } else {
                     MessageToast.show("Seleccione un registro");
-                    console.log("Índice inválido, no se eliminó ningún registro.");
+                    // console.log("Índice inválido, no se eliminó ningún registro.");
                 }  
             },
+
             buscarTrabajador:  function () {  
                 console.log('getListEmpleado')
                 var iCodTrabajador = this.getView().byId("rEpp_codTrab").getValue()
@@ -158,7 +235,7 @@ sap.ui.define([
                     MessageToast.show("No encontrado");
                 }else{
                     dataRes= dataRes[0]
-                    debugger
+                    // debugger
                     if(dataRes){
                         this.getView().byId("rEpp_nombres").setValue(dataRes.NOMBRE)
                         this.getView().byId("rEpp_apellido").setValue(dataRes.APELLIDO)
@@ -175,19 +252,49 @@ sap.ui.define([
                 return dataRes
             },
             
-            getDataILISTMAT_RESERVAEPP:  function () { 
+            getDataListMateriales:  function () { 
                 var oModel = this.getView().getModel("myParam"); 
-                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_MAT_EPPS/1000/1001/0300/0/0/0/0?sap-client=120"; 
-                var dataRes =  this.f_GetJson(url) 
-                console.log('LISTMAT_RESERVAEPP DATA ', dataRes)
+                var centro = this.getView().byId("rEpp_centro").getValue()
+                var almacen = this.getView().byId("rEpp_almacen").getValue()
+                // var centro = "1001"
+                // var almacen = "0300" 
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_MAT_EPPS/1000/${centro}/${almacen}/0/0/0/0?sap-client=120`; 
+                var dataRes =  this.f_GetJson(url,true) 
+                console.log('getDataListMateriales DATA ', dataRes)
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
                     MessageToast.show("Error (" + dataRes.descripcion + ")");
                 }else{
-                    oModel.setProperty('/dataTab_Material', dataRes);  
+                    // dataRes = dataRes.ITAB
+                    const atributosNumeros = { LABST: true };
+                    let res = this.transformarAtributosEnString(dataRes,atributosNumeros)
+                    console.log('getDataListMateriales DATA ', res)
+                    oModel.setProperty("/dataTab_Material",dataRes);
+                    // let listMaterialesReserva = oModel.getProperty("/newListMaterialReserva");
                 }
             },
+            transformarAtributosEnString: function (array, atributosNumeros) {  
+                array.forEach(obj => {
+                    for (const atributo in atributosNumeros) {
+                    if (typeof obj[atributo] === 'number') {
+                        obj[atributo] = obj[atributo].toString();
+                    }
+                    }
+                });
+                return array; 
+            },
             //input Epps
-            changeEpps: function () { this._dgEpp().open() },
+            changeEpps: function () { 
+                let oModel = this.getView().getModel("myParam");  
+                oModel.setProperty("/idInputMaterial","epp_codMaterial");
+                // let listMaterialesReserva = oModel.getProperty("/newListMaterialReserva");
+                this._dgEpp().open() 
+            },
+            changeEppsEdit: function () { 
+                let oModel = this.getView().getModel("myParam");  
+                oModel.setProperty("/idInputMaterial","edit_epp_codMaterial");
+                // let listMaterialesReserva = oModel.getProperty("/newListMaterialReserva");
+                this._dgEpp().open()
+            },
             _dgEpp: function () { 
                 var e = this.getView();
                 if (!this.dgEpp) {
@@ -200,14 +307,17 @@ sap.ui.define([
                 var sValue = oEvent.getParameter("value");
                 // console.log("sValue",sValue)
                 let arrSearch = [
-                    {atr:"id"},
-                    {atr:"nombre"},
-                    {atr:"stock"}
+                    {atr:"MATNR"},
+                    {atr:"MAKTX"},
+                    {atr:"LABST"}
                 ] 
                 this.dialogsSearch(oEvent,arrSearch,sValue)
             }, 
             dgGetCloseEpp: function (oEvent) { 
-                let idInput = "epp_desc"
+                let oModel = this.getView().getModel("myParam");  
+                // oModel.getProperty("/idInputMaterial","epp_codMaterial");
+                let idInput = oModel.getProperty("/idInputMaterial");
+                // let idInput = "epp_codMaterial"
                 this.dialogGetValueClose(oEvent,idInput)
             },
 
@@ -234,6 +344,7 @@ sap.ui.define([
                 this.getView().byId(idInput).setValue(sDescription); 
                 // this.byId(idInput).setValue(sDescription); 
             }, 
+            
             //FUNCIONES GENERALES
             actualizarCamposPorIndice: function (array, indice, nuevosCampos) {
                 if (indice >= 0 && indice < array.length) {

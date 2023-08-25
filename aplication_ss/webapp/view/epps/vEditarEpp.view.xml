@@ -8,7 +8,7 @@
     <Page title="Editar reserva Epp" binding="{path : 'myParam>/selectReservaTemp'}"  showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
 		<headerContent>
 			<Button text="Guardar" icon="sap-icon://paper-plane" type="Emphasized" press="guardarReservasEpp" />
-            <Button text="Cancelar" icon="sap-icon://delete" press="onPageBack" /> 
+            <Button text="Cancelar" icon="sap-icon://decline" press="onPageBack" /> 
 		</headerContent> 
         <content >
             <!-- <Panel width="auto" >
@@ -46,17 +46,17 @@
                                 </f:FormElement>
                                 <f:FormElement label="Fecha reserva">
                                     <f:fields> 
-                                        <DatePicker id="rEpp_fechaReq" value="{myParam>ZRES_DEVOLUCION}" displayFormat="yyyy-MM-dd"/>
+                                        <DatePicker id="rEpp_fechaReq" value="{myParam>BDTER}" displayFormat="yyyy-MM-dd"/>
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Centro">
                                     <f:fields> 
-                                        <Input id="rEpp_centro" value="1001" /> 
+                                        <Input id="rEpp_centro" value="{myParam>WERKS}" /> 
                                     </f:fields>
                                 </f:FormElement>  
                                 <f:FormElement label="Almacén">
                                     <f:fields> 
-                                        <Input id="rEpp_almacen" value="0300" /> 
+                                        <Input id="rEpp_almacen" value="{myParam>LGORT}" /> 
                                     </f:fields>
                                 </f:FormElement>  
                                 <!-- <f:FormElement label="Almacén destino">
@@ -153,9 +153,9 @@
                                         </f:FormElement> 
                                         <f:FormElement label="Cambio">
                                             <f:fields> 
-                                                 <Select forceSelection="false" id="epp_cambio" showSecondaryValues= "true" > 
-                                                    <core:Item key="S" text="Si" />  
+                                                 <Select forceSelection="true" id="epp_cambio" showSecondaryValues= "true" > 
                                                     <core:Item key="N" text="No" />  
+                                                    <core:Item key="S" text="Si" />  
                                                 </Select> 
                                             </f:fields>
                                         </f:FormElement> 
@@ -200,14 +200,14 @@
                                     <f:formElements>
                                         <f:FormElement label="Codigo de material">
                                             <f:fields>  
-                                                <Input id="edit_epp_codMaterial" type="Text" value="{myParam>ZMATERIAL}" placeholder="Seleccione.." valueHelpRequest="changeEpps" showSuggestion="true" showValueHelp="true"/>
+                                                <Input id="edit_epp_codMaterial" type="Text" value="{myParam>MATNR}" placeholder="Seleccione.." valueHelpRequest="changeEppsEdit" showSuggestion="true" showValueHelp="true"/>
                                             </f:fields>
                                         </f:FormElement>  
                                         <f:FormElement label="Descripcion">
-                                            <f:fields> <Input  value="{myParam>ZDESCRIPCION}"   id="edit_epp_descripcion"/>  </f:fields>
+                                            <f:fields> <Input  value="{myParam>MARKTX}"   id="edit_epp_descripcion"/>  </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Cantidad">
-                                            <f:fields> <Input  value="{myParam>ZCANTIDAD}"   id="edit_epp_cantidad"/>  </f:fields>
+                                            <f:fields> <Input  value="{myParam>BDMNG}"   id="edit_epp_cantidad"/>  </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Cambio">
                                             <f:fields> 
@@ -218,7 +218,7 @@
                                             </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Fecha de entrega">
-                                            <f:fields> <DatePicker id="edit_epp_fechaEntrega" value="{myParam>ZFECHA}" displayFormat="yyyy-MM-dd" />    </f:fields>
+                                            <f:fields> <DatePicker id="edit_epp_fechaEntrega" value="{myParam>BDTER}" displayFormat="yyyy-MM-dd" />    </f:fields>
                                         </f:FormElement> 
                                     </f:formElements>
                                 </f:FormContainer> 
@@ -227,7 +227,8 @@
                     </content>
                 </Panel>
                 <!-- tabla  -->
-                <tab:Table id="idTableMateriales" rows="{  path: 'myParam>/newListMaterialReserva' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                <!-- <tab:Table id="idTableMateriales" rows="{  path: 'myParam>/materialesSelectReservaTemp' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title"> -->
+                <tab:Table id="idTableMateriales" rows="{  path: 'myParam>/materialesEdit' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
                     <tab:extension>
                         <OverflowToolbar >
                             <!-- <Title text="Documentos"/> -->
@@ -242,32 +243,32 @@
                     <tab:columns>
                         <tab:Column  >
                             <Label textAlign="Center" wrapping ="true"  text="Fecha entrega" />
-                            <tab:template> <Text text="{myParam>ZFECHA}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text text="{myParam>BDTER}" wrapping="false" /> </tab:template>
                         </tab:Column>
                         <tab:Column >
                             <Label textAlign="Center" wrapping ="true"  text="Código de material" />
-                            <tab:template> <Text  text="{myParam>ZMATERIAL}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text  text="{myParam>MATNR}" wrapping="false" /> </tab:template>
                         </tab:Column>
                         <tab:Column>
                             <Label textAlign="Center" wrapping ="true"  text="Descripción" />
-                            <tab:template> <Text text="{myParam>ZDESCRIPCION}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text text="{myParam>MARKTX}" wrapping="false" /> </tab:template>
                         </tab:Column>     
                         <tab:Column>
                             <Label textAlign="Center" wrapping ="true"  text="Cantidad" />
-                            <tab:template> <Text text="{myParam>ZCANTIDAD}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text text="{myParam>BDMNG}" wrapping="false" /> </tab:template>
                         </tab:Column>     
                         <tab:Column>
-                            <Label textAlign="Center" wrapping ="true"  text="¿Cambio?" />
+                            <Label textAlign="Center" wrapping ="true"  text="Cambio" />
                             <tab:template> <Text text="{myParam>ZIND_CAMBIO}" wrapping="false" /> </tab:template>
                         </tab:Column>     
                         <!-- <tab:Column>
                             <Label textAlign="Center" wrapping ="true"  text="Stock actual" />
                             <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
                         </tab:Column>      -->
-                        <tab:Column>
+                        <!-- <tab:Column>
                             <Label textAlign="Center" wrapping ="true"  text="Status de liberación" />
-                            <tab:template> <Text text="{myParam>ZSTATUS}" wrapping="false" /> </tab:template>
-                        </tab:Column>        
+                            <tab:template> <Text text="{myParam>ZSTAT_LIBER}" wrapping="false" /> </tab:template>
+                        </tab:Column>         -->
                     </tab:columns>
                 </tab:Table>   
         </content> 

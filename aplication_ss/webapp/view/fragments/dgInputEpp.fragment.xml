@@ -8,8 +8,8 @@
 			icon="sap-icon://product"
 			iconDensityAware="false"
 			iconInset="false"
-			title="{myParam>nombre}"
-			description="{myParam>id}"
-            info="Stock : {myParam>stock}" />
+			title="{myParam>MAKTX}"
+			description="{myParam>MATNR}"
+            info="Stock : {myParam>LABST}" />
 	</SelectDialog>
 </core:FragmentDefinition> 

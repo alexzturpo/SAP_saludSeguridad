@@ -7,8 +7,8 @@
     xmlns="sap.m">
     <Page title="Entrega Epp"  binding="{path : 'myParam>/selectReservaTemp'}" showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
 		<headerContent>
-			<Button text="Guardar" icon="sap-icon://paper-plane" type="Emphasized" press="updateIncidente" />
-            <Button text="Cancelar" icon="sap-icon://delete" press="onPageBack" /> 
+			<!-- <Button text="Guardar" icon="sap-icon://paper-plane" type="Emphasized" press="updateIncidente" />
+            <Button text="Cancelar" icon="sap-icon://delete" press="onPageBack" />  -->
 		</headerContent> 
         <content >
             <!-- <Panel width="auto" >
@@ -166,7 +166,8 @@
                         <OverflowToolbar >
                             <!-- <Title text="Documentos"/> -->
                             <ToolbarSpacer />  
-                            <Button text="Entrega Total" type="Emphasized" icon="sap-icon://add" press="addEpp" /> 
+                            <Button text="Entrega" type="Emphasized" icon="sap-icon://add" press="addEpp" /> 
+                            <Button text="Entrega Total" icon="sap-icon://add" press="addEpp" /> 
                             <!-- <Button text="Editar" icon="sap-icon://write-new-document" press="deleteEpp" />   -->
                             <!-- <Button text="Liberación total " icon="sap-icon://outbox" press="deleteInduccion" />   -->
                         </OverflowToolbar>

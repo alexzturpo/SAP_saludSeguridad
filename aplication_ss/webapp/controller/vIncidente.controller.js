@@ -9,10 +9,10 @@ sap.ui.define([
     function (Controller,MessageBox,MessageToast) {
         "use strict";
         // var usuario = "CONSULT_MM";
-        // var password = "Laredo2023.";
+        // var password = "Laredo2023*";
         // var url_ini = "";
-        var usuario = "CONSULT_PQ01";
-        var password = "Rcom2023..";
+        var usuario = "CONSULT_MM";
+        var password = "Laredo2023*";
         var url_ini = "";
         return Controller.extend("appss.aplicationss.controller.vIncidente", {
             getRouter: function () {
@@ -282,10 +282,11 @@ sap.ui.define([
             handleLinkPress:function(oEvent){
                 //var oSelectedItem = oEvent.getSource();
                 //var oContext = oSelectedItem.getBindingContext();
+                var oSelectedItem = oEvent.oSource.mProperties.text;       
                 var filename = "testt.pdf";//oContext.getObject().nombre;
                 var uri = "/dms/testt.pdf";// + filename;
                 var link = document.createElement("a");
-                link.download = filename;
+                link.download = oSelectedItem;
                 link.href = uri;
                 document.body.appendChild(link);
                 link.click();

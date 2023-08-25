@@ -9,10 +9,10 @@ sap.ui.define([
     function (Controller,MessageBox,MessageToast) {
         "use strict";
         var usuario120 = "CONSULT_MM";
-        var password120 = "Laredo2023.";
+        var password120 = "Laredo2023*";
         var url_ini = "";
-        var usuario = "CONSULT_PQ01";
-        var password = "Rcom2023.."; 
+        var usuario = "CONSULT_MM";
+        var password = "Laredo2023*"; 
         return Controller.extend("appss.aplicationss.controller.vTrabajador", {
             getRouter: function () {
                 return sap.ui.core.UIComponent.getRouterFor(this);
@@ -20,6 +20,22 @@ sap.ui.define([
             onInit: function () {
 
             }, 
+            onAfterRendering: function () {
+
+            },
+            handleLinkPress:function(oEvent){
+                //var oSelectedItem = oEvent.getSource();
+                //var oContext = oSelectedItem.getBindingContext();
+                var oSelectedItem = oEvent.oSource.mProperties.text;       
+                var filename = "testt.pdf";//oContext.getObject().nombre;
+                var uri = "/dms/testt.pdf";// + filename;
+                var link = document.createElement("a");
+                link.download = oSelectedItem;
+                link.href = uri;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            },
             onPageBack : function () {  
                 this.getRouter().getTargets().display("TargetvMain");
             },
@@ -301,7 +317,7 @@ sap.ui.define([
                 let listTempDocSubidos = oModel.getProperty("/listTempDocSubidos");   
                 listTempDocSubidos.push(formData)
                 oModel.setProperty("/listTempDocSubidos",listTempDocSubidos); 
-                debugger
+                // debugger
                 
                 // limpiar formulario
                 let accionClean = [  
@@ -332,7 +348,7 @@ sap.ui.define([
                 oModel.setProperty(varListTable,list); 
                 //logica de replica en la el modelo maestro   
                 let modelMaestroDoc = oModel.getProperty("/getListRgstrDOCVersiones");
-                debugger
+                // debugger
                 // formData  // es el objeto con los cambios 
                 this.actualizarArregloMaestro(modelMaestroDoc,formData) 
                 console.log("data replicada ",modelMaestroDoc)

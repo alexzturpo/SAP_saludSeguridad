@@ -14,10 +14,10 @@ sap.ui.define([
     function (Controller,MessageBox,Filter,FilterOperator,FilterType,Fragment,MessageToast,Spreadsheet) {
         "use strict";
         var usuario120 = "CONSULT_MM";
-        var password120 = "Laredo2023.";
+        var password120 = "Laredo2023*";
         var url_ini = "";
-        var usuario = "CONSULT_PQ01";
-        var password = "Rcom2023.."; 
+        var usuario = "CONSULT_MM";
+        var password = "Laredo2023*"; 
         return Controller.extend("appss.aplicationss.controller.vVisualizar", {
             getRouter: function () {
                 return sap.ui.core.UIComponent.getRouterFor(this);
@@ -25,99 +25,102 @@ sap.ui.define([
             onInit: function () {
 
             }, 
+            onAfterRendering:async function () {  
+                this.buscarTrabajador()
+            },
             onPageBack : function () {  
                 this.getRouter().getTargets().display("TargetvMain");
             }, 
-            addEpp: function () {  
-                this.getView().byId("panelEpp").setVisible(true)
-            },
-            cancelAddEpp: function () {  
-                this.getView().byId("panelEpp").setVisible(false)
-            },
+            // addEpp: function () {  
+            //     this.getView().byId("panelEpp").setVisible(true)
+            // },
+            // cancelAddEpp: function () {  
+            //     this.getView().byId("panelEpp").setVisible(false)
+            // },
             //input Epps
-            changeEpps: function () { this._dgEpp().open() },
-            _dgEpp: function () { 
-                var e = this.getView();
-                if (!this.dgEpp) {
-                    this.dgEpp = sap.ui.xmlfragment("idDgEpp", "appss.aplicationss.view.fragments.dgInputEpp", this)
-                }
-                e.addDependent(this.dgEpp);
-                return this.dgEpp 
-            },
-            dgSearchEpp: function (oEvent) { 
-                var sValue = oEvent.getParameter("value");
-                // console.log("sValue",sValue)
-                let arrSearch = [
-                    {atr:"id"},
-                    {atr:"nombre"},
-                    {atr:"stock"}
-                ] 
-                this.dialogsSearch(oEvent,arrSearch,sValue)
-            },
-            addEpp: function (oEvent) { 
-                this.obtenerMaterialReservaEPP()
-            },
-            dgGetCloseEpp: function (oEvent) { 
-                let idInput = "epp_desc"
-                this.dialogGetValueClose(oEvent,idInput)
-            },
-            //input LALM
-            obtenerMaterialReservaEPP: function(){ 
-                var oModel = this.getView().getModel("myParam"); 
-                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_MAT_RES_EPPS/1000/0/0300/0/0/0/0?sap-client=120"; 
-                var dataRes =  this.f_GetJson(url) 
-                console.log('LISTMATRESERVA_EPP DATA ', dataRes)
-                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                    MessageToast.show("Error (" + dataRes.descripcion + ")");
-                }else{
-                    oModel.setProperty('/dataTabReserva_Material', dataRes);  
-                }
-            },
-            actualizarStatusReservaEPP: function(){ 
-                var oModel = this.getView().getModel("myParam"); 
-                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UPD_LIST_EPPS_UPDATE/1000/0/0/0/0/0/0?sap-client=120"; 
-                var dataRes =  this.f_GetJson(url) 
-                console.log('UPDATEMATRESERVA_EPP DATA ', dataRes)
-                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                    MessageToast.show("Error (" + dataRes.descripcion + ")");
-                }else{
-                    oModel.setProperty('/dataTabReserva1_Material', dataRes);  
-                }
-            },
-            deleteMaterialReservaEPP: function(){ 
-                var oModel = this.getView().getModel("myParam"); 
-                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UUPD_LIST_EPPS_DELETE/1000/0/0/0/0/0/0?sap-client=120"; 
-                var dataRes =  this.f_GetJson(url) 
-                console.log('UPDATEMATRESERVA_EPP DATA ', dataRes)
-                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                    MessageToast.show("Error (" + dataRes.descripcion + ")");
-                }else{
-                    oModel.setProperty('/dataTabReserva2_Material', dataRes);  
-                }
-            },
+            // changeEpps: function () { this._dgEpp().open() },
+            // _dgEpp: function () { 
+            //     var e = this.getView();
+            //     if (!this.dgEpp) {
+            //         this.dgEpp = sap.ui.xmlfragment("idDgEpp", "appss.aplicationss.view.fragments.dgInputEpp", this)
+            //     }
+            //     e.addDependent(this.dgEpp);
+            //     return this.dgEpp 
+            // },
+            // dgSearchEpp: function (oEvent) { 
+            //     var sValue = oEvent.getParameter("value");
+            //     // console.log("sValue",sValue)
+            //     let arrSearch = [
+            //         {atr:"id"},
+            //         {atr:"nombre"},
+            //         {atr:"stock"}
+            //     ] 
+            //     this.dialogsSearch(oEvent,arrSearch,sValue)
+            // },
+            // addEpp: function (oEvent) { 
+            //     this.obtenerMaterialReservaEPP()
+            // },
+            // dgGetCloseEpp: function (oEvent) { 
+            //     let idInput = "epp_desc"
+            //     this.dialogGetValueClose(oEvent,idInput)
+            // },
+            // //input LALM
+            // obtenerMaterialReservaEPP: function(){ 
+            //     var oModel = this.getView().getModel("myParam"); 
+            //     var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_MAT_RES_EPPS/1000/0/0300/0/0/0/0?sap-client=120"; 
+            //     var dataRes =  this.f_GetJson(url) 
+            //     console.log('LISTMATRESERVA_EPP DATA ', dataRes)
+            //     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+            //         MessageToast.show("Error (" + dataRes.descripcion + ")");
+            //     }else{
+            //         oModel.setProperty('/dataTabReserva_Material', dataRes);  
+            //     }
+            // },
+            // actualizarStatusReservaEPP: function(){ 
+            //     var oModel = this.getView().getModel("myParam"); 
+            //     var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UPD_LIST_EPPS_UPDATE/1000/0/0/0/0/0/0?sap-client=120"; 
+            //     var dataRes =  this.f_GetJson(url) 
+            //     console.log('UPDATEMATRESERVA_EPP DATA ', dataRes)
+            //     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+            //         MessageToast.show("Error (" + dataRes.descripcion + ")");
+            //     }else{
+            //         oModel.setProperty('/dataTabReserva1_Material', dataRes);  
+            //     }
+            // },
+            // deleteMaterialReservaEPP: function(){ 
+            //     var oModel = this.getView().getModel("myParam"); 
+            //     var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UUPD_LIST_EPPS_DELETE/1000/0/0/0/0/0/0?sap-client=120"; 
+            //     var dataRes =  this.f_GetJson(url) 
+            //     console.log('UPDATEMATRESERVA_EPP DATA ', dataRes)
+            //     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+            //         MessageToast.show("Error (" + dataRes.descripcion + ")");
+            //     }else{
+            //         oModel.setProperty('/dataTabReserva2_Material', dataRes);  
+            //     }
+            // },
             // funciones generales para los input con fragment
-            dialogsSearch: function (oEvent,arrSearch,sValue) { 
-                let comFil = []; 
-                for (const objeto of arrSearch) { 
-                    let oFilter = new sap.ui.model.Filter (objeto.atr, sap.ui.model.FilterOperator.Contains, sValue);
-                    comFil.push(oFilter);
-                } 
-                // console.log("comFil",comFil);
-                var oFilter = new sap.ui.model.Filter({
-                    filters: comFil,
-                    and: false
-                });
-                oEvent.getSource().getBinding("items").filter([oFilter]);
-            },
-            dialogGetValueClose: function (oEvent,idInput) {
-                let sDescription, oSelectedItem = oEvent.getParameter("selectedItem");
-                oEvent.getSource().getBinding("items").filter([]);
-                if (!oSelectedItem) { return } 
-                sDescription = oSelectedItem.getDescription(); 
-                console.log("ID INPUT",idInput)
-                this.getView().byId(idInput).setValue(sDescription); 
-                // this.byId(idInput).setValue(sDescription); 
-            }, 
+            // dialogsSearch: function (oEvent,arrSearch,sValue) { 
+            //     let comFil = []; 
+            //     for (const objeto of arrSearch) { 
+            //         let oFilter = new sap.ui.model.Filter (objeto.atr, sap.ui.model.FilterOperator.Contains, sValue);
+            //         comFil.push(oFilter);
+            //     } 
+            //     // console.log("comFil",comFil);
+            //     var oFilter = new sap.ui.model.Filter({
+            //         filters: comFil,
+            //         and: false
+            //     });
+            //     oEvent.getSource().getBinding("items").filter([oFilter]);
+            // },
+            // dialogGetValueClose: function (oEvent,idInput) {
+            //     let sDescription, oSelectedItem = oEvent.getParameter("selectedItem");
+            //     oEvent.getSource().getBinding("items").filter([]);
+            //     if (!oSelectedItem) { return } 
+            //     sDescription = oSelectedItem.getDescription(); 
+            //     console.log("ID INPUT",idInput)
+            //     this.getView().byId(idInput).setValue(sDescription); 
+            //     // this.byId(idInput).setValue(sDescription); 
+            // }, 
 
             buscarTrabajador:  function () {  
                 console.log('getListEmpleado')
@@ -138,6 +141,43 @@ sap.ui.define([
                     this.getView().byId("rEpp_areaTrb").setValue(dataRes.AREA) 
                 }
             },
+            liberarEpp: function () {
+                let res = this.selectTableListReservasEpp()
+                debugger
+                if(res){
+                    console.log("liberarEpp",liberarEpp)
+                }
+            },
+            liberarTotalEpp: function () {
+                let res = this.selectTableListReservasEpp()
+                debugger
+                if(res){
+                    console.log("liberarEpp",liberarEpp)
+                }
+            },
+            selectTableListReservasEpp: function () {
+                let res = false 
+                let oModel = this.getView().getModel("myParam");  
+                let varListTable = "/materialesSelectReservaTemp"   
+                let varOTableId = "idTableMateriales"
+                // let varTemEdit = "/selectReservaTemp" 
+
+                let list = oModel.getProperty(varListTable);   
+                var oTable = this.getView().byId(varOTableId);
+                var indiceAEliminar = oTable.getSelectedIndices();
+                // console.log("selectTableListReservasEpp ",indiceAEliminar, list[indiceAEliminar],list)
+                if (indiceAEliminar >= 0 && indiceAEliminar < list.length && list[indiceAEliminar] != undefined ) {
+                    // LOGICA PARA ÑA SELECCION
+                    // oModel.setProperty(varTemEdit,list[indiceAEliminar]);
+                    console.log("Registro eliminado.");
+                    res = list[indiceAEliminar] //solo si hay una seleccion
+                } else {
+                    MessageToast.show("Seleccione un registro");
+                    console.log("Índice inválido, no se eliminó ningún registro.");
+                }  
+                // debugger
+                return res
+            }, 
             // FUNCIONES GENERALES 
             buscarTrabajadorSociedad:  function (iCodTrabajador) {   
                 var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${iCodTrabajador}/0/0/0/0`;

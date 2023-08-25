@@ -12,7 +12,7 @@
 		<content>  
             <!-- TABLA DE  LSUTA DE INDUCCIONES  -->
             <VBox class="sapUiSmallMargin">
-                <tab:Table  cellClick="onSelectTab" rows="{  path: 'myParam>/ListPersonalInduccion' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                <tab:Table  cellClick="onSelectTab" rows="{  path: 'myParam>/ListPersonalInduccion' }" selectionMode="None"  visibleRowCount="5" ariaLabelledBy="title">
                     <tab:extension>
                         <OverflowToolbar > <Title text="Inducciones"/>  </OverflowToolbar>
                     </tab:extension>
@@ -35,11 +35,11 @@
                         </tab:Column>
                         <tab:Column >
                             <Label textAlign="Center" wrapping ="true"  text="Fecha" />
-                            <tab:template> <Text text="{myParam>ZFECH_INDUCCION}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text text="{myParam>ZFEC_INDUCCION}" wrapping="false" /> </tab:template>
                         </tab:Column> 
                         <tab:Column>
                             <Label textAlign="Center" wrapping ="true"  text="Fecha de vencimiento" />
-                            <tab:template> <Text text="{myParam>ZFECH_INDUCCIONVENCIIENTO}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text text="{myParam>ZFEC_VENCIMIENTO}" wrapping="false" /> </tab:template>
                         </tab:Column>
                         <tab:Column >
                             <Label textAlign="Center" wrapping ="true"  text="Anexo" />
@@ -191,7 +191,7 @@
                 <Panel id="panelRegistroSCTR" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
                     <headerToolbar>
                         <OverflowToolbar style="Clear">
-                            <Title text="Agregar registro médico" />
+                            <Title text="Agregar SCTR" />
                             <ToolbarSpacer />
                             <Button icon="sap-icon://save" press="saveSCTR" text="Guardar" type="Emphasized" /> 
                             <Button icon="sap-icon://decline" press="cancelSCTR" text="Cancelar" type="Emphasized" /> 
@@ -227,10 +227,8 @@
                                         <f:FormElement label="Estado">
                                             <f:fields> 
                                                 <Select forceSelection="false" id="SCTR_estado" showSecondaryValues= "true" > 
-                                                    <core:Item key="P" text="Pendiente" />
-                                                    <core:Item key="F" text="Completado" />  
-                                                    <core:Item key="V" text="Vencido" />  
-                                                    <core:Item key="X" text="Por Vencer" />  
+                                                    <core:Item key="A" text="Vigente " /> 
+                                                    <core:Item key="V" text="Vencido" />   
                                                 </Select> 
                                             </f:fields>
                                         </f:FormElement> 
@@ -246,7 +244,7 @@
                 <Panel id="panelRegistroSCTREdit"  binding="{path : 'myParam>/temEditSCTR'}" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
                     <headerToolbar>
                         <OverflowToolbar style="Clear">
-                            <Title text="Editar registro médico" />
+                            <Title text="Editar SCTR" />
                             <ToolbarSpacer />
                             <Button icon="sap-icon://save" press="saveEditSCTR" text="Guardar" type="Emphasized" /> 
                             <Button icon="sap-icon://decline" press="cancelSCTR" text="Cancelar" type="Emphasized" /> 
@@ -282,10 +280,8 @@
                                         <f:FormElement label="Estado">
                                             <f:fields> 
                                                 <Select forceSelection="false" selectedKey="{myParam>ZESTADO}" id="edit_SCTR_estado" showSecondaryValues= "true" > 
-                                                    <core:Item key="P" text="Pendiente" />
-                                                    <core:Item key="F" text="Completado" />  
+                                                    <core:Item key="A" text="Vigente " /> 
                                                     <core:Item key="V" text="Vencido" />  
-                                                    <core:Item key="X" text="Por Vencer" />  
                                                 </Select> 
                                             </f:fields>
                                         </f:FormElement> 
@@ -336,7 +332,7 @@
                         <OverflowToolbar > 
                             <Title text="Documentos a cumplir"/>
                             <ToolbarSpacer />   
-                            <Button text="Revisar" icon="sap-icon://delete" press="revisarRDocsNecesario" />  
+                            <Button text="Revisar" icon="sap-icon://check-availability" press="revisarRDocsNecesario" />  
                         </OverflowToolbar>
                     </tab:extension>
                     <tab:columns>
@@ -473,8 +469,8 @@
                             <tab:template> <Text text="{myParam>ZID_DOCUMENTO}" wrapping="false" /> </tab:template>
                         </tab:Column>
                         <tab:Column  >
-                            <Label textAlign="Center" wrapping ="true"  text="Nombre de documento" />
-                            <tab:template> <Text text="{myParam>ZNOMBRE_DOC}" wrapping="false" /> </tab:template>
+                            <Label textAlign="Center" wrapping ="true"  text="Nombre de documento" />                       
+                            <tab:template> <Link text="{myParam>ZNOMBRE_DOC}" press="handleLinkPress" />  </tab:template>
                         </tab:Column>
                         <tab:Column >
                             <Label textAlign="Center" wrapping ="true"  text="Version" />
@@ -506,8 +502,8 @@
                     </tab:extension>
                     <tab:columns>
                         <tab:Column  >
-                            <Label textAlign="Center" wrapping ="true"  text="Nombre de documento" />
-                            <tab:template> <Text text="{myParam>ZDOCUMENTO}" wrapping="false" /> </tab:template>
+                            <Label textAlign="Center" wrapping ="true"  text="Nombre de documento" />                  
+                            <tab:template> <Link text="{myParam>ZDOCUMENTO}" press="handleLinkPress" />  </tab:template>
                         </tab:Column>
                         <tab:Column >
                             <Label textAlign="Center" wrapping ="true"  text="Versión" />
