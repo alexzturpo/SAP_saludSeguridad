@@ -59,7 +59,7 @@
                                 </f:FormElement>
                                 <f:FormElement label="Fecha programada">
                                     <f:fields>
-                                        <DatePicker id="gInsp_programada" value="{myParam>ZFEC_PROGRAM}" displayFormat="yyyy-MM-dd" placeholder="Ingresar fecha"/>
+                                        <DatePicker id="gInsp_programada" value="{myParam>ZFEC_PROGRAM}" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd" placeholder="Ingresar fecha"/>
                                     </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="Categoría">
@@ -82,7 +82,7 @@
                             <f:formElements>
                                 <f:FormElement label="Fecha real">
                                     <f:fields>
-                                        <DatePicker value="{myParam>ZFEC_REAL}" id="gInsp_fechaReal" displayFormat="yyyy-MM-dd" placeholder="Ingresar fecha"/>  
+                                        <DatePicker value="{myParam>ZFEC_REAL}" id="gInsp_fechaReal" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd" placeholder="Ingresar fecha"/>  
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Hora real">
@@ -397,7 +397,7 @@
                                     </f:FormElement> 
                                     <f:FormElement label="Fecha de ejecución">
                                         <f:fields> 
-                                            <DatePicker id="medCor_fechaEjc" value="" displayFormat="yyyy-MM-dd" change="handleChange"/> </f:fields>
+                                            <DatePicker id="medCor_fechaEjc" value="" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd" change="handleChange"/> </f:fields>
                                     </f:FormElement> 
                                     <f:FormElement label="Estado de acción correctiva">
                                         <f:fields> 
@@ -485,7 +485,7 @@
                                         <f:fields> <Input value="" id="responsable_cargo"/> </f:fields>
                                     </f:FormElement> 
                                     <f:FormElement label="Fecha">
-                                        <f:fields> <DatePicker id="responsable_fecha" value=""  displayFormat="yyyy-MM-dd"/> </f:fields>
+                                        <f:fields> <DatePicker id="responsable_fecha" value=""  displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/> </f:fields>
                                     </f:FormElement> 
                                 </f:formElements>
                             </f:FormContainer> 

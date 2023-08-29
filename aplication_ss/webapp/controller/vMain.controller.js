@@ -14,10 +14,10 @@
     function (Controller,MessageBox,Filter,FilterOperator,FilterType,Fragment,MessageToast,Spreadsheet) {
         "use strict";
         var usuario120 = "CONSULT_MM";
-        var password120 = "Laredo2023*";
+        var password120 = "Laredo2023**";
         var url_ini = "";
         var usuario = "CONSULT_MM";
-        var password = "Laredo2023*";
+        var password = "Laredo2023**";
         // var url_ini = "";
 
         return Controller.extend("appss.aplicationss.controller.vMain", {
@@ -250,9 +250,11 @@
             liveInputProveedor:function(oEvent){
                 var newValue = oEvent.getParameter("value");
                 if(newValue.length > 0){
-                    this.getView().byId("idsociedadAC").setEditable(false)  
+                    this.getView().byId("dateRucProv").setEditable(false)  
+                    // this.getView().byId("idsociedadAC").setEditable(false)  
                 }else{
-                    this.getView().byId("idsociedadAC").setEditable(true)  
+                    this.getView().byId("dateRucProv").setEditable(true)  
+                    // this.getView().byId("idsociedadAC").setEditable(true)  
                 }
                 // console.log(" newValue", newValue.length)
             }, 
@@ -274,21 +276,21 @@
                 let provRuc =  this.getView().byId("dateRucProv").getValue()  
                 //definimos si consulta en el filtro es tipo P proveedor - S sociedad  
                 let tipo
-                let sociedad =  this.getView().byId("idsociedadAC").getValue()  
-                if(sociedad){
-                    //lista personal  por sociedad
-                    console.log("lista personal  por sociedad")
-                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/${sociedad}/0/0/0/0/0/0`;
-                    var dataRes =  this.f_GetJson(url) 
-                    console.log('getListPersonal DATA ',dataRes)
-                    if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                        MessageToast.show("Error (" + dataRes.descripcion + ")");
-                    }else{
-                        oModel.setProperty('/ListPersonal',dataRes);  
-                        this.getView().byId("btnAddContratista").setVisible(false)  
-                        tipo = "S"
-                    } 
-                }
+                // let sociedad =  this.getView().byId("idsociedadAC").getValue()  
+                // if(sociedad){
+                //     //lista personal  por sociedad
+                //     console.log("lista personal  por sociedad")
+                //     var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/${sociedad}/0/0/0/0/0/0`;
+                //     var dataRes =  this.f_GetJson(url) 
+                //     console.log('getListPersonal DATA ',dataRes)
+                //     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                //         MessageToast.show("Error (" + dataRes.descripcion + ")");
+                //     }else{
+                //         oModel.setProperty('/ListPersonal',dataRes);  
+                //         this.getView().byId("btnAddContratista").setVisible(false)  
+                //         tipo = "S"
+                //     } 
+                // }
                 if(prov || provRuc){
                     if(prov){
                         var urlLIST = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_CONTRATISTA/1000/0/${prov}/0/0/0/0?sap-client=120`;
@@ -451,6 +453,22 @@
                 }
         
             },
+            cleanValoresInduccion:function(){
+                let accionClean = [  
+                    {id:"dTituinducc"},
+                    {id:"dDescrip"},
+                    {id:"dFechaprog"},
+                ]
+                this.limpiarObjeto(accionClean)
+            },
+            cleanValoresInduccionCalificacion:function(){
+                let accionClean = [  
+                    {id:"dTituinduccRC"},
+                    {id:"dDescripRC"},
+                    {id:"dFechaprogRC"}
+                ]
+                this.limpiarObjeto(accionClean)
+            },
             onPressBuscaerRAASIS:function(e){
                 var oModel = this.getView().getModel("myParam");  
                 var codInduccion = this.byId("dCodinducc").getValue()
@@ -475,16 +493,42 @@
                     }else{
                         console.log('LISTA DE ASISTENTES INDUCCION ',dataRes)
                         //AQUI HAY Q AGRAGAR LOS NOMBRES DELO TRABAJADORES DE SOCIEDAD  QUE ESTAN EN LA CAPACITACION
+                        // let arrayObjCambio= [
+                        //     {atr1 :'NOMBRE', atr2:''},
+                        // ]
                         let listTrabajador = oModel.getProperty("/listCodTrabajador"); 
-
+                        
+                        // ZID_COD_TRABAJADOR - COD_PERSONAL
+                        let resultadoFinal = this.combinarInformacion(dataRes, listTrabajador,'ZID_COD_TRABAJADOR','COD_PERSONAL')
+                        console.log('LISTA DE ASISTENTES INDUCCION resultadoFinal ',resultadoFinal)
                         oModel.setProperty('/dataAsistenteInd',dataRes);  
                         if(dataResInduccion.ZESTADO == "A"){
-                            MessageToast.show("La induccion habilitada");
+                            MessageToast.show("La induccion ingresada esta activa");
                             this.byId("idAddAsistente").setEnabled(true)
                             this.byId("idDeleteAsistente").setEnabled(true)
+                        }else{
+                            MessageToast.show("La induccion ingresada esta inactiva");
                         }
                     } 
                 }
+            },
+            combinarInformacion: function (array1, array2, arr1Atr,arr2Atr) {
+                let resultado = [];
+                array1.forEach(dateAr1 => { 
+                  let data = array2.filter(function (dateAr2) {return  parseInt(dateAr2[arr2Atr], 10) === parseInt(dateAr1[arr1Atr], 10)});
+                  data = data[0]
+                  debugger
+                  if(data){
+                      dateAr1.NOMBRE = data.NOMBRE
+                      dateAr1.APELLIDO = data.APELLIDO
+                      dateAr1.AREA = data.AREA
+                      dateAr1.DNI = data.DNI
+                      dateAr1.PUESTO = data.PUESTO 
+                  }
+                //   let unirdata = {...data[0], ...dateAr1} 
+                  resultado.push(dateAr1)
+                }); 
+                return resultado;
             },
             //LOGICA PARA EL MODULO DE ASISTENTES PARA LA INDUCCION
             addAsistente: function () {  
@@ -625,8 +669,10 @@
                         console.log('LISTA DE ASISTENTES INDUCCION ',dataRes)
                         oModel.setProperty('/dataAsistenteIndNotas',dataRes);  
                         if(dataResInduccion.ZESTADO == "A"){
-                            MessageToast.show("La induccion ingresado tiene estado inhabilitado");
+                            MessageToast.show("La induccion ingresada esta activa");
                             this.byId("btnCal_Calificar").setEnabled(true)
+                        }else{ 
+                            MessageToast.show("La induccion ingresada esta inactiva");
                         }
                     } 
                 }
@@ -1451,6 +1497,14 @@
                 this.getMaterialesReservaSelect()
                 if(resp){
                     this.getRouter().getTargets().display("vEditarEpp"); 
+                    // let oModel = this.getView().getModel("myParam");  
+                    // let materialesSelectReservaTemp = oModel.getProperty("/materialesSelectReservaTemp");
+
+                    // let materialesSelectReservaTemp = oModel.getProperty("/materialesSelectReservaTemp"); //materiales originales
+                    // // let materialesTemp = oModel.getProperty("/materialesTemp"); //materiales recien subidos o nuevos
+                    // // let materialesEdit = [...materialesSelectReservaTemp,...materialesTemp]  //materiales totales mostrados en la vista
+                    // debugger
+                    // oModel.setProperty("/materialesEdit",materialesSelectReservaTemp);
                 }
             },
             visualizarEpp: function () {
@@ -1530,9 +1584,11 @@
                     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
                         MessageToast.show("Error (" + dataRes.descripcion + ")");
                     }else{
-                        dataRes = dataRes.ITAB[0].DETALLE 
-                        debugger
-                        oModel.setProperty(varTemEdit,dataRes);   
+                        dataRes = dataRes.ITAB[0]
+                        let ZID_RESERVA = dataRes.CABECERA[0].ZID_RESERVA
+                        // debugger
+                        oModel.setProperty("/ZID_RESERVA_select",ZID_RESERVA);   
+                        oModel.setProperty(varTemEdit,dataRes.DETALLE);   
                     }
                     console.log("Registro terminado.");
                     res = true //solo si hay una seleccion

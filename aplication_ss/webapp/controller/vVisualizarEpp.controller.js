@@ -14,10 +14,10 @@ sap.ui.define([
     function (Controller,MessageBox,Filter,FilterOperator,FilterType,Fragment,MessageToast,Spreadsheet) {
         "use strict";
         var usuario120 = "CONSULT_MM";
-        var password120 = "Laredo2023*";
+        var password120 = "Laredo2023**";
         var url_ini = "";
         var usuario = "CONSULT_MM";
-        var password = "Laredo2023*"; 
+        var password = "Laredo2023**"; 
         return Controller.extend("appss.aplicationss.controller.vVisualizar", {
             getRouter: function () {
                 return sap.ui.core.UIComponent.getRouterFor(this);
@@ -142,18 +142,178 @@ sap.ui.define([
                 }
             },
             liberarEpp: function () {
-                let res = this.selectTableListReservasEpp()
-                debugger
+                let res = this.selectTableListReservasEpp() // res el el material seleccionado
+                // debugger
                 if(res){
-                    console.log("liberarEpp",liberarEpp)
+                    let oModel = this.getView().getModel("myParam");  
+                    let ZID_RESERVA = oModel.getProperty("/ZID_RESERVA_select")
+                    debugger
+                    const acciones = {
+                        MAEPP02: () => {
+                            if(res.ZSTAT_LIBER == 'N'){
+                                //LOGICA DE liberar 
+                                // MessageToast.show(`Necesita liberacion`) 
+                                // res.ZSTAT_LIBER = 'L'
+                                let datastring = JSON.stringify(res);
+                                console.log("material a liberar",datastring)
+                                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/PROCESAR_RESERVA/1000/0/${ZID_RESERVA}/L/0/0/0?sap-client=120`;
+                                var dataRes = this.f_PostJsonData(url, res,true) // envia nuevo registro
+                                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                                    MessageToast.show("Error (" + dataRes.descripcion + ")");
+                                }else{ 
+                                    MessageToast.show("Solicitud exitosa")
+                                    MessageBox.success("Realice de nuevo la busqueda para actualizar los registros"); 
+                                    this.onPageBack() 
+                                }
+                            }else{ 
+                                MessageToast.show(`El material ya fue liberado`) 
+                            }
+                        },
+                        MAEPP01: () => MessageToast.show(`No requiere liberación`),
+                    };
+                    acciones[res.MATKL]();
                 }
             },
             liberarTotalEpp: function () {
-                let res = this.selectTableListReservasEpp()
+                let arrayEpps = this.selectMultipleTable()
+                console.log("arrayEpps", arrayEpps)
+                let oModel = this.getView().getModel("myParam");  
+                let ZID_RESERVA = oModel.getProperty("/ZID_RESERVA_select")
                 debugger
-                if(res){
-                    console.log("liberarEpp",liberarEpp)
+                if(arrayEpps.length > 0){
+                    for (let epp of arrayEpps) {
+                        const acciones = {
+                            MAEPP02: () => {
+                                if(epp.ZSTAT_LIBER == 'N'){
+                                    //LOGICA DE liberar 
+                                    // MessageToast.show(`Necesita liberacion`) 
+                                    // res.ZSTAT_LIBER = 'L'
+                                    let sendPost = [{
+                                        "RSPOS": epp.ZID_POSICION,
+                                        "ZLIBERADOR": "",
+                                        "ZFEC_LIBERACION" : this.fechaActual()
+                                    }]
+                                    debugger
+                                    console.log("material a liberar",sendPost)
+                                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/PROCESAR_RESERVA/1000/0/${ZID_RESERVA}/L/0/0/0?sap-client=120`;
+                                    var dataRes = this.f_PostJsonData(url, sendPost,true) // envia nuevo registro
+                                    if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                                        MessageToast.show("Error (" + dataRes.descripcion + ")");
+                                    }else{ 
+                                        epp.ZSTAT_LIBER = 'L'
+                                        MessageToast.show("Solicitud exitosa")
+                                        // this.onPageBack() 
+                                    }
+                                }else{ 
+                                    MessageToast.show(`El material ya fue liberado`) 
+                                }
+                            },
+                            MAEPP01: () => MessageToast.show(`No requiere liberación`),
+                        };
+                        acciones[epp.MATKL]();
+                    }
+                    MessageBox.success("Realice de nuevo la busqueda para actualizar los registros"); 
+                    // oModel.setProperty("/materialesSelectReservaTemp",arrayEpps)
                 }
+                  
+            },
+            entregarTotalEpp: function () {
+                let arrayEpps = this.selectMultipleTable()
+                console.log("arrayEpps", arrayEpps)
+                let oModel = this.getView().getModel("myParam");  
+                let ZID_RESERVA = oModel.getProperty("/ZID_RESERVA_select")
+                let fechaActual = this.fechaActual()
+                    let partesFecha = fechaActual.split("-"); // Divide la fecha en partes
+                    let fechaFormateada = partesFecha.join("");
+                if(arrayEpps.length > 0){
+                    for (let epp of arrayEpps) {
+                        debugger
+                        const acciones = {
+                            MAEPP02: () => {
+                                if((epp.ZSTAT_LIBER == 'L' || epp.ZSTAT_LIBER == 'X') && epp.ZSTATUS != 'D' && epp.ZSTATUS != 'E'){
+                                    //LOGICA DE liberar 
+                                    // MessageToast.show(`Necesita liberacion`) 
+                                    // res.ZSTAT_LIBER = 'L'
+                                    let sendPost = [{"RSPOS": epp.ZID_POSICION}]
+                                    debugger
+                                    console.log("material a liberar",sendPost)
+                                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/PROCESAR_RESERVA/1000/0/${ZID_RESERVA}/E/${fechaFormateada}/0/0?sap-client=120`;
+                                    var dataRes = this.f_PostJsonData(url, sendPost,true) // envia nuevo registro
+                                    if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                                        MessageToast.show("Error (" + dataRes.descripcion + ")");
+                                    }else{ 
+                                        MessageToast.show("Solicitud exitosa")
+                                        epp.ZSTATUS = 'E'
+                                        // MessageBox.success("Realice de nuevo la busqueda para actualizar los registros"); 
+                                        // this.onPageBack() 
+                                    }
+                                }else{ MessageToast.show(`El material tiene que estar liberado`) }
+                            },
+                            MAEPP01: () => {
+                                if(epp.ZSTATUS != 'D' && epp.ZSTATUS != 'E'){ 
+                                    let sendPost = [{"RSPOS": epp.ZID_POSICION}]
+                                    // debugger
+                                    console.log("material a entrega",sendPost)
+                                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/PROCESAR_RESERVA/1000/0/${ZID_RESERVA}/E/${fechaActual}/0/0?sap-client=120`;
+                                    var dataRes = this.f_PostJsonData(url, sendPost,true) // envia nuevo registro
+                                    if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                                        MessageToast.show("Error (" + dataRes.descripcion + ")");
+                                    }else{ 
+                                        MessageToast.show("Solicitud exitosa")
+                                        epp.ZSTATUS = 'E'
+                                    }
+                                }else{ MessageToast.show(`El material tiene que estar liberado`) }
+
+                                MessageToast.show(`No requiere liberación`)
+                            }
+                        };
+                        acciones[epp.MATKL]();
+                    }
+                    // oModel.setProperty("/materialesSelectReservaTemp",arrayEpps)
+                }
+            },
+            devolverTotalEpp: function () {
+                let arrayEpps = this.selectMultipleTable()
+                console.log("arrayEpps", arrayEpps)
+                let oModel = this.getView().getModel("myParam");  
+                let ZID_RESERVA = oModel.getProperty("/ZID_RESERVA_select")
+                let fechaActual = this.fechaActual()
+                if(arrayEpps.length > 0){
+                    for (let epp of arrayEpps) {
+                        if(epp.ZSTATUS == 'E'){
+                            let sendPost = [{"RSPOS": epp.ZID_POSICION}]
+                            debugger
+                            console.log("material a liberar",sendPost)
+                            var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/PROCESAR_RESERVA/1000/0/${ZID_RESERVA}/D/${fechaActual}/0/0?sap-client=120`;
+                            var dataRes = this.f_PostJsonData(url, sendPost,true) // envia nuevo registro
+                            if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                                MessageToast.show("Error (" + dataRes.descripcion + ")");
+                            }else{ 
+                                MessageToast.show("Solicitud exitosa")
+                                epp.ZSTATUS = 'D'
+                                // MessageBox.success("Realice de nuevo la busqueda para actualizar los registros"); 
+                                // this.onPageBack() 
+                            }
+                        }else{ MessageToast.show(`El material tiene que estar entregado`) }
+                        
+                    } 
+                    oModel.setProperty("/materialesSelectReservaTemp",arrayEpps)
+                } 
+            },
+            selectMultipleTable: function () {
+                let arrayEpps = []
+
+                var miTabla = this.byId("idTableMateriales");
+                var indicesSeleccionados = miTabla.getSelectedIndices();
+
+                // Iterar a través de los índices seleccionados
+                indicesSeleccionados.forEach(function(indice) {
+                    var contexto = miTabla.getContextByIndex(indice); // Obtener el contexto de la fila
+                    var datosFila = contexto.getObject();
+                    console.log("datosFila", datosFila)
+                    arrayEpps.push(datosFila)
+                });
+                return arrayEpps 
             },
             selectTableListReservasEpp: function () {
                 let res = false 
@@ -350,24 +510,13 @@ sap.ui.define([
                 return fechaReturn
             },
             fechaActual : function () {  
-                var fechaActual = new Date();
-                // Obtener día, mes y año
-                var dia = fechaActual.getDate();
-                var mes = fechaActual.getMonth() + 1; // Los meses en JavaScript son base 0, por lo que se suma 1
-                var año = fechaActual.getFullYear();
+                const fechaActual = new Date();
 
-                // Formatear día y mes para que tengan siempre dos dígitos
-                if (dia < 10) {
-                    dia = '0' + dia;
-                }
-                if (mes < 10) {
-                    mes = '0' + mes;
-                } 
-                // Construir la fecha en el formato deseado
-                var fechaFormateada = dia + '/' + mes + '/' + año;
-
-                // console.log(fechaFormateada);
-                return fechaFormateada
+                const anio = fechaActual.getFullYear();
+                const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
+                const dia = fechaActual.getDate().toString().padStart(2, '0');
+              
+                return `${anio}-${mes}-${dia}`;
             },
             limpiarObjeto: function (arrayClean) {   
                 console.log(`arrayClean: ${arrayClean}`)

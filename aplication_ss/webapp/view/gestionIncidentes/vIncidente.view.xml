@@ -97,7 +97,7 @@
                                         <f:formElements>
                                             <f:FormElement label="Fecha" >
                                                 <f:fields> 
-                                                        <DatePicker id="gi_new_fecha" value="{myParam>ZFECHA}" displayFormat="yyyy-MM-dd" change="handleChange"/>   
+                                                        <DatePicker id="gi_new_fecha" value="{myParam>ZFECHA}" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd" change="handleChange"/>   
                                                 </f:fields>
                                             </f:FormElement> 
                                             <f:FormElement label="Hora" >
@@ -444,7 +444,7 @@
                                                                 <f:fields> <Input value="" id="info_responsable"/> </f:fields>
                                                             </f:FormElement> 
                                                             <f:FormElement label="Fecha">
-                                                                <f:fields> <DatePicker id="info_fecha" value=""  displayFormat="yyyy-MM-dd"/> </f:fields>
+                                                                <f:fields> <DatePicker id="info_fecha" value=""  displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/> </f:fields>
                                                             </f:FormElement> 
                                                             <f:FormElement label="Tipo">
                                                                 <f:fields> 
@@ -511,7 +511,7 @@
                                                                 <f:fields> <Input value="{myParam>ZRESPONSABLE}" id="edit_info_responsable"/> </f:fields>
                                                             </f:FormElement> 
                                                             <f:FormElement label="Fecha">
-                                                                <f:fields> <DatePicker id="edit_info_fecha" value="{myParam>ZFECHA}"  displayFormat="yyyy-MM-dd"/> </f:fields>
+                                                                <f:fields> <DatePicker id="edit_info_fecha" value="{myParam>ZFECHA}"  displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/> </f:fields>
                                                             </f:FormElement> 
                                                             <f:FormElement label="Tipo">
                                                                 <f:fields> 

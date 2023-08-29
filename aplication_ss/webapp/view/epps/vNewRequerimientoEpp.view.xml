@@ -5,7 +5,7 @@
     xmlns:tab="sap.ui.table"
     xmlns:u="sap.ui.unified"
     xmlns="sap.m">
-    <Page title="Nuevo reserva Epp"  showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
+    <Page title="Nueva reserva Epp"  showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
 		<headerContent>
 			<Button text="Guardar" icon="sap-icon://paper-plane" type="Emphasized" press="guardarReservasEpp" />
             <Button text="Cancelar" icon="sap-icon://decline" press="onPageBack" /> 
@@ -46,17 +46,17 @@
                                 </f:FormElement> -->
                                 <f:FormElement label="Fecha reserva">
                                     <f:fields> 
-                                        <DatePicker id="rEpp_fechaReq" value="" displayFormat="yyyy-MM-dd"/>
+                                        <DatePicker id="rEpp_fechaReq" value="" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/>
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Centro">
                                     <f:fields> 
-                                        <Input id="rEpp_centro" value="1001" /> 
+                                        <Input id="rEpp_centro" value="1001" editable="false" /> 
                                     </f:fields>
                                 </f:FormElement>  
                                 <f:FormElement label="Almacén">
                                     <f:fields> 
-                                        <Input id="rEpp_almacen" value="0300" /> 
+                                        <Input id="rEpp_almacen" value="0300" editable="false" /> 
                                     </f:fields>
                                 </f:FormElement>  
                                 <!-- <f:FormElement label="Almacén destino">
@@ -77,7 +77,7 @@
                             <f:formElements>
                                 <f:FormElement label="Codigo de trabajador" >
                                     <f:fields>
-                                        <Input id="rEpp_codTrab" value="" /> 
+                                        <Input id="rEpp_codTrab" value="" liveChange="liveDatePersonal"/> 
                                     </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="Nombres" >
@@ -142,11 +142,11 @@
                                     <f:formElements>
                                         <f:FormElement label="Codigo de material">
                                             <f:fields>  
-                                                <Input id="epp_codMaterial" type="Text" value="" placeholder="Seleccione.." valueHelpRequest="changeEpps" showSuggestion="true" showValueHelp="true"/>
+                                                <Input id="epp_codMaterial"  type="Text" value="" placeholder="Seleccione.." valueHelpRequest="changeEpps" showSuggestion="true" showValueHelp="true"/>
                                             </f:fields>
                                         </f:FormElement>  
                                         <f:FormElement label="Descripcion">
-                                            <f:fields> <Input value="" id="epp_descripcion"/>  </f:fields>
+                                            <f:fields> <Input value="" id="epp_descripcion" editable="false" />  </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Cantidad">
                                             <f:fields> <Input value="" id="epp_cantidad"/>  </f:fields>
@@ -160,7 +160,7 @@
                                             </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Fecha de entrega">
-                                            <f:fields> <DatePicker id="epp_fechaEntrega"  displayFormat="yyyy-MM-dd" change="handleChange" value="" />    </f:fields>
+                                            <f:fields> <DatePicker id="epp_fechaEntrega" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd" change="handleChange" value="" />    </f:fields>
                                         </f:FormElement> 
                                     </f:formElements>
                                 </f:FormContainer> 
@@ -204,7 +204,7 @@
                                             </f:fields>
                                         </f:FormElement>  
                                         <f:FormElement label="Descripcion">
-                                            <f:fields> <Input  value="{myParam>MARKTX}"   id="edit_epp_descripcion"/>  </f:fields>
+                                            <f:fields> <Input  value="{myParam>MARKTX}"   id="edit_epp_descripcion" editable="false" />  </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Cantidad">
                                             <f:fields> <Input  value="{myParam>BDMNG}"   id="edit_epp_cantidad"/>  </f:fields>
@@ -218,7 +218,7 @@
                                             </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Fecha de entrega">
-                                            <f:fields> <DatePicker id="edit_epp_fechaEntrega" value="{myParam>BDTER}" displayFormat="yyyy-MM-dd" />    </f:fields>
+                                            <f:fields> <DatePicker id="edit_epp_fechaEntrega" value="{myParam>BDTER}" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd" />    </f:fields>
                                         </f:FormElement> 
                                     </f:formElements>
                                 </f:FormContainer> 

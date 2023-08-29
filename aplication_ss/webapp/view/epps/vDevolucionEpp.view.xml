@@ -43,24 +43,24 @@
                             <f:formElements>
                                 <f:FormElement label="N° reserva">
                                     <f:fields>
-                                        <Input id="dvEpp_nroReq" value="" /> 
+                                        <Input id="rEpp_nroReq" value="{myParam>ZID_RESERVA}" editable="false"/> 
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Fecha reserva">
                                     <f:fields> 
-                                        <DatePicker id="dvEpp_fechaReq" value="" displayFormat="yyyy-MM-dd"/>
+                                        <DatePicker id="rEpp_fechaReq" value="{myParam>BDTER}" editable="false" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/>
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Centro">
                                     <f:fields> 
-                                        <Input id="dvEpp_centro" value="" /> 
+                                        <Input id="rEpp_centro" value="{myParam>WERKS}" editable="false"/> 
                                     </f:fields>
                                 </f:FormElement>  
                                 <f:FormElement label="Almacén">
                                     <f:fields> 
-                                        <Input id="dvEpp_almacen" value="" /> 
+                                        <Input id="rEpp_almacen" value="{myParam>LGORT}" editable="false" /> 
                                     </f:fields>
-                                </f:FormElement>  
+                                </f:FormElement>   
                             </f:formElements>
                         </f:FormContainer> 
                         <f:FormContainer>
@@ -68,38 +68,38 @@
                                 <Toolbar>
                                     <Title text="Datos del trabajador"/>
                                     <ToolbarSpacer />
-                                    <!-- <Button text="Buscar" icon="sap-icon://employee-lookup" type="Emphasized" press="buscarTrb" /> -->
+                                    <!-- <Button text="Buscar" icon="sap-icon://employee-lookup" type="Emphasized" press="buscarTrabajador" /> -->
                                 </Toolbar>
                             </f:toolbar>
                             <f:formElements>
                                 <f:FormElement label="Codigo de trabajador" >
                                     <f:fields>
-                                        <Input id="dvEpp_codTrab" value="" /> 
+                                        <Input id="rEpp_codTrab" value="{myParam>ZID_COD_TRABAJADOR}" editable="false" /> 
                                     </f:fields>
                                 </f:FormElement> 
                                 <f:FormElement label="Nombres" >
                                     <f:fields>
-                                        <Input id="dvEpp_nombres" value="" /> 
+                                        <Input id="rEpp_nombres" value="" editable="false" /> 
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Apellidos" >
                                     <f:fields>
-                                        <Input id="dvEpp_apellido" value="" />  
+                                        <Input id="rEpp_apellido" value="" editable="false" />  
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="DNI" >
                                     <f:fields>
-                                        <Input id="dvEpp_dni" value="" />  
+                                        <Input id="rEpp_dni" value="" editable="false" />  
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Cargo" >
                                     <f:fields>
-                                        <Input id="dvEpp_cargo" value="" />  
+                                        <Input id="rEpp_cargo" value="" editable="false" />  
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Area de Trabajo" >
                                     <f:fields>
-                                        <Input id="dvEpp_areaTrb" value="" />  
+                                        <Input id="rEpp_areaTrb" value="" editable="false" />  
                                     </f:fields>
                                 </f:FormElement>
                             </f:formElements>
@@ -108,17 +108,17 @@
                             <f:formElements>
                                 <f:FormElement label="Fecha de cese">
                                     <f:fields>
-                                        <Input id="dvEpp_fechaCese" value="" /> 
+                                         <DatePicker id="dvEpp_fechaCese" value="" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/>
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Fecha de transferencia">
                                     <f:fields> 
-                                        <DatePicker id="dvEpp_fechaTrans" value="" displayFormat="yyyy-MM-dd"/>
+                                        <DatePicker id="dvEpp_fechaTrans" value="" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/>
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Fecha de devolución">
                                     <f:fields> 
-                                        <Input id="dvEpp_devolucion" value="" /> 
+                                         <DatePicker id="dvEpp_devolucion" value="" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/>
                                     </f:fields>
                                 </f:FormElement>
                             </f:formElements>
@@ -126,49 +126,54 @@
                     </f:formContainers> 
                 </f:Form> 
                 <!-- tabla  -->
-                <tab:Table rows="{  path: 'myParam>/dataTab' }" selectionMode="MultiToggle"  visibleRowCount="5" ariaLabelledBy="title">
+                <tab:Table id="idTableMateriales" rows="{  path: 'myParam>/materialesSelectReservaTemp' }" selectionMode="MultiToggle"  visibleRowCount="5" ariaLabelledBy="title">
                     <tab:extension>
                         <OverflowToolbar >
                             <Title text="Lista de materiales"/>
                             <ToolbarSpacer />  
                             <!-- <Button text="Adicionar" type="Emphasized" icon="sap-icon://add" press="onEnviartab2" />  -->
                             <!-- <Button text="Eliminar" icon="sap-icon://delete" press="deleteInduccion" />   -->
-                            <!-- <Button text="Devoulción total " icon="sap-icon://outbox" press="deleteInduccion" />   -->
+                            <Button text="Devolución" icon="sap-icon://outbox" press="devolverTotalEpp" />  
                         </OverflowToolbar>
                     </tab:extension>
                     <tab:columns>
-                        <tab:Column  >
-                            <Label textAlign="Center" wrapping ="true"  text="Codigo de Material" />
-                            <tab:template> <Text text="{myParam>key}" wrapping="false" /> </tab:template>
-                        </tab:Column>
-                        <tab:Column >
-                            <Label textAlign="Center" wrapping ="true"  text="Descripción" />
-                            <tab:template> <Text  text="{myParam>tipolabor}" wrapping="false" /> </tab:template>
+                         <tab:Column >
+                            <Label textAlign="Center" wrapping ="true"  text="Código de material" />
+                            <tab:template> <Text  text="{myParam>MATNR}" wrapping="false" /> </tab:template>
                         </tab:Column>
                         <tab:Column>
-                            <Label textAlign="Center" wrapping ="true"  text="Cantidad" />
-                            <tab:template> <Text text="5" wrapping="false" /> </tab:template>
+                            <Label textAlign="Center" wrapping ="true"  text="Descripción" />
+                            <tab:template> <Text text="{myParam>MAKTX}" wrapping="false" /> </tab:template>
                         </tab:Column>     
                         <tab:Column>
+                            <Label textAlign="Center" wrapping ="true"  text="Cantidad" />
+                            <tab:template> <Text text="{myParam>BDMNG}" wrapping="false" /> </tab:template>
+                        </tab:Column>       
+                        <tab:Column>
                             <Label textAlign="Center" wrapping ="true"  text="Estado EPP" />
-                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text text="{myParam>ZSTATUS}" wrapping="false" /> </tab:template>
                         </tab:Column>     
                         <tab:Column>
                             <Label textAlign="Center" wrapping ="true"  text="¿Pérdida?" />
-                            <tab:template> <CheckBox selected="true" /> </tab:template>
+                            <tab:template>
+                                <Select forceSelection="false" id="idPerdida" selectedKey="{myParam>ZIND_PERDIDA}" showSecondaryValues= "true" > 
+                                    <core:Item key="S" text="SI" />
+                                    <core:Item key="N" text="NO" />  
+                                </Select> 
+                            </tab:template>
                         </tab:Column>     
                         <tab:Column>
                             <Label textAlign="Center" wrapping ="true"  text="Observaciones" />
-                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
+                            <tab:template> <Input value="{myParam>ZOBSERVACIONES}" id="inputObjs" /> </tab:template>
                         </tab:Column>     
                         <tab:Column>
                             <Label textAlign="Center" wrapping ="true"  text="Estado de EPPs" />
-                            <tab:template> 
-                                <ComboBox id="" class="sapUiSmallMarginBottom" enabled="true" selectedKey="1000">
+                            <tab:template>  
+                                <Select forceSelection="false" id="idEstadoEpp" selectedKey="{myParam>ZESTADO_EPP}" showSecondaryValues= "true" > 
                                     <core:Item key="B" text="Bueno" />
-                                    <core:Item key="R" text="Regular" />
-                                    <core:Item key="M" text="Malo" />
-                                </ComboBox>   
+                                    <core:Item key="R" text="Regular" />  
+                                    <core:Item key="M" text="Malo" />  
+                                </Select> 
                             </tab:template>
                         </tab:Column>  
                     </tab:columns>

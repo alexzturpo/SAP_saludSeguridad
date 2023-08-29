@@ -46,17 +46,17 @@
                                 </f:FormElement>
                                 <f:FormElement label="Fecha reserva">
                                     <f:fields> 
-                                        <DatePicker id="rEpp_fechaReq" value="{myParam>BDTER}" displayFormat="yyyy-MM-dd"/>
+                                        <DatePicker id="rEpp_fechaReq" value="{myParam>BDTER}" editable="false" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/>
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Centro">
                                     <f:fields> 
-                                        <Input id="rEpp_centro" value="{myParam>WERKS}" /> 
+                                        <Input id="rEpp_centro" value="{myParam>WERKS}" editable="false" /> 
                                     </f:fields>
                                 </f:FormElement>  
                                 <f:FormElement label="Almacén">
                                     <f:fields> 
-                                        <Input id="rEpp_almacen" value="{myParam>LGORT}" /> 
+                                        <Input id="rEpp_almacen" value="{myParam>LGORT}" editable="false" /> 
                                     </f:fields>
                                 </f:FormElement>  
                                 <!-- <f:FormElement label="Almacén destino">
@@ -146,7 +146,7 @@
                                             </f:fields>
                                         </f:FormElement>  
                                         <f:FormElement label="Descripcion">
-                                            <f:fields> <Input value="" id="epp_descripcion"/>  </f:fields>
+                                            <f:fields> <Input value="" id="epp_descripcion" editable="false"/>  </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Cantidad">
                                             <f:fields> <Input value="" id="epp_cantidad"/>  </f:fields>
@@ -160,7 +160,7 @@
                                             </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Fecha de entrega">
-                                            <f:fields> <DatePicker id="epp_fechaEntrega"  displayFormat="yyyy-MM-dd" change="handleChange" value="" />    </f:fields>
+                                            <f:fields> <DatePicker id="epp_fechaEntrega"  displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd" change="handleChange" value="" />    </f:fields>
                                         </f:FormElement> 
                                     </f:formElements>
                                 </f:FormContainer> 
@@ -200,11 +200,11 @@
                                     <f:formElements>
                                         <f:FormElement label="Codigo de material">
                                             <f:fields>  
-                                                <Input id="edit_epp_codMaterial" type="Text" value="{myParam>MATNR}" placeholder="Seleccione.." valueHelpRequest="changeEppsEdit" showSuggestion="true" showValueHelp="true"/>
+                                                <Input id="edit_epp_codMaterial" editable="{myParam>/materialEdit}" type="Text" value="{myParam>MATNR}" placeholder="Seleccione.." valueHelpRequest="changeEppsEdit" showSuggestion="true" showValueHelp="true"/>
                                             </f:fields>
                                         </f:FormElement>  
                                         <f:FormElement label="Descripcion">
-                                            <f:fields> <Input  value="{myParam>MARKTX}"   id="edit_epp_descripcion"/>  </f:fields>
+                                            <f:fields> <Input  value="{myParam>MARKTX}"   id="edit_epp_descripcion" editable="false" />  </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Cantidad">
                                             <f:fields> <Input  value="{myParam>BDMNG}"   id="edit_epp_cantidad"/>  </f:fields>
@@ -218,7 +218,7 @@
                                             </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Fecha de entrega">
-                                            <f:fields> <DatePicker id="edit_epp_fechaEntrega" value="{myParam>BDTER}" displayFormat="yyyy-MM-dd" />    </f:fields>
+                                            <f:fields> <DatePicker id="edit_epp_fechaEntrega" value="{myParam>BDTER}" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd" />    </f:fields>
                                         </f:FormElement> 
                                     </f:formElements>
                                 </f:FormContainer> 
@@ -228,7 +228,7 @@
                 </Panel>
                 <!-- tabla  -->
                 <!-- <tab:Table id="idTableMateriales" rows="{  path: 'myParam>/materialesSelectReservaTemp' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title"> -->
-                <tab:Table id="idTableMateriales" rows="{  path: 'myParam>/materialesEdit' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                <tab:Table id="idTableMateriales" rows="{  path: 'myParam>/materialesSelectReservaTemp' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
                     <tab:extension>
                         <OverflowToolbar >
                             <!-- <Title text="Documentos"/> -->
@@ -251,7 +251,7 @@
                         </tab:Column>
                         <tab:Column>
                             <Label textAlign="Center" wrapping ="true"  text="Descripción" />
-                            <tab:template> <Text text="{myParam>MARKTX}" wrapping="false" /> </tab:template>
+                            <tab:template> <Text text="{myParam>MAKTX}" wrapping="false" /> </tab:template>
                         </tab:Column>     
                         <tab:Column>
                             <Label textAlign="Center" wrapping ="true"  text="Cantidad" />
@@ -261,14 +261,14 @@
                             <Label textAlign="Center" wrapping ="true"  text="Cambio" />
                             <tab:template> <Text text="{myParam>ZIND_CAMBIO}" wrapping="false" /> </tab:template>
                         </tab:Column>     
-                        <!-- <tab:Column>
-                            <Label textAlign="Center" wrapping ="true"  text="Stock actual" />
-                            <tab:template> <Text text="{myParam>name}" wrapping="false" /> </tab:template>
-                        </tab:Column>      -->
-                        <!-- <tab:Column>
-                            <Label textAlign="Center" wrapping ="true"  text="Status de liberación" />
+                        <tab:Column>
+                            <Label textAlign="Center" wrapping ="true"  text="Estado" />
+                            <tab:template> <Text text="{myParam>ZSTATUS}" wrapping="false" /> </tab:template>
+                        </tab:Column>     
+                        <tab:Column>
+                            <Label textAlign="Center" wrapping ="true"  text="Estado de liberación" />
                             <tab:template> <Text text="{myParam>ZSTAT_LIBER}" wrapping="false" /> </tab:template>
-                        </tab:Column>         -->
+                        </tab:Column>        
                     </tab:columns>
                 </tab:Table>   
         </content> 

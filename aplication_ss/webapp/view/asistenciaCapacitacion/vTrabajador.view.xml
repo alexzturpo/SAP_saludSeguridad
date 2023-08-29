@@ -81,7 +81,7 @@
                                 <f:FormContainer > 
                                     <f:formElements>
                                         <f:FormElement label="Fecha">
-                                            <f:fields>  <DatePicker id="RMedico_fecha" value=""  displayFormat="yyyy-MM-dd"/> </f:fields>
+                                            <f:fields>  <DatePicker id="RMedico_fecha" value=""  displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/> </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Observaciones">
                                             <f:fields> <Input value="" id="RMedico_obs"/> </f:fields>
@@ -95,7 +95,7 @@
                                             </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Fecha de vencimiento">
-                                            <f:fields> <DatePicker id="RMedico_fechaVenc" value=""  displayFormat="yyyy-MM-dd"/> </f:fields>
+                                            <f:fields> <DatePicker id="RMedico_fechaVenc" value=""  displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/> </f:fields>
                                         </f:FormElement>   
                                     </f:formElements>
                                 </f:FormContainer> 
@@ -134,7 +134,7 @@
                                 <f:FormContainer > 
                                     <f:formElements>
                                         <f:FormElement label="Fecha">
-                                            <f:fields>  <DatePicker id="edit_RMedico_fecha" value="{myParam>ZFEC_EMISION}"  displayFormat="yyyy-MM-dd"/> </f:fields>
+                                            <f:fields>  <DatePicker id="edit_RMedico_fecha" value="{myParam>ZFEC_EMISION}"  displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/> </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Observaciones">
                                             <f:fields> <Input value="{myParam>ZOBSERVACIONES}" id="edit_RMedico_obs"/> </f:fields>
@@ -148,7 +148,7 @@
                                             </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Fecha de vencimiento">
-                                            <f:fields> <DatePicker id="edit_RMedico_fechaVenc" value="{myParam>ZFEC_VENCIMIENTO}"  displayFormat="yyyy-MM-dd"/> </f:fields>
+                                            <f:fields> <DatePicker id="edit_RMedico_fechaVenc" value="{myParam>ZFEC_VENCIMIENTO}"  displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/> </f:fields>
                                         </f:FormElement>   
                                     </f:formElements>
                                 </f:FormContainer> 
@@ -219,7 +219,7 @@
                                 <f:FormContainer > 
                                     <f:formElements>
                                         <f:FormElement label="Fecha">
-                                            <f:fields>  <DatePicker id="SCTR_fecha" value=""  displayFormat="yyyy-MM-dd"/> </f:fields>
+                                            <f:fields>  <DatePicker id="SCTR_fecha" value=""  displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/> </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Observaciones">
                                             <f:fields> <Input value="" id="SCTR_obs"/> </f:fields>
@@ -233,7 +233,7 @@
                                             </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Fecha de vencimiento">
-                                            <f:fields> <DatePicker id="SCTR_fechaVenc" value=""  displayFormat="yyyy-MM-dd"/> </f:fields>
+                                            <f:fields> <DatePicker id="SCTR_fechaVenc" value=""  displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/> </f:fields>
                                         </f:FormElement>   
                                     </f:formElements>
                                 </f:FormContainer> 
@@ -272,7 +272,7 @@
                                 <f:FormContainer > 
                                     <f:formElements>
                                         <f:FormElement label="Fecha">
-                                            <f:fields>  <DatePicker id="edit_SCTR_fecha" value="{myParam>ZFEC_EMISION}"  displayFormat="yyyy-MM-dd"/> </f:fields>
+                                            <f:fields>  <DatePicker id="edit_SCTR_fecha" value="{myParam>ZFEC_EMISION}"  displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/> </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Observaciones">
                                             <f:fields> <Input value="{myParam>ZOBSERVACIONES}" id="edit_SCTR_obs"/> </f:fields>
@@ -286,7 +286,7 @@
                                             </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Fecha de vencimiento">
-                                            <f:fields> <DatePicker id="edit_SCTR_fechaVenc" value="{myParam>ZFEC_VENCIMIENTO}"  displayFormat="yyyy-MM-dd"/> </f:fields>
+                                            <f:fields> <DatePicker id="edit_SCTR_fechaVenc" value="{myParam>ZFEC_VENCIMIENTO}"  displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/> </f:fields>
                                         </f:FormElement>   
                                     </f:formElements>
                                 </f:FormContainer> 

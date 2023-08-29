@@ -112,7 +112,7 @@
                                                     <f:formElements>
                                                         <f:FormElement label="Fecha" >
                                                             <f:fields> 
-                                                                    <DatePicker id="gi_new_fecha" required="true" value="" displayFormat="yyyy-MM-dd" />   
+                                                                    <DatePicker id="gi_new_fecha" required="true" value="" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/>   
                                                             </f:fields>
                                                         </f:FormElement> 
                                                         <f:FormElement label="Hora" >
@@ -255,7 +255,7 @@
                                             </fb:FilterGroupItem> 
                                             <fb:FilterGroupItem groupName="G1" name="A3" groupTitle="Group1"  label="Fecha de incidente" visibleInFilterBar="true" >
                                                 <fb:control>
-                                                    <DatePicker id="bFechaInc"  value=""  displayFormat="yyyy-MM-dd" placeholder="Ingresar fecha" />   
+                                                    <DatePicker id="bFechaInc"  value=""  displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd" placeholder="Ingresar fecha" />   
                                                 </fb:control>
                                             </fb:FilterGroupItem> 
                                             <fb:FilterGroupItem groupName="G1" name="A4" groupTitle="Group1"  label="Status" visibleInFilterBar="true" >
@@ -360,7 +360,7 @@
                                                     <f:fields> <Input id="gInsp_departamento" type="Text" value="" placeholder="Seleccione.." valueHelpRequest="changeZSYSO_DPTO" showSuggestion="true" showValueHelp="true"/></f:fields>
                                                 </f:FormElement>
                                                 <f:FormElement label="Fecha programada">
-                                                    <f:fields> <DatePicker id="gInsp_programada" value="" displayFormat="yyyy-MM-dd" placeholder="Ingresar fecha"/> </f:fields>
+                                                    <f:fields> <DatePicker id="gInsp_programada" value="" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd" placeholder="Ingresar fecha"/> </f:fields>
                                                 </f:FormElement> 
                                             </f:formElements>
                                         </f:FormContainer> 
@@ -395,7 +395,7 @@
                                         </fb:FilterGroupItem> 
                                         <fb:FilterGroupItem groupName="G1" name="A5" groupTitle="Group1"  label="Fecha programada" visibleInFilterBar="true" >
                                             <fb:control>
-                                                <DatePicker id="Ifechap"  value=""  displayFormat="yyyy-MM-dd" placeholder="Ingresar fecha" required="true"/> 
+                                                <DatePicker id="Ifechap"  value=""  displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd" placeholder="Ingresar fecha" required="true"/> 
                                             </fb:control>
                                         </fb:FilterGroupItem> 
                                         <fb:FilterGroupItem groupName="G1" name="A6" groupTitle="Group1"  label="Status" visibleInFilterBar="true" >
@@ -806,13 +806,13 @@
                                                     </f:FormElement> 
                                                 </f:formElements>
                                             </f:FormContainer>
-                                            <f:FormContainer title="Empresa del grupo">
+                                            <!-- <f:FormContainer title="Empresa del grupo" >
                                                 <f:formElements>
                                                     <f:FormElement label="Sociedad">
                                                         <f:fields> <Input id="idsociedadAC" value=""  liveChange="liveInputSociedad"/> </f:fields>
                                                     </f:FormElement> 
                                                 </f:formElements>
-                                            </f:FormContainer>  
+                                            </f:FormContainer>   -->
                                         </f:formContainers>
                                     </f:Form> 
                                     <tab:Table id="listPersonalConSoc" cellClick="onSelectTrabajador" rows="{  path: 'myParam>/ListPersonal' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
@@ -898,7 +898,7 @@
                                                             <f:fields> <Input id="iddescripcionAI" value=""/> </f:fields>
                                                         </f:FormElement> 
                                                         <f:FormElement label="Fecha programada">
-                                                            <f:fields> <DatePicker id="idfechaprogAI"  displayFormat="yyyy-MM-dd"/> </f:fields>
+                                                            <f:fields> <DatePicker id="idfechaprogAI"  displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/> </f:fields>
                                                         </f:FormElement> 
                                                         <f:FormElement label="Tipo de inducción">
                                                             <f:fields> 
@@ -951,7 +951,7 @@
                                                             <f:fields> <Input id="edit_iddescripcionAI" value="{myParam>ZDESCRIPCION}"/> </f:fields>
                                                         </f:FormElement> 
                                                         <f:FormElement label="Fecha programada">
-                                                            <f:fields> <DatePicker id="edit_idfechaprogAI"  value="{myParam>ZFEC_INDUCCION}" displayFormat="yyyy-MM-dd"/> </f:fields>
+                                                            <f:fields> <DatePicker id="edit_idfechaprogAI"  value="{myParam>ZFEC_INDUCCION}" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/> </f:fields>
                                                         </f:FormElement> 
                                                         <f:FormElement label="Tipo de inducción">
                                                             <f:fields> 
@@ -1034,7 +1034,7 @@
                                         <f:FormContainer > 
                                             <f:formElements>
                                                 <f:FormElement label="Código de inducción">
-                                                    <f:fields> <Input id="dCodinducc" value=""/> </f:fields>
+                                                    <f:fields> <Input id="dCodinducc" value="" liveChange="cleanValoresInduccion"/> </f:fields>
                                                 </f:FormElement> 
                                                 <f:FormElement label="Titulo de inducción">
                                                     <f:fields> <Input id="dTituinducc" value="" editable="false"/> </f:fields>
@@ -1044,7 +1044,7 @@
                                                 </f:FormElement> 
                                                 <f:FormElement label="Fecha programada">
                                                  <f:fields> <Input id="dFechaprog" value="" editable="false"/> </f:fields>
-                                              <!--       <f:fields> <DatePicker id="dFechaprog" editable="false" placeholder="Fecha" valueFormat="yyyyMMdd" displayFormat="yyyy-MM-dd"/> </f:fields>
+                                              <!--       <f:fields> <DatePicker id="dFechaprog" editable="false" placeholder="Fecha" valueFormat="yyyyMMdd" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/> </f:fields>
                                             --> </f:FormElement> 
                                             </f:formElements>
                                         </f:FormContainer> 
@@ -1184,7 +1184,7 @@
                                         <f:FormContainer > 
                                             <f:formElements>
                                                 <f:FormElement label="Código de inducción">
-                                                    <f:fields> <Input id="dCodinduccRC" value=""/> </f:fields>
+                                                    <f:fields> <Input id="dCodinduccRC" value="" liveChange="cleanValoresInduccionCalificacion"/> </f:fields>
                                                 </f:FormElement> 
                                                 <f:FormElement label="Titulo de inducción">
                                                     <f:fields> <Input id="dTituinduccRC" editable="false" value=""/> </f:fields>
@@ -1194,7 +1194,7 @@
                                                 </f:FormElement> 
                                                 <f:FormElement label="Fecha programada">
                                                     <f:fields> <Input id="dFechaprogRC" editable="false" value=""/> </f:fields>
-                                                    <!-- <f:fields> <DatePicker placeholder="Fecha" valueFormat="yyyyMMdd" displayFormat="yyyy-MM-dd"/> </f:fields>
+                                                    <!-- <f:fields> <DatePicker placeholder="Fecha" valueFormat="yyyyMMdd" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/> </f:fields>
                                                 --> </f:FormElement> 
                                             </f:formElements>
                                         </f:FormContainer> 
@@ -1461,7 +1461,7 @@
                                         </fb:FilterGroupItem> 
                                         <fb:FilterGroupItem groupName="G1" name="A6" groupTitle="Group1"  label="Fecha de reserva" visibleInFilterBar="true" >
                                             <fb:control>
-                                                <DatePicker id="idFechaReserva"  value=""  displayFormat="yyyy-MM-dd" placeholder="Ingresar fecha" />   
+                                                <DatePicker id="idFechaReserva"  value=""  displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd" placeholder="Ingresar fecha" />   
                                             </fb:control>
                                         </fb:FilterGroupItem> 
                                         <!-- <fb:FilterGroupItem groupName="G1" name="A7" groupTitle="Group1"  label="Status" visibleInFilterBar="true" >
@@ -1478,8 +1478,8 @@
                                             <ToolbarSpacer />
                                             <Button text="Nuevo" icon="sap-icon://add-document" type="Emphasized" press="addRequerientoEpp" />  
                                             <Button text="Editar" icon="sap-icon://edit" press="editarRequerientoEpp" />  
-                                            <Button text="Liberar" icon="sap-icon://detail-view" press="visualizarEpp" />  
-                                            <Button text="Entrega" icon="sap-icon://paper-plane" press="entregaEpp" />  
+                                            <Button text="Liberar | Entregar" icon="sap-icon://detail-view" press="visualizarEpp" />  
+                                            <!-- <Button text="Entrega" icon="sap-icon://paper-plane" press="entregaEpp" />   -->
                                             <Button text="Devolución" icon="sap-icon://synchronize" press="vDevolucionEpp" />  
                                             <!-- <Button text="Liberar" icon="sap-icon://outbox" press="deleteInduccion" />   -->
                                             <Button text="Eliminar" icon="sap-icon://delete" press="deleteInduccion" />  

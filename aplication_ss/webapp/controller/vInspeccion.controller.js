@@ -9,7 +9,7 @@ sap.ui.define([
     function (Controller,MessageBox,MessageToast) {
         "use strict";
         var usuario = "CONSULT_MM";
-        var password = "Laredo2023*";
+        var password = "Laredo2023**";
         var url_ini = "";
         return Controller.extend("appss.aplicationss.controller.vInspeccion", {
             getRouter: function () {

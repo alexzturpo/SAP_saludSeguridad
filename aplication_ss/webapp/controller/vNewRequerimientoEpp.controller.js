@@ -14,10 +14,10 @@ sap.ui.define([
     function (Controller,MessageBox,Filter,FilterOperator,FilterType,Fragment,MessageToast,Spreadsheet) {
         "use strict";
         var usuario120 = "CONSULT_MM";
-        var password120 = "Laredo2023*";
+        var password120 = "Laredo2023**";
         var url_ini = "";
         var usuario = "CONSULT_MM";
-        var password = "Laredo2023*"; 
+        var password = "Laredo2023**"; 
 
         return Controller.extend("appss.aplicationss.controller.vNewRequerimientoEpp", {
             getRouter: function () {
@@ -30,6 +30,20 @@ sap.ui.define([
             },
             onPageBack : function () {  
                 this.getRouter().getTargets().display("TargetvMain");
+                let oModel = this.getView().getModel("myParam");  
+                let accionClean = [  
+                    {id:"rEpp_fechaReq"},
+                    {id:"rEpp_centro"},
+                    {id:"rEpp_almacen"},
+                    {id:"rEpp_codTrab"},
+                    {id:"rEpp_nombres"},
+                    {id:"rEpp_apellido"},
+                    {id:"rEpp_dni"},
+                    {id:"rEpp_cargo"},
+                    {id:"rEpp_areaTrb"}
+                ]
+                this.limpiarObjeto(accionClean)
+                oModel.setProperty("/materialesSelectReservaTemp",[]);
             }, 
             guardarReservasEpp: function () {  
                 this.cancelAddEpp()
@@ -79,8 +93,10 @@ sap.ui.define([
                 //     rEpp_codTrab : this.getView().byId("rEpp_codTrab").getValue(),
                 // }]
                 // FALTA IMPLEMENTAR LOS CAMBIOS
+                let datastring = JSON.stringify(data);
+                console.log("data",datastring)
                 debugger
-                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_RESERVA_EPPS/1000/0/0/0/0/0/0?sap-client=120`;
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_RESERVA_EPPS/1000/0/A/0/0/0/0?sap-client=120`;
                 var dataRes = this.f_PostJsonData(url, data,true) // envia nuevo registro
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
                     MessageToast.show("Error (" + dataRes.descripcion + ")");
@@ -88,6 +104,19 @@ sap.ui.define([
                     this.onPageBack()
                     MessageToast.show("Solicitud exitosa")
                     MessageBox.success("Realice de nuevo la busqueda para actualizar los registros"); 
+                    let accionClean = [  
+                        {id:"rEpp_fechaReq"},
+                        {id:"rEpp_centro"},
+                        {id:"rEpp_almacen"},
+                        {id:"rEpp_codTrab"},
+                        {id:"rEpp_nombres"},
+                        {id:"rEpp_apellido"},
+                        {id:"rEpp_dni"},
+                        {id:"rEpp_cargo"},
+                        {id:"rEpp_areaTrb"}
+                    ]
+                    this.limpiarObjeto(accionClean)
+                    oModel.setProperty("/materialesSelectReservaTemp",[]);
                 }
             },
 
@@ -99,13 +128,21 @@ sap.ui.define([
             cancelAddEpp: function () {  
                 this.getView().byId("panelEpp").setVisible(false)
                 this.getView().byId("panelEppEdit").setVisible(false)
+                let accionClean = [
+                    {id:"epp_codMaterial"},
+                    {id:"epp_descripcion"},
+                    {id:"epp_cantidad"},
+                    {id:"epp_cambio", select: true},
+                    {id:"epp_fechaEntrega"}
+                ] 
+                this.limpiarObjeto(accionClean)
             },  
             saveEpp : function () {  
                 // console.log("saveRMedico")
                 let oModel = this.getView().getModel("myParam");  
                 var modelMateriales = "/materialesSelectReservaTemp"
                 let list = oModel.getProperty(modelMateriales); 
-
+                debugger
                 var formData = { 
                     BDTER :  this.cambiarFormatoFecha(this.getView().byId("epp_fechaEntrega").getValue()),
                     MATNR : this.getView().byId("epp_codMaterial").getValue(),
@@ -118,14 +155,7 @@ sap.ui.define([
                 list.push(formData)
                 oModel.setProperty(modelMateriales,list); 
                 // limpiar formulario
-                let accionClean = [
-                    {id:"epp_codMaterial"},
-                    {id:"epp_descripcion"},
-                    {id:"epp_cantidad"},
-                    {id:"epp_cambio", select: true},
-                    {id:"epp_fechaEntrega"}
-                ] 
-                this.limpiarObjeto(accionClean)
+                
                 this.cancelAddEpp()
             },
             editEpp: function () {  
@@ -155,18 +185,25 @@ sap.ui.define([
             },
             saveEditEpp: function () {  
                 let oModel = this.getView().getModel("myParam");   
-                let varListTable = "/newListMaterialReserva" 
+                let varListTable = "/materialesSelectReservaTemp" 
                 let varTemEditIndice = "/temEditMaterialId" 
 
                 let list = oModel.getProperty(varListTable);
                 let tempEditId = oModel.getProperty(varTemEditIndice);
                 var formData = { 
-                    ZMATERIAL : this.getView().byId("edit_epp_codMaterial").getValue(),
-                    ZDESCRIPCION : this.getView().byId("edit_epp_descripcion").getValue(),
-                    ZCANTIDAD : this.getView().byId("edit_epp_cantidad").getValue(),
+                    // BDTER :  this.cambiarFormatoFecha(this.getView().byId("epp_fechaEntrega").getValue()),
+                    // MATNR : this.getView().byId("epp_codMaterial").getValue(),
+                    // MARKTX : this.getView().byId("epp_descripcion").getValue(),
+                    // BDMNG : this.getView().byId("epp_cantidad").getValue(),
+                    // ZIND_CAMBIO : this.getView().byId("epp_cambio").getSelectedKey(),
+                    // ZSTAT_LIBER : "N",
+                    MATNR : this.getView().byId("edit_epp_codMaterial").getValue(),
+                    MARKTX : this.getView().byId("edit_epp_descripcion").getValue(),
+                    BDMNG : this.getView().byId("edit_epp_cantidad").getValue(),
                     ZIND_CAMBIO : this.getView().byId("edit_epp_cambio").getSelectedKey(),
-                    ZFECHA :  this.cambiarFormatoFecha(this.getView().byId("edit_epp_fechaEntrega").getValue())  
+                    BDTER :  this.cambiarFormatoFecha(this.getView().byId("edit_epp_fechaEntrega").getValue())  
                 } 
+                debugger
                 this.actualizarCamposPorIndice(list, tempEditId, formData); 
                 oModel.setProperty(varListTable,list); 
                 this.cancelAddEpp()
@@ -210,6 +247,16 @@ sap.ui.define([
                     this.getView().byId("rEpp_areaTrb").setValue(dataRes.AREA) 
                 }
             },
+            liveDatePersonal:  function () { 
+                let accionClean = [  
+                    {id:"rEpp_nombres"},
+                    {id:"rEpp_apellido"},
+                    {id:"rEpp_dni"},
+                    {id:"rEpp_cargo"},
+                    {id:"rEpp_areaTrb"},
+                ]
+                this.limpiarObjeto(accionClean)
+            },  
             buscarTrabajadorSociedad:  function (iCodTrabajador) {   
                 var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${iCodTrabajador}/0/0/0/0`;
                 var dataRes =  this.f_GetJson(url) 
@@ -251,12 +298,14 @@ sap.ui.define([
             changeEpps: function () { 
                 let oModel = this.getView().getModel("myParam");  
                 oModel.setProperty("/idInputMaterial","epp_codMaterial");
+                oModel.setProperty("/idInputMaterialDescrip","epp_descripcion");
                 // let listMaterialesReserva = oModel.getProperty("/newListMaterialReserva");
                 this._dgEpp().open()
             },
             changeEppsEdit: function () { 
                 let oModel = this.getView().getModel("myParam");  
                 oModel.setProperty("/idInputMaterial","edit_epp_codMaterial");
+                oModel.setProperty("/idInputMaterialDescrip","edit_epp_descripcion");
                 // let listMaterialesReserva = oModel.getProperty("/newListMaterialReserva");
                 this._dgEpp().open()
             },
@@ -282,8 +331,9 @@ sap.ui.define([
                 let oModel = this.getView().getModel("myParam");  
                 // oModel.getProperty("/idInputMaterial","epp_codMaterial");
                 let idInput = oModel.getProperty("/idInputMaterial");
+                let idInputDesc = oModel.getProperty("/idInputMaterialDescrip");
                 // let idInput = "epp_codMaterial"
-                this.dialogGetValueClose(oEvent,idInput)
+                this.dialogGetValueClose(oEvent,idInput,idInputDesc)
             },
 
             // funciones generales para los input con fragment
@@ -300,13 +350,16 @@ sap.ui.define([
                 });
                 oEvent.getSource().getBinding("items").filter([oFilter]);
             },
-            dialogGetValueClose: function (oEvent,idInput) {
-                let sDescription, oSelectedItem = oEvent.getParameter("selectedItem");
+            dialogGetValueClose: function (oEvent,idInput,idInputDesc) {
+                let sDescription,sTitle, oSelectedItem = oEvent.getParameter("selectedItem");
                 oEvent.getSource().getBinding("items").filter([]);
                 if (!oSelectedItem) { return } 
                 sDescription = oSelectedItem.getDescription(); 
+                sTitle = oSelectedItem.getTitle(); 
+                // debugger
                 // console.log("ID INPUT",idInput)
                 this.getView().byId(idInput).setValue(sDescription); 
+                this.getView().byId(idInputDesc).setValue(sTitle); 
                 // this.byId(idInput).setValue(sDescription); 
             }, 
             //FUNCIONES GENERALES
