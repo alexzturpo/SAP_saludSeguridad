@@ -10,7 +10,7 @@
             <Button text="Guardar" icon="sap-icon://save" type="Emphasized" press="saveIncidente" /> 
 			<!-- <Button text="Culminar atensión" icon="sap-icon://paper-plane" type="Emphasized" press="IncTerminar" /> -->
             <Button text="Enviar notificación" icon="sap-icon://notification-2" press="IncNotificacion" /> 
-            <Button text="Cancelar" icon="sap-icon://decline" press="onEnviartab2" /> 
+            <!-- <Button text="Cancelar" icon="sap-icon://decline" press="onEnviartab2" />  -->
 		</headerContent> 
         <content >
             <IconTabBar expanded="{device>/isNoPhone}" >

@@ -452,7 +452,7 @@
                         </f:Form> 
                     </content>
                 </Panel>
-                <tab:Table id="tableRegistroDocs" cellClick="onSelectTab" rows="{  path: 'myParam>/versionesDocSelect' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
+                <tab:Table id="tableRegistroDocs" visible="false" cellClick="onSelectTab" rows="{  path: 'myParam>/versionesDocSelect' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
                     <tab:extension>
                         <OverflowToolbar > 
                             <Title text="Documentos a subir"/>
@@ -491,7 +491,7 @@
                     </tab:columns>
                 </tab:Table> 
             </VBox>
-            <VBox class="sapUiSmallMargin">
+            <!-- <VBox class="sapUiSmallMargin">
                 <tab:Table id="detalleTableDocs" visible="false" cellClick="onSelectTab" rows="{  path: 'myParam>/dataTab' }" selectionMode="Single"  visibleRowCount="5" ariaLabelledBy="title">
                     <tab:extension>
                         <OverflowToolbar > 
@@ -519,7 +519,7 @@
                         </tab:Column>      
                     </tab:columns>
                 </tab:Table> 
-            </VBox>
+            </VBox> -->
 		</content>
 	</Page>
 </mvc:View>

@@ -33,8 +33,8 @@ sap.ui.define([
                 let oModel = this.getView().getModel("myParam");  
                 let accionClean = [  
                     {id:"rEpp_fechaReq"},
-                    {id:"rEpp_centro"},
-                    {id:"rEpp_almacen"},
+                    // {id:"rEpp_centro"},
+                    // {id:"rEpp_almacen"},
                     {id:"rEpp_codTrab"},
                     {id:"rEpp_nombres"},
                     {id:"rEpp_apellido"},
@@ -45,79 +45,73 @@ sap.ui.define([
                 this.limpiarObjeto(accionClean)
                 oModel.setProperty("/materialesSelectReservaTemp",[]);
             }, 
-            guardarReservasEpp: function () {  
-                this.cancelAddEpp()
-                let oModel = this.getView().getModel("myParam");  
-                let materialesSelectReservaTemp = oModel.getProperty("/materialesSelectReservaTemp");
-                console.log("materialesSelectReservaTemp",materialesSelectReservaTemp)
-                let fechaReq = this.cambiarFormatoFecha(this.getView().byId("rEpp_fechaReq").getValue())
-                let centro = this.getView().byId("rEpp_centro").getValue()
-                let almacen = this.getView().byId("rEpp_almacen").getValue()
-                let codTrab = this.getView().byId("rEpp_codTrab").getValue()
-                let dni = this.getView().byId("rEpp_dni").getValue()
-                let cargo = this.getView().byId("rEpp_cargo").getValue()
-                let area = this.getView().byId("rEpp_areaTrb").getValue()
-                
-                let detalle = []
-                for (var valor of materialesSelectReservaTemp) {
-                    let obj =  {
-                        codigomaterial : valor.MATNR,
-                        cantidad : valor.BDMNG,
-                        ZIND_CAMBIO : valor.ZIND_CAMBIO,
-                        ZIND_VALORADO : "N",
-                        ZRES_DEVOLUCION : "N",
-                        ZIND_PERDIDA : "N",
-                        ZSTATUS : "N",
+            guardarReservasEpp:async function () { 
+                let typeMsm = "information",
+                titleMsm = "¿Deseas continuar?"
+                let ok = await this.MessageBoxPress(typeMsm,titleMsm)
+                if(ok){
+                    // console.log("TODO OK")
+                    let oModel = this.getView().getModel("myParam");  
+                    let materialesSelectReservaTemp = oModel.getProperty("/materialesSelectReservaTemp");
+                    console.log("materialesSelectReservaTemp",materialesSelectReservaTemp)
+                    let fechaReq = this.cambiarFormatoFecha(this.getView().byId("rEpp_fechaReq").getValue())
+                    let centro = this.getView().byId("rEpp_centro").getValue()
+                    let almacen = this.getView().byId("rEpp_almacen").getValue()
+                    let codTrab = this.getView().byId("rEpp_codTrab").getValue()
+                    let dni = this.getView().byId("rEpp_dni").getValue()
+                    let cargo = this.getView().byId("rEpp_cargo").getValue()
+                    let area = this.getView().byId("rEpp_areaTrb").getValue()
+                    
+                    let detalle = []
+                    for (var valor of materialesSelectReservaTemp) {
+                        let obj =  {
+                            codigomaterial : valor.MATNR,
+                            cantidad : valor.BDMNG,
+                            ZIND_CAMBIO : valor.ZIND_CAMBIO,
+                            ZIND_VALORADO : "N",
+                            ZRES_DEVOLUCION : "N",
+                            ZIND_PERDIDA : "N",
+                            ZSTATUS : "N",
+                        }
+                        detalle.push(obj)
                     }
-                    detalle.push(obj)
+                    let data = {
+                        cabecera : {
+                            fecharequerimiento : fechaReq,
+                            centro,
+                            almacen,
+                            codigotrabajador : codTrab,
+                            almacendestino : "0301",
+                            clasemovimiento : "311",
+                            dni,
+                            cargo,
+                            area
+                        },
+                        detalle 
+                    } 
+                    // FALTA IMPLEMENTAR LOS CAMBIOS
+                    let datastring = JSON.stringify(data);
+                    console.log("data",datastring)
+                    // debugger
+                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_RESERVA_EPPS/1000/0/A/0/0/0/0?sap-client=120`;
+                    var dataRes = this.f_PostJsonData(url, data,true) // envia nuevo registro
+                    if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                        MessageToast.show("Solicitud cancelada ocurrio un error"); 
+                    }else{ 
+                        MessageToast.show("Solicitud exitosa") 
+                        oModel.setProperty("/materialesSelectReservaTemp",[]);
+                        let ok = await this.MessageBoxPressOneOption("success",`${dataRes.ITAB[0].MESSAGE}`)
+                        if(ok){
+                            // console.log("TODO OK")
+                            // MessageBox.success(`${dataRes.ITAB[0].MESSAGE}`); 
+                            this.onPageBack()
+                        }
+                    }
+                    this.cancelAddEpp()
+                }else{
+                    MessageToast.show("Solicitud cancelada")
                 }
-                let data = {
-                    cabecera : {
-                        fecharequerimiento : fechaReq,
-                        centro,
-                        almacen,
-                        codigotrabajador : codTrab,
-                        almacendestino : "0301",
-                        clasemovimiento : "311",
-                        dni,
-                        cargo,
-                        area
-                    },
-                    detalle 
-                }
-                // console.log("obj",obj)
-                // var formData = [{
-                //     rEpp_fechaReq : this.getView().byId("rEpp_fechaReq").getValue(),
-                //     rEpp_centro : this.getView().byId("rEpp_centro").getValue(),
-                //     rEpp_almacen : this.getView().byId("rEpp_almacen").getValue(),
-                //     rEpp_codTrab : this.getView().byId("rEpp_codTrab").getValue(),
-                // }]
-                // FALTA IMPLEMENTAR LOS CAMBIOS
-                let datastring = JSON.stringify(data);
-                console.log("data",datastring)
-                debugger
-                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_RESERVA_EPPS/1000/0/A/0/0/0/0?sap-client=120`;
-                var dataRes = this.f_PostJsonData(url, data,true) // envia nuevo registro
-                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                    MessageToast.show("Error (" + dataRes.descripcion + ")");
-                }else{ 
-                    this.onPageBack()
-                    MessageToast.show("Solicitud exitosa")
-                    MessageBox.success("Realice de nuevo la busqueda para actualizar los registros"); 
-                    let accionClean = [  
-                        {id:"rEpp_fechaReq"},
-                        {id:"rEpp_centro"},
-                        {id:"rEpp_almacen"},
-                        {id:"rEpp_codTrab"},
-                        {id:"rEpp_nombres"},
-                        {id:"rEpp_apellido"},
-                        {id:"rEpp_dni"},
-                        {id:"rEpp_cargo"},
-                        {id:"rEpp_areaTrb"}
-                    ]
-                    this.limpiarObjeto(accionClean)
-                    oModel.setProperty("/materialesSelectReservaTemp",[]);
-                }
+                
             },
 
             //PANEL TABLE DE MATERIALES
@@ -136,13 +130,14 @@ sap.ui.define([
                     {id:"epp_fechaEntrega"}
                 ] 
                 this.limpiarObjeto(accionClean)
+                
             },  
             saveEpp : function () {  
                 // console.log("saveRMedico")
                 let oModel = this.getView().getModel("myParam");  
                 var modelMateriales = "/materialesSelectReservaTemp"
                 let list = oModel.getProperty(modelMateriales); 
-                debugger
+                // debugger
                 var formData = { 
                     BDTER :  this.cambiarFormatoFecha(this.getView().byId("epp_fechaEntrega").getValue()),
                     MATNR : this.getView().byId("epp_codMaterial").getValue(),
@@ -203,7 +198,7 @@ sap.ui.define([
                     ZIND_CAMBIO : this.getView().byId("edit_epp_cambio").getSelectedKey(),
                     BDTER :  this.cambiarFormatoFecha(this.getView().byId("edit_epp_fechaEntrega").getValue())  
                 } 
-                debugger
+                // debugger
                 this.actualizarCamposPorIndice(list, tempEditId, formData); 
                 oModel.setProperty(varListTable,list); 
                 this.cancelAddEpp()
@@ -258,7 +253,7 @@ sap.ui.define([
                 this.limpiarObjeto(accionClean)
             },  
             buscarTrabajadorSociedad:  function (iCodTrabajador) {   
-                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${iCodTrabajador}/0/0/0/0`;
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${iCodTrabajador}/0/0/0/0?sap-client=120`;
                 var dataRes =  this.f_GetJson(url) 
                 return dataRes
             },
@@ -460,7 +455,7 @@ sap.ui.define([
                 }
                 // console.log("INICIO f_PostJsonData")
                 const credentials = btoa(`${usuario}:${password}`); 
-                // let url= url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INC/1000/0/0/0/0/0/0"
+                // let url= url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INC/1000/0/0/0/0/0/0?sap-client=120"
                 var res = null
                 var oVector = dataForm
                 $.ajax(url, {
@@ -561,6 +556,36 @@ sap.ui.define([
                     // this.getView().byId(item.id).setValue("")
                     this.getView().byId(item.id).setValue(''); 
                 }
+            },
+            MessageBoxPress: function (typeMsm,titleMsm) {
+                return new Promise((resolve, reject) => {  
+                    MessageBox[typeMsm](titleMsm, {
+                        actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+                        emphasizedAction: MessageBox.Action.OK,
+                        onClose: function (sAction) {
+                            let res = false
+                            if(sAction === MessageBox.Action.OK){  
+                                res = true
+                            }  
+                            resolve(res); 
+                        }
+                    });
+                }); 
+            },
+            MessageBoxPressOneOption: function (typeMsm,titleMsm) {
+                return new Promise((resolve, reject) => {  
+                    MessageBox[typeMsm](titleMsm, {
+                        actions: [MessageBox.Action.OK],
+                        emphasizedAction: MessageBox.Action.OK,
+                        onClose: function (sAction) {
+                            let res = false
+                            if(sAction === MessageBox.Action.OK){  
+                                res = true
+                            }  
+                            resolve(res); 
+                        }
+                    });
+                }); 
             },
             
         });

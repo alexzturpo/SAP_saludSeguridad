@@ -126,60 +126,70 @@ sap.ui.define([
                 this.getRouter().getTargets().display("TargetvMain");
             },
             //actualizar el registro inspeccion seleccionado
-            updateInspeccion: function () {
-                var oModel = this.getView().getModel("myParam");  
-                let selectInspeccion = oModel.getProperty("/tempInspecciones");
-                // let listInspeccion = oModel.getProperty("/ZSYSO_INSPECCION");
-                //obtener tablas para enviar la acctualizacion 
-                let  tabPerInvolucrados = oModel.getProperty("/tabPerInvolucrados");
-                console.log("tabPerInvolucrados",tabPerInvolucrados)
-                let  tabRiAsociados = oModel.getProperty("/tabRiAsociados");
-                console.log("tabRiAsociados",tabRiAsociados)
-                let  tabMedCorrectiva = oModel.getProperty("/tabMedCorrectiva");
-                console.log("tabMedCorrectiva",tabMedCorrectiva)
-                let  tabResponsables  = oModel.getProperty("/tabResponsables");
-                console.log("tabResponsables",tabResponsables)
+            updateInspeccion:async function () {
+                let typeMsm = "information",
+                    titleMsm = "¿Deseas continuar?"
+                let ok = await this.MessageBoxPress(typeMsm,titleMsm)
+                if(ok){
+                    var oModel = this.getView().getModel("myParam");  
+                    let selectInspeccion = oModel.getProperty("/tempInspecciones");
+                    // let listInspeccion = oModel.getProperty("/ZSYSO_INSPECCION");
+                    //obtener tablas para enviar la acctualizacion 
+                    let  tabPerInvolucrados = oModel.getProperty("/tabPerInvolucrados");
+                    console.log("tabPerInvolucrados",tabPerInvolucrados)
+                    let  tabRiAsociados = oModel.getProperty("/tabRiAsociados");
+                    console.log("tabRiAsociados",tabRiAsociados)
+                    let  tabMedCorrectiva = oModel.getProperty("/tabMedCorrectiva");
+                    console.log("tabMedCorrectiva",tabMedCorrectiva)
+                    let  tabResponsables  = oModel.getProperty("/tabResponsables");
+                    console.log("tabResponsables",tabResponsables)
+    
+                    let objInspeccion = {
+                    "cabecera": { 
+                        ZINSPECCION: this.getView().byId("gInsp_codInsp").getValue(),
+                        ZGERENCIA: this.getView().byId("gInsp_gerencia").getValue(),
+                        ZAREA: this.getView().byId("gInsp_area").getValue(),
+                        ZDPTO: this.getView().byId("gInsp_departamento").getValue(),
+                        ZFEC_PROGRAM: this.cambiarFormatoFecha(this.getView().byId("gInsp_programada").getValue()),
+    
+                        ZCATEGORIA: this.getView().byId("gInsp_categoria").getSelectedKey(),
+                        ZTIPO: this.getView().byId("gInsp_tipo").getSelectedKey(),
+    
+                        ZFEC_REAL: this.cambiarFormatoFecha(this.getView().byId("gInsp_fechaReal").getValue()),
+                        ZHOR_REAL: this.getView().byId("gInsp_horaReal").getValue(),
+                        ZACTO: this.getView().byId("gInsp_actoI").getValue(),
+                        ZCONDICION: this.getView().byId("gInsp_condicionI").getValue(),
+                        ZHALLAZGO: this.getView().byId("gInsp_descHallazgo").getValue(),
+                        ZACCIONES: this.getView().byId("gInsp_accTomada").getValue(),
+                        ZRECOMENDACION: this.getView().byId("gInsp_recomendacion").getValue(),
+                        ZUBICACION: this.getView().byId("gInsp_ubicacion").getValue(),
+    
+                        ZCAUSAS: this.getView().byId("gInsp_desCausaOrigen").getValue()
+                    },
+                    
+                    "detalle": tabPerInvolucrados,
+                    "detalle1": tabRiAsociados,
+                    "detalle2": tabMedCorrectiva,
+                    "detalle3": tabResponsables
+                    }
+                    console.log("objInspeccion",objInspeccion) 
+                    
+                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UPD_INSP/1000/0/${selectInspeccion.ZINSPECCION}/0/0/0/0?sap-client=120`;
+                    var dataRes = this.f_PostJsonData(url, objInspeccion) // actualizar inspeccion cabecera y tablas involucrados asociados correctiva responsable
+                    console.log("dataRes",dataRes)
+                    if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                        MessageToast.show("Error en la solicitud");
+                    }else{
+                        let ok = await this.MessageBoxPressOneOption("success",`Cambios realizados`)
+                        if(ok){
+                            MessageToast.show("Solicitud exitosa");  
+                            // console.log("TODO OK") 
+                            this.onPageBack()
+                        }
+                    } 
+                    // oModel.setProperty("/listInspeccion",newListInspeccion);  
 
-                let objInspeccion = {
-                "cabecera": { 
-                    ZINSPECCION: this.getView().byId("gInsp_codInsp").getValue(),
-                    ZGERENCIA: this.getView().byId("gInsp_gerencia").getValue(),
-                    ZAREA: this.getView().byId("gInsp_area").getValue(),
-                    ZDPTO: this.getView().byId("gInsp_departamento").getValue(),
-                    ZFEC_PROGRAM: this.cambiarFormatoFecha(this.getView().byId("gInsp_programada").getValue()),
-
-                    ZCATEGORIA: this.getView().byId("gInsp_categoria").getSelectedKey(),
-                    ZTIPO: this.getView().byId("gInsp_tipo").getSelectedKey(),
-
-                    ZFEC_REAL: this.cambiarFormatoFecha(this.getView().byId("gInsp_fechaReal").getValue()),
-                    ZHOR_REAL: this.getView().byId("gInsp_horaReal").getValue(),
-                    ZACTO: this.getView().byId("gInsp_actoI").getValue(),
-                    ZCONDICION: this.getView().byId("gInsp_condicionI").getValue(),
-                    ZHALLAZGO: this.getView().byId("gInsp_descHallazgo").getValue(),
-                    ZACCIONES: this.getView().byId("gInsp_accTomada").getValue(),
-                    ZRECOMENDACION: this.getView().byId("gInsp_recomendacion").getValue(),
-                    ZUBICACION: this.getView().byId("gInsp_ubicacion").getValue(),
-
-                    ZCAUSAS: this.getView().byId("gInsp_desCausaOrigen").getValue()
-                },
-                
-                "detalle": tabPerInvolucrados,
-                "detalle1": tabRiAsociados,
-                "detalle2": tabMedCorrectiva,
-                "detalle3": tabResponsables
-                }
-                console.log("objInspeccion",objInspeccion) 
-                
-                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UPD_INSP/1000/0/${selectInspeccion.ZINSPECCION}/0/0/0/0?sap-client=100`;
-                var dataRes = this.f_PostJsonData(url, objInspeccion) // actualizar inspeccion cabecera y tablas involucrados asociados correctiva responsable
-                console.log("dataRes",dataRes)
-                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                    MessageToast.show("Error (" + dataRes.descripcion + ")");
-                }else{
-                    MessageToast.show("Solicitud exitosa");  
-                } 
-                // oModel.setProperty("/listInspeccion",newListInspeccion);  
-                this.onPageBack()
+                }else{ MessageToast.show("Solicitud cancelada") }
             },
             updateKey: function (miArray,nuevoObjeto,codigoBuscado) {  
                 // console.log("updateKey EDITADO",miArray,nuevoObjeto,codigoBuscado) 
@@ -285,7 +295,7 @@ sap.ui.define([
                 var iCodTrabajador = this.getView().byId("perInv_codTrab").getValue()
                 console.log("iCodTrabajador",iCodTrabajador)
                 var oModel = this.getView().getModel("myParam");  
-                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${iCodTrabajador}/0/0/0/0`;
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${iCodTrabajador}/0/0/0/0?sap-client=120`;
                 var dataRes =  this.f_GetJson(url) 
                 console.log('getListEmpleado DATA ',dataRes)
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
@@ -620,6 +630,36 @@ sap.ui.define([
 				}); 
                 // console.log(`RES ->`,res);
                 return res
+            },
+            MessageBoxPress: function (typeMsm,titleMsm) {
+                return new Promise((resolve, reject) => {  
+                    MessageBox[typeMsm](titleMsm, {
+                        actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+                        emphasizedAction: MessageBox.Action.OK,
+                        onClose: function (sAction) {
+                            let res = false
+                            if(sAction === MessageBox.Action.OK){  
+                                res = true
+                            }  
+                            resolve(res); 
+                        }
+                    });
+                }); 
+            },
+            MessageBoxPressOneOption: function (typeMsm,titleMsm) {
+                return new Promise((resolve, reject) => {  
+                    MessageBox[typeMsm](titleMsm, {
+                        actions: [MessageBox.Action.OK],
+                        emphasizedAction: MessageBox.Action.OK,
+                        onClose: function (sAction) {
+                            let res = false
+                            if(sAction === MessageBox.Action.OK){  
+                                res = true
+                            }  
+                            resolve(res); 
+                        }
+                    });
+                }); 
             },
         });
     });

@@ -319,6 +319,7 @@
                                         <Toolbar> 
                                             <ToolbarSpacer />
                                             <Button text="Guardar" icon="sap-icon://save" press="seveNewInspeccion" type="Emphasized" />  
+                                            <!-- <Button text="Guardar2" icon="sap-icon://save" press="seveNewInspeccion2" type="Emphasized" />   -->
                                         </Toolbar>
                                     </f:toolbar>
                                     <f:layout>
@@ -1482,7 +1483,7 @@
                                             <!-- <Button text="Entrega" icon="sap-icon://paper-plane" press="entregaEpp" />   -->
                                             <Button text="Devolución" icon="sap-icon://synchronize" press="vDevolucionEpp" />  
                                             <!-- <Button text="Liberar" icon="sap-icon://outbox" press="deleteInduccion" />   -->
-                                            <Button text="Eliminar" icon="sap-icon://delete" press="deleteInduccion" />  
+                                            <!-- <Button text="Eliminar" icon="sap-icon://delete" press="deleteInduccion" />   -->
                                         </OverflowToolbar>
                                     </tab:extension>
                                     <tab:columns>

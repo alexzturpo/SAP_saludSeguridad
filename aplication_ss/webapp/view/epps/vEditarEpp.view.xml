@@ -204,7 +204,7 @@
                                             </f:fields>
                                         </f:FormElement>  
                                         <f:FormElement label="Descripcion">
-                                            <f:fields> <Input  value="{myParam>MARKTX}"   id="edit_epp_descripcion" editable="false" />  </f:fields>
+                                            <f:fields> <Input  value="{myParam>MAKTX}"   id="edit_epp_descripcion" editable="false" />  </f:fields>
                                         </f:FormElement> 
                                         <f:FormElement label="Cantidad">
                                             <f:fields> <Input  value="{myParam>BDMNG}"   id="edit_epp_cantidad"/>  </f:fields>

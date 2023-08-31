@@ -55,45 +55,48 @@ sap.ui.define([
                     console.log("lista de epps", arrayEpps)
                 }
             },
-            devolverTotalEpp: function () {
+            devolverTotalEpp:async function () {
                 let arrayEpps = this.selectMultipleTable()
-                console.log("arrayEpps", arrayEpps)
-                let oModel = this.getView().getModel("myParam");  
-                let ZID_RESERVA = oModel.getProperty("/ZID_RESERVA_select")
-                let fechaActual = this.fechaActual()
-                    let partesFecha = fechaActual.split("-"); // Divide la fecha en partes
-                    let fechaFormateada = partesFecha.join("");
                 if(arrayEpps.length > 0){
-                    for (let epp of arrayEpps) {
-                        debugger
-                        if(epp.ZSTATUS == 'E'){ 
-                            let sendPost = [{
-                                "RSPOS": epp.ZID_POSICION,
-                                "ZIND_PERDIDA": epp.ZIND_PERDIDA,
-                                "ZOBSERVACIONES": epp.ZOBSERVACIONES,
-                                "ZESTADO_EPP": epp.ZESTADO_EPP,
-                                "ZFEC_CESE" : this.cambiarFormatoFecha(this.getView().byId("dvEpp_fechaCese").getValue()),
-                                "ZFEC_TRANSFERENCIA" : this.cambiarFormatoFecha(this.getView().byId("dvEpp_fechaTrans").getValue()),
-                                "ZFEC_DEVOLUCION" : this.cambiarFormatoFecha(this.getView().byId("dvEpp_devolucion").getValue()),
-                            }]
+                    let typeMsm = "information",
+                    titleMsm = "¿Deseas continuar?"
+                    let ok = await this.MessageBoxPress(typeMsm,titleMsm)
+                    if(ok){
+                        console.log("arrayEpps", arrayEpps)
+                        let oModel = this.getView().getModel("myParam");  
+                        let ZID_RESERVA = oModel.getProperty("/ZID_RESERVA_select")
+                        let fechaActual = this.fechaActual()
+                            let partesFecha = fechaActual.split("-"); // Divide la fecha en partes
+                            let fechaFormateada = partesFecha.join("");
+                        for (let epp of arrayEpps) {
                             debugger
-                            console.log("material a liberar",sendPost)
-                            var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/PROCESAR_RESERVA/1000/0/${ZID_RESERVA}/D/${fechaFormateada}/0/0?sap-client=120`;
-                            var dataRes = this.f_PostJsonData(url, sendPost,true) // envia nuevo registro
-                            if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                                MessageToast.show("Error (" + dataRes.descripcion + ")");
-                            }else{ 
-                                MessageToast.show("Solicitud exitosa")
-                                epp.ZSTATUS = 'D'
-                                // MessageBox.success("Realice de nuevo la busqueda para actualizar los registros"); 
-                                // this.onPageBack() 
-                            }
-                        }else{ MessageToast.show(`El material tiene que estar entregado`) } 
-                    } 
-                    oModel.setProperty("/materialesSelectReservaTemp",arrayEpps)
-                }else{
-                    MessageToast.show("Selecciona un material")
-                }
+                            if(epp.ZSTATUS == 'E'){ 
+                                let sendPost = [{
+                                    "RSPOS": epp.ZID_POSICION,
+                                    "ZIND_PERDIDA": epp.ZIND_PERDIDA,
+                                    "ZOBSERVACIONES": epp.ZOBSERVACIONES,
+                                    "ZESTADO_EPP": epp.ZESTADO_EPP,
+                                    "ZFEC_CESE" : this.cambiarFormatoFecha(this.getView().byId("dvEpp_fechaCese").getValue()),
+                                    "ZFEC_TRANSFERENCIA" : this.cambiarFormatoFecha(this.getView().byId("dvEpp_fechaTrans").getValue()),
+                                    "ZFEC_DEVOLUCION" : this.cambiarFormatoFecha(this.getView().byId("dvEpp_devolucion").getValue()),
+                                }]
+                                // debugger
+                                console.log("material a liberar",sendPost)
+                                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/PROCESAR_RESERVA/1000/0/${ZID_RESERVA}/D/${fechaFormateada}/0/0?sap-client=120`;
+                                var dataRes = this.f_PostJsonData(url, sendPost,true) // envia nuevo registro
+                                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                                    MessageToast.show("Error (" + dataRes.descripcion + ")");
+                                }else{ 
+                                    MessageToast.show("Solicitud exitosa")
+                                    epp.ZSTATUS = 'D'
+                                    // MessageBox.success("Realice de nuevo la busqueda para actualizar los registros"); 
+                                    // this.onPageBack() 
+                                }
+                            }else{ MessageToast.show(`El material tiene que estar entregado`) } 
+                        } 
+                        // oModel.setProperty("/materialesSelectReservaTemp",arrayEpps) 
+                    }else{ MessageToast.show("Solicitud cancelada") }
+                }else{MessageToast.show("Selecciona un material")}
             },
             selectMultipleTable: function () {
                 let arrayEpps = []
@@ -111,7 +114,7 @@ sap.ui.define([
             },
             // FUNCIONES GENERALES 
             buscarTrabajadorSociedad:  function (iCodTrabajador) {   
-                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${iCodTrabajador}/0/0/0/0`;
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${iCodTrabajador}/0/0/0/0?sap-client=120`;
                 var dataRes =  this.f_GetJson(url) 
                 return dataRes
             },
@@ -212,7 +215,7 @@ sap.ui.define([
                 }
                 // console.log("INICIO f_PostJsonData")
                 const credentials = btoa(`${usuario}:${password}`); 
-                // let url= url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INC/1000/0/0/0/0/0/0"
+                // let url= url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INC/1000/0/0/0/0/0/0?sap-client=120"
                 var res = null
                 var oVector = dataForm
                 $.ajax(url, {
@@ -302,6 +305,36 @@ sap.ui.define([
                     // this.getView().byId(item.id).setValue("")
                     this.getView().byId(item.id).setValue(''); 
                 }
+            },
+            MessageBoxPress: function (typeMsm,titleMsm) {
+                return new Promise((resolve, reject) => {  
+                    MessageBox[typeMsm](titleMsm, {
+                        actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+                        emphasizedAction: MessageBox.Action.OK,
+                        onClose: function (sAction) {
+                            let res = false
+                            if(sAction === MessageBox.Action.OK){  
+                                res = true
+                            }  
+                            resolve(res); 
+                        }
+                    });
+                }); 
+            },
+            MessageBoxPressOneOption: function (typeMsm,titleMsm) {
+                return new Promise((resolve, reject) => {  
+                    MessageBox[typeMsm](titleMsm, {
+                        actions: [MessageBox.Action.OK],
+                        emphasizedAction: MessageBox.Action.OK,
+                        onClose: function (sAction) {
+                            let res = false
+                            if(sAction === MessageBox.Action.OK){  
+                                res = true
+                            }  
+                            resolve(res); 
+                        }
+                    });
+                }); 
             },
             
         });

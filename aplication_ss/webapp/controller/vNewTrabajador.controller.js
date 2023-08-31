@@ -141,7 +141,7 @@ sap.ui.define([
                 }
                 // console.log("INICIO f_PostJsonData")
                 const credentials = btoa(`${usuario}:${password}`); 
-                // let url= url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INC/1000/0/0/0/0/0/0"
+                // let url= url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INC/1000/0/0/0/0/0/0?sap-client=120"
                 var res = null
                 var oVector = dataForm
                 $.ajax(url, {

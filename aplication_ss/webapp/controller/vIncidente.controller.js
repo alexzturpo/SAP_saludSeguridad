@@ -72,7 +72,7 @@ sap.ui.define([
             },
             buscarTrabajador:  function (codigoTrabajador) {  
                 console.log('getListEmpleado') 
-                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${codigoTrabajador}/0/0/0/0`;
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${codigoTrabajador}/0/0/0/0?sap-client=120`;
                 var dataRes =  this.f_GetJson(url) 
                 var resTrab = false
                 console.log('getListEmpleado DATA ',dataRes)
@@ -86,27 +86,38 @@ sap.ui.define([
                 return resTrab
             },
             
-            IncNotificacion : function () {  
-                let oModel = this.getView().getModel("myParam");  
-                let dataSelect = oModel.getProperty("/selectIncidente");
-                console.log("dataSelect", dataSelect)
-                let resTrab = this.buscarTrabajador(dataSelect.ZID_COD_TRABAJADOR)
-                console.log("resTrab",resTrab)
-                let datosTrabajador = {
-                    "afectado": `${resTrab.NOMBRE} ${resTrab.APELLIDO}`
-                }
-                var urlAjax = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UPD_EST_INC/1000/0/${dataSelect.ZINCIDENTE}/C/0/0/0`
-                console.log("urlAjax",urlAjax)
+            IncNotificacion :async function () {  
+                let typeMsm = "information",
+                    titleMsm = "¿Deseas continuar?"
+                let ok = await this.MessageBoxPress(typeMsm,titleMsm)
+                if(ok){ 
+                    let oModel = this.getView().getModel("myParam");  
+                    let dataSelect = oModel.getProperty("/selectIncidente");
+                    if(dataSelect.ZESTADO !== 'C'){
+                        console.log("dataSelect", dataSelect)
+                        let resTrab = this.buscarTrabajador(dataSelect.ZID_COD_TRABAJADOR)
+                        console.log("resTrab",resTrab)
+                        let datosTrabajador = {
+                            "afectado": `${resTrab.NOMBRE} ${resTrab.APELLIDO}`
+                        }
+                        var urlAjax = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UPD_EST_INC/1000/0/${dataSelect.ZINCIDENTE}/C/0/0/0?sap-client=120`
+                        console.log("urlAjax",urlAjax)
+        
+                        var dataRes = this.f_PostJsonData(urlAjax,datosTrabajador)
+        
+                        if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                            MessageToast.show("Error en la solicitud");
+                        }else{ 
+                            MessageToast.show("Solicitud exitosa") 
+                            let ok = await this.MessageBoxPressOneOption("success",`Notificacion enviada`)
+                            if(ok){ 
+                                this.getListInc()
+                                this.onPageBack() 
+                            } 
+                        }
+                    }else{ MessageToast.show("El incidente ya fue notificado") }
 
-                var dataRes = this.f_PostJsonData(urlAjax,datosTrabajador)
-
-                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                    MessageToast.show("Error (" + dataRes.descripcion + ")");
-                }else{ 
-                    MessageToast.show("Solicitud exitosa")  
-                    this.getListInc()
-                }
-                this.onPageBack()
+                }else{ MessageToast.show("Solicitud cancelada") }
             },
             saveDocIncidente : function () {  
                 let oModel = this.getView().getModel("myParam");  
@@ -208,7 +219,7 @@ sap.ui.define([
                 }
                 console.log("saveInforme DATA",informeCab)
 
-                var urlAjax = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INCACC/1000/0/${dataSelect.ZINCIDENTE}/0/0/0/0` 
+                var urlAjax = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INCACC/1000/0/${dataSelect.ZINCIDENTE}/0/0/0/0?sap-client=120` 
                 var dataRes = this.f_PostJsonData(urlAjax, informeCab) // envia nuevo registro
 
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
@@ -268,7 +279,7 @@ sap.ui.define([
             IncTerminar : function () {  
                 let oModel = this.getView().getModel("myParam");  
                 let dataSelect = oModel.getProperty("/selectIncidente");
-                var urlAjax = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UPD_EST_INC/1000/0/${dataSelect.ZINCIDENTE}/T/0/0/0`
+                var urlAjax = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UPD_EST_INC/1000/0/${dataSelect.ZINCIDENTE}/T/0/0/0?sap-client=120`
                 console.log("urlAjax",urlAjax) 
                 var dataRes = this.f_PostJsonSinData(urlAjax)
 
@@ -292,80 +303,89 @@ sap.ui.define([
                 link.click();
                 document.body.removeChild(link);
             },
-            saveIncidente : function () {  
-                let oModel = this.getView().getModel("myParam");  
-                let dataSelect = oModel.getProperty("/selectIncidente"); 
-                //optener archivos Anexos 
-                let fileAnexoInves = this.byId("fileDocIncidenteAnexoInves").getValue();
-                let fileAnexoInfor = this.byId("fileDocIncidenteAnexoInfor").getValue();
-                console.log("fileAnexoInves ", fileAnexoInfor)
-                console.log("ARCHIVO fileAnexoInfor value", fileAnexoInfor)
-                if(!fileAnexoInves){ 
-                    // fileAnexoInves = this.byId("fileDocIncidenteAnexoInves").oFileUpload.files[0].name; 
-                    fileAnexoInves = ""; 
-                }
-                if(!fileAnexoInfor){
-                    //  fileAnexoInfor = this.byId("fileDocIncidenteAnexoInfor").oFileUpload.files[0].name;
-                     fileAnexoInfor = ""
-                }
-                // console.log("ARCHIVO fileDocIncidenteAnexoInves", this.byId("fileDocIncidenteAnexoInves").oFileUpload.files[0])
-                // fileAnexoInfor = this.byId("fileDocIncidenteAnexoInfor").oFileUpload.files[0];
+            saveIncidente :async function () {  
+                let typeMsm = "information",
+                    titleMsm = "¿Deseas continuar?"
+                let ok = await this.MessageBoxPress(typeMsm,titleMsm)
+                if(ok){
+                    console.log("TODO OK")
+                    let oModel = this.getView().getModel("myParam");  
+                    let dataSelect = oModel.getProperty("/selectIncidente"); 
+                    //optener archivos Anexos 
+                    let fileAnexoInves = this.byId("fileDocIncidenteAnexoInves").getValue();
+                    let fileAnexoInfor = this.byId("fileDocIncidenteAnexoInfor").getValue();
+                    console.log("fileAnexoInves ", fileAnexoInfor)
+                    console.log("ARCHIVO fileAnexoInfor value", fileAnexoInfor)
+                    if(!fileAnexoInves){ 
+                        // fileAnexoInves = this.byId("fileDocIncidenteAnexoInves").oFileUpload.files[0].name; 
+                        fileAnexoInves = ""; 
+                    }
+                    if(!fileAnexoInfor){
+                        //  fileAnexoInfor = this.byId("fileDocIncidenteAnexoInfor").oFileUpload.files[0].name;
+                         fileAnexoInfor = ""
+                    }
+                    // console.log("ARCHIVO fileDocIncidenteAnexoInves", this.byId("fileDocIncidenteAnexoInves").oFileUpload.files[0])
+                    // fileAnexoInfor = this.byId("fileDocIncidenteAnexoInfor").oFileUpload.files[0];
+    
+                    //obtener array de documentos  
+                    let docsIncidente = oModel.getProperty("/docTableIncidente")
+                    let tbAcciones = oModel.getProperty("/tableAccionesInformeIncidente");
+    
+                    let incidenteForm = {"cabecera" : {
+                        //DETALLE
+                        ZINCIDENTE: dataSelect.ZINCIDENTE,
+                        ZTITULO: this.getView().byId("gi_new_titulo").getValue(),
+                        ZDESCRIPCION: this.getView().byId("gi_new_descrip").getValue(),
+                        ZACCIONES: this.getView().byId("gi_new_accionInmediata").getValue(),
+                        
+                        ZSOCIEDAD: this.getView().byId("gi_new_sociedad").getValue(),
+                        ZUBICACION: this.getView().byId("gi_new_ubicacion").getValue(),
+                        ZDETALLE: this.getView().byId("gi_new_detalle").getValue(),
+                        ZINVEST_PRELIM: this.getView().byId("gi_new_invPreliminar").getValue(), 
+    
+                        ZINVEST_ACCIDENTES: fileAnexoInves, 
+                        ZINF_INVESTIGAC: fileAnexoInfor, 
+                        
+                        ZFECHA: this.cambiarFormatoFecha(this.getView().byId("gi_new_fecha").getValue()),
+                        ZHORA: this.getView().byId("gi_new_hora").getValue(),
+    
+                        ZID_COD_TRABAJADOR: this.getView().byId("gi_codEmp_afectado").getValue(), //codigo de empleado afectado
+                        ZID_COD_INFORMANTE: this.getView().byId("gi_codEmp_informante").getValue(), //codigo de empleado informante
+                        ZMANIFESTACION: this.getView().byId("gi_codEmp_detalleInf").getValue(), 
+                        ZESTADO: dataSelect.ZESTADO,
+    
+                        // INFORME
+                        ZACTOS_SUBESTAND : this.getView().byId("info_acto").getValue(),
+                        ZCOND_SUBESTAND : this.getView().byId("info_descrip").getValue(),
+                        ZFACT_PERSONALES : this.getView().byId("info_facPers").getValue(),
+                        ZFACT_TRABAJO : this.getView().byId("info_facTrab").getValue(),
+                        ZLECCIONES : this.getView().byId("info_lecion").getValue(),
+                        ZINVEST_POR : this.getView().byId("info_invesNombre").getValue(),
+                        ZCARGO : this.getView().byId("info_invesCargo").getValue(),
+                        // ZFIRMA : this.getView().byId("info_invesFirma").getValue(),
+    
+                    },
+                    "detalle" : docsIncidente,
+                    "detalle2" : tbAcciones
+                    } 
+                    console.log("incidenteForm update DATA",incidenteForm)
+    
+                    var urlAjax = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UPD_INC/1000/0/${dataSelect.ZINCIDENTE}/0/0/0/0?sap-client=120` 
+                    var dataRes = this.f_PostJsonData(urlAjax, incidenteForm) // envia nuevo registro
+    
+                    if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                        MessageToast.show("Error (" + dataRes.descripcion + ")");
+                    }else{ 
+                        MessageToast.show("Solicitud exitosa")
+                        let ok = await this.MessageBoxPressOneOption("success",`Cambios realizados`)
+                        if(ok){ 
+                            // this.limpiarObjeto(objClean) // vuelve a consultar toda los incidentes y actualizar los registros 
+                            this.getListInc() 
+                            this.onPageBack()
+                        }
+                    } 
+                }else{ MessageToast.show("Solicitud cancelada") }
 
-                //obtener array de documentos  
-                let docsIncidente = oModel.getProperty("/docTableIncidente")
-                let tbAcciones = oModel.getProperty("/tableAccionesInformeIncidente");
-
-                let incidenteForm = {"cabecera" : {
-                    //DETALLE
-                    ZINCIDENTE: dataSelect.ZINCIDENTE,
-                    ZTITULO: this.getView().byId("gi_new_titulo").getValue(),
-                    ZDESCRIPCION: this.getView().byId("gi_new_descrip").getValue(),
-                    ZACCIONES: this.getView().byId("gi_new_accionInmediata").getValue(),
-                    
-                    ZSOCIEDAD: this.getView().byId("gi_new_sociedad").getValue(),
-                    ZUBICACION: this.getView().byId("gi_new_ubicacion").getValue(),
-                    ZDETALLE: this.getView().byId("gi_new_detalle").getValue(),
-                    ZINVEST_PRELIM: this.getView().byId("gi_new_invPreliminar").getValue(), 
-
-                    ZINVEST_ACCIDENTES: fileAnexoInves, 
-                    ZINF_INVESTIGAC: fileAnexoInfor, 
-                    
-                    ZFECHA: this.cambiarFormatoFecha(this.getView().byId("gi_new_fecha").getValue()),
-                    ZHORA: this.getView().byId("gi_new_hora").getValue(),
-
-                    ZID_COD_TRABAJADOR: this.getView().byId("gi_codEmp_afectado").getValue(), //codigo de empleado afectado
-                    ZID_COD_INFORMANTE: this.getView().byId("gi_codEmp_informante").getValue(), //codigo de empleado informante
-                    ZMANIFESTACION: this.getView().byId("gi_codEmp_detalleInf").getValue(), 
-                    ZESTADO: dataSelect.ZESTADO,
-
-                    // INFORME
-                    ZACTOS_SUBESTAND : this.getView().byId("info_acto").getValue(),
-                    ZCOND_SUBESTAND : this.getView().byId("info_descrip").getValue(),
-                    ZFACT_PERSONALES : this.getView().byId("info_facPers").getValue(),
-                    ZFACT_TRABAJO : this.getView().byId("info_facTrab").getValue(),
-                    ZLECCIONES : this.getView().byId("info_lecion").getValue(),
-                    ZINVEST_POR : this.getView().byId("info_invesNombre").getValue(),
-                    ZCARGO : this.getView().byId("info_invesCargo").getValue(),
-                    // ZFIRMA : this.getView().byId("info_invesFirma").getValue(),
-
-                },
-                "detalle" : docsIncidente,
-                "detalle2" : tbAcciones
-                }
-               
-                console.log("incidenteForm update DATA",incidenteForm)
-
-                var urlAjax = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UPD_INC/1000/0/${dataSelect.ZINCIDENTE}/0/0/0/0` 
-                var dataRes = this.f_PostJsonData(urlAjax, incidenteForm) // envia nuevo registro
-
-                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                    MessageToast.show("Error (" + dataRes.descripcion + ")");
-                }else{ 
-                    MessageToast.show("Solicitud exitosa")
-                    // this.limpiarObjeto(objClean) // vuelve a consultar toda los incidentes y actualizar los registros 
-                    this.getListInc() 
-                } 
-                this.onPageBack()
             },
 
             /// inicio borrar
@@ -424,7 +444,7 @@ sap.ui.define([
             getListInc:  function () { 
                 console.log('getListInc')
                 var oModel = this.getView().getModel("myParam");  
-                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/0/0/0/0/0?sap-client=100";
+                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/0/0/0/0/0?sap-client=120";
                 var dataRes =  this.f_GetJson(url) 
                 console.log('getListInc DATA ',dataRes)
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
@@ -611,6 +631,36 @@ sap.ui.define([
                     // this.getView().byId(item.id).setValue("")
                     this.getView().byId(item.id).setValue(''); 
                 }
+            },
+            MessageBoxPress: function (typeMsm,titleMsm) {
+                return new Promise((resolve, reject) => {  
+                    MessageBox[typeMsm](titleMsm, {
+                        actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+                        emphasizedAction: MessageBox.Action.OK,
+                        onClose: function (sAction) {
+                            let res = false
+                            if(sAction === MessageBox.Action.OK){  
+                                res = true
+                            }  
+                            resolve(res); 
+                        }
+                    });
+                }); 
+            },
+            MessageBoxPressOneOption: function (typeMsm,titleMsm) {
+                return new Promise((resolve, reject) => {  
+                    MessageBox[typeMsm](titleMsm, {
+                        actions: [MessageBox.Action.OK],
+                        emphasizedAction: MessageBox.Action.OK,
+                        onClose: function (sAction) {
+                            let res = false
+                            if(sAction === MessageBox.Action.OK){  
+                                res = true
+                            }  
+                            resolve(res); 
+                        }
+                    });
+                }); 
             },
         });
     });

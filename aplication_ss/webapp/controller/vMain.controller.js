@@ -18,6 +18,7 @@
         var url_ini = "";
         var usuario = "CONSULT_MM";
         var password = "Laredo2023**";
+        
         // var url_ini = "";
 
         return Controller.extend("appss.aplicationss.controller.vMain", {
@@ -28,7 +29,7 @@
                 
             },
             getListEmpleado: function () {
-                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/0/0/0/0/0`;
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/0/0/0/0/0?sap-client=120`;
                 var dataRes =  this.f_GetJson(url)  
                 console.log("getListEmpleado dataRes",dataRes)
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
@@ -53,7 +54,7 @@
                 var iCodTrabajador = this.getView().byId("gi_codEmp_afectado").getValue()
                 console.log("iCodTrabajador",iCodTrabajador)
                 var oModel = this.getView().getModel("myParam");  
-                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${iCodTrabajador}/0/0/0/0`;
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${iCodTrabajador}/0/0/0/0?sap-client=120`;
                 var dataRes =  this.f_GetJson(url) 
                 console.log('getListEmpleado DATA ',dataRes)
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
@@ -72,7 +73,7 @@
                 console.log('getListEmpleado')
                 var iCodTrabajador = this.getView().byId("gi_codEmp_informante").getValue()
                 var oModel = this.getView().getModel("myParam");  
-                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${iCodTrabajador}/0/0/0/0`;
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${iCodTrabajador}/0/0/0/0?sap-client=120`;
                 var dataRes =  this.f_GetJson(url) 
                 console.log('getListEmpleado DATA ',dataRes)
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
@@ -90,7 +91,7 @@
             getListInc:  function () { 
                 console.log('getListInc')
                 var oModel = this.getView().getModel("myParam");  
-                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/0/0/0/0/0?sap-client=100";
+                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/0/0/0/0/0?sap-client=120";
                 var dataRes =  this.f_GetJson(url) 
                 console.log('getListInc DATA ',dataRes)
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
@@ -280,7 +281,7 @@
                 // if(sociedad){
                 //     //lista personal  por sociedad
                 //     console.log("lista personal  por sociedad")
-                //     var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/${sociedad}/0/0/0/0/0/0`;
+                //     var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/${sociedad}/0/0/0/0/0/0?sap-client=120`;
                 //     var dataRes =  this.f_GetJson(url) 
                 //     console.log('getListPersonal DATA ',dataRes)
                 //     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
@@ -338,14 +339,14 @@
             onPressBuscaerInduccion:function(ocodigo,tipo){
                 console.log('getListInducciong')
                 var oModel = this.getView().getModel("myParam");  
-                var sociedad = this.getView().byId("idsociedadAC").getValue();  
-                if(!sociedad){
-                    sociedad = 0
-                }
+                // var sociedad = this.getView().byId("idsociedadAC").getValue();  
+                // if(!sociedad){
+                //     sociedad = 0
+                // }
                 // var tipo
                 // contratista P
                 // sociedad    S
-                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INDUCCION/${sociedad}/0/${ocodigo}/0/0/${tipo}/0?sap-client=120`;
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INDUCCION/0/0/${ocodigo}/0/0/${tipo}/0?sap-client=120`;
                 var dataRes =  this.f_GetJson(url) 
                 console.log('getListInducciong DATA ',dataRes)
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
@@ -360,11 +361,12 @@
             buscarListRegistrosTrabajador:function(ocodigo,tipo){
                 console.log('getListRgstrMedico') 
                 var oModel = this.getView().getModel("myParam");  
-                var sociedad = this.getView().byId("idsociedadAC").getValue();  
-                if(!sociedad){
-                    sociedad = 0
-                }
-                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_REGISTRO/${sociedad}/0/${ocodigo}/${tipo}/0/0/0?sap-client=120`;
+                // var sociedad = this.getView().byId("idsociedadAC").getValue();  
+                // if(!sociedad){
+                //     sociedad = 0
+                // }
+                // var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_REGISTRO/${sociedad}/0/${ocodigo}/${tipo}/0/0/0?sap-client=120`;
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_REGISTRO/0/0/${ocodigo}/${tipo}/0/0/0?sap-client=120`;
                 var dataRes =  this.f_GetJson(url,true) 
                 // debugger
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
@@ -381,11 +383,12 @@
             listaDocumentoTrabajador:function(ocodigo,tipo){
                 console.log('getListRgstrMedico') 
                 var oModel = this.getView().getModel("myParam");  
-                var sociedad = this.getView().byId("idsociedadAC").getValue();  
-                if(!sociedad){
-                    sociedad = 0
-                }
-                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_DOCUMENTOS/${sociedad}/0/0/0/0/0/0?sap-client=120`;
+                // var sociedad = this.getView().byId("idsociedadAC").getValue();  
+                // if(!sociedad){
+                //     sociedad = 0
+                // }
+                // var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_DOCUMENTOS/${sociedad}/0/0/0/0/0/0?sap-client=120`;
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_DOCUMENTOS/0/0/0/0/0/0/0?sap-client=120`;
                 var dataRes =  this.f_GetJson(url,true) 
                 // debugger
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
@@ -402,7 +405,7 @@
             //     console.log('getListRgstrSCTR')
             //     var oModel = this.getView().getModel("myParam");  
             //     var sociedad = this.getView().byId("idsociedadAC").getValue(); 
-            //     var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_REGISTRO/${sociedad}/0/${ocodigo}/${tipo}/0/0/0`;
+            //     var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_REGISTRO/${sociedad}/0/${ocodigo}/${tipo}/0/0/0?sap-client=120`;
             //     var dataRes =  this.f_GetJson(url) 
             //     console.log('getListRgstrSCTR DATA ',dataRes)
             //     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
@@ -416,7 +419,7 @@
             //     console.log('getListRgstrDOC')
             //     var oModel = this.getView().getModel("myParam");  
             //     var sociedad = this.getView().byId("idsociedadAC").getValue(); 
-            //     var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_DOC_TRABAJADOR/${sociedad}/0/${ocodigo}/${tipo}/0/0/0`;
+            //     var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_DOC_TRABAJADOR/${sociedad}/0/${ocodigo}/${tipo}/0/0/0?sap-client=120`;
             //     var dataRes =  this.f_GetJson(url) 
             //     console.log('getListRgstrDOC DATA ',dataRes)
             //     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
@@ -472,45 +475,49 @@
             onPressBuscaerRAASIS:function(e){
                 var oModel = this.getView().getModel("myParam");  
                 var codInduccion = this.byId("dCodinducc").getValue()
-                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INDUCCION_TRABAJADOR/1000/0/${codInduccion}/0/0/0/0?sap-client=120`;
-                var dataRes =  this.f_GetJson(url,true) 
-                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                    MessageToast.show("Error (" + dataRes.descripcion + ")");
-                }else{
-                    console.log('SEARCH INDUCCION  DATA ',dataRes)
-                    let dataResInduccion= dataRes[0]
-                    console.log("dataRes", dataResInduccion)
-                    //obtendo data de la induccion 
-                    this.byId("dTituinducc").setValue(dataResInduccion.ZTITULO)
-                    this.byId("dDescrip").setValue(dataResInduccion.ZDESCRIPCION)
-                    this.byId("dFechaprog").setValue(dataResInduccion.ZFEC_INDUCCION)
-                    
-                    // CONSULTAR LISTA Lista de asistentesDE LA INDUCCION
-                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INDUCCION/1000/0/0/0/${codInduccion}/0/0?sap-client=120`;
+                if(codInduccion){
+                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INDUCCION_TRABAJADOR/1000/0/${codInduccion}/0/0/0/0?sap-client=120`;
                     var dataRes =  this.f_GetJson(url,true) 
                     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                        MessageToast.show("Error (" + dataRes.descripcion + ")");
+                        MessageToast.show("Ingrese un valor valido")
                     }else{
-                        console.log('LISTA DE ASISTENTES INDUCCION ',dataRes)
-                        //AQUI HAY Q AGRAGAR LOS NOMBRES DELO TRABAJADORES DE SOCIEDAD  QUE ESTAN EN LA CAPACITACION
-                        // let arrayObjCambio= [
-                        //     {atr1 :'NOMBRE', atr2:''},
-                        // ]
-                        let listTrabajador = oModel.getProperty("/listCodTrabajador"); 
-                        
-                        // ZID_COD_TRABAJADOR - COD_PERSONAL
-                        let resultadoFinal = this.combinarInformacion(dataRes, listTrabajador,'ZID_COD_TRABAJADOR','COD_PERSONAL')
-                        console.log('LISTA DE ASISTENTES INDUCCION resultadoFinal ',resultadoFinal)
-                        oModel.setProperty('/dataAsistenteInd',dataRes);  
-                        if(dataResInduccion.ZESTADO == "A"){
-                            MessageToast.show("La induccion ingresada esta activa");
-                            this.byId("idAddAsistente").setEnabled(true)
-                            this.byId("idDeleteAsistente").setEnabled(true)
-                        }else{
-                            MessageToast.show("La induccion ingresada esta inactiva");
-                        }
+                        console.log('SEARCH INDUCCION  DATA ',dataRes)
+                        let dataResInduccion= dataRes[0]
+                        if(dataResInduccion){
+                            console.log("dataRes", dataResInduccion)
+                            //obtendo data de la induccion 
+                            this.byId("dTituinducc").setValue(dataResInduccion.ZTITULO)
+                            this.byId("dDescrip").setValue(dataResInduccion.ZDESCRIPCION)
+                            this.byId("dFechaprog").setValue(dataResInduccion.ZFEC_INDUCCION)
+                            
+                            // CONSULTAR LISTA Lista de asistentesDE LA INDUCCION
+                            var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INDUCCION/1000/0/0/0/${codInduccion}/0/0?sap-client=120`;
+                            var dataRes =  this.f_GetJson(url,true) 
+                            if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                                MessageToast.show("Error (" + dataRes.descripcion + ")");
+                            }else{
+                                console.log('LISTA DE ASISTENTES INDUCCION ',dataRes)
+                                //AQUI HAY Q AGRAGAR LOS NOMBRES DELO TRABAJADORES DE SOCIEDAD  QUE ESTAN EN LA CAPACITACION
+                                // let arrayObjCambio= [
+                                //     {atr1 :'NOMBRE', atr2:''},
+                                // ]
+                                let listTrabajador = oModel.getProperty("/listCodTrabajador"); 
+                                
+                                // ZID_COD_TRABAJADOR - COD_PERSONAL
+                                let resultadoFinal = this.combinarInformacion(dataRes, listTrabajador,'ZID_COD_TRABAJADOR','COD_PERSONAL')
+                                console.log('LISTA DE ASISTENTES INDUCCION resultadoFinal ',resultadoFinal)
+                                oModel.setProperty('/dataAsistenteInd',dataRes);  
+                                if(dataResInduccion.ZESTADO == "A"){
+                                    MessageToast.show("La induccion ingresada esta activa");
+                                    this.byId("idAddAsistente").setEnabled(true)
+                                    this.byId("idDeleteAsistente").setEnabled(true)
+                                }else{
+                                    MessageToast.show("La induccion ingresada esta inactiva");
+                                }
+                            }  
+                        }else{ MessageToast.show("Ingrese un valor valido") }
                     } 
-                }
+                }else{ MessageToast.show("Ingrese un valor valido") }
             },
             combinarInformacion: function (array1, array2, arr1Atr,arr2Atr) {
                 let resultado = [];
@@ -647,35 +654,41 @@
             onPressBuscaerRCAS:function(){
                 var oModel = this.getView().getModel("myParam");  
                 var codInduccion = this.byId("dCodinduccRC").getValue()
-                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INDUCCION_TRABAJADOR/1000/0/${codInduccion}/0/0/0/0?sap-client=120`;
-                var dataRes =  this.f_GetJson(url,true) 
-                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                    MessageToast.show("Error (" + dataRes.descripcion + ")");
-                }else{
-                    console.log('SEARCH INDUCCION  DATA ',dataRes)
-                    let dataResInduccion= dataRes[0]
-                    console.log("dataRes", dataResInduccion)
-                    //obtendo data de la induccion 
-                    this.byId("dTituinduccRC").setValue(dataResInduccion.ZTITULO)
-                    this.byId("dDescripRC").setValue(dataResInduccion.ZDESCRIPCION)
-                    this.byId("dFechaprogRC").setValue(dataResInduccion.ZFEC_INDUCCION)
-                    
-                    // CONSULTAR LISTA Lista de asistentesDE LA INDUCCION
-                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INDUCCION/1000/0/0/0/${codInduccion}/0/0?sap-client=120`;
+                if(codInduccion){
+                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INDUCCION_TRABAJADOR/1000/0/${codInduccion}/0/0/0/0?sap-client=120`;
                     var dataRes =  this.f_GetJson(url,true) 
                     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                        MessageToast.show("Error (" + dataRes.descripcion + ")");
+                        MessageToast.show("Ingrese un valor valido");
                     }else{
-                        console.log('LISTA DE ASISTENTES INDUCCION ',dataRes)
-                        oModel.setProperty('/dataAsistenteIndNotas',dataRes);  
-                        if(dataResInduccion.ZESTADO == "A"){
-                            MessageToast.show("La induccion ingresada esta activa");
-                            this.byId("btnCal_Calificar").setEnabled(true)
-                        }else{ 
-                            MessageToast.show("La induccion ingresada esta inactiva");
-                        }
-                    } 
-                }
+                        console.log('SEARCH INDUCCION  DATA ',dataRes)
+                        let dataResInduccion= dataRes[0]
+                        if(dataResInduccion){
+                            console.log("dataRes", dataResInduccion)
+                            //obtendo data de la induccion 
+                            this.byId("dTituinduccRC").setValue(dataResInduccion.ZTITULO)
+                            this.byId("dDescripRC").setValue(dataResInduccion.ZDESCRIPCION)
+                            this.byId("dFechaprogRC").setValue(dataResInduccion.ZFEC_INDUCCION)
+                            
+                            // CONSULTAR LISTA Lista de asistentesDE LA INDUCCION
+                            var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INDUCCION/1000/0/0/0/${codInduccion}/0/0?sap-client=120`;
+                            var dataRes =  this.f_GetJson(url,true) 
+                            if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                                MessageToast.show("Error (" + dataRes.descripcion + ")");
+                            }else{
+                                console.log('LISTA DE ASISTENTES INDUCCION ',dataRes)
+                                oModel.setProperty('/dataAsistenteIndNotas',dataRes);  
+                                if(dataResInduccion.ZESTADO == "A"){
+                                    MessageToast.show("La induccion ingresada esta activa");
+                                    this.byId("btnCal_Calificar").setEnabled(true)
+                                }else{ 
+                                    MessageToast.show("La induccion ingresada esta inactiva");
+                                }
+                            } 
+
+                        }else{ MessageToast.show("Ingrese un valor valido") }
+                    }
+
+                }else{ MessageToast.show("Ingrese un valor valido") }
 
                 // var oModel = this.getView().getModel("myParam");   
                 // var codInduccion = this.byId("dCodinducc").getValue()
@@ -827,76 +840,70 @@
             },
             // GESTION DE INCIDENTES 
                         
-            newIncidente: function () {
-                let oModel = this.getView().getModel("myParam");  
-                // creando nuevo incidentes 
-                let newIncidenteForm = [{
-                    ZTITULO: this.getView().byId("gi_new_titulo").getValue(),
-                    ZDESCRIPCION: this.getView().byId("gi_new_descrip").getValue(),
-                    ZACCIONES: this.getView().byId("gi_new_accionInmediata").getValue(),
-                    
-                    ZSOCIEDAD: this.getView().byId("gi_new_sociedad").getValue(),
-                    ZUBICACION: this.getView().byId("gi_new_ubicacion").getValue(),
-                    ZDETALLE: this.getView().byId("gi_new_detalle").getValue(),
-                    // invPreliminar: "",
-
-                    ZFECHA: this.cambiarFormatoFecha(this.getView().byId("gi_new_fecha").getValue()),
-                    ZHORA: this.getView().byId("gi_new_hora").getValue(),
-
-                    ZID_COD_TRABAJADOR: this.getView().byId("gi_codEmp_afectado").getValue(), //codigo de empleado afectado
-                    ZID_COD_INFORMANTE: this.getView().byId("gi_codEmp_informante").getValue(), //codigo de empleado informante
-                    ZMANIFESTACION: this.getView().byId("gi_codEmp_detalleInf").getValue(), 
-                    ZESTADO: "N"
-                }]
-                console.log("newIncidenteForm",newIncidenteForm)
-
-                var urlAjax = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INC/1000/0/0/0/0/0/0" 
-                var dataRes = this.f_PostJsonData(urlAjax, newIncidenteForm) // envia nuevo registro
-
-                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                    MessageToast.show("Error (" + dataRes.descripcion + ")");
-                }else{ 
-                    MessageToast.show("Solicitud exitosa")
-                    let objClean = [
-                        {id:"gi_new_titulo"},
-                        {id:"gi_new_descrip"},
-                        {id:"gi_new_accionInmediata"},
-                        {id:"gi_new_sociedad"},
-                        {id:"gi_new_ubicacion"},
-                        {id:"gi_new_detalle"},
-                        {id:"gi_new_fecha"},
-                        {id:"gi_new_hora"},
-                        {id:"gi_codEmp_afectado"},
-                        {id:"gi_codEmp_informante"},
-
-                        {id:"gi_codEmp_nombreAfec"},
-                        {id:"gi_codEmp_apellidoAfec"},
-                        {id:"gi_codEmp_dniAfec"},
-                        {id:"gi_codEmp_areaTrabajoAfec"},
-
-                        {id:"gi_codEmp_nombreInf"},
-                        {id:"gi_codEmp_apellidoInf"},
-                        {id:"gi_codEmp_dniInf"},
-                        {id:"gi_codEmp_areaTrabajoInf"},
-                        {id:"gi_codEmp_detalleInf"},
-                    ] 
-                    this.limpiarObjeto(objClean) // vuelve a consultar toda los incidentes y actualizar los registros 
-                    this.getListInc() 
-                }
-                //creando nuevo INFORME de incidente
-                // let newInformeIncidente = {
-                //     ZACTOS_SUBESTAND: "",
-                //     ZCOND_SUBESTAND: "",
-                //     ZFACT_PERSONALES: "", 
-                //     ZFACT_TRABAJO: "",
-                //     ZLECCIONES: "",
-                //     ZINVEST_POR: "", 
-                //     ZCARGO: "",
-                //     ZHORA: "", 
-                //     ZFIRMA: ""
-                // } 
-                // oModel.setProperty("/tableAccionesInformeIncidente",[newInformeIncidente]); 
-                // selectIncidenteInforme
+            newIncidente:async function () {
+                let typeMsm = "information",
+                    titleMsm = "¿Deseas continuar?"
+                let ok = await this.MessageBoxPress(typeMsm,titleMsm)
+                if(ok){ 
+                    let oModel = this.getView().getModel("myParam");  
+                    // creando nuevo incidentes 
+                    let newIncidenteForm = [{
+                        ZTITULO: this.getView().byId("gi_new_titulo").getValue(),
+                        ZDESCRIPCION: this.getView().byId("gi_new_descrip").getValue(),
+                        ZACCIONES: this.getView().byId("gi_new_accionInmediata").getValue(),
+                        
+                        ZSOCIEDAD: this.getView().byId("gi_new_sociedad").getValue(),
+                        ZUBICACION: this.getView().byId("gi_new_ubicacion").getValue(),
+                        ZDETALLE: this.getView().byId("gi_new_detalle").getValue(),
+                        // invPreliminar: "",
+    
+                        ZFECHA: this.cambiarFormatoFecha(this.getView().byId("gi_new_fecha").getValue()),
+                        ZHORA: this.getView().byId("gi_new_hora").getValue(),
+    
+                        ZID_COD_TRABAJADOR: this.getView().byId("gi_codEmp_afectado").getValue(), //codigo de empleado afectado
+                        ZID_COD_INFORMANTE: this.getView().byId("gi_codEmp_informante").getValue(), //codigo de empleado informante
+                        ZMANIFESTACION: this.getView().byId("gi_codEmp_detalleInf").getValue(), 
+                        ZESTADO: "N"
+                    }]
+                    console.log("newIncidenteForm",newIncidenteForm)
+    
+                    var urlAjax = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INC/1000/0/0/0/0/0/0?sap-client=120" 
+                    var dataRes = this.f_PostJsonData(urlAjax, newIncidenteForm) // envia nuevo registro
+                    // debugger
+                    if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                        MessageToast.show("Error en la solicitud");
+                    }else{ 
+                        MessageToast.show("Solicitud exitosa")
+                        let ok = await this.MessageBoxPressOneOption("success",`${dataRes.ITAB[0].MESSAGE}`)
+                        if(ok){ 
+                            let objClean = [
+                                {id:"gi_new_titulo"},
+                                {id:"gi_new_descrip"},
+                                {id:"gi_new_accionInmediata"},
+                                {id:"gi_new_sociedad"},
+                                {id:"gi_new_ubicacion"},
+                                {id:"gi_new_detalle"},
+                                {id:"gi_new_fecha"},
+                                {id:"gi_new_hora"},
+                                {id:"gi_codEmp_afectado"},
+                                {id:"gi_codEmp_informante"},
+        
+                                {id:"gi_codEmp_nombreAfec"},
+                                {id:"gi_codEmp_apellidoAfec"},
+                                {id:"gi_codEmp_dniAfec"},
+                                {id:"gi_codEmp_areaTrabajoAfec"},
+        
+                                {id:"gi_codEmp_nombreInf"},
+                                {id:"gi_codEmp_apellidoInf"},
+                                {id:"gi_codEmp_dniInf"},
+                                {id:"gi_codEmp_areaTrabajoInf"},
+                                {id:"gi_codEmp_detalleInf"},
+                            ] 
+                            this.limpiarObjeto(objClean) // vuelve a consultar toda los incidentes y actualizar los registros 
+                            this.getListInc() 
+                        }
+                    } 
+                }else{ MessageToast.show("Solicitud cancelada") }
             },
             f_PostJsonData:  function (url, dataForm,client120=false) { 
                 if(client120){
@@ -905,7 +912,7 @@
                 }
                 // console.log("INICIO f_PostJsonData")
                 const credentials = btoa(`${usuario}:${password}`); 
-                // let url= url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INC/1000/0/0/0/0/0/0"
+                // let url= url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INC/1000/0/0/0/0/0/0?sap-client=120"
                 var res = null
                 var oVector = dataForm
                 $.ajax(url, {
@@ -981,7 +988,7 @@
                 // console.log("objeto", objeto)
 
                 //consulta sobre el INCIDENTE seleccionado  | consultar data de INFORME para el incidente seleccionado
-                var urlIncidente = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/${objeto.ZINCIDENTE}/0/0/0/0`;
+                var urlIncidente = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/${objeto.ZINCIDENTE}/0/0/0/0?sap-client=120`;
                 var dataIncidente = this.f_GetJson(urlIncidente)
                     console.log('onSelectTbIncidente DATA ',dataIncidente[0])
                     if(dataIncidente.cod != undefined && dataIncidente.cod == 'Error'){
@@ -992,7 +999,7 @@
                         oModel.setProperty("/selectIncidente",dataIncidente);
                     }
                 //consulta sobre la tabla de DOCUMENTOS del incidente seleccionado
-                var urlListDocIncidente = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_DOC_INC/1000/0/${objeto.ZINCIDENTE}/0/0/0/0`;
+                var urlListDocIncidente = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_DOC_INC/1000/0/${objeto.ZINCIDENTE}/0/0/0/0?sap-client=120`;
                 var dataListDoc = this.f_GetJson(urlListDocIncidente) 
                     console.log('dataListDoc DATA ',dataListDoc)
                     if(dataListDoc.cod != undefined && dataListDoc.cod == 'Error'){
@@ -1001,7 +1008,7 @@
                         oModel.setProperty("/docTableIncidente",dataListDoc);
                     } 
                 // OBTENER TABLA DE ACCIONES CORERCTIVA Y PREEVENTIVAS INFORME
-                var urlInforme = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_INFORME2/1000/0/${objeto.ZINCIDENTE}/0/0/0/0`;
+                var urlInforme = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_INFORME2/1000/0/${objeto.ZINCIDENTE}/0/0/0/0?sap-client=120`;
                 var dataInforme = this.f_GetJson(urlInforme) 
                 console.log('DATA TB CORRECTIVO PREVENTICO',dataInforme)
                 if(dataInforme.cod != undefined && dataInforme.cod == 'Error'){
@@ -1235,7 +1242,7 @@
                 }
                 if(tipoAsistente == "S"){
                     console.log("sociedad")
-                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${codTrabajador}/0/0/0/0`;
+                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${codTrabajador}/0/0/0/0?sap-client=120`;
                     var dataRes =  this.f_GetJson(url) 
                 }
     
@@ -1632,7 +1639,7 @@
                 }
             },
             getDataINSRESERVAEPP:  function () { 
-                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_RESERVA_EPPS/1000/0/0/0/0/0/0?sap-client=100"; 
+                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_RESERVA_EPPS/1000/0/0/0/0/0/0?sap-client=120"; 
                
                 var dataRes =  this.f_GetJson(url) 
                 console.log('INS_RESERVA_EPPS EPP DATA ',dataRes)
@@ -1665,7 +1672,7 @@
                 //GUARDAR LA INSPECCION POST 
 
                 // listInspeccion.push(objInspeccion)
-                var urlAjax = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UPD_LIST_MAT_RES_EPPS/1000/0301/1/0/0/0/0?sap-client=100` 
+                var urlAjax = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UPD_LIST_MAT_RES_EPPS/1000/0301/1/0/0/0/0?sap-client=120` 
                 var dataRes = this.f_PostJsonData(urlAjax, objbines, objbines2) // envia nuevo registro
 
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
@@ -1700,7 +1707,7 @@
                 //GUARDAR LA INSPECCION POST 
 
                 // listInspeccion.push(objInspeccion)
-                var urlAjax = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UPD_LIST_MAT_RES_EPPS/1000/0301/1/0/0/0/0?sap-client=100` 
+                var urlAjax = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UPD_LIST_MAT_RES_EPPS/1000/0301/1/0/0/0/0?sap-client=120` 
                 var dataRes = this.f_PostJsonData(urlAjax, objbines, objbines2) // envia nuevo registro
 
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
@@ -1735,7 +1742,7 @@
                 //GUARDAR LA INSPECCION POST 
 
                 // listInspeccion.push(objInspeccion)
-                var urlAjax = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UPD_LIST_MAT_RES_EPPS/1000/0301/2/0/0/0/0?sap-client=100` 
+                var urlAjax = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UPD_LIST_MAT_RES_EPPS/1000/0301/2/0/0/0/0?sap-client=120` 
                 var dataRes = this.f_PostJsonData(urlAjax, objbines, objbines2) // envia nuevo registro
 
                 if(dataRes.cod != undefined && dataRes.cod == 'Error'){
@@ -1750,7 +1757,7 @@
 
             getGerenciaAreaDepartamento:  function () { 
                 var oModel = this.getView().getModel("myParam");
-                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_NIVEL/1000/0/0/0/0/0/0"; 
+                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_NIVEL/1000/0/0/0/0/0/0?sap-client=120"; 
                
                 var dataRes =  this.f_GetJson(url) 
                 dataRes = dataRes[0]
@@ -1765,7 +1772,7 @@
             },
 
             // getDataGerencia:  function () { 
-            //     var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/0/0/0/0/0?sap-client=100"; 
+            //     var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/0/0/0/0/0?sap-client=120"; 
                
             //     var dataRes =  this.f_GetJson(url) 
             //     console.log('getDataGerencia DATA ',dataRes)
@@ -1776,7 +1783,7 @@
             //     }
             // },
             // getDataArea:  function () { 
-            //     var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/0/0/0/0/0?sap-client=100";
+            //     var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/0/0/0/0/0?sap-client=120";
                 
             //     var dataRes =  this.f_GetJson(url) 
             //     console.log('getDataArea DATA ',dataRes)
@@ -1787,7 +1794,7 @@
             //     }
             // },
             // getDataDepartamento:  function () { 
-            //     var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/0/0/0/0/0?sap-client=100";
+            //     var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INC/1000/0/0/0/0/0/0?sap-client=120";
                 
             //     var dataRes =  this.f_GetJson(url) 
             //     console.log('getDataArea DATA ',dataRes)
@@ -1821,7 +1828,7 @@
                     ZFEC_PROGRAM: this.getView().byId("Ifechap").getValue(),
                     ZESTADO: this.getView().byId("Istatus").getValue(),
                 }
-                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INSP/1000/0/0/0/0/0/0?sap-client=100";
+                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INSP/1000/0/0/0/0/0/0?sap-client=120";
                 
                 var dataRes = this.f_PostJsonData(url, filtro) // envia nuevo registro
 
@@ -1842,6 +1849,14 @@
                 ] 
                 this.limpiarObjeto(objInspeccionClean)
             },
+            // seveNewInspeccion2: async function () {
+            //     let typeMsm = "information",
+            //         titleMsm = "¿Deseas continuar?"
+            //     let ok = await this.MessageBoxPressOneOption(typeMsm,titleMsm)
+            //     if(ok){
+            //         console.log("TODO OK")
+            //     }
+            // },
             seveNewInspeccion: async function () {
                 let typeMsm = "information",
                     titleMsm = "¿Deseas continuar?"
@@ -1862,21 +1877,15 @@
                     //GUARDAR LA INSPECCION POST 
 
                     // listInspeccion.push(objInspeccion)
-                    var urlAjax = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INSP/1000/0/0/0/0/0/0` 
+                    var urlAjax = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_INSP/1000/0/0/0/0/0/0?sap-client=120` 
                     var dataRes = this.f_PostJsonData(urlAjax, objInspeccion) // envia nuevo registro
 
                     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                        MessageToast.show("Error (" + dataRes.descripcion + ")");
+                        MessageToast.show("Error en la solicitud");
                     }else{ 
                         console.log("RESPUESTA DE GRABADO",dataRes)
                         MessageToast.show(`Solicitud exitosa INSPECCION: ${dataRes.ITAB[0].PARAMETER}`)
-                        // this.limpiarObjeto(objClean) // vuelve a consultar toda los incidentes y actualizar los registros 
-                        // this.getListInc() 
                     } 
-
-                    // oModel.setProperty("/ZSYSO_INSPECCION",listInspeccion); 
-
-                    // sap.m.MessageToast.show("Realizado correctamente")
 
                     let objInspeccionClean = [
                         {id:"gInsp_gerencia"},
@@ -1885,16 +1894,27 @@
                         {id:"gInsp_programada"}
                     ] 
                     this.limpiarObjeto(objInspeccionClean)
-                }else{
-                    sap.m.MessageToast.show("Cancelado") 
-                }
-                console.log("CONFIRMACION : ",ok)
-
+                }else{ MessageToast.show("Solicitud cancelada") }
             },
             MessageBoxPress: function (typeMsm,titleMsm) {
                 return new Promise((resolve, reject) => {  
                     MessageBox[typeMsm](titleMsm, {
                         actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+                        emphasizedAction: MessageBox.Action.OK,
+                        onClose: function (sAction) {
+                            let res = false
+                            if(sAction === MessageBox.Action.OK){  
+                                res = true
+                            }  
+                            resolve(res); 
+                        }
+                    });
+                }); 
+            },
+            MessageBoxPressOneOption: function (typeMsm,titleMsm) {
+                return new Promise((resolve, reject) => {  
+                    MessageBox[typeMsm](titleMsm, {
+                        actions: [MessageBox.Action.OK],
                         emphasizedAction: MessageBox.Action.OK,
                         onClose: function (sAction) {
                             let res = false
@@ -1920,7 +1940,7 @@
                     ZFEC_PROGRAM: this.getView().byId("Ifechap").getValue(),
                     ZESTADO: this.getView().byId("Istatus").getValue(),
                 }
-                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INSP/1000/0/0/0/0/0/0?sap-client=100";
+                var url = url_ini + "https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_INSP/1000/0/0/0/0/0/0?sap-client=120";
                 
                 console.log("buscarInspecciones filtro",filtro)
                 var dataRes = this.f_PostJsonData(url, filtro) // envia nuevo registro
@@ -1988,7 +2008,7 @@
                 console.log("objeto", objTab) 
                 if(objTab.ZESTADO !== "F"){
                     // consulta ala inspeccion seleccionada  traer la data de esa inspeccion 
-                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_INSP/1000/0/${objTab.ZINSPECCION}/0/0/0/0?sap-client=100`;
+                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_INSP/1000/0/${objTab.ZINSPECCION}/0/0/0/0?sap-client=120`;
                     
                     var dataRes =  this.f_GetJson(url) 
                     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
@@ -2001,7 +2021,7 @@
                     } 
                     //CONSULTAS PARA OBTENER TABLAS 
                     //TABLA INVOLUCRADOS
-                    var urlTabInv = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERS_INVOLUC/1000/0/${objTab.ZINSPECCION}/0/0/0/0?sap-client=100`
+                    var urlTabInv = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERS_INVOLUC/1000/0/${objTab.ZINSPECCION}/0/0/0/0?sap-client=120`
                     var dataRes =  this.f_GetJson(urlTabInv) 
                     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
                         MessageToast.show("Error (" + dataRes.descripcion + ")");
@@ -2010,7 +2030,7 @@
                         oModel.setProperty("/tabPerInvolucrados",dataRes);
                     }  
                     //TABLA ASOCIADOS - OK
-                    var urlTabAsoc = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_RIESGO_ASOC/1000/0/${objTab.ZINSPECCION}/0/0/0/0?sap-client=100`
+                    var urlTabAsoc = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_RIESGO_ASOC/1000/0/${objTab.ZINSPECCION}/0/0/0/0?sap-client=120`
                     var dataRes =  this.f_GetJson(urlTabAsoc) 
                     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
                         MessageToast.show("Error (" + dataRes.descripcion + ")");
@@ -2019,7 +2039,7 @@
                         oModel.setProperty("/tabRiAsociados",dataRes);
                     }  
                     //TABLA CORRECTIVA - OK
-                    var urlTabCorr = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_MEDIDA_CORR/1000/0/${objTab.ZINSPECCION}/0/0/0/0?sap-client=100`
+                    var urlTabCorr = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_MEDIDA_CORR/1000/0/${objTab.ZINSPECCION}/0/0/0/0?sap-client=120`
                     var dataRes =  this.f_GetJson(urlTabCorr) 
                     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
                         MessageToast.show("Error (" + dataRes.descripcion + ")");
@@ -2028,7 +2048,7 @@
                         oModel.setProperty("/tabMedCorrectiva",dataRes);
                     } 
                     //TABLA RESPONSABLES - OK
-                    var urlTabResp = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_RESP_RIESGO/1000/0/${objTab.ZINSPECCION}/0/0/0/0?sap-client=100`
+                    var urlTabResp = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_RESP_RIESGO/1000/0/${objTab.ZINSPECCION}/0/0/0/0?sap-client=120`
                     var dataRes =  this.f_GetJson(urlTabResp) 
                     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
                         MessageToast.show("Error (" + dataRes.descripcion + ")");

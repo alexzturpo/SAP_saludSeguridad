@@ -38,44 +38,55 @@ sap.ui.define([
             },
             onPageBack : function () {  
                 this.getRouter().getTargets().display("TargetvMain");
+                this.getView().byId("tableRegistroDocs").setVisible(false)
             },
-            saveTrabajador : function () {  
-                let oModel = this.getView().getModel("myParam"); 
-                
-                let tipo = oModel.getProperty("/tipoConsultaPersonal");  
-                console.log("saveTrabajador tipo",tipo)
-                let trabajador = oModel.getProperty("/tempTrabajadorSelect");  
-                let ListRegistroMedico = oModel.getProperty("/ListRegistroMedico");  
-                let ListRegistroSCTR = oModel.getProperty("/ListRegistroSCTR");  
-                let getListRgstrDOC = oModel.getProperty("/getListRgstrDOC");   
-                //LOGICA PARA UNIR LAS LISTA DE DOCUMENTOS VERSION
-                let getListRgstrDOCVers = oModel.getProperty("/getListRgstrDOCVersiones");  
-                let listTempDocSubidos = oModel.getProperty("/listTempDocSubidos");  
-                //AQUI LOGICA PARA VERIFICAR QUE NOMBRES DE DOCUMENTOS NO SEAN IGUALES Y PODER SUBIRLO A CEMIS
-                let getListRgstrDOCVersTotal = [...getListRgstrDOCVers,...listTempDocSubidos]
-
-                //INSERTAR Y ACTUALIZAR DETALLES DEL TRABAJADOR
-                var formTrab = {
-                    "PERS_REGMED": ListRegistroMedico,
-                    "PERS_SCTR": ListRegistroSCTR,
-                    "PERS_DOC": getListRgstrDOC,
-                    "PERS_DOC_VER": getListRgstrDOCVersTotal,
-                }
-                debugger
-                //FALTA IMPLEMENTAR LOS CAMBIOS
-                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_DETALLE_TRABAJADOR/1000/0/${trabajador.COD_PERSONAL}/${tipo}/0/0/0?sap-client=120`;
-                var dataRes = this.f_PostJsonData(url, formTrab,true) // envia nuevo registro
-
-                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                    MessageToast.show("Error (" + dataRes.descripcion + ")");
-                }else{ 
-                    this.onPageBack()
-                    MessageToast.show("Solicitud exitosa")
-                    MessageBox.success("Realice de nuevo la busqueda para actualizar los registros"); 
-                    //limpiar arreglo de documentos subidos temporalmente 
-                    oModel.setProperty("/listTempDocSubidos",[]);  
-                    // let ojo = oModel.getProperty("/listTempDocSubidos");  
-                }
+            saveTrabajador :async function () {  
+                let typeMsm = "information",
+                    titleMsm = "¿Deseas continuar?"
+                let ok = await this.MessageBoxPress(typeMsm,titleMsm)
+                if(ok){
+                    console.log("TODO OK")
+                    let oModel = this.getView().getModel("myParam"); 
+                    
+                    let tipo = oModel.getProperty("/tipoConsultaPersonal");  
+                    console.log("saveTrabajador tipo",tipo)
+                    let trabajador = oModel.getProperty("/tempTrabajadorSelect");  
+                    let ListRegistroMedico = oModel.getProperty("/ListRegistroMedico");  
+                    let ListRegistroSCTR = oModel.getProperty("/ListRegistroSCTR");  
+                    let getListRgstrDOC = oModel.getProperty("/getListRgstrDOC");   
+                    //LOGICA PARA UNIR LAS LISTA DE DOCUMENTOS VERSION
+                    let getListRgstrDOCVers = oModel.getProperty("/getListRgstrDOCVersiones");  
+                    let listTempDocSubidos = oModel.getProperty("/listTempDocSubidos");  
+                    //AQUI LOGICA PARA VERIFICAR QUE NOMBRES DE DOCUMENTOS NO SEAN IGUALES Y PODER SUBIRLO A CEMIS
+                    let getListRgstrDOCVersTotal = [...getListRgstrDOCVers,...listTempDocSubidos]
+    
+                    //INSERTAR Y ACTUALIZAR DETALLES DEL TRABAJADOR
+                    var formTrab = {
+                        "PERS_REGMED": ListRegistroMedico,
+                        "PERS_SCTR": ListRegistroSCTR,
+                        "PERS_DOC": getListRgstrDOC,
+                        "PERS_DOC_VER": getListRgstrDOCVersTotal,
+                    }
+                    // debugger
+                    //FALTA IMPLEMENTAR LOS CAMBIOS
+                    var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/INS_DETALLE_TRABAJADOR/1000/0/${trabajador.COD_PERSONAL}/${tipo}/0/0/0?sap-client=120`;
+                    var dataRes = this.f_PostJsonData(url, formTrab,true) // envia nuevo registro
+    
+                    if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                        MessageToast.show("Error en la solicitud");
+                    }else{ 
+                        MessageToast.show("Solicitud exitosa")
+                        let ok = await this.MessageBoxPressOneOption("success",`Cambios realizados`)
+                        if(ok){
+                            // console.log("TODO OK")
+                            // MessageBox.success(`${dataRes.ITAB[0].MESSAGE}`); 
+                            this.onPageBack()
+                            oModel.setProperty("/listTempDocSubidos",[]);  
+                        }
+                        //limpiar arreglo de documentos subidos temporalmente 
+                        // let ojo = oModel.getProperty("/listTempDocSubidos");  
+                    }
+                }else{ MessageToast.show("Solicitud cancelada") }
             },
             //PANEL TABLE DE REGISTRO MEDICO
             addRMedico: function () { this.getView().byId("panelRegistroMedico").setVisible(true) },
@@ -267,7 +278,7 @@ sap.ui.define([
                 console.log("indiceEdit",indiceEdit)
                 if (indiceEdit.length > 0 && indiceEdit < listTable.length  && listTable[indiceEdit] != undefined) {
                     console.log("indice seleccionado")
-                    // this.getView().byId(varPanel).setVisible(true)
+                    this.getView().byId("tableRegistroDocs").setVisible(true)
                     console.log("Registro A EDITAR.",listTable[indiceEdit]);
                     //LOGICA PARA TRAER LOS DOC VERSION O FILTRAR Y PONERLO EN EL MODELO
                     console.log("docVersPersonal ",docVersPersonal)
@@ -279,10 +290,10 @@ sap.ui.define([
                     console.log("documentos filtrados de la seleccion",totalVersDocSelect)
                     oModel.setProperty("/selectDocNecesario",listTable[indiceEdit]); //modelo de version de documentos seleccionado
                     oModel.setProperty(varTemVerDoc,totalVersDocSelect); //modelo de version de documentos seleccionado
-                    debugger
+                    // debugger
                 } else {
                     MessageToast.show("Seleccione un registro");
-                console.log("Índice inválido, SELECCIONEE UNO");
+                    console.log("Índice inválido, SELECCIONEE UNO");
                 }  
             },
 
@@ -677,6 +688,36 @@ sap.ui.define([
                     // this.getView().byId(item.id).setValue("")
                     this.getView().byId(item.id).setValue(''); 
                 }
+            },
+            MessageBoxPress: function (typeMsm,titleMsm) {
+                return new Promise((resolve, reject) => {  
+                    MessageBox[typeMsm](titleMsm, {
+                        actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+                        emphasizedAction: MessageBox.Action.OK,
+                        onClose: function (sAction) {
+                            let res = false
+                            if(sAction === MessageBox.Action.OK){  
+                                res = true
+                            }  
+                            resolve(res); 
+                        }
+                    });
+                }); 
+            },
+            MessageBoxPressOneOption: function (typeMsm,titleMsm) {
+                return new Promise((resolve, reject) => {  
+                    MessageBox[typeMsm](titleMsm, {
+                        actions: [MessageBox.Action.OK],
+                        emphasizedAction: MessageBox.Action.OK,
+                        onClose: function (sAction) {
+                            let res = false
+                            if(sAction === MessageBox.Action.OK){  
+                                res = true
+                            }  
+                            resolve(res); 
+                        }
+                    });
+                }); 
             },
             
         });
