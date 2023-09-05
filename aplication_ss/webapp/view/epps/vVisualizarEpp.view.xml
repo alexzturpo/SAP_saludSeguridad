@@ -102,6 +102,15 @@
                                 </f:FormElement>
                             </f:formElements>
                         </f:FormContainer> 
+                        <f:FormContainer>
+                            <f:formElements>
+                                <f:FormElement label="Fecha de entrega">
+                                    <f:fields> 
+                                        <DatePicker id="rEpp_fechaEntrega" value="" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/>
+                                    </f:fields>
+                                </f:FormElement>  
+                            </f:formElements>
+                        </f:FormContainer> 
                     </f:formContainers> 
                 </f:Form> 
 

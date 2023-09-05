@@ -38,8 +38,8 @@ sap.ui.define([
                 // enviar datos de Informante
                 if(incidenteSelect.ZID_COD_INFORMANTE){
                     let dataInformante = this.buscarTrabajador(incidenteSelect.ZID_COD_INFORMANTE)
-                    console.log("buscarTrabajador DATA SELECT",dataInformante)
-                    console.log("buscarTrabajador DATA SELECT",dataInformante.NOMBRE)
+                    // console.log("buscarTrabajador DATA SELECT",dataInformante)
+                    // console.log("buscarTrabajador DATA SELECT",dataInformante.NOMBRE)
                     if(dataInformante){
                         this.getView().byId("gi_new_nombreEmpTest").setValue(dataInformante.NOMBRE)
                         this.getView().byId("gi_new_apellidoEmpTest").setValue(dataInformante.APELLIDO)
@@ -57,6 +57,34 @@ sap.ui.define([
                         this.getView().byId("gi_new_areaTrabajoEmp").setValue(dataTrabajador.AREA) 
                     }  
                 }
+            },
+            dateTrabAfectado: function() {
+                let codTrab = this.getView().byId("gi_codEmp_afectado").getValue()
+                let data = this.buscarTrabajador(codTrab)
+                    if(data){
+                        this.getView().byId("gi_new_nombreEmp").setValue(data.NOMBRE)
+                        this.getView().byId("gi_new_apellidoEmp").setValue(data.APELLIDO)
+                        this.getView().byId("gi_new_dniEmp").setValue(data.DNI)
+                        this.getView().byId("gi_new_areaTrabajoEmp").setValue(data.AREA) 
+                    } 
+            },
+            dateTrabInformante: function() {
+                let codTrab = this.getView().byId("gi_codEmp_informante").getValue()
+                let data = this.buscarTrabajador(codTrab)
+                    if(data){
+                        this.getView().byId("gi_new_nombreEmpTest").setValue(data.NOMBRE)
+                        this.getView().byId("gi_new_apellidoEmpTest").setValue(data.APELLIDO)
+                        this.getView().byId("gi_new_dniEmpTest").setValue(data.DNI)
+                        this.getView().byId("gi_new_areaTrabajoEmpTest").setValue(data.AREA) 
+                    } 
+            },
+            dateTrabInvestigado: function() {
+                let codTrab = this.getView().byId("info_CodTrab").getValue()
+                let data = this.buscarTrabajador(codTrab)
+                    if(data){
+                        this.getView().byId("info_invesNombre").setValue(`${data.NOMBRE} ${data.APELLIDO}`)
+                        this.getView().byId("info_invesCargo").setValue(data.AREA) 
+                    } 
             },
             obtenerClavePorNombre: function(nombre, conjuntoDeObjetos) {
             for (const clave in conjuntoDeObjetos) {
@@ -119,37 +147,49 @@ sap.ui.define([
 
                 }else{ MessageToast.show("Solicitud cancelada") }
             },
-            saveDocIncidente : function () {  
-                let oModel = this.getView().getModel("myParam");  
-                let dataTable = oModel.getProperty("/docTableIncidente");
+            saveDocIncidente:async function () {
+                let aInputs = ["fileDocIncidente"]
+                let bValidationError = await this._validacionInputs(aInputs)
+                if (!bValidationError) {
+                    let oModel = this.getView().getModel("myParam");  
+                    let dataTable = oModel.getProperty("/docTableIncidente");
+    
+                    const oFileUploader = this.byId("fileDocIncidente");  
+                    const oUploadedFile = oFileUploader.oFileUpload.files[0];
+                    // Nombre documento, FechaSubidaDocumento
+                    var doc = { 
+                        ZNOM_DOC : oUploadedFile.name,
+                        ZFECHA_UPLOAD : this.fechaActual()
+                    } 
+                    dataTable.push(doc)
+                    oModel.setProperty("/docTableIncidente",dataTable);
+    
+                     oFileUploader.setValue('')
 
-                const oFileUploader = this.byId("fileDocIncidente");  
-                const oUploadedFile = oFileUploader.oFileUpload.files[0];
-                // Nombre documento, FechaSubidaDocumento
-                var doc = { 
-                    ZNOM_DOC : oUploadedFile.name,
-                    ZFECHA_UPLOAD : this.fechaActual()
-                } 
-                dataTable.push(doc)
-                oModel.setProperty("/docTableIncidente",dataTable);
-
-                 oFileUploader.setValue('')
-
-                // console.log("oUploadedFile",doc);
+                } else {
+                    let typeMsm = "alert",
+                    titleMsm = "A ocurrido un error de validacion, llenar los campos correctamente."
+                    await this.MessageBoxPressOneOption(typeMsm,titleMsm)
+                }  
             },
-            deleteDocIncidente : function () {  
+            deleteDocIncidente :async function () {  
+                
                 let oModel = this.getView().getModel("myParam");  
                 let dataTable = oModel.getProperty("/docTableIncidente");
-
+                
                 var oTable = this.getView().byId("tableDocIncidente");
                 var indiceAEliminar = oTable.getSelectedIndices();
                 if (indiceAEliminar >= 0 && indiceAEliminar < dataTable.length) {
-                    dataTable.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
-                    oModel.setProperty("/docTableIncidente",dataTable);
-                    console.log("Registro eliminado.");
-                } else {
-                console.log("Índice inválido, no se eliminó ningún registro.");
-                } 
+                    let typeMsm = "information",
+                        titleMsm = "¿Deseas eliminarlo?"
+                    let ok = await this.MessageBoxPress(typeMsm,titleMsm)
+                    if(ok){
+                        dataTable.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
+                        oModel.setProperty("/docTableIncidente",dataTable);
+                        this.MessageBoxPressOneOption("success",`Registro eliminado`)
+                        // console.log("Registro eliminado.");
+                    }else{ MessageToast.show("Solicitud cancelada") }
+                } else { MessageToast.show("Selecciona un registro")} 
                  
             },
             //informe de incidente
@@ -157,37 +197,45 @@ sap.ui.define([
                 this.getView().byId("panelAcciones").setVisible(true)
             },
             editAcciones: function () {  
-                this.getView().byId("panelAccionesEditar").setVisible(true)
                 let oModel = this.getView().getModel("myParam");  
                 let tbAcciones = oModel.getProperty("/tableAccionesInformeIncidente"); 
-
+                
                 var oTable = this.getView().byId("tableAccionesInforme");
                 var indiceEdit = oTable.getSelectedIndices();
-                if (indiceEdit >= 0) {
+                if (indiceEdit >= 0 && indiceEdit < tbAcciones.length && tbAcciones[indiceEdit] != undefined) {
+                    // if (indiceEdit >= 0) {
+                    this.getView().byId("panelAccionesEditar").setVisible(true)
                     console.log("Registro A EDITAR.",tbAcciones[indiceEdit]);
                     oModel.setProperty("/temEditAcciones",tbAcciones[indiceEdit]); 
                     oModel.setProperty("/temEditAccionesId",indiceEdit); 
-                } else {
-                console.log("Índice inválido, no se eliminó ningún registro.");
-                }  
+                } else {MessageToast.show("Seleccione un registro") }  
             },
-            saveEditAcciones: function () {  
-                let oModel = this.getView().getModel("myParam");  
-                let list = oModel.getProperty("/tableAccionesInformeIncidente");
-                let tempEditId = oModel.getProperty("/temEditAccionesId");
-                // console.log("saveEditAcciones list init",list)
-                var accion = { 
-                    ZTITULO : this.getView().byId("edit_info_titulo").getValue(),
-                    ZDESCRIPCION : this.getView().byId("edit_info_desc").getValue(),
-                    ZRESPONSABLE : this.getView().byId("edit_info_responsable").getValue(),
-                    ZFECHA : this.cambiarFormatoFecha(this.getView().byId("edit_info_fecha").getValue()),
-                    ZTIPO : this.getView().byId("edit_info_tipo").getSelectedKey(),
-                    ZESTATUS : this.getView().byId("edit_info_estado").getSelectedKey(),
-                } 
-                this.actualizarCamposPorIndice(list, tempEditId, accion); 
-                // console.log("saveEditAcciones list FIN",list)
-                oModel.setProperty("/tableAccionesInformeIncidente",list); 
-                this.cancelAcciones()
+            saveEditAcciones:async function () {  
+                let aInputs = ["edit_info_titulo","edit_info_desc","edit_info_responsable","edit_info_fecha","edit_info_tipo","edit_info_estado"]
+                let bValidationError = await this._validacionInputs(aInputs)
+                if (!bValidationError) {
+                    let oModel = this.getView().getModel("myParam");  
+                    let list = oModel.getProperty("/tableAccionesInformeIncidente");
+                    let tempEditId = oModel.getProperty("/temEditAccionesId");
+                    // console.log("saveEditAcciones list init",list)
+                    var accion = { 
+                        ZTITULO : this.getView().byId("edit_info_titulo").getValue(),
+                        ZDESCRIPCION : this.getView().byId("edit_info_desc").getValue(),
+                        ZRESPONSABLE : this.getView().byId("edit_info_responsable").getValue(),
+                        ZFECHA : this.cambiarFormatoFecha(this.getView().byId("edit_info_fecha").getValue()),
+                        ZTIPO : this.getView().byId("edit_info_tipo").getSelectedKey(),
+                        ZESTATUS : this.getView().byId("edit_info_estado").getSelectedKey(),
+                    } 
+                    this.actualizarCamposPorIndice(list, tempEditId, accion); 
+                    // console.log("saveEditAcciones list FIN",list)
+                    oModel.setProperty("/tableAccionesInformeIncidente",list); 
+                    this.cancelAcciones()
+
+                } else {
+                    let typeMsm = "alert",
+                    titleMsm = "A ocurrido un error de validacion, llenar los campos correctamente."
+                    await this.MessageBoxPressOneOption(typeMsm,titleMsm)
+                }
             }, 
             actualizarCamposPorIndice: function (array, indice, nuevosCampos) {
                 if (indice >= 0 && indice < array.length) {
@@ -230,50 +278,62 @@ sap.ui.define([
                     // LLAMAR OTRA VES A LA CONSULTA GET  INFORME PARA ACTUALIZAR this.getListInc() 
                 } 
             },
-            saveAcciones : function () {  
-                console.log("saveAcciones")
-                let oModel = this.getView().getModel("myParam");  
-                let tbAcciones = oModel.getProperty("/tableAccionesInformeIncidente");
-                console.log("tbAcciones",tbAcciones)
-                
-                // Nombre documento, FechaSubidaDocumento
-                var accion = { 
-                    ZTITULO : this.getView().byId("info_titulo").getValue(),
-                    ZDESCRIPCION : this.getView().byId("info_desc").getValue(),
-                    ZRESPONSABLE : this.getView().byId("info_responsable").getValue(),
-                    ZFECHA : this.cambiarFormatoFecha(this.getView().byId("info_fecha").getValue()),
-                    ZTIPO : this.getView().byId("info_tipo").getSelectedKey(),
-                    ZESTATUS : this.getView().byId("info_estado").getSelectedKey(),
-                } 
-                console.log("accion",accion)
-                tbAcciones.push(accion)
-                oModel.setProperty("/tableAccionesInformeIncidente",tbAcciones); 
-                // limpiar formulario
-                let accionClean = [
-                    {id:"info_titulo"},
-                    {id:"info_desc"},
-                    {id:"info_responsable"},
-                    {id:"info_fecha", fecha: true},
-                    {id:"info_tipo", select: true},
-                    {id:"info_estado", select: true},
-                ] 
-                this.limpiarObjeto(accionClean)
-                this.getView().byId("panelAcciones").setVisible(false)
+            saveAcciones :async function () {  
+                let aInputs = ["info_titulo","info_desc","info_responsable","info_fecha","info_tipo","info_estado"]
+                let bValidationError = await this._validacionInputs(aInputs)
+                if (!bValidationError) {
+                    // console.log("saveAcciones")
+                    let oModel = this.getView().getModel("myParam");  
+                    let tbAcciones = oModel.getProperty("/tableAccionesInformeIncidente");
+                    // console.log("tbAcciones",tbAcciones)
+                    
+                    // Nombre documento, FechaSubidaDocumento
+                    var accion = { 
+                        ZTITULO : this.getView().byId("info_titulo").getValue(),
+                        ZDESCRIPCION : this.getView().byId("info_desc").getValue(),
+                        ZRESPONSABLE : this.getView().byId("info_responsable").getValue(),
+                        ZFECHA : this.cambiarFormatoFecha(this.getView().byId("info_fecha").getValue()),
+                        ZTIPO : this.getView().byId("info_tipo").getSelectedKey(),
+                        ZESTATUS : this.getView().byId("info_estado").getSelectedKey(),
+                    } 
+                    console.log("accion",accion)
+                    tbAcciones.push(accion)
+                    oModel.setProperty("/tableAccionesInformeIncidente",tbAcciones); 
+                    // limpiar formulario
+                    let accionClean = [
+                        {id:"info_titulo"},
+                        {id:"info_desc"},
+                        {id:"info_responsable"},
+                        {id:"info_fecha", fecha: true},
+                        {id:"info_tipo", select: true},
+                        {id:"info_estado", select: true},
+                    ] 
+                    this.limpiarObjeto(accionClean)
+                    this.getView().byId("panelAcciones").setVisible(false)
+
+                } else {
+                    let typeMsm = "alert",
+                    titleMsm = "A ocurrido un error de validacion, llenar los campos correctamente."
+                    await this.MessageBoxPressOneOption(typeMsm,titleMsm)
+                }
             },
-            deleteAcciones : function () {  
+            deleteAcciones:async function () {  
+                
                 let oModel = this.getView().getModel("myParam");  
                 let dataTable = oModel.getProperty("/tableAccionesInformeIncidente");
 
                 var oTable = this.getView().byId("tableAccionesInforme");
                 var indiceAEliminar = oTable.getSelectedIndices();
                 if (indiceAEliminar >= 0 && indiceAEliminar < dataTable.length && dataTable[indiceAEliminar] != undefined) {
-                    dataTable.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
-                    oModel.setProperty("/tableAccionesInformeIncidente",dataTable);
-                    console.log("Registro eliminado.");
-                } else {
-                    MessageToast.show("Seleccione un registro");
-                    console.log("Índice inválido, no se eliminó ningún registro.");
-                }  
+                    let typeMsm = "information",
+                        titleMsm = "¿Deseas eliminarlo?"
+                    let ok = await this.MessageBoxPress(typeMsm,titleMsm)
+                    if(ok){
+                        dataTable.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
+                        oModel.setProperty("/tableAccionesInformeIncidente",dataTable);
+                        this.MessageBoxPressOneOption("success",`Registro eliminado`)
+                    }else{ MessageToast.show("Solicitud cancelada") }
+                } else {MessageToast.show("Seleccione un registro");}  
             },
             
             IncTerminar : function () {  
@@ -563,6 +623,7 @@ sap.ui.define([
                 // console.log(`RES ->`,res);
                 return res
             },
+            
             cambiarFormatoFecha: function (fecha) {
                 let fechaReturn 
                 // para saber si el la fecha q se envia es 8/21/23
@@ -598,25 +659,14 @@ sap.ui.define([
                 }
                 return fechaReturn
             },
-            fechaActual : function () {  
-                var fechaActual = new Date();
-                // Obtener día, mes y año
-                var dia = fechaActual.getDate();
-                var mes = fechaActual.getMonth() + 1; // Los meses en JavaScript son base 0, por lo que se suma 1
-                var año = fechaActual.getFullYear();
+            fechaActual: function () {  
+                const fechaActual = new Date();
 
-                // Formatear día y mes para que tengan siempre dos dígitos
-                if (dia < 10) {
-                    dia = '0' + dia;
-                }
-                if (mes < 10) {
-                    mes = '0' + mes;
-                } 
-                // Construir la fecha en el formato deseado
-                var fechaFormateada = dia + '/' + mes + '/' + año;
-
-                // console.log(fechaFormateada);
-                return fechaFormateada
+                const anio = fechaActual.getFullYear();
+                const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
+                const dia = fechaActual.getDate().toString().padStart(2, '0');
+              
+                return `${anio}-${mes}-${dia}`;
             },
             limpiarObjeto: function (arrayClean) {   
                 console.log(`arrayClean: ${arrayClean}`)
@@ -661,6 +711,38 @@ sap.ui.define([
                         }
                     });
                 }); 
+            },
+            _validacionInputs: function (aInputs) {
+                // const aInputs = ["input1", "input2", "input3", "select1"];
+                let resInputs = true
+                let camposVacios = [];
+                let camposCompletos = [];
+
+                aInputs.forEach(function(id) {
+                    // debugger
+                    let campo = this.getView().byId(id);
+                    if (campo.getValue) { // Verificar si es un campo de entrada
+                        if (!campo.getValue()) {
+                            camposVacios.push(id);
+                        }else{camposCompletos.push(id);}
+                    } else if (campo.getSelectedKey) { // Verificar si es un componente select
+                        if (!campo.getSelectedKey()) {
+                            camposVacios.push(id);
+                        }else{camposCompletos.push(id);}
+                    }
+                }, this);
+                //cambiando es etado de los inputs
+                camposVacios.forEach(function(id) {
+                    let campo = this.getView().byId(id);
+                    campo.setValueState("Error");
+                }, this);
+                camposCompletos.forEach(function(id) {
+                    let campo = this.getView().byId(id);
+                    campo.setValueState("None");
+                }, this);
+
+                if (camposVacios.length === 0) {resInputs = false}
+                return resInputs
             },
         });
     });

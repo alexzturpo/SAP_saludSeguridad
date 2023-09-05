@@ -150,7 +150,7 @@
                             <tab:template> <Text text="{myParam>BDMNG}" wrapping="false" /> </tab:template>
                         </tab:Column>       
                         <tab:Column>
-                            <Label textAlign="Center" wrapping ="true"  text="Estado del Epp" />
+                            <Label textAlign="Center" wrapping ="true"  text="Estado" />
                             <tab:template> <Text text="{myParam>ZSTATUS}" wrapping="false" /> </tab:template>
                         </tab:Column>     
                         <tab:Column>

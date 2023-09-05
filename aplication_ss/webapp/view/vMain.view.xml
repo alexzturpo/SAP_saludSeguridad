@@ -90,9 +90,12 @@
                                                     <f:formElements>
                                                         <f:FormElement label="Sociedad" >
                                                             <f:fields>
-                                                                <ComboBox id="gi_new_sociedad" class="sapUiSmallMarginBottom" enabled="true" selectedKey="1000" required="true">
+                                                                <!-- <ComboBox id="gi_new_sociedad" class="sapUiSmallMarginBottom" enabled="true" selectedKey="1000" required="true">
                                                                     <core:Item key="1000" text="1000" />
-                                                                </ComboBox>     
+                                                                </ComboBox>      -->
+                                                                <Select id="gi_new_sociedad" showSecondaryValues= "true" required="true"> 
+                                                                    <core:Item key="1000" text="1000" />
+                                                                </Select> 
                                                             </f:fields>
                                                         </f:FormElement> 
                                                         <f:FormElement label="Ubicación" >
@@ -117,7 +120,7 @@
                                                         </f:FormElement> 
                                                         <f:FormElement label="Hora" >
                                                             <f:fields>  
-                                                                    <TimePicker id="gi_new_hora" required="true" value="08:57" valueFormat="HH:mm" width="100%" 
+                                                                    <TimePicker id="gi_new_hora" required="true" value="" valueFormat="HH:mm" width="100%" 
                                                                     displayFormat="HH:mm" change="handleChange" maskMode="{= ${/maskMode/state} ? 'On' : 'Off'}"/>   
                                                             </f:fields>
                                                         </f:FormElement> 
@@ -271,17 +274,18 @@
                                     </fb:FilterBar> 
 
                                     <tab:Table id="tbIncidentes" cellClick="onSelectTbIncidente" rows="{  path: 'myParam>/listIncidente' }" selectionMode="Single"  visibleRowCount="8" ariaLabelledBy="title">
-                                        <!-- <tab:extension>
+                                        <tab:extension>
                                             <OverflowToolbar style="Clear">
-                                                <Title id="title" text="Detalle de los Movimientos"/>
-                                                <SearchField width="40%" class="sapUiSmallMargin" /> 
-                                                <Button icon="sap-icon://save" text="Grabar programacion"  tooltip="Grabar programacion" press="presAgregar"/> 
-                                                <Button icon="sap-icon://appointment" text="Crear Prog. Semanal"  tooltip="Crear Prog. Semanal" press="presProgSemanal"/> 
+                                                <Title id="title" text="Lista de incidentes"/>
+                                                <ToolbarSpacer />
+                                                <!-- <SearchField width="40%" class="sapUiSmallMargin" /> 
+                                                <Button icon="sap-icon://save" text="Grabar programacion"  tooltip="Grabar programacion" press="presAgregar"/>  -->
+                                                <Button icon="sap-icon://synchronize" text="Refrescar" press="getListInc"/> 
                                             </OverflowToolbar>
-                                        </tab:extension> -->
+                                        </tab:extension>
                                         <tab:columns>
                                             <tab:Column >
-                                                <Label textAlign="Center" wrapping ="true"  text="N° Inspección" />
+                                                <Label textAlign="Center" wrapping ="true"  text="N° Incidente" />
                                                 <tab:template> <Text text="{myParam>ZINCIDENTE}" wrapping="false" /> </tab:template> 
                                             </tab:Column>
                                             <tab:Column>
@@ -294,7 +298,8 @@
                                             </tab:Column>
                                             <tab:Column>
                                                 <Label textAlign="Center" wrapping ="true"  text="Afectado" />
-                                                <tab:template> <Text text="{myParam>ZID_COD_TRABAJADOR}" wrapping="false" /> </tab:template>
+                                                <!-- <tab:template> <Text text="{myParam>ZID_COD_TRABAJADOR} { parts: [{path: 'myParam>ZID_COD_TRABAJADOR'}], formatter: '.changeFullNameTrab'}" wrapping="false" /> </tab:template> -->
+                                                <tab:template> <Text text="{ parts: [{path: 'myParam>ZID_COD_TRABAJADOR'}], formatter: '.changeFullNameTrab'}" wrapping="false" /> </tab:template>
                                             </tab:Column>
                                             <tab:Column>
                                                 <Label textAlign="Center" wrapping ="true"  text="Status" />
@@ -350,15 +355,20 @@
                                                 <f:FormElement label="Gerencia"> 
                                                     <f:fields> 
                                                         <Input id="gInsp_gerencia" type="Text" value="" placeholder="Seleccione.." valueHelpRequest="changeZSYSO_GERENCIA" showSuggestion="true" showValueHelp="true"/>
+                                                        <Input id="gInsp_gerenciaText" value="{ parts: [{path: 'myParam>ZGERENCIA'}], formatter: '.changeDataGerencia'}" editable="false" />
                                                     </f:fields>
                                                 </f:FormElement>
                                                 <f:FormElement label="Área"> 
                                                     <f:fields> 
                                                         <Input id="gInsp_area" type="Text" value="" placeholder="Seleccione.." valueHelpRequest="changeZSYSO_AREA" showSuggestion="true" showValueHelp="true"/>
+                                                        <Input id="gInsp_areaText" value="{ parts: [{path: 'myParam>ZAREA'}], formatter: '.changeDataArea'}" editable="false" />
                                                     </f:fields>
                                                 </f:FormElement>
                                                 <f:FormElement label="Departamento">
-                                                    <f:fields> <Input id="gInsp_departamento" type="Text" value="" placeholder="Seleccione.." valueHelpRequest="changeZSYSO_DPTO" showSuggestion="true" showValueHelp="true"/></f:fields>
+                                                    <f:fields> 
+                                                        <Input id="gInsp_departamento" type="Text" value="" placeholder="Seleccione.." valueHelpRequest="changeZSYSO_DPTO" showSuggestion="true" showValueHelp="true"/>
+                                                        <Input id="gInsp_departamentoText" value="{ parts: [{path: 'myParam>ZDPTO'}], formatter: '.changeDataDepartamento'}" editable="false" />
+                                                    </f:fields>
                                                 </f:FormElement>
                                                 <f:FormElement label="Fecha programada">
                                                     <f:fields> <DatePicker id="gInsp_programada" value="" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd" placeholder="Ingresar fecha"/> </f:fields>
@@ -427,19 +437,19 @@
                                         </tab:Column>
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Gerencia" />
-                                            <tab:template> <Text id="tex3" text="{myParam>ZGERENCIA}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text id="tex3" text="{ parts: [{path: 'myParam>ZGERENCIA'}], formatter: '.changeDataGerencia'}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Área" />
-                                            <tab:template> <Text id="tex4" text="{myParam>ZAREA}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text id="tex4" text="{ parts: [{path: 'myParam>ZAREA'}], formatter: '.changeDataArea'}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column >
                                             <Label id="flabel5" textAlign="Center" wrapping ="true"  text="Departamento" />
-                                            <tab:template> <Text id="tex5" text="{myParam>ZDPTO}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text id="tex5" text="{ parts: [{path: 'myParam>ZDPTO'}], formatter: '.changeDataDepartamento'}" wrapping="false" /> </tab:template>
                                         </tab:Column> 
                                         <tab:Column>
                                             <Label textAlign="Center" wrapping ="true"  text="Afectado" />
-                                            <tab:template> <Text id="tex6" text="{myParam>ZAFECTADO}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text id="tex6" text="{ parts: [{path: 'myParam>ZAFECTADO'}], formatter: '.changeFullNameTrab'}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Estado" />
@@ -778,7 +788,21 @@
                                             </Toolbar>
                                         </f:toolbar>
                                         <f:layout>
-                                            <f:ResponsiveGridLayout
+                                        	<f:ResponsiveGridLayout
+                                                labelSpanXL="3"
+                                                labelSpanL="3"
+                                                labelSpanM="3"
+                                                labelSpanS="12"
+                                                adjustLabelSpan="false"
+                                                emptySpanXL="4"
+                                                emptySpanL="4"
+                                                emptySpanM="4"
+                                                emptySpanS="0"
+                                                columnsXL="1"
+                                                columnsL="1"
+                                                columnsM="1"
+                                                singleContainerFullSize="false" />
+                                            <!-- <f:ResponsiveGridLayout
                                                 labelSpanXL="4"
                                                 labelSpanL="4"
                                                 labelSpanM="4"
@@ -791,19 +815,30 @@
                                                 columnsXL="3"
                                                 columnsL="2"
                                                 columnsM="2"
-                                                singleContainerFullSize="false" />
+                                                singleContainerFullSize="false" /> -->
                                         </f:layout>
                                         <f:formContainers>
                                             <f:FormContainer title="Datos del proveedor">
                                                 <f:formElements>
+                                                    <f:FormElement label="Proveedor Busqueda">
+                                                        <f:fields> 
+                                                            <!-- <CheckBox id="codPro" text="Codigo" /> 
+                                                            <CheckBox id="rucPro" text="Ruc" />  -->
+                                                            <RadioButton id="codPro" text="Codigo" groupName="groupProveedor" selected="true" />
+                                                            <RadioButton id="rucPro" text="Ruc" groupName="groupProveedor"  />
+                                                        </f:fields>
+                                                    </f:FormElement> 
+                                                    <f:FormElement label="Parametro de busqueda">
+                                                        <f:fields> <Input value="" id="info"  /> </f:fields>
+                                                    </f:FormElement> 
                                                     <f:FormElement label="Proveedor">
-                                                        <f:fields> <Input value="" id="dateProv" liveChange="liveInputProveedor" /> </f:fields>
+                                                        <f:fields> <Input value="" id="dateProv" editable="false" /> </f:fields>
                                                     </f:FormElement> 
                                                     <f:FormElement label="Nombre">
                                                         <f:fields> <Input value="" id="dateNombreProv" editable="false"/> </f:fields>
                                                     </f:FormElement> 
                                                     <f:FormElement label="RUC">
-                                                        <f:fields> <Input value="" id="dateRucProv"/> </f:fields>
+                                                        <f:fields> <Input value="" id="dateRucProv" editable="false"/> </f:fields>
                                                     </f:FormElement> 
                                                 </f:formElements>
                                             </f:FormContainer>
@@ -822,7 +857,7 @@
                                                 <Title text="Personal"/>
                                                 <ToolbarSpacer />
                                                 <Button id="btnAddContratista" text="Añadir contratista" icon="sap-icon://add" type="Emphasized" press="addTrabajador" visible="false" />  
-                                                <Button text="Dar de baja" icon="sap-icon://pull-down" type="Emphasized" press="deleteTrabajador" />  
+                                                <Button id="btnBaja" text="Dar de baja" icon="sap-icon://pull-down" type="Emphasized" press="deleteTrabajador" visible="false" />  
                                             </OverflowToolbar>
                                         </tab:extension>
                                         <tab:columns>
@@ -1083,11 +1118,14 @@
                                             <f:formContainers>
                                                 <f:FormContainer > 
                                                     <f:formElements>
-                                                        <f:FormElement label="Contratista">
-                                                            <f:fields> <Input value="" id="asi_contratista" liveChange="liveAsisInputContratista"/> </f:fields>
-                                                        </f:FormElement> 
                                                         <f:FormElement label="Sociedad">
-                                                            <f:fields> <Input value="" id="asi_sociedad" liveChange="liveAsisInputSociedad"/> </f:fields>
+                                                            <f:fields> 
+                                                                <RadioButton id="selectSociedad" text="Sociedad" groupName="groupNewAsistente" selected="true" />
+                                                                <RadioButton id="selectProveedor" text="Proveedor" groupName="groupNewAsistente"  />
+                                                            </f:fields>
+                                                        </f:FormElement> 
+                                                        <f:FormElement label="Parametro de busqueda">
+                                                            <f:fields> <Input value="" id="asi_busqueda" liveChange="liveAsisInputContratista"/> </f:fields>
                                                         </f:FormElement> 
                                                         <f:FormElement label="Código de trabajador">
                                                             <f:fields> <Input value="" id="asi_codTrabajador"/> </f:fields>
@@ -1367,7 +1405,7 @@
                     </IconTabBar>
                 </IconTabFilter>
 
-                <IconTabFilter text="Gestión de EEPs" key="itab5Id">
+                <IconTabFilter text="Gestión de EPPs" key="itab5Id">
                     <IconTabBar headerMode="Inline"  expanded="{device>/isNoPhone}">
                         <items>
                             <IconTabFilter text="Reservas EPPs" >
@@ -1493,7 +1531,7 @@
                                         </tab:Column>
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Trabajador" />
-                                            <tab:template> <Text  text="{myParam>ZID_COD_TRABAJADOR}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text  text="{ parts: [{path: 'myParam>ZID_COD_TRABAJADOR'}], formatter: '.changeFullNameTrab'}" wrapping="false" /> </tab:template>
                                         </tab:Column>
                                         <tab:Column>
                                             <Label textAlign="Center" wrapping ="true"  text="DNI" />
@@ -1501,11 +1539,11 @@
                                         </tab:Column>
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Cargo" />
-                                            <tab:template> <Text text="{myParam>ZCARGO}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{ parts: [{path: 'myParam>ZCARGO'}], formatter: '.changeDataPuesto'}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Área de trabajo" />
-                                            <tab:template> <Text text="{myParam>ZAREA}" wrapping="false" /> </tab:template>
+                                            <tab:template> <Text text="{ parts: [{path: 'myParam>ZAREA'}], formatter: '.changeDataArea'}" wrapping="false" /> </tab:template>
                                         </tab:Column>          
                                         <tab:Column >
                                             <Label textAlign="Center" wrapping ="true"  text="Fecha de reserva" />

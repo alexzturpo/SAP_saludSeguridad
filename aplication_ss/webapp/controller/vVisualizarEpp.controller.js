@@ -30,6 +30,7 @@ sap.ui.define([
             },
             onPageBack : function () {  
                 this.getRouter().getTargets().display("TargetvMain");
+                this.getView().byId("rEpp_fechaEntrega").setValue('')
             }, 
             // addEpp: function () {  
             //     this.getView().byId("panelEpp").setVisible(true)
@@ -215,8 +216,10 @@ sap.ui.define([
                         };
                         acciones[epp.MATKL]();
                     }
-                    debugger
-                    oModel.getProperty("/materialesSelectReservaTemp").refresh()
+                    // debugger
+                    // var oModel = this.getView().getModel(); // Obtén el modelo desde la vista actual
+                    oModel.refresh();
+                    // oModel.getProperty("/materialesSelectReservaTemp").refresh()
                     MessageBox.success("Realice de nuevo la busqueda para actualizar los registros"); 
                     // oModel.setProperty("/materialesSelectReservaTemp",arrayEpps)
                     }else{ MessageToast.show("Solicitud cancelada") }
@@ -233,8 +236,9 @@ sap.ui.define([
                         // console.log("arrayEpps", arrayEpps)
                         let oModel = this.getView().getModel("myParam");  
                         let ZID_RESERVA = oModel.getProperty("/ZID_RESERVA_select")
-                        let fechaActual = this.fechaActual()
-                            let partesFecha = fechaActual.split("-"); // Divide la fecha en partes
+                        // let fechaActual = this.fechaActual()
+                        let fechaEntrega = this.cambiarFormatoFecha(this.getView().byId("rEpp_fechaEntrega").getValue())
+                            let partesFecha = fechaEntrega.split("-"); // Divide la fecha en partes
                             let fechaFormateada = partesFecha.join("");
                         for (let epp of arrayEpps) {
                             // debugger
@@ -295,6 +299,7 @@ sap.ui.define([
                                 }
                             };
                             acciones[epp.MATKL]();
+                            oModel.refresh();
                         } 
                     }else{ MessageToast.show("Solicitud cancelada") }
                     // oModel.setProperty("/materialesSelectReservaTemp",arrayEpps)
@@ -537,7 +542,7 @@ sap.ui.define([
                 }
                 return fechaReturn
             },
-            fechaActual : function () {  
+            fechaActual: function () {  
                 const fechaActual = new Date();
 
                 const anio = fechaActual.getFullYear();

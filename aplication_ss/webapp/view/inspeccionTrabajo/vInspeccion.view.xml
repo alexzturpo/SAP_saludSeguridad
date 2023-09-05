@@ -7,7 +7,7 @@
     xmlns="sap.m">
     <Page title="Editar Inspeccion" showNavButton="true" navButtonPress=".onPageBack" class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer">
 		<headerContent>
-			<Button icon="sap-icon://save" text="Guardar" press="updateInspeccion" type="Emphasized" />
+			<Button id="btnSaveIns" icon="sap-icon://save" text="Guardar" press="updateInspeccion" type="Emphasized" />
 		</headerContent> 
 		<content>
             <VBox class="sapUiSmallMargin">
@@ -45,16 +45,19 @@
                                 <f:FormElement label="Gerencia">
                                     <f:fields> 
                                         <Input id="gInsp_gerencia" type="Text" value="{myParam>ZGERENCIA}" placeholder="Seleccione.." valueHelpRequest="changeZSYSO_GERENCIA" showSuggestion="true" showValueHelp="true"/>
+                                        <Input id="gInsp_gerenciaText" value="{ parts: [{path: 'myParam>ZGERENCIA'}], formatter: '.changeDataGerencia'}" editable="false" />
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Área">
                                     <f:fields>
                                         <Input id="gInsp_area" type="Text" value="{myParam>ZAREA}" placeholder="Seleccione.." valueHelpRequest="changeZSYSO_AREA" showSuggestion="true" showValueHelp="true"/>                                                        
+                                        <Input id="gInsp_areaText" value="{ parts: [{path: 'myParam>ZAREA'}], formatter: '.changeDataArea'}" editable="false" />
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Departamento">
                                     <f:fields> 
                                         <Input id="gInsp_departamento" type="Text" value="{myParam>ZDPTO}" placeholder="Seleccione.." valueHelpRequest="changeZSYSO_DPTO" showSuggestion="true" showValueHelp="true"/>
+                                        <Input id="gInsp_departamentoText" value="{ parts: [{path: 'myParam>ZDPTO'}], formatter: '.changeDataDepartamento'}" editable="false" />
                                     </f:fields>
                                 </f:FormElement>
                                 <f:FormElement label="Fecha programada">
@@ -191,7 +194,7 @@
                     <OverflowToolbar style="Clear">
                         <Title text="Editar personal involucrado" />
                         <ToolbarSpacer />
-                         <Button text="Buscar" icon="sap-icon://employee-lookup" type="Emphasized" press="buscarTrabajador" />
+                         <Button text="Buscar" icon="sap-icon://employee-lookup" type="Emphasized" press="buscarTrabajadorEdit" />
                         <Button icon="sap-icon://save" press="saveEditPerInvolucrado" text="Guardar" type="Emphasized" /> 
                         <Button icon="sap-icon://decline" press="cancelPerInvolucrado" text="Cancelar" type="Emphasized" /> 
                     </OverflowToolbar>
@@ -243,9 +246,9 @@
 					<OverflowToolbar>
 						<Title text="Datos del personal involucrado"/>
 						<ToolbarSpacer/>
-						<Button icon="sap-icon://add-employee" text="Agregar" press="addPerInvolucrado"/>
-                        <!-- <Button icon="sap-icon://edit" text="Editar" press="editPerInvolucrado"/> -->
-						<Button icon="sap-icon://add-employee" text="Eliminar" press="deletePerInvolucrado"/>
+						<Button id="addPer" icon="sap-icon://add-employee" text="Agregar" press="addPerInvolucrado"/>
+                        <Button id="editPer" icon="sap-icon://edit" text="Editar" press="editPerInvolucrado"/>
+						<Button id="deletePer" icon="sap-icon://add-employee" text="Eliminar" press="deletePerInvolucrado"/>
 					</OverflowToolbar>
 				</tab:extension>
                 <tab:columns>
@@ -325,13 +328,67 @@
                     </f:Form> 
                 </content>
             </Panel>
+            <Panel id="panelRiAsociadosEdit" binding="{path : 'myParam>/temEditRiAsociados'}" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
+                <headerToolbar>
+                    <OverflowToolbar style="Clear">
+                        <Title text="Editar riesgo asociado" />
+                        <ToolbarSpacer />
+                        <Button icon="sap-icon://save" press="saveEditRiAsociados" text="Guardar" type="Emphasized" /> 
+                        <Button icon="sap-icon://decline" press="cancelRiAsociados" text="Cancelar" type="Emphasized" /> 
+                    </OverflowToolbar>
+                </headerToolbar>
+                <content>
+                    <f:Form editable="true"> 
+                        <f:layout>
+                            <f:ResponsiveGridLayout
+                                labelSpanXL="4"
+                                labelSpanL="3"
+                                labelSpanM="4"
+                                labelSpanS="12"
+                                adjustLabelSpan="false"
+                                emptySpanXL="0"
+                                emptySpanL="4"
+                                emptySpanM="0"
+                                emptySpanS="0"
+                                columnsXL="2"
+                                columnsL="1"
+                                columnsM="1"
+                                singleContainerFullSize="false" />
+                        </f:layout>
+                        <f:formContainers>
+                            <f:FormContainer > 
+                                <f:formElements>
+                                    <f:FormElement label="Condición insegura">
+                                        <f:fields> <Input value="{myParam>ZCOND_INSEGURA}" id="edit_riAsoc_conInsegura"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Riesgo">
+                                        <f:fields> <Input value="{myParam>ZRIESGO}" id="edit_riAsoc_riesgo"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Consecuencias">
+                                        <f:fields> <Input value="{myParam>ZCONSECUENCIA}" id="edit_riAsoc_consecuencia"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Nivel riesgo">
+                                        <f:fields> <Input value="{myParam>ZNIVEL_RIESGO}" id="edit_riAsoc_nivelRiesgo"/> </f:fields>
+                                    </f:FormElement>  
+                                    <f:FormElement label="Anexo">
+                                        <f:fields> 
+                                            <u:FileUploader value="{myParam>ZANEXO}" id="edit_riAsoc_file" name="myFileUpload" uploadUrl="upload/" tooltip="Subir archivo" change="onFileSelected"/>
+                                        </f:fields>
+                                    </f:FormElement>  
+                                </f:formElements>
+                            </f:FormContainer> 
+                        </f:formContainers>
+                    </f:Form> 
+                </content>
+            </Panel>
             <tab:Table id="tableRiesgosAsociados" showNoData="true" selectionMode="Single"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/tabRiAsociados' }" class="sapUiSmallMargin">
                 <tab:extension>
 					<OverflowToolbar>
 						<Title text="Riesgos asociados"/>
 						<ToolbarSpacer/>
-                        <Button icon="sap-icon://add-employee" text="Agregar" press="addRiAsociados"/>
-                        <Button icon="sap-icon://add-employee" text="Eliminar" press="deleteRiAsociados"/>
+                        <Button id="addRisA" icon="sap-icon://add-employee" text="Agregar" press="addRiAsociados"/>
+                        <Button id="editRisA" icon="sap-icon://edit" text="Editar" press="editRiAsociados"/>
+                        <Button id="deleteRisA" icon="sap-icon://add-employee" text="Eliminar" press="deleteRiAsociados"/>
 					</OverflowToolbar>
 				</tab:extension>
                 <tab:columns>
@@ -412,13 +469,67 @@
                     </f:Form> 
                 </content>
             </Panel>
+            <Panel id="panelMedCorrectivaEdit"  binding="{path : 'myParam>/temEditMedCorrectiva'}" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
+                <headerToolbar>
+                    <OverflowToolbar style="Clear">
+                        <Title text="Editar medida correctiva" />
+                        <ToolbarSpacer />
+                        <Button icon="sap-icon://save" press="saveEditMedCorrectiva" text="Guardar" type="Emphasized" /> 
+                        <Button icon="sap-icon://decline" press="cancelMedCorrectiva" text="Cancelar" type="Emphasized" /> 
+                    </OverflowToolbar>
+                </headerToolbar>
+                <content>
+                    <f:Form editable="true"> 
+                        <f:layout>
+                            <f:ResponsiveGridLayout
+                                labelSpanXL="4"
+                                labelSpanL="3"
+                                labelSpanM="4"
+                                labelSpanS="12"
+                                adjustLabelSpan="false"
+                                emptySpanXL="0"
+                                emptySpanL="4"
+                                emptySpanM="0"
+                                emptySpanS="0"
+                                columnsXL="2"
+                                columnsL="1"
+                                columnsM="1"
+                                singleContainerFullSize="false" />
+                        </f:layout>
+                        <f:formContainers>
+                            <f:FormContainer > 
+                                <f:formElements>
+                                    <f:FormElement label="Descripción de la medida correctiva">
+                                        <f:fields> <Input value="{myParam>ZMEDIDA}" id="edit_medCor_descrip"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Responsable">
+                                        <f:fields> <Input value="{myParam>ZRESPONSABLE}" id="edit_medCor_responsable"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Fecha de ejecución">
+                                        <f:fields> 
+                                            <DatePicker id="edit_medCor_fechaEjc" value="{myParam>ZFEC_EJECUCION}" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd" change="handleChange"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Estado de acción correctiva">
+                                        <f:fields> 
+                                        <Select id="edit_medCor_estadoAccCor" selectedKey="{myParam>ZESTADO}" items="{ path: 'myParam>/estadoAccionCorrectiva' }" width="100%">
+                                            <core:ListItem key="{myParam>key}" text="{myParam>state}"/>
+                                        </Select> 
+                                        </f:fields>
+                                    </f:FormElement>  
+                                </f:formElements>
+                            </f:FormContainer> 
+                        </f:formContainers>
+                    </f:Form> 
+                </content>
+            </Panel>
             <tab:Table id="tableMedidaCorrectiva" showNoData="true" selectionMode="Single"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/tabMedCorrectiva' }" class="sapUiSmallMargin">
                 <tab:extension>
 					<OverflowToolbar>
 						<Title text="Medidas correctivas"/> 
                         <ToolbarSpacer/>
-						<Button icon="sap-icon://add-employee" text="Agregar" press="addMedCorrectiva"/>
-						<Button icon="sap-icon://add-employee" text="Eliminar" press="deleteMedCorrectiva"/>
+						<Button id="addMed" icon="sap-icon://add-employee" text="Agregar" press="addMedCorrectiva"/>
+                        <Button id="editMed" icon="sap-icon://edit" text="Editar" press="editMedCorrectiva"/>
+						<Button id="deleteMed" icon="sap-icon://add-employee" text="Eliminar" press="deleteMedCorrectiva"/>
 					</OverflowToolbar>
 				</tab:extension>
                 <tab:columns>
@@ -436,13 +547,8 @@
                     </tab:Column>
                     <tab:Column autoResizable="true" width="auto">
                         <Label textAlign="Center" wrapping ="true"  text="Estado de acción correctiva" />
-                        <tab:template>
-                            <!-- <Text text="{ path: 'myParam>ANLN1', formatter: '.formatNumerico', parameters: {param1: 'Valor1', param2: 'Valor2'} }" wrapping="false" /> -->
-
-                            <Text text="{ parts: [{path: 'myParam>ZESTADO'},{ path: 'myParam>/estadoAccionCorrectiva' }], formatter: '.keyValorEstadoAccionCorrectiva'}"/>  
-                            <!-- <Select items="{ path: 'myParam>/estadoAccionCorrectiva' }" selectedKey="{myParam>estadoAccCor}" enabled="false" width="100%">
-                                <core:ListItem key="{myParam>key}" text="{myParam>state}"/>
-                            </Select>  -->
+                        <tab:template> 
+                            <Text text="{ parts: [{path: 'myParam>ZESTADO'},{ path: 'myParam>/estadoAccionCorrectiva' }], formatter: '.keyValorEstadoAccionCorrectiva'}"/>
                          </tab:template>
                     </tab:Column>
                 </tab:columns>
@@ -453,6 +559,7 @@
                     <OverflowToolbar style="Clear">
                         <Title text="Nuevo responsables del registro" />
                         <ToolbarSpacer />
+                        <Button text="Buscar" icon="sap-icon://employee-lookup" type="Emphasized" press="buscarTrabajadorRes" />
                         <Button icon="sap-icon://save" press="saveResponsables" text="Guardar" type="Emphasized" /> 
                         <Button icon="sap-icon://decline" press="cancelResponsables" text="Cancelar" type="Emphasized" /> 
                     </OverflowToolbar>
@@ -478,6 +585,9 @@
                         <f:formContainers>
                             <f:FormContainer > 
                                 <f:formElements>
+                                    <f:FormElement label="Codigo trabajador">
+                                        <f:fields> <Input value="" id="codTrabajador"/> </f:fields>
+                                    </f:FormElement> 
                                     <f:FormElement label="Nombre">
                                         <f:fields> <Input value="" id="responsable_nombre"/> </f:fields>
                                     </f:FormElement> 
@@ -493,13 +603,63 @@
                     </f:Form> 
                 </content>
             </Panel>
-            <tab:Table id="idTableResponsable"  showNoData="true" selectionMode="None"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/tabResponsables' }" class="sapUiSmallMargin">
+            <Panel id="panelResponsablesEdit"  binding="{path : 'myParam>/temEditResponsables'}" expandable="true" expanded="true" visible="false" headerText="Añadir" width="auto" class="sapUiResponsiveMargin">
+                <headerToolbar>
+                    <OverflowToolbar style="Clear">
+                        <Title text="Nuevo responsables del registro" />
+                        <ToolbarSpacer />
+                        <Button text="Buscar" icon="sap-icon://employee-lookup" type="Emphasized" press="buscarTrabajadorResEdit" />
+                        <Button icon="sap-icon://save" press="saveEditResponsables" text="Guardar" type="Emphasized" /> 
+                        <Button icon="sap-icon://decline" press="cancelResponsables" text="Cancelar" type="Emphasized" /> 
+                    </OverflowToolbar>
+                </headerToolbar>
+                <content>
+                    <f:Form editable="true"> 
+                        <f:layout>
+                            <f:ResponsiveGridLayout
+                                labelSpanXL="4"
+                                labelSpanL="3"
+                                labelSpanM="4"
+                                labelSpanS="12"
+                                adjustLabelSpan="false"
+                                emptySpanXL="0"
+                                emptySpanL="4"
+                                emptySpanM="0"
+                                emptySpanS="0"
+                                columnsXL="2"
+                                columnsL="1"
+                                columnsM="1"
+                                singleContainerFullSize="false" />
+                        </f:layout>
+                        <f:formContainers>
+                            <f:FormContainer > 
+                                <f:formElements>
+                                    <f:FormElement label="Codigo trabajador">
+                                        <f:fields> <Input value="" id="edit_codTrabajador"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Nombre">
+                                        <f:fields> <Input value="{myParam>ZAPELLIDO_NOMBRE}" id="edit_responsable_nombre"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Cargo">
+                                        <f:fields> <Input value="{myParam>ZCARGO}" id="edit_responsable_cargo"/> </f:fields>
+                                    </f:FormElement> 
+                                    <f:FormElement label="Fecha">
+                                        <f:fields> <DatePicker id="edit_responsable_fecha" value="{myParam>ZFECHA}"  displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/> </f:fields>
+                                    </f:FormElement> 
+                                </f:formElements>
+                            </f:FormContainer> 
+                        </f:formContainers>
+                    </f:Form> 
+                </content>
+            </Panel>
+            <tab:Table id="idTableResponsable"  showNoData="true" selectionMode="Single"  visibleRowCount="5" visibleRowCountMode ="Fixed" rows="{  path: 'myParam>/tabResponsables' }" class="sapUiSmallMargin">
                 <tab:extension>
 					<OverflowToolbar>
 						<Title text="Responsables del registro"/>
                         <ToolbarSpacer/>
-						<Button icon="sap-icon://add-employee" text="Agregar" press="addResponsables"/>
-                        <Button icon="sap-icon://add-employee" text="Eliminar" press="deleteResponsables"/>
+						<Button id="addRes" icon="sap-icon://add-employee" text="Agregar" press="addResponsables"/>
+                        <Button id="editRes" icon="sap-icon://edit" text="Editar" press="editResponsables"/>
+                        <Button id="deleteRes" icon="sap-icon://add-employee" text="Eliminar" press="deleteResponsables"/>
 					</OverflowToolbar>
 				</tab:extension>
                 <tab:columns>

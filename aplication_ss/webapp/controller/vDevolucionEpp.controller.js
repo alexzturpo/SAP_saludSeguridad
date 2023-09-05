@@ -49,12 +49,12 @@ sap.ui.define([
                     this.getView().byId("rEpp_areaTrb").setValue(dataRes.AREA) 
                 }
             },
-            devolverTotalEpp22: function () {
-                let arrayEpps = this.selectMultipleTable()
-                if(arrayEpps){
-                    console.log("lista de epps", arrayEpps)
-                }
-            },
+            // devolverTotalEpp22: function () {
+            //     let arrayEpps = this.selectMultipleTable()
+            //     if(arrayEpps){
+            //         console.log("lista de epps", arrayEpps)
+            //     }
+            // },
             devolverTotalEpp:async function () {
                 let arrayEpps = this.selectMultipleTable()
                 if(arrayEpps.length > 0){
@@ -94,7 +94,7 @@ sap.ui.define([
                                 }
                             }else{ MessageToast.show(`El material tiene que estar entregado`) } 
                         } 
-                        // oModel.setProperty("/materialesSelectReservaTemp",arrayEpps) 
+                        oModel.refresh();
                     }else{ MessageToast.show("Solicitud cancelada") }
                 }else{MessageToast.show("Selecciona un material")}
             },

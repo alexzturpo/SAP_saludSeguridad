@@ -179,26 +179,26 @@ sap.ui.define([
                         {"id": 5,"nombre": "Protectores Auditivos","stock": 200}
                     ]
                     ,
-                    "ZSYSO_GERENCIASet":[],
-                    "ZSYSO_AREASet":[],
-                    "ZSYSO_GERENCIA":[
-                        {"ZGERENCIA":"001","ZDESCRIPCION":"Descrip 001","ZESTADO":"Activo"},
-                        {"ZGERENCIA":"002","ZDESCRIPCION":"geren 002","ZESTADO":"Inactivo"},
-                    ],
-                    "ZSYSO_AREA":[
-                        {"ZAREA":"001","ZGERENCIA":"001","ZDESCRIPCION":"Descrip area 001","ZESTADO":"Activo"},
-                        {"ZAREA":"002","ZGERENCIA":"001","ZDESCRIPCION":"fa area 002","ZESTADO":"Activo"},
-                    ],
-                    "ZSYSO_DPTO":[
-                        {"ZDPTO":"001","ZAREA":"001","ZGERENCIA":"001","ZDESCRIPCION":"Descrip DPTO 001","ZESTADO":"Activo"}, 
-                        {"ZDPTO":"002","ZAREA":"002","ZGERENCIA":"001","ZDESCRIPCION":"Descrip DPTO 002","ZESTADO":"Activo"}, 
-                        {"ZDPTO":"003","ZAREA":"002","ZGERENCIA":"001","ZDESCRIPCION":"Descrip DPTO 003","ZESTADO":"Inactivo"}, 
-                    ],
-                    "ZSYSO_CATEGORIA":[
-                        {"ZCATEGORIA":"A","ZDESCRIPCION":"Condición o práctica con potencial de causar incapacidad permanente, fatalidad y/o ocasionar perdida mayor y/o demoras en atención a levantamiento."}, 
-                        {"ZCATEGORIA":"B","ZDESCRIPCION":"Condición o práctica con potencial de causar lesiones, enfermedad seria, ocasionando incapacidad temporal o daño a la propiedad"},
-                        {"ZCATEGORIA":"C","ZDESCRIPCION":"Condición o práctica con potencial de causar lesión o enfermedad menor y/o daño a la propiedad no considerable"}
-                    ],
+                    // "ZSYSO_GERENCIASet":[],
+                    // "ZSYSO_AREASet":[],
+                    // "ZSYSO_GERENCIA":[
+                    //     {"ZGERENCIA":"001","ZDESCRIPCION":"Descrip 001","ZESTADO":"Activo"},
+                    //     {"ZGERENCIA":"002","ZDESCRIPCION":"geren 002","ZESTADO":"Inactivo"},
+                    // ],
+                    // "ZSYSO_AREA":[
+                    //     {"ZAREA":"001","ZGERENCIA":"001","ZDESCRIPCION":"Descrip area 001","ZESTADO":"Activo"},
+                    //     {"ZAREA":"002","ZGERENCIA":"001","ZDESCRIPCION":"fa area 002","ZESTADO":"Activo"},
+                    // ],
+                    // "ZSYSO_DPTO":[
+                    //     {"ZDPTO":"001","ZAREA":"001","ZGERENCIA":"001","ZDESCRIPCION":"Descrip DPTO 001","ZESTADO":"Activo"}, 
+                    //     {"ZDPTO":"002","ZAREA":"002","ZGERENCIA":"001","ZDESCRIPCION":"Descrip DPTO 002","ZESTADO":"Activo"}, 
+                    //     {"ZDPTO":"003","ZAREA":"002","ZGERENCIA":"001","ZDESCRIPCION":"Descrip DPTO 003","ZESTADO":"Inactivo"}, 
+                    // ],
+                    // "ZSYSO_CATEGORIA":[
+                    //     {"ZCATEGORIA":"A","ZDESCRIPCION":"Condición o práctica con potencial de causar incapacidad permanente, fatalidad y/o ocasionar perdida mayor y/o demoras en atención a levantamiento."}, 
+                    //     {"ZCATEGORIA":"B","ZDESCRIPCION":"Condición o práctica con potencial de causar lesiones, enfermedad seria, ocasionando incapacidad temporal o daño a la propiedad"},
+                    //     {"ZCATEGORIA":"C","ZDESCRIPCION":"Condición o práctica con potencial de causar lesión o enfermedad menor y/o daño a la propiedad no considerable"}
+                    // ],
                     // "ZSYSO_INSPECCION":[
                     //     {"ZINSPECCION":"0001","ZDPTO":"0003","ZFEC_PROGRAM":"01/08/2023","ZESTADO":"N","ZFEC_CONCLUIDA":"02/08/2023","ZCATEGORIA":"A","ZTIPO":"1","ZFEC_REAL":"01/08/2023","ZHOR_REAL":"16:00","ZACTO":"vActo","ZCONDICION":"vCondicion","ZHALLAZGO":"ZHALLAZGO","ZACCIONES":"ZACCIONES","ZRECOMENDACION":"ZRECOMENDACION","ZUBICACION":"ZUBICACION","ZCAUSAS":"ZCAUSAS","ZREGISTRADO_POR":"user1","ZAFECTADO":"ZAFECTADO"},
                     //     {"ZINSPECCION":"0002","ZDPTO":"0002","ZFEC_PROGRAM":"01/08/2023","ZESTADO":"F","ZFEC_CONCLUIDA":"02/08/2023","ZCATEGORIA":"C","ZTIPO":"2","ZFEC_REAL":"01/08/2023","ZHOR_REAL":"16:00","ZACTO":"vActo","ZCONDICION":"vCondicion","ZHALLAZGO":"ZHALLAZGO","ZACCIONES":"ZACCIONES","ZRECOMENDACION":"ZRECOMENDACION","ZUBICACION":"ZUBICACION","ZCAUSAS":"ZCAUSAS","ZREGISTRADO_POR":"user1","ZAFECTADO":"ZAFECTADO"}
@@ -234,10 +234,10 @@ sap.ui.define([
                     "tabMedCorrectiva":[],
                     "tabResponsables":[],
                     "estadoAccionCorrectiva":[
-                        {"key":0,"state":"Pendiente"},
-                        {"key":1,"state":"Subsanada"},
-                        {"key":2,"state":"Devuelta"},
-                        {"key":3,"state":"Completada"}
+                        {"key":"P","state":"Pendiente"},
+                        {"key":"S","state":"Subsanada"},
+                        {"key":"D","state":"Devuelta"},
+                        {"key":"C","state":"Completada"}
                     ],
                     "excelTabInsp":[
                         {

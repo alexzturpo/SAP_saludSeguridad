@@ -16,8 +16,38 @@ sap.ui.define([
                 return sap.ui.core.UIComponent.getRouterFor(this);
             },
             onInit: function () {
-
+                
             }, 
+            onAfterRendering: function () {
+                this.validarEdicion()
+            },
+            validarEdicion:async function () {
+                let oModel = this.getView().getModel("myParam");  
+                let inspecion = oModel.getProperty("/tempInspecciones");
+                console.log("inspecion",inspecion)
+                // debugger
+                if(inspecion.ZESTADO == "F"){
+                    this.getView().byId("btnSaveIns").setVisible(false)
+
+                    this.getView().byId("addPer").setVisible(false)
+                    this.getView().byId("editPer").setVisible(false)
+                    this.getView().byId("deletePer").setVisible(false)
+
+                    this.getView().byId("addRisA").setVisible(false)
+                    this.getView().byId("editRisA").setVisible(false)
+                    this.getView().byId("deleteRisA").setVisible(false)
+
+                    this.getView().byId("addMed").setVisible(false)
+                    this.getView().byId("editMed").setVisible(false)
+                    this.getView().byId("deleteMed").setVisible(false)
+
+                    this.getView().byId("addRes").setVisible(false)
+                    this.getView().byId("editRes").setVisible(false)
+                    this.getView().byId("deleteRes").setVisible(false)
+                }
+
+            },
+            
             // funciones generales para los input con fragment
             dialogsSearch: function (oEvent,arrSearch,sValue) { 
                 let comFil = []; 
@@ -39,6 +69,7 @@ sap.ui.define([
                 sDescription = oSelectedItem.getDescription(); 
                 // this.byId(idInput).setValue(sDescription); 
                 this.getView().byId(idInput).setValue(sDescription); 
+                this.getView().byId(`${idInput}Text`).setValue(sDescription); 
             }, 
             //input gerencia
             changeZSYSO_GERENCIA: function () { this._dgGerencia().open() },
@@ -133,6 +164,19 @@ sap.ui.define([
                 if(ok){
                     var oModel = this.getView().getModel("myParam");  
                     let selectInspeccion = oModel.getProperty("/tempInspecciones");
+                    let estadoInspec = selectInspeccion.ZESTADO
+                    //LOGICA PARA VERIFICAR SI TODAS LA MEDIDADAS CORRECTIVAS ESTAN CUMPLICAS
+                    let resValidacion = this.validarMedidasCompletas()
+                    if(resValidacion){
+                        let typeMsm2 = "success",
+                            titleMsm2 = "Cambio de estado de la inspección a LIBERADO, Todas las acciones correctivas estan completadas."
+                        let ok = await this.MessageBoxPress(typeMsm2,titleMsm2)
+                        if(ok){
+                            estadoInspec = 'F'
+                            // MessageToast.show("Inspeccion liberada")
+                        }else{ MessageToast.show("Solicitud cancelada, Realice los cambios necesario.") }
+                    }
+                    
                     // let listInspeccion = oModel.getProperty("/ZSYSO_INSPECCION");
                     //obtener tablas para enviar la acctualizacion 
                     let  tabPerInvolucrados = oModel.getProperty("/tabPerInvolucrados");
@@ -164,7 +208,8 @@ sap.ui.define([
                         ZRECOMENDACION: this.getView().byId("gInsp_recomendacion").getValue(),
                         ZUBICACION: this.getView().byId("gInsp_ubicacion").getValue(),
     
-                        ZCAUSAS: this.getView().byId("gInsp_desCausaOrigen").getValue()
+                        ZCAUSAS: this.getView().byId("gInsp_desCausaOrigen").getValue(),
+                        ZESTADO: estadoInspec
                     },
                     
                     "detalle": tabPerInvolucrados,
@@ -173,24 +218,30 @@ sap.ui.define([
                     "detalle3": tabResponsables
                     }
                     console.log("objInspeccion",objInspeccion) 
-                    
+                    // debugger
                     var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/UPD_INSP/1000/0/${selectInspeccion.ZINSPECCION}/0/0/0/0?sap-client=120`;
                     var dataRes = this.f_PostJsonData(url, objInspeccion) // actualizar inspeccion cabecera y tablas involucrados asociados correctiva responsable
                     console.log("dataRes",dataRes)
                     if(dataRes.cod != undefined && dataRes.cod == 'Error'){
                         MessageToast.show("Error en la solicitud");
                     }else{
-                        let ok = await this.MessageBoxPressOneOption("success",`Cambios realizados`)
-                        if(ok){
-                            MessageToast.show("Solicitud exitosa");  
-                            // console.log("TODO OK") 
-                            this.onPageBack()
-                        }
+                        await this.MessageBoxPressOneOption("success",`Cambios realizados`)
+                        MessageToast.show("Solicitud exitosa");  
+                        this.onPageBack()
                     } 
-                    // oModel.setProperty("/listInspeccion",newListInspeccion);  
 
                 }else{ MessageToast.show("Solicitud cancelada") }
             },
+            validarMedidasCompletas: function () { 
+                var oModel = this.getView().getModel("myParam");  
+                let tabMedCorrectiva = oModel.getProperty("/tabMedCorrectiva");
+                let validacion = true
+                for (let med of tabMedCorrectiva) { 
+                    // debugger
+                    if(med.ZESTADO !== 'C') validacion = false 
+                }
+                return validacion
+            }, 
             updateKey: function (miArray,nuevoObjeto,codigoBuscado) {  
                 // console.log("updateKey EDITADO",miArray,nuevoObjeto,codigoBuscado) 
                 for (var i = 0; i < miArray.length; i++) { 
@@ -207,25 +258,41 @@ sap.ui.define([
             cancelPerInvolucrado: function () {  
                 this.getView().byId("panelPerInvolucrado").setVisible(false)
                 this.getView().byId("panelPerInvolucradoEdit").setVisible(false)
+                let objPerInvClean = {  //limpiar formulario
+                    codTrab: "perInv_codTrab",
+                    fullName: "perInv_fullName",
+                    dni: "perInv_dni",
+                    contratista: "perInv_contratista",
+                    puestoTrb: "perInv_puestoTrb"
+                }
+                this.limpiarObjeto(objPerInvClean)
+
+                let objPerInvCleanEdit = {  //limpiar formulario
+                    codTrab: "edit_perInv_codTrab",
+                    fullName: "edit_perInv_fullName",
+                    dni: "edit_perInv_dni",
+                    contratista: "edit_perInv_contratista",
+                    puestoTrb: "edit_perInv_puestoTrb"
+                }
+                this.limpiarObjeto(objPerInvCleanEdit)
             },
             editPerInvolucrado: function () {  
-                this.getView().byId("panelPerInvolucradoEdit").setVisible(true) 
                 let oModel = this.getView().getModel("myParam");  
                 let varTemEdit = "/temEditInvolucrado"
                 let varTemEditId = "/temEditInvolucradoId"
                 let varTabaLista = "/tabPerInvolucrados"
                 let varIdTabla = "tablePersInvolucrado"
                 let tableList = oModel.getProperty(varTabaLista); 
-
+                
                 var oTable = this.getView().byId(varIdTabla);
                 var indiceEdit = oTable.getSelectedIndices();
-                if (indiceEdit >= 0) {
+                if (indiceEdit >= 0 && indiceEdit < tableList.length && tableList[indiceEdit] != undefined) {
+                    // if (indiceEdit >= 0) {
+                    this.getView().byId("panelPerInvolucradoEdit").setVisible(true) 
                     console.log("Registro A EDITAR.",tableList[indiceEdit]);
                     oModel.setProperty(varTemEdit,tableList[indiceEdit]); 
                     oModel.setProperty(varTemEditId,indiceEdit); 
-                } else {
-                console.log("Índice inválido, no se eliminó ningún registro.");
-                }  
+                } else {MessageToast.show("Seleccione un registro")}  
             },
             saveEditPerInvolucrado: function () {  
                 // let varTemEdit = "/temEditAcciones"
@@ -247,6 +314,7 @@ sap.ui.define([
                 this.actualizarCamposPorIndice(list, tempEditId, obj); 
                 // console.log("saveEditAcciones list FIN",list)
                 oModel.setProperty(varTabaLista,list); 
+                MessageToast.show("Cambios realizados")
                 this.cancelPerInvolucrado()
             },
             savePerInvolucrado: function () {  
@@ -265,51 +333,79 @@ sap.ui.define([
                 oModel.setProperty("/tabPerInvolucrados",listPerInvolucrados); 
 
                 this.getView().byId("panelPerInvolucrado").setVisible(false) // ocultar panel
-                let objPerInvClean = {  //limpiar formulario
-                    codTrab: "perInv_codTrab",
-                    fullName: "perInv_fullName",
-                    dni: "perInv_dni",
-                    contratista: "perInv_contratista",
-                    puestoTrb: "perInv_puestoTrb"
-                }
-                this.limpiarObjeto(objPerInvClean)
+                // let objPerInvClean = {  //limpiar formulario
+                //     codTrab: "perInv_codTrab",
+                //     fullName: "perInv_fullName",
+                //     dni: "perInv_dni",
+                //     contratista: "perInv_contratista",
+                //     puestoTrb: "perInv_puestoTrb"
+                // }
+                // this.limpiarObjeto(objPerInvClean)
 
             },
-            deletePerInvolucrado : function () {  
+            deletePerInvolucrado:async  function () {  
                 let oModel = this.getView().getModel("myParam");  
                 let dataTable = oModel.getProperty("/tabPerInvolucrados");
 
                 var oTable = this.getView().byId("tablePersInvolucrado");
                 var indiceAEliminar = oTable.getSelectedIndices();
                 if (indiceAEliminar >= 0 && indiceAEliminar < dataTable.length && dataTable[indiceAEliminar] != undefined) {
-                    dataTable.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
-                    oModel.setProperty("/tabPerInvolucrados",dataTable);
-                    console.log("Registro eliminado.");
-                }else {
-                    MessageToast.show("Seleccione un registro");
-                console.log("Índice inválido, no se eliminó ningún registro.");
-                }
+                    let typeMsm = "information",
+                    titleMsm = "¿Deseas elimar el registro seleccionado?"
+                    let ok = await this.MessageBoxPress(typeMsm,titleMsm)
+                    if(ok){ 
+                        dataTable.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
+                        oModel.setProperty("/tabPerInvolucrados",dataTable)
+                        MessageToast.show("Registro eliminado.")
+                    }else{ MessageToast.show("Solicitud cancelada") }
+                }else {MessageToast.show("Seleccione un registro")}
             },
-            buscarTrabajador:  function () {  
-                console.log('getListEmpleado')
+            buscarTrabajador:async function () {   
                 var iCodTrabajador = this.getView().byId("perInv_codTrab").getValue()
-                console.log("iCodTrabajador",iCodTrabajador)
-                var oModel = this.getView().getModel("myParam");  
-                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${iCodTrabajador}/0/0/0/0?sap-client=120`;
-                var dataRes =  this.f_GetJson(url) 
-                console.log('getListEmpleado DATA ',dataRes)
-                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
-                    MessageToast.show("Error (" + dataRes.descripcion + ")");
-                    MessageToast.show("NO ENCONTRADO");
-                }else{
-                    console.log("PERSONAL",dataRes)
-                    dataRes= dataRes[0]
+                let dataRes = await this.searchTrabajador(iCodTrabajador)
+                if(dataRes){
                     this.getView().byId("perInv_fullName").setValue(`${dataRes.NOMBRE} ${dataRes.APELLIDO}`) 
                     this.getView().byId("perInv_dni").setValue(dataRes.DNI)
                     this.getView().byId("perInv_contratista").setValue(dataRes.DNI)
                     this.getView().byId("perInv_puestoTrb").setValue(dataRes.AREA)
+
+                }else{MessageToast.show("No encontrado")}
+            },
+            buscarTrabajadorEdit:async function () {   
+                var iCodTrabajador = this.getView().byId("edit_perInv_codTrab").getValue()
+                let dataRes = await this.searchTrabajador(iCodTrabajador)
+                if(dataRes){
+                    this.getView().byId("edit_perInv_fullName").setValue(`${dataRes.NOMBRE} ${dataRes.APELLIDO}`) 
+                    this.getView().byId("edit_perInv_dni").setValue(dataRes.DNI)
+                    this.getView().byId("edit_perInv_contratista").setValue(dataRes.DNI)
+                    this.getView().byId("edit_perInv_puestoTrb").setValue(dataRes.AREA)
+
+                }else{MessageToast.show("No encontrado")}
+            },
+            searchTrabajador:  function (iCodTrabajador) {  
+                let data
+                // console.log('getListEmpleado')
+                // var iCodTrabajador = this.getView().byId("perInv_codTrab").getValue()
+                // console.log("iCodTrabajador",iCodTrabajador)
+                // var oModel = this.getView().getModel("myParam");  
+                var url = url_ini + `https://172.16.22.30:44300/sap/bc/ZSISMART/smart/GET_LIST_PERSONAL/0/0/${iCodTrabajador}/0/0/0/0?sap-client=120`;
+                var dataRes =  this.f_GetJson(url) 
+                console.log('getListEmpleado DATA ',dataRes)
+                if(dataRes.cod != undefined && dataRes.cod == 'Error'){
+                    // MessageToast.show("Error (" + dataRes.descripcion + ")");
+                    // MessageToast.show("NO ENCONTRADO");
+                    data = false
+                }else{
+                    console.log("PERSONAL",dataRes)
+                    dataRes= dataRes[0]
+                    data = dataRes
+                    // this.getView().byId("perInv_fullName").setValue(`${dataRes.NOMBRE} ${dataRes.APELLIDO}`) 
+                    // this.getView().byId("perInv_dni").setValue(dataRes.DNI)
+                    // this.getView().byId("perInv_contratista").setValue(dataRes.DNI)
+                    // this.getView().byId("perInv_puestoTrb").setValue(dataRes.AREA)
                     // oModel.setProperty('/listEmpleados',dataRes);  
                 }
+                return data
             },
 
             limpiarObjeto: function (objeto) {  
@@ -318,16 +414,14 @@ sap.ui.define([
                         this.getView().byId(objeto[propiedad]).setValue("") 
                     }
                   }
-            },
-            
-
-            limpiarObjeto: function (objeto) {  
-                for (var propiedad in objeto) {
-                    if (objeto.hasOwnProperty(propiedad)) {
-                        this.getView().byId(objeto[propiedad]).setValue("") 
-                    }
-                  }
-            },
+            }, 
+            // limpiarObjeto: function (objeto) {  
+            //     for (var propiedad in objeto) {
+            //         if (objeto.hasOwnProperty(propiedad)) {
+            //             this.getView().byId(objeto[propiedad]).setValue("") 
+            //         }
+            //       }
+            // },
 
             //FUNCIONES DE RIESGOS ASOCIADOS INSPECCIONES
             addRiAsociados: function () {  
@@ -335,6 +429,33 @@ sap.ui.define([
             },
             cancelRiAsociados: function () {  
                 this.getView().byId("panelRiAsociados").setVisible(false)
+                let objRiAsocClean = { 
+                    conInsegura: "riAsoc_conInsegura",
+                    riesgo: "riAsoc_riesgo",
+                    consecuencia: "riAsoc_consecuencia",
+                    nivelRiesgo: "riAsoc_nivelRiesgo",
+                    file: "riAsoc_file"
+                }
+                this.limpiarObjeto(objRiAsocClean)
+                this.getView().byId("panelRiAsociadosEdit").setVisible(false)
+            },
+            editRiAsociados: function () {  
+                let oModel = this.getView().getModel("myParam");  
+                let varTemEdit = "/temEditRiAsociados"
+                let varTemEditId = "/temEditRiAsociadosId"
+                let varTabaLista = "/tabRiAsociados"
+                let varIdTabla = "tableRiesgosAsociados"
+                let tableList = oModel.getProperty(varTabaLista); 
+                
+                var oTable = this.getView().byId(varIdTabla);
+                var indiceEdit = oTable.getSelectedIndices();
+                if (indiceEdit >= 0 && indiceEdit < tableList.length && tableList[indiceEdit] != undefined) {
+                    // if (indiceEdit >= 0) {
+                    this.getView().byId("panelRiAsociadosEdit").setVisible(true) 
+                    console.log("Registro A EDITAR.",tableList[indiceEdit]);
+                    oModel.setProperty(varTemEdit,tableList[indiceEdit]); 
+                    oModel.setProperty(varTemEditId,indiceEdit); 
+                } else {MessageToast.show("Seleccione un registro")}  
             },
             saveRiAsociados: function () {  
                 let oModel = this.getView().getModel("myParam"); 
@@ -348,32 +469,50 @@ sap.ui.define([
                 }
                 console.log("objRiAsoc",objRiAsoc)
                 listRiAsociados.push(objRiAsoc)
-                oModel.setProperty("/tabRiAsociados",listRiAsociados); 
-
+                oModel.setProperty("/tabRiAsociados",listRiAsociados);
+                
                 this.getView().byId("panelRiAsociados").setVisible(false)
-                let objRiAsocClean = { 
-                    conInsegura: "riAsoc_conInsegura",
-                    riesgo: "riAsoc_riesgo",
-                    consecuencia: "riAsoc_consecuencia",
-                    nivelRiesgo: "riAsoc_nivelRiesgo",
-                    file: "riAsoc_file"
-                }
-                this.limpiarObjeto(objRiAsocClean)
+                this.cancelRiAsociados()
             },
-            deleteRiAsociados : function () {  
+            saveEditRiAsociados: function () {  
+                // let varTemEdit = "/temEditAcciones"
+                let varTemEditId = "/temEditRiAsociadosId"
+                let varTabaLista = "/tabRiAsociados"
+                // let varIdTabla = "tableAccionesInforme"
+
+                let oModel = this.getView().getModel("myParam");  
+                let list = oModel.getProperty(varTabaLista);
+                let tempEditId = oModel.getProperty(varTemEditId);
+                // console.log("saveEditAcciones list init",list)
+                let objRiAsoc = { 
+                    ZCOND_INSEGURA: this.getView().byId("edit_riAsoc_conInsegura").getValue(), 
+                    ZRIESGO: this.getView().byId("edit_riAsoc_riesgo").getValue(),
+                    ZCONSECUENCIA: this.getView().byId("edit_riAsoc_consecuencia").getValue(),
+                    ZNIVEL_RIESGO: this.getView().byId("edit_riAsoc_nivelRiesgo").getValue(),
+                    ZANEXO: this.getView().byId("edit_riAsoc_file").getValue()
+                } 
+                this.actualizarCamposPorIndice(list, tempEditId, objRiAsoc); 
+                // console.log("saveEditAcciones list FIN",list)
+                oModel.setProperty(varTabaLista,list); 
+                MessageToast.show("Cambios realizados")
+                this.cancelRiAsociados() 
+            },
+            deleteRiAsociados:async function () {  
                 let oModel = this.getView().getModel("myParam");  
                 let dataTable = oModel.getProperty("/tabRiAsociados");
 
                 var oTable = this.getView().byId("tableRiesgosAsociados");
                 var indiceAEliminar = oTable.getSelectedIndices();
                 if (indiceAEliminar >= 0 && indiceAEliminar < dataTable.length && dataTable[indiceAEliminar] != undefined) {
-                    dataTable.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
-                    oModel.setProperty("/tabRiAsociados",dataTable);
-                    console.log("Registro eliminado.");
-                }else {
-                    MessageToast.show("Seleccione un registro");
-                console.log("Índice inválido, no se eliminó ningún registro.");
-                }
+                    let typeMsm = "information",
+                        titleMsm = "¿Deseas eleminar al asistente seleccionado?"
+                    let ok = await this.MessageBoxPress(typeMsm,titleMsm)
+                    if(ok){
+                        dataTable.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
+                        oModel.setProperty("/tabRiAsociados",dataTable);
+                        MessageToast.show("Registro eliminado.")
+                    }else{ MessageToast.show("Solicitud cancelada")}
+                }else {MessageToast.show("Seleccione un registro")}
             },
             //FUNCIONES DE MEDIDAS CORRECTIVAS
             addMedCorrectiva: function () {  
@@ -381,6 +520,14 @@ sap.ui.define([
             },
             cancelMedCorrectiva: function () {  
                 this.getView().byId("panelMedCorrectiva").setVisible(false)
+                this.getView().byId("panelMedCorrectivaEdit").setVisible(false)
+                let objRiAsocClean = { 
+                    descrip: "medCor_descrip",
+                    responsable: "medCor_responsable",
+                    fechaEjc: "medCor_fechaEjc",
+                    estadoAccCor: "medCor_estadoAccCor"
+                }
+                this.limpiarObjeto(objRiAsocClean)
             },
             saveMedCorrectiva: function () {  
                 let oModel = this.getView().getModel("myParam"); 
@@ -394,31 +541,62 @@ sap.ui.define([
                 console.log("objMedCor correctivo",objMedCor)
                 listMedCorrectiva.push(objMedCor)
                 oModel.setProperty("/tabMedCorrectiva",listMedCorrectiva); 
-
                 this.getView().byId("panelMedCorrectiva").setVisible(false)
-                let objRiAsocClean = { 
-                    descrip: "medCor_descrip",
-                    responsable: "medCor_responsable",
-                    fechaEjc: "medCor_fechaEjc",
-                    estadoAccCor: "medCor_estadoAccCor"
-                }
-                this.limpiarObjeto(objRiAsocClean)
-                this.onPageBack()
+                this.cancelMedCorrectiva()
             },
-            deleteMedCorrectiva : function () {  
+            deleteMedCorrectiva:async function () {  
                 let oModel = this.getView().getModel("myParam");  
                 let dataTable = oModel.getProperty("/tabMedCorrectiva");
 
                 var oTable = this.getView().byId("tableMedidaCorrectiva");
                 var indiceAEliminar = oTable.getSelectedIndices();
                 if (indiceAEliminar >= 0 && indiceAEliminar < dataTable.length  && dataTable[indiceAEliminar] != undefined) {
-                    dataTable.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
-                    oModel.setProperty("/tabMedCorrectiva",dataTable);
-                    console.log("Registro eliminado.");
-                }else {
-                    MessageToast.show("Seleccione un registro");
-                console.log("Índice inválido, no se eliminó ningún registro.");
+                    let typeMsm = "information",
+                    titleMsm = "¿Deseas eleminar al asistente seleccionado?"
+                    let ok = await this.MessageBoxPress(typeMsm,titleMsm)
+                    if(ok){
+                        dataTable.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
+                        oModel.setProperty("/tabMedCorrectiva",dataTable);
+                        MessageToast.show("Registro eliminado.")
+                    }else{ MessageToast.show("Solicitud cancelada")}
+                }else {MessageToast.show("Seleccione un registro")}
+            },
+            editMedCorrectiva: function () {  
+                let oModel = this.getView().getModel("myParam");  
+                let varTemEdit = "/temEditMedCorrectiva"
+                let varTemEditId = "/temEditMedCorrectivaId"
+                let varTabaLista = "/tabMedCorrectiva"
+                let varIdTabla = "tableMedidaCorrectiva"
+                let tableList = oModel.getProperty(varTabaLista); 
+                
+                var oTable = this.getView().byId(varIdTabla);
+                var indiceEdit = oTable.getSelectedIndices();
+                if (indiceEdit >= 0 && indiceEdit < tableList.length && tableList[indiceEdit] != undefined) {
+                    // if (indiceEdit >= 0) {
+                    this.getView().byId("panelMedCorrectivaEdit").setVisible(true) 
+                    console.log("Registro A EDITAR.",tableList[indiceEdit]);
+                    oModel.setProperty(varTemEdit,tableList[indiceEdit]); 
+                    oModel.setProperty(varTemEditId,indiceEdit); 
+                } else {MessageToast.show("Seleccione un registro")}  
+            },
+            saveEditMedCorrectiva: function () {   
+                let varTemEditId = "/temEditMedCorrectivaId"
+                let varTabaLista = "/tabMedCorrectiva" 
+
+                let oModel = this.getView().getModel("myParam");  
+                let list = oModel.getProperty(varTabaLista);
+                let tempEditId = oModel.getProperty(varTemEditId); 
+                let objMedCor= { 
+                    ZMEDIDA: this.getView().byId("edit_medCor_descrip").getValue(), 
+                    ZRESPONSABLE: this.getView().byId("edit_medCor_responsable").getValue(), 
+                    ZFEC_EJECUCION: this.cambiarFormatoFecha(this.getView().byId("edit_medCor_fechaEjc").getValue()),
+                    ZESTADO: this.getView().byId("edit_medCor_estadoAccCor").getSelectedKey()
                 }
+                this.actualizarCamposPorIndice(list, tempEditId, objMedCor); 
+                // console.log("saveEditAcciones list FIN",list)
+                oModel.setProperty(varTabaLista,list); 
+                MessageToast.show("Cambios realizados")
+                this.cancelMedCorrectiva() 
             },
 
             keyValorEstadoAccionCorrectiva: function (key,lista) { 
@@ -435,12 +613,19 @@ sap.ui.define([
                     return valorF
                 }
             },
-
+            // RESPONSABLE DE REGISTROS
             addResponsables: function () {  
                 this.getView().byId("panelResponsables").setVisible(true)
             },
             cancelResponsables: function () {  
                 this.getView().byId("panelResponsables").setVisible(false)
+                this.getView().byId("panelResponsablesEdit").setVisible(false)
+                let objRespClean = { 
+                    nombre: "responsable_nombre",
+                    cargo: "responsable_cargo",
+                    fecha: "responsable_fecha"
+                }
+                this.limpiarObjeto(objRespClean)
             },
             saveResponsables: function () {  
                 let oModel = this.getView().getModel("myParam"); 
@@ -453,31 +638,80 @@ sap.ui.define([
                 console.log("objResp",objResp)
                 listResp.push(objResp)
                 oModel.setProperty("/tabResponsables",listResp); 
-
                 this.getView().byId("panelResponsables").setVisible(false)
-                let objRespClean = { 
-                    nombre: "responsable_nombre",
-                    cargo: "responsable_cargo",
-                    fecha: "responsable_fecha"
-                }
-                this.limpiarObjeto(objRespClean)
+                this.cancelResponsables()
             },
-            deleteResponsables : function () {  
+            deleteResponsables:async function () {  
                 let oModel = this.getView().getModel("myParam");  
                 let dataTable = oModel.getProperty("/tabResponsables");
 
                 var oTable = this.getView().byId("idTableResponsable");
                 var indiceAEliminar = oTable.getSelectedIndices();
                 if (indiceAEliminar >= 0 && indiceAEliminar < dataTable.length  && dataTable[indiceAEliminar] != undefined) {
-                    dataTable.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
-                    oModel.setProperty("/tabResponsables",dataTable);
-                    console.log("Registro eliminado.");
-                }else {
-                    MessageToast.show("Seleccione un registro");
-                console.log("Índice inválido, no se eliminó ningún registro.");
-                }
+                    let typeMsm = "information",
+                    titleMsm = "¿Deseas eleminar al asistente seleccionado?"
+                    let ok = await this.MessageBoxPress(typeMsm,titleMsm)
+                    if(ok){
+                        dataTable.splice(indiceAEliminar, 1); // Eliminar 1 elemento desde el índice dado
+                        oModel.setProperty("/tabResponsables",dataTable);
+                        MessageToast.show("Registro eliminado.")
+                    }else{ MessageToast.show("Solicitud cancelada")}
+                }else {MessageToast.show("Seleccione un registro")}
             },
+            editResponsables: function () {  
+                let oModel = this.getView().getModel("myParam");  
+                let varTemEdit = "/temEditResponsables"
+                let varTemEditId = "/temEditResponsablesId"
+                let varTabaLista = "/tabResponsables"
+                let varIdTabla = "idTableResponsable"
+                let tableList = oModel.getProperty(varTabaLista); 
+                
+                var oTable = this.getView().byId(varIdTabla);
+                var indiceEdit = oTable.getSelectedIndices();
+                if (indiceEdit >= 0 && indiceEdit < tableList.length && tableList[indiceEdit] != undefined) {
+                    // if (indiceEdit >= 0) {
+                    this.getView().byId("panelResponsablesEdit").setVisible(true) 
+                    console.log("Registro A EDITAR.",tableList[indiceEdit]);
+                    oModel.setProperty(varTemEdit,tableList[indiceEdit]); 
+                    oModel.setProperty(varTemEditId,indiceEdit); 
+                } else {MessageToast.show("Seleccione un registro")}  
+            },
+            saveEditResponsables: function () {   
+                let varTemEditId = "/temEditResponsablesId"
+                let varTabaLista = "/tabResponsables" 
 
+                let oModel = this.getView().getModel("myParam");  
+                let list = oModel.getProperty(varTabaLista);
+                let tempEditId = oModel.getProperty(varTemEditId); 
+                let objResp= { 
+                    ZAPELLIDO_NOMBRE: this.getView().byId("edit_responsable_nombre").getValue(), 
+                    ZCARGO: this.getView().byId("edit_responsable_cargo").getValue(),
+                    ZFECHA: this.cambiarFormatoFecha(this.getView().byId("edit_responsable_fecha").getValue()), 
+                }
+                this.actualizarCamposPorIndice(list, tempEditId, objResp); 
+                // console.log("saveEditAcciones list FIN",list)
+                oModel.setProperty(varTabaLista,list); 
+                MessageToast.show("Cambios realizados")
+                this.cancelResponsables() 
+            },
+            buscarTrabajadorRes:async function () {   
+                var iCodTrabajador = this.getView().byId("codTrabajador").getValue()
+                let dataRes = await this.searchTrabajador(iCodTrabajador)
+                if(dataRes){
+                    this.getView().byId("responsable_nombre").setValue(`${dataRes.NOMBRE} ${dataRes.APELLIDO}`) 
+                    this.getView().byId("responsable_cargo").setValue(dataRes.AREA)
+
+                }else{MessageToast.show("No encontrado")}
+            },
+            buscarTrabajadorResEdit:async function () {   
+                var iCodTrabajador = this.getView().byId("edit_codTrabajador").getValue()
+                let dataRes = await this.searchTrabajador(iCodTrabajador)
+                if(dataRes){
+                    this.getView().byId("edit_responsable_nombre").setValue(`${dataRes.NOMBRE} ${dataRes.APELLIDO}`) 
+                    this.getView().byId("edit_responsable_cargo").setValue(dataRes.AREA)
+
+                }else{MessageToast.show("No encontrado")}
+            },
             // funciones generales
             cambiarFormatoFecha: function (fecha) {
                 let fechaReturn 
@@ -661,5 +895,63 @@ sap.ui.define([
                     });
                 }); 
             },
+            changeFullNameTrab:  function (cod) { 
+                let list = this.getView().getModel("myParam").getProperty('/listCodTrabajador'); 
+                if(cod){
+                    let valorF 
+                    valorF = list.filter(function(e) {return parseInt(e.COD_PERSONAL, 10) == parseInt(cod, 10) })
+                    valorF = valorF[0]
+                    if(valorF){ valorF= `${valorF.NOMBRE} ${valorF.APELLIDO}`}
+                    else{valorF = `Sin data ${cod}`}
+                    return valorF
+                }
+
+            },
+            changeDataGerencia:  function (cod) { 
+                let list = this.getView().getModel("myParam").getProperty('/ZSYSO_GERENCIASet'); 
+                if(cod){
+                    let valorF 
+                    valorF = list.filter(function(e) {return parseInt(e.ORGEH, 10) == parseInt(cod, 10) })
+                    valorF = valorF[0]
+                    if(valorF){ valorF= valorF.STEXT}
+                    else{valorF = `Sin data ${cod}`}
+                    return valorF
+                } 
+            },
+            changeDataPuesto:  function (cod) { 
+                let list = this.getView().getModel("myParam").getProperty('/ZSYSO_PUESTO');  
+                if(cod){
+                    let valorF 
+                    valorF = list.filter(function(e) {return parseInt(e.PUESTO, 10) == parseInt(cod, 10) })
+                    valorF = valorF[0]
+                    if(valorF){ valorF= valorF.DESCRIP}
+                    else{valorF = `Sin data ${cod}`}
+                    return valorF
+                } 
+            },
+            changeDataArea:  function (cod) { 
+                let list = this.getView().getModel("myParam").getProperty('/ZSYSO_AREASet'); 
+                if(cod){
+                    let valorF 
+                    valorF = list.filter(function(e) {return e.DIVISION == cod })
+                    valorF = valorF[0]
+                    if(valorF){ valorF= valorF.DESCRIP}
+                    else{valorF = `Sin data ${cod}`}
+                    return valorF
+                } 
+            },
+            changeDataDepartamento:  function (cod) { 
+                let list = this.getView().getModel("myParam").getProperty('/ZSYSO_DPTO');  
+                if(cod){
+                    let valorF 
+                    valorF = list.filter(function(e) {return e.DEPARTAM == cod })
+                    valorF = valorF[0]
+                    // debugger
+                    if(valorF){ valorF= valorF.DESCRIP}
+                    else{valorF = `Sin data ${cod}`}
+                    return valorF
+                } 
+            },
+
         });
     });

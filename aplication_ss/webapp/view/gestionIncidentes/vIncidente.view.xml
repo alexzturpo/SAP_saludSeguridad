@@ -145,7 +145,7 @@
                                             <Toolbar>
                                                 <Title text="¿Quíen fue afectado?"/>
                                                 <ToolbarSpacer />
-                                                <Button text="Buscar" icon="sap-icon://employee-lookup" press="onEnviartab2"/>
+                                                <Button text="Buscar" icon="sap-icon://employee-lookup" press="dateTrabAfectado"/>
                                             </Toolbar>
                                         </f:toolbar>
                                         <f:formElements>
@@ -182,7 +182,7 @@
                                             <Toolbar>
                                                 <Title text="¿Quién advirtío el incidente?"/>
                                                 <ToolbarSpacer />
-                                                <Button text="Buscar" icon="sap-icon://employee-lookup" press="onEnviartab2"/>
+                                                <Button text="Buscar" icon="sap-icon://employee-lookup" press="dateTrabInformante"/>
                                             </Toolbar>
                                         </f:toolbar>
                                         <f:formElements>
@@ -379,7 +379,17 @@
                                         </f:formElements>
                                     </f:FormContainer> 
                                     <f:FormContainer title="Investigado por" >
+                                        <f:toolbar>
+                                            <Toolbar>
+                                                <Title text="Investigado por"/>
+                                                <ToolbarSpacer />
+                                                <Button text="Buscar" icon="sap-icon://employee-lookup" press="dateTrabInvestigado"/>
+                                            </Toolbar>
+                                        </f:toolbar>
                                         <f:formElements>
+                                            <f:FormElement label="Codigo trabajador" >
+                                                <f:fields> <Input id="info_CodTrab" value="" />  </f:fields>
+                                            </f:FormElement> 
                                             <f:FormElement label="Nombre" >
                                                 <f:fields> <Input id="info_invesNombre" value="{myParam>ZINVEST_POR}" />  </f:fields>
                                             </f:FormElement> 
