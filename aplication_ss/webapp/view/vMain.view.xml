@@ -355,19 +355,19 @@
                                                 <f:FormElement label="Gerencia"> 
                                                     <f:fields> 
                                                         <Input id="gInsp_gerencia" type="Text" value="" placeholder="Seleccione.." valueHelpRequest="changeZSYSO_GERENCIA" showSuggestion="true" showValueHelp="true"/>
-                                                        <Input id="gInsp_gerenciaText" value="{ parts: [{path: 'myParam>ZGERENCIA'}], formatter: '.changeDataGerencia'}" editable="false" />
+                                                        <Input id="gInsp_gerenciaText" value="" editable="false" />
                                                     </f:fields>
                                                 </f:FormElement>
                                                 <f:FormElement label="Área"> 
                                                     <f:fields> 
                                                         <Input id="gInsp_area" type="Text" value="" placeholder="Seleccione.." valueHelpRequest="changeZSYSO_AREA" showSuggestion="true" showValueHelp="true"/>
-                                                        <Input id="gInsp_areaText" value="{ parts: [{path: 'myParam>ZAREA'}], formatter: '.changeDataArea'}" editable="false" />
+                                                        <Input id="gInsp_areaText" value="" editable="false" />
                                                     </f:fields>
                                                 </f:FormElement>
                                                 <f:FormElement label="Departamento">
                                                     <f:fields> 
                                                         <Input id="gInsp_departamento" type="Text" value="" placeholder="Seleccione.." valueHelpRequest="changeZSYSO_DPTO" showSuggestion="true" showValueHelp="true"/>
-                                                        <Input id="gInsp_departamentoText" value="{ parts: [{path: 'myParam>ZDPTO'}], formatter: '.changeDataDepartamento'}" editable="false" />
+                                                        <Input id="gInsp_departamentoText" value="" editable="false" />
                                                     </f:fields>
                                                 </f:FormElement>
                                                 <f:FormElement label="Fecha programada">

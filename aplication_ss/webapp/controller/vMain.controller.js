@@ -1487,10 +1487,10 @@
                 oEvent.getSource().getBinding("items").filter([]);
                 if (!oSelectedItem) { return } 
                 sDescription = oSelectedItem.getDescription(); 
-                // let sTitle = oSelectedItem.getTitle(); 
+                let sTitle = oSelectedItem.getTitle(); 
                 // console.log("ID INPUT",sDescription)
                 this.getView().byId(idInput).setValue(sDescription); 
-                this.getView().byId(`${idInput}Text`).setValue(sDescription); 
+                this.getView().byId(`${idInput}Text`).setValue(sTitle); 
                 // this.byId(idInput).setValue(sDescription); 
             }, 
              
